@@ -1,0 +1,46 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="action_bar">50dp</dimen>
+    <dimen name="tag_height">30dp</dimen>
+    <dimen name="_53dp">53dp</dimen>
+
+    <dimen name="container_layout_margin">36dp</dimen>
+    <dimen name="btn_corners">6dp</dimen>
+    <dimen name="splash_btn_width">130dp</dimen>
+    <dimen name="divider_height">2dp</dimen>
+    <dimen name="ic_nav_padding_start">16dp</dimen>
+    <dimen name="layout_in_between_margins">15dp</dimen>
+    <dimen name="divider_start_and_end_margins">8dp</dimen>
+    <dimen name="divider_top_and_bottom_margins">8dp</dimen>
+    <dimen name="_5dp">5dp</dimen>
+    <dimen name="margin_top">5dp</dimen>
+    <dimen name="margin_top_30dp">30dp</dimen>
+    <dimen name="padding_bottom_offset">3dp</dimen>
+    <dimen name="action_bar_title">20dp</dimen>
+    <dimen name="progress_offset">40dp</dimen>
+    <dimen name="padding_left_offset">20dp</dimen>
+    <dimen name="padding_start_task_create">10dp</dimen>
+    <dimen name="selector_gap">10dp</dimen>
+    <dimen name="bottm_navigation_offset">40dp</dimen>
+    <dimen name="padding_start_task_details">15dp</dimen>
+
+    <dimen name="margin_start_80">80dp</dimen>
+    <dimen name="input_box_size">55dp</dimen>
+    <dimen name="chat_msg_text_size">17dp</dimen>
+    <dimen name="msg_font_size">15dp</dimen>
+    <dimen name="designation_textsize">16sp</dimen>
+    <dimen name="margin_top_task_detail">15dp</dimen>
+    <dimen name="chat_margin">15dp</dimen>
+    <dimen name="workspace_heading">19dp</dimen>
+    <dimen name="button_size_workspace">15dp</dimen>
+    <dimen name="bottom_sheet_holder_height">3dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="radius_imgview">12dp</dimen>
+    <dimen name="elements_corners">8dp</dimen>
+    <dimen name="h1">18dp</dimen>
+    <dimen name="h2">17dp</dimen>
+    <dimen name="font_size_timestamp">15dp</dimen>
+    <dimen name="timestamp_size">15dp</dimen>
+    <dimen name="start_offset">25dp</dimen>
+
+</resources>
