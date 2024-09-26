@@ -15,5 +15,5 @@ dependencyResolutionManagement {
 
     }
 }
-rootProject.name = "O2"
+rootProject.name = "NCS Mario"
 include ':app'
