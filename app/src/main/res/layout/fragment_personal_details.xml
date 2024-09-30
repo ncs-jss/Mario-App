@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/stripped_bg"
+    android:layout_height="match_parent"
+    tools:context=".UI.SurveyScreen.PersonalDetails.PersonalDetailsFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/catamaran_semibold"
+            android:gravity="center"
+            android:text="Basic Details"
+            android:textColor="@color/better_white"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/name_et"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:lines="1"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/edit_text_bg"
+            android:fontFamily="@font/catamaran_medium"
+            android:hint="Name"
+            android:inputType="textAutoComplete"
+            android:paddingStart="15dp"
+            android:textColor="@color/better_white"
+            android:textColorHint="@color/edit_text_hint"
+            android:textSize="14dp" />
+
+
+        <EditText
+            android:id="@+id/admission_num_et"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:lines="1"
+            android:background="@drawable/edit_text_bg"
+            android:fontFamily="@font/catamaran_medium"
+            android:hint="Admission Number"
+            android:inputType="textAutoComplete"
+            android:paddingStart="15dp"
+            android:textColor="@color/better_white"
+            android:textColorHint="@color/edit_text_hint"
+            android:textSize="14dp" />
+
+        <EditText
+            android:id="@+id/phone_num_et"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:lines="1"
+            android:background="@drawable/edit_text_bg"
+            android:fontFamily="@font/catamaran_medium"
+            android:hint="Phone Number"
+            android:inputType="phone"
+            android:maxLength="10"
+            android:paddingStart="15dp"
+            android:textColor="@color/better_white"
+            android:textColorHint="@color/edit_text_hint"
+            android:textSize="14dp" />
+
+        <EditText
+            android:id="@+id/bio_et"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/edit_text_bg"
+            android:fontFamily="@font/catamaran_medium"
+            android:hint="Something about you"
+            android:inputType="textAutoComplete"
+            android:lines="2"
+            android:maxLines="2"
+            android:paddingStart="15dp"
+            android:textColor="@color/better_white"
+            android:textColorHint="@color/edit_text_hint"
+            android:textSize="14dp" />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="140dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:background="@drawable/button_bg"
+        android:fontFamily="@font/catamaran_medium"
+        android:gravity="center"
+        android:text="Next"
+        android:id="@+id/btnNext"
+        android:layout_marginBottom="130dp"
+        android:textColor="@color/better_white"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

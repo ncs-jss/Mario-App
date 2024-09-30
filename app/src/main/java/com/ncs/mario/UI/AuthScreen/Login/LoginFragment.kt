@@ -1,0 +1,93 @@
+package com.ncs.mario.UI.AuthScreen.Login
+
+import android.content.Context
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.activity.addCallback
+import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
+import com.ncs.mario.Domain.Utility.GlobalUtils
+import com.ncs.mario.R
+import com.ncs.mario.databinding.FragmentLoginBinding
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class LoginFragment : Fragment() {
+
+    lateinit var binding: FragmentLoginBinding
+    private val viewModel: LoginViewModel by viewModels()
+    private val util: GlobalUtils.EasyElements by lazy {
+        GlobalUtils.EasyElements(requireActivity())
+    }
+    private var backPressedTime: Long = 0
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentLoginBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeData()
+        setUpViews()
+    }
+
+    private fun setUpViews(){
+        binding.btntosignUp.setOnClickThrottleBounceListener {
+            findNavController().navigate(R.id.action_fragment_login_to_fragment_sign_up)
+        }
+        binding.emailEt.addTextChangedListener {
+            viewModel.email.value = it.toString()
+        }
+        binding.passwordEt.addTextChangedListener {
+            viewModel.password.value = it.toString()
+        }
+        binding.btnContinue.setOnClickThrottleBounceListener {
+            closeKeyboard()
+            viewModel.login()
+        }
+    }
+
+    private fun observeData(){
+        viewModel.errorMessage.observe(viewLifecycleOwner, Observer { message ->
+            util.showSnackbar(binding.root,message!!,2000)
+        })
+    }
+
+    fun closeKeyboard() {
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val view = requireActivity().currentFocus ?: View(requireContext())
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        onBackPress()
+    }
+
+
+
+    private fun onBackPress() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            if (backPressedTime + 2000 > System.currentTimeMillis()) {
+                requireActivity().finish()
+            } else {
+                util.showSnackbar(binding.root,"Press back again to exit",2000)
+            }
+            backPressedTime = System.currentTimeMillis()
+        }
+    }
+
+
+}
