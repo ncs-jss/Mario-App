@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/q_r_scan"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.qrscan.QRScanFragment">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/message"
+    <Button
+        android:id="@+id/scanQrBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="QRScanFragment"
+        android:backgroundTint="@color/primary"
+        android:text="Scan Qr"
+        android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

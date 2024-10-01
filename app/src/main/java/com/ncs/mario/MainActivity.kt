@@ -1,5 +1,6 @@
 package com.ncs.mario
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -15,8 +16,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.ncs.mario.Domain.Presentation.Home.HomeFragment
 import com.ncs.mario.Domain.Presentation.Internship.InternshipFragment
+import com.ncs.mario.Domain.Presentation.QR.QrScanActivity
 import com.ncs.mario.Domain.Presentation.Score.ScoreFragment
 import com.ncs.mario.Domain.Presentation.Store.StoreFragment
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.mario.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,7 +33,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(binding.root)
-        // Handle Navigation Drawer open/close using btnHam
         binding.actionbar.btnHam.setOnClickListener {
             if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
                 binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -66,25 +68,26 @@ class MainActivity : AppCompatActivity() {
         }
         binding.bottomNavigationView.itemIconTintList = null
 
-        // Handle Navigation Drawer item clicks (if needed)
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_profile -> {
-                    // Handle profile click
                     true
                 }
                 R.id.nav_settings -> {
-                    // Handle settings click
                     true
                 }
                 R.id.nav_logout -> {
-                    // Handle logout click
                     true
                 }
                 else -> false
             }
         }
+    binding.actionbar.scanQr.setOnClickThrottleBounceListener{
+        startActivity(Intent(this, QrScanActivity::class.java))
+
     }
+    }
+
 
     override fun onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {

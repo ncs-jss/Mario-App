@@ -8,13 +8,11 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!-- Main Content -->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Top AppBar -->
         <include
             android:id="@+id/actionbar"
             layout="@layout/action_bar"
@@ -22,14 +20,12 @@
             android:layout_height="wrap_content"
             />
 
-        <!-- Fragment Container -->
         <FrameLayout
             android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
-        <!-- Bottom Navigation -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
             android:layout_width="match_parent"
@@ -44,7 +40,6 @@
 
     </LinearLayout>
 
-    <!-- Navigation Drawer -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationView"
         android:layout_width="wrap_content"
