@@ -9,6 +9,7 @@ import com.ncs.mario.UI.AuthScreen.AuthActivity
 import com.ncs.mario.databinding.ActivityStartScreenBinding
 import kotlinx.coroutines.delay
 
+
 class StartScreen : AppCompatActivity() {
     val binding: ActivityStartScreenBinding by lazy {
         ActivityStartScreenBinding.inflate(layoutInflater)

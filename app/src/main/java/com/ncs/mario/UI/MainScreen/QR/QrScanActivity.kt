@@ -1,10 +1,10 @@
-package com.ncs.mario.Domain.Presentation.QR
+package com.ncs.mario.UI.MainScreen.QR
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
-import com.ncs.mario.Domain.Presentation.QR.ui.qrscan.QRScanFragment
+import com.ncs.mario.UI.MainScreen.QR.ui.qrscan.QRScanFragment
 import com.ncs.mario.R
 import com.ncs.mario.databinding.ActivityMainBinding
 import com.ncs.mario.databinding.ActivityQRScanBinding

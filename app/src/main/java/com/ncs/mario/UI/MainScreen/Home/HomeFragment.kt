@@ -1,4 +1,4 @@
-package com.ncs.mario.Domain.Presentation.Home
+package com.ncs.mario.UI.MainScreen.Home
 
 import android.os.Bundle
 import android.view.LayoutInflater

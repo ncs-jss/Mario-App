@@ -1,4 +1,4 @@
-package com.ncs.mario.Domain.Presentation.Internship
+package com.ncs.mario.UI.MainScreen.Internship
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle

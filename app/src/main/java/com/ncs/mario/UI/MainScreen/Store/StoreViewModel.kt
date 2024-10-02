@@ -1,7 +1,7 @@
-package com.ncs.mario.Domain.Presentation.Home
+package com.ncs.mario.UI.MainScreen.Store
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 
-class HomeViewModel :ViewModel(){
+class StoreViewModel: ViewModel() {
 }

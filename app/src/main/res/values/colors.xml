@@ -9,7 +9,6 @@
 
 <!--  ⚠️⚠️  dont consult colors below this-->
 
-    <color name="primary">#E60012</color>
     <color name="secondary">#FFDF02</color>
 
 
@@ -29,7 +28,6 @@
     <color name="primary_lighter_bg">#303030</color>
     <color name="secondary_darker_bg">#0d0c0b</color>
 
-    <color name="green">@color/success300</color>
     <color name="yello">@color/s3bg</color>
     <color name="red">@color/secondaryPink</color>
     <color name="redx">#FF5252</color>

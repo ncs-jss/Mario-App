@@ -17,7 +17,9 @@ import com.ncs.mario.Domain.Utility.GlobalUtils
 import com.ncs.mario.R
 import com.ncs.mario.UI.AuthScreen.Login.LoginViewModel
 import com.ncs.mario.databinding.FragmentSignUpBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SignUpFragment : Fragment() {
 
     lateinit var binding: FragmentSignUpBinding

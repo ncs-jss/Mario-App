@@ -1,4 +1,4 @@
-package com.ncs.mario.Domain.Presentation.Store
+package com.ncs.mario.UI.MainScreen.Store
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

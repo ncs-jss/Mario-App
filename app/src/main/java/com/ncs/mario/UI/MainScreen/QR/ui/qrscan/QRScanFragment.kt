@@ -1,4 +1,4 @@
-package com.ncs.mario.Domain.Presentation.QR.ui.qrscan
+package com.ncs.mario.UI.MainScreen.QR.ui.qrscan
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle

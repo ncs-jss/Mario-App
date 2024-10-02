@@ -15,11 +15,11 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import com.ncs.mario.Domain.Presentation.Home.HomeFragment
-import com.ncs.mario.Domain.Presentation.Internship.InternshipFragment
-import com.ncs.mario.Domain.Presentation.QR.QrScanActivity
-import com.ncs.mario.Domain.Presentation.Score.ScoreFragment
-import com.ncs.mario.Domain.Presentation.Store.StoreFragment
+import com.ncs.mario.UI.MainScreen.Home.HomeFragment
+import com.ncs.mario.UI.MainScreen.Internship.InternshipFragment
+import com.ncs.mario.UI.MainScreen.QR.QrScanActivity
+import com.ncs.mario.UI.MainScreen.Score.ScoreFragment
+import com.ncs.mario.UI.MainScreen.Store.StoreFragment
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.mario.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -83,10 +83,9 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
-    binding.actionbar.scanQr.setOnClickThrottleBounceListener{
-        startActivity(Intent(this, QrScanActivity::class.java))
-
-    }
+        binding.actionbar.scanQr.setOnClickThrottleBounceListener{
+            startActivity(Intent(this, QrScanActivity::class.java))
+        }
     }
 
 

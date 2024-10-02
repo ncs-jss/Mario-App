@@ -1,4 +1,4 @@
-package com.ncs.mario.Domain.Presentation.Score
+package com.ncs.mario.UI.MainScreen.Score
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
