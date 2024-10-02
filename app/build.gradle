@@ -1,9 +1,10 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.google.devtools.ksp)
-    alias(libs.plugins.dagger.hilt.android)
-    alias(libs.plugins.compose.compiler)
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.google.devtools.ksp'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -47,8 +48,7 @@ dependencies {
     implementation libs.material
     implementation libs.androidx.activity
     implementation libs.androidx.constraintlayout
-    implementation libs.androidx.legacy.support.v4
-    implementation libs.androidx.fragment.ktx
+    implementation libs.androidx.navigation.fragment
     testImplementation libs.junit
     androidTestImplementation libs.androidx.junit
     androidTestImplementation libs.androidx.espresso.core
@@ -68,32 +68,19 @@ dependencies {
     implementation "com.github.bumptech.glide:okhttp3-integration:$glide_version"
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
-    //navigation
-    implementation (libs.androidx.navigation.fragment.ktx)
-    implementation (libs.androidx.navigation.ui.ktx)
     //ViewModel
-    implementation (libs.androidx.lifecycle.livedata.ktx)
-    implementation (libs.lifecycle.viewmodel.ktx)
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.2'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2'
 
     //Dagger Hilt
-    implementation (libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
-    ksp (libs.dagger.hilt.android.compiler)
+    implementation 'com.google.dagger:hilt-android:2.48.1'
+    kapt "com.google.dagger:hilt-android-compiler:2.48.1"
+    implementation 'androidx.hilt:hilt-common:1.1.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.2'
 
-    //retrofit
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-    implementation(libs.okhttp)
-    implementation (libs.adapter.rxjava2)
-    implementation (libs.logging.interceptor)
-
-    implementation (libs.androidx.hilt.common)
-
-    //google qr scanner
     implementation ("com.google.android.gms:play-services-code-scanner:16.1.0")
     implementation ("com.google.android.gms:play-services-base:18.5.0")
     implementation ("com.google.android.gms:play-services-tflite-java:16.2.0-beta02")
 
-
-
 }
+
