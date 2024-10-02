@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/auth_nav"
+    app:startDestination="@id/fragment_login">
+
+    <fragment
+        android:id="@+id/fragment_login"
+        tools:layout="@layout/fragment_login"
+        android:name="com.ncs.mario.UI.AuthScreen.Login.LoginFragment"
+        android:label="fragment_login" >
+        <action
+            android:id="@+id/action_fragment_login_to_fragment_sign_up"
+            app:destination="@id/fragment_sign_up"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up"
+        android:name="com.ncs.mario.UI.AuthScreen.SignUp.SignUpFragment"
+        android:label="fragment_sign_upsign" >
+        <action
+            android:id="@+id/action_fragment_sign_up_to_fragment_login"
+            app:destination="@id/fragment_login"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_fragment_sign_up_to_fragment_enter_o_t_p"
+            app:destination="@id/fragment_enter_o_t_p"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_enter_o_t_p"
+        tools:layout="@layout/fragment_enter_o_t_p"
+        android:name="com.ncs.mario.UI.AuthScreen.EnterOTP.EnterOTPFragment"
+        android:label="fragment_enter_o_t_p" >
+
+        <action
+            android:id="@+id/action_fragment_enter_o_t_p_to_fragment_o_t_p_verified"
+            app:destination="@id/fragment_o_t_p_verified"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_o_t_p_verified"
+        tools:layout="@layout/fragment_o_t_p_verified"
+        android:name="com.ncs.mario.UI.AuthScreen.OTPVerified.OTPVerifiedFragment"
+        android:label="fragment_o_t_p_verified" >
+
+    </fragment>
+</navigation>

@@ -1,6 +1,10 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.google.devtools.ksp'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -44,6 +48,7 @@ dependencies {
     implementation libs.material
     implementation libs.androidx.activity
     implementation libs.androidx.constraintlayout
+    implementation libs.androidx.navigation.fragment
     testImplementation libs.junit
     androidTestImplementation libs.androidx.junit
     androidTestImplementation libs.androidx.espresso.core
@@ -63,5 +68,19 @@ dependencies {
     implementation "com.github.bumptech.glide:okhttp3-integration:$glide_version"
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
+    //ViewModel
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.2'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2'
+
+    //Dagger Hilt
+    implementation 'com.google.dagger:hilt-android:2.48.1'
+    kapt "com.google.dagger:hilt-android-compiler:2.48.1"
+    implementation 'androidx.hilt:hilt-common:1.1.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.2'
+
+    implementation ("com.google.android.gms:play-services-code-scanner:16.1.0")
+    implementation ("com.google.android.gms:play-services-base:18.5.0")
+    implementation ("com.google.android.gms:play-services-tflite-java:16.2.0-beta02")
 
 }
+

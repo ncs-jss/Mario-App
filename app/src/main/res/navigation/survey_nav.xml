@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/survey_nav"
+    app:startDestination="@id/fragment_personal_details">
+
+    <fragment
+        android:id="@+id/fragment_personal_details"
+        tools:layout="@layout/fragment_personal_details"
+        android:name="com.ncs.mario.UI.SurveyScreen.PersonalDetails.PersonalDetailsFragment"
+        android:label="fragment_personal_details" >
+
+
+        <action
+            android:id="@+id/action_fragment_personal_details_to_fragment_technical"
+            app:destination="@id/fragment_technical"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_technical"
+        tools:layout="@layout/fragment_technical"
+        android:name="com.ncs.mario.UI.SurveyScreen.TechnicalDetails.TechnicalFragment"
+        android:label="fragment_technical" >
+
+        <action
+            android:id="@+id/action_fragment_technical_to_fragment_social_links"
+            app:destination="@id/fragment_social_links"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"/>
+
+        <action
+            android:id="@+id/action_fragment_technical_to_fragment_personal_details"
+            app:destination="@id/fragment_personal_details"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_right"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_social_links"
+        tools:layout="@layout/fragment_social_links"
+        android:name="com.ncs.mario.UI.SurveyScreen.SocialDetails.SocialLinksFragment"
+        android:label="fragment_social_links" >
+
+        <action
+            android:id="@+id/action_fragment_social_links_to_fragment_k_y_c_validation"
+            app:destination="@id/fragment_k_y_c_validation"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"/>
+
+        <action
+            android:id="@+id/action_fragment_social_links_to_fragment_technical"
+            app:destination="@id/fragment_technical"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_right"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_k_y_c_validation"
+        tools:layout="@layout/fragment_k_y_c_validation"
+        android:name="com.ncs.mario.UI.SurveyScreen.KYCValidations.KYCValidationFragment"
+        android:label="fragment_k_y_c_validation" >
+
+        <action
+            android:id="@+id/action_fragment_k_y_c_validation_to_fragment_social_links"
+            app:destination="@id/fragment_social_links"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_right"/>
+
+    </fragment>
+
+</navigation>
