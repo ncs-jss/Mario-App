@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import com.ncs.mario.R
 import com.ncs.mario.databinding.FragmentInternshipBinding
 
-class InternshipFragment : Fragment(R.layout.fragment_internship) {
+class InternshipFragment : Fragment() {
 
     companion object {
         fun newInstance() = InternshipFragment()

@@ -17,7 +17,7 @@ import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListe
 import com.ncs.mario.R
 import com.ncs.mario.databinding.FragmentQRScanBinding
 
-class QRScanFragment : Fragment(R.id.q_r_scan) {
+class QRScanFragment : Fragment() {
 
     companion object {
         fun newInstance() = QRScanFragment()
