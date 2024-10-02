@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/actionbar"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@color/primary_bg"
+    android:elevation="@dimen/_5dp"
+    android:orientation="horizontal">
+
+
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="30dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/ic_back_arrow"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/btnHam"
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:paddingTop="@dimen/padding_bottom_offset"
+        android:src="@drawable/ham"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/baseWhite" />
+
+    <ImageButton
+        android:id="@+id/btnQuickTask"
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="45dp"
+        android:background="@null"
+        android:src="@drawable/baseline_active_24"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/primary" />
+
+            <TextView
+                android:id="@+id/title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/catamaran_extrabold"
+                android:gravity="start"
+                android:layout_gravity="bottom"
+                android:text="Mario"
+                android:textColor="@color/better_white"
+                android:textSize="28sp" />
+
+            <LinearLayout
+                android:id="@+id/score"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:gravity="end"
+                android:layout_marginEnd="4dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/scoreTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="4"
+                    android:textColor="@color/secondary"
+                    android:textSize="24sp" />
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:paddingVertical="2dp"
+                    android:paddingEnd="2dp"
+                    android:src="@drawable/token"/>
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/scanQr"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:scaleType="fitXY"
+                android:src="@drawable/baseline_qr_code_scanner_24"
+                android:layout_marginEnd="12dp"
+                />
+
+
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/seperator_light"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

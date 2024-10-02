@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/home_selected"
+        android:title="Home"/>
+
+    <item
+        android:id="@+id/nav_store"
+        android:icon="@drawable/store"
+        android:title="Store"/>
+
+    <item
+        android:id="@+id/nav_score"
+        android:icon="@drawable/token"
+        android:title="Xp Score"/>
+    <item
+        android:id="@+id/nav_internships"
+        android:icon="@drawable/internship"
+        android:title="Internships"/>
+
+</menu>

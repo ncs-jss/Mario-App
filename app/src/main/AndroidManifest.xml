@@ -11,6 +11,7 @@
 
     <application
         android:name=".MarioApp"
+        android:name=".MarioApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -20,6 +21,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NCSMario"
         tools:targetApi="31">
+        <activity
+            android:name=".Domain.Presentation.QR.QrScanActivity"
+            android:exported="false" />
         <activity
             android:name=".UI.SurveyScreen.SurveyActivity"
             android:screenOrientation="portrait"
@@ -37,6 +41,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="barcode_ui"/>
         <activity
             android:name=".UI.MainScreen.MainActivity"
             android:exported="true"/>
