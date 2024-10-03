@@ -3,6 +3,7 @@ package com.ncs.mario.UI.MainScreen
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -10,21 +11,12 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.ncs.mario.R
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.navigation.NavigationView
-import com.ncs.mario.UI.MainScreen.Home.HomeFragment
-import com.ncs.mario.UI.MainScreen.Internship.InternshipFragment
-import com.ncs.mario.UI.MainScreen.QR.QrScanActivity
-import com.ncs.mario.UI.MainScreen.Score.ScoreFragment
-import com.ncs.mario.UI.MainScreen.Store.StoreFragment
-import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanIntentResult
+import com.journeyapps.barcodescanner.ScanOptions
 import com.ncs.mario.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -89,9 +81,8 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
-        binding.actionbar.scanQr.setOnClickThrottleBounceListener{
-            startActivity(Intent(this, QrScanActivity::class.java))
-        }
+
+        registerUiListener()
     }
 
 
@@ -105,4 +96,24 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
+
+    private fun registerUiListener() {
+        binding.actionbar.scanQr.setOnClickListener {
+            scannerLauncher.launch(
+                ScanOptions().setPrompt("Scan to get Mario Points")
+                    .setDesiredBarcodeFormats(ScanOptions.QR_CODE)
+            )
+        }
+    }
+    private val scannerLauncher = registerForActivityResult<ScanOptions, ScanIntentResult>(
+        ScanContract()
+    ) { result ->
+
+        if (result.contents == null) {
+            Toast.makeText(this, "Scan Cancelled", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this,result.contents, Toast.LENGTH_SHORT).show()
+        }
+    }
+
 }
