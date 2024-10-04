@@ -1,13 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/baseBlack"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".UI.MainScreen.Score.ScoreFragment">
 
-    <TextView
+    <androidx.cardview.widget.CardView
+        android:id="@+id/scoreCard"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="24dp"
+        android:layout_marginHorizontal="12dp">
 
-</FrameLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/mario_score_bg"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            android:layout_margin="0dp"
+            android:padding="0dp"/>
+
+    </androidx.cardview.widget.CardView>
+    <TextView
+        android:id="@+id/name_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        app:layout_constraintTop_toTopOf="@id/scoreCard"
+        android:text="Sankalp's Mario Score"
+        android:textSize="16sp"
+        android:textColor="@color/baseWhite"
+        app:layout_constraintStart_toStartOf="@id/scoreCard"
+        android:elevation="2dp"
+        android:fontFamily="@font/catamaran_medium"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="20dp"/>
+
+    <ImageView
+        android:id="@+id/token"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="1dp"
+        android:elevation="2dp"
+        android:src="@drawable/token"
+        app:layout_constraintStart_toEndOf="@+id/score"
+        app:layout_constraintTop_toBottomOf="@id/name_score" />
+
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="2dp"
+        android:fontFamily="@font/catamaran_bold"
+        android:text="100"
+        android:textColor="@color/baseWhite"
+        android:textSize="64dp"
+        app:layout_constraintBottom_toBottomOf="@+id/token"
+        app:layout_constraintStart_toStartOf="@+id/name_score"
+        app:layout_constraintTop_toBottomOf="@+id/name_score" />
+
+    <TextView
+        android:id="@+id/level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/catamaran_medium"
+        android:text="Level: Noob"
+        android:textColor="@color/baseWhite"
+        android:textSize="16sp"
+        android:elevation="2dp"
+        app:layout_constraintStart_toStartOf="@+id/score"
+        app:layout_constraintTop_toBottomOf="@+id/token" />
+    <TextView
+        android:id="@+id/event"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/scoreCard"
+        app:layout_constraintStart_toStartOf="@id/scoreCard"
+        app:layout_constraintEnd_toEndOf="@id/scoreCard"
+        android:text="Past attended events"
+        android:textSize="20dp"
+        android:fontFamily="@font/catamaran_extrabold"
+        android:layout_margin="12dp"
+        android:textColor="@color/baseWhite"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/pastEventRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/event"
+        tools:listitem="@layout/item_past_event"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

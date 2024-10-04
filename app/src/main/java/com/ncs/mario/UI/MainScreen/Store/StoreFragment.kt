@@ -11,7 +11,7 @@ import com.ncs.mario.databinding.FragmentStoreBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class StoreFragment : Fragment(R.layout.fragment_store) {
+class StoreFragment : Fragment() {
     private var _binding:FragmentStoreBinding?=null
     private val binding get() = _binding!!
 

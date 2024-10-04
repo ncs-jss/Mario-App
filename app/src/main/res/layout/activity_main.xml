@@ -20,25 +20,27 @@
             android:layout_height="wrap_content"
             />
 
-        <FrameLayout
-            android:id="@+id/fragmentContainer"
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/nav_host_fragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:navGraph="@navigation/home_bottom_nav"
+            app:defaultNavHost="true" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
             android:background="@color/neutral900"
             app:menu="@menu/bottom_nav_menu"
             app:itemActiveIndicatorStyle="@color/neutral900"
             app:itemTextColor="@color/white"
             app:labelVisibilityMode="labeled" />
 
-
     </LinearLayout>
+
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationView"

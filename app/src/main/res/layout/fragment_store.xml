@@ -1,16 +1,50 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.MainScreen.Store.StoreFragment">
+    android:orientation="vertical"
+    android:padding="4dp"
+    tools:context=".UI.MainScreen.Store.StoreFragment"
+    android:background="@color/baseBlack">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:background="@drawable/gray_border_box"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="8dp">
+
+        <TextView
+            android:id="@+id/tabNCS"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="NCS"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:background="@drawable/filled_gray_box"
+            android:paddingVertical="8dp" />
+
+        <TextView
+            android:id="@+id/tabNerd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="NERD"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:textColor="@color/pureblack"
+            android:paddingVertical="8dp" />
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginHorizontal="8dp"
+        android:id="@+id/recyclerViewItems"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Store Fragment"
-        android:textColor="@color/baseWhite"/>
+        android:paddingTop="16dp" />
 
-</FrameLayout>
+</LinearLayout>

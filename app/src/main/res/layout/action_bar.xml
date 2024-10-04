@@ -4,7 +4,7 @@
     android:id="@+id/actionbar"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:background="@color/primary_bg"
+    android:background="@color/baseBlack"
     android:elevation="@dimen/_5dp"
     android:orientation="horizontal">
 
