@@ -168,6 +168,10 @@ class SurveyViewModel @Inject constructor() : ViewModel() {
     }
 
     fun validateInputsOnKYCDetailsPage() {
+        Log.d("validateInputsOnKYCDetailsPage","fun called")
+        Log.d("validateInputsOnKYCDetailsPage","selfie: ${_userSelfie.value}")
+        Log.d("validateInputsOnKYCDetailsPage","collegeid:${_userCollegeID.value}")
+
         if (_userSelfie.value.isNullOrEmpty()){
             _errorMessageKYCDetails.value = "Your selfie is required"
             return

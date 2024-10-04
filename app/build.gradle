@@ -78,9 +78,17 @@ dependencies {
     implementation 'androidx.hilt:hilt-common:1.1.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.2'
 
-    implementation ("com.google.android.gms:play-services-code-scanner:16.1.0")
-    implementation ("com.google.android.gms:play-services-base:18.5.0")
-    implementation ("com.google.android.gms:play-services-tflite-java:16.2.0-beta02")
+    
+    // Jetpack Navigation
+    def nav_version = "2.7.1"
+    implementation ("androidx.navigation:navigation-fragment-ktx:$nav_version")
+    implementation ("androidx.navigation:navigation-ui-ktx:$nav_version")
+
+    // Material Components (for BottomNavigationView)
+    implementation ("com.google.android.material:material:1.9.0")
+
+    //zxing qr scanner lib
+    implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
 
 }
 

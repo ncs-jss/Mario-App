@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import com.ncs.mario.R
 import com.ncs.mario.databinding.FragmentScoreBinding
 
-class ScoreFragment : Fragment(R.layout.fragment_score) {
+class ScoreFragment : Fragment() {
 
     companion object {
         fun newInstance() = ScoreFragment()

@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
-import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickSingleTimeBounceListener
 import com.ncs.mario.Domain.Utility.GlobalUtils
 import com.ncs.mario.UI.SurveyScreen.SurveyActivity
 import com.ncs.mario.databinding.FragmentOTPVerifiedBinding

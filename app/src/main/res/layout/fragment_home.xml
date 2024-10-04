@@ -2,16 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/baseBlack">
 
-    <TextView
-        android:id="@+id/tvHome"
-        android:layout_width="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/bannerRecyclerView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Home Fragment"
-        android:textColor="@color/baseWhite"
-        android:gravity="center"
-        android:layout_weight="1"
-        android:layout_gravity="center"
-        android:textSize="24sp"/>
+        android:layout_below="@+id/recyclerView_icons"
+        android:layout_marginHorizontal="10dp"
+        tools:listitem="@layout/item_banner"/>
 </LinearLayout>
