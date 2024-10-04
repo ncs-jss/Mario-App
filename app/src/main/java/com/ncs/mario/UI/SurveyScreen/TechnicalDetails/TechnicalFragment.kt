@@ -10,7 +10,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.isNull
-import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickSingleTimeBounceListener
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.mario.Domain.Utility.GlobalUtils
 import com.ncs.mario.R
@@ -90,7 +89,7 @@ class TechnicalFragment : Fragment() {
 
 
     private fun setUpViews(){
-        binding.btnBack.setOnClickSingleTimeBounceListener {
+        binding.btnBack.setOnClickThrottleBounceListener {
             moveToPrevious()
         }
         binding.btnNext.setOnClickThrottleBounceListener {
