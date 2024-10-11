@@ -3,9 +3,10 @@
     <color name="white">#FFFFFFFF</color>
     <color name="et_bg">#221F1F</color>
     <color name="edit_text_hint">#A5A1A1</color>
-    <color name="primary">#FF0F22</color>
+    <color name="primary">#008080</color>
     <color name="yellow">#FFDF02</color>
     <color name="green">#35D558</color>
+    <color name="app_black">#0A0A0A</color>
 
 <!--  ⚠️⚠️  dont consult colors below this-->
 

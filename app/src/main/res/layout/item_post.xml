@@ -41,7 +41,7 @@
             android:text="Like"
             android:gravity="center"
             android:textColor="@color/neutral400"
-            android:fontFamily="@font/catamaran_medium"
+            android:fontFamily="@font/sf_medium"
             />
     </LinearLayout>
     <LinearLayout
@@ -63,7 +63,7 @@
             android:text="Discussion"
             android:gravity="center"
             android:textColor="@color/neutral400"
-            android:fontFamily="@font/catamaran_medium"
+            android:fontFamily="@font/sf_medium"
             />
     </LinearLayout>
     <LinearLayout
@@ -83,7 +83,7 @@
             android:text="Share"
             android:gravity="center"
             android:textColor="@color/neutral400"
-            android:fontFamily="@font/catamaran_medium"
+            android:fontFamily="@font/sf_medium"
             />
     </LinearLayout>
 </LinearLayout>

@@ -11,6 +11,7 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +24,7 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.ncs.mario.Domain.HelperClasses.PrefManager
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.isNull
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
@@ -84,6 +86,11 @@ class KYCValidationFragment : Fragment() {
             if (result){
                 surveyViewModel.resetKYCDetailsPageResult()
                 surveyViewModel.resetErrorMessageKYCDetails()
+                val userSurvey= PrefManager.getUserSurvey()!!
+                userSurvey.userImg=surveyViewModel.userSelfie.value!!
+                userSurvey.collegeIdImg=surveyViewModel.userCollegeID.value!!
+                PrefManager.setUserSurvey(userSurvey)
+                Log.d("usercheck","${PrefManager.getUserSurvey()}")
                 startActivity(Intent(requireContext(),MainActivity::class.java))
                 requireActivity().finish()
             }

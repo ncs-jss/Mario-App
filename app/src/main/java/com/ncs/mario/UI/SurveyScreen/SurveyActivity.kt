@@ -6,6 +6,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.ncs.mario.Domain.HelperClasses.PrefManager
+import com.ncs.mario.Domain.Utility.GlobalUtils
 import com.ncs.mario.R
 import com.ncs.mario.databinding.ActivitySurveyBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,11 +19,18 @@ class SurveyActivity : AppCompatActivity() {
     }
 
     private val surveyViewModel: SurveyViewModel by viewModels()
-
+    private val util: GlobalUtils.EasyElements by lazy {
+        GlobalUtils.EasyElements(this)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(binding.root)
+
+        if (PrefManager.getShowProfileCompletionAlert()){
+            PrefManager.setShowProfileCompletionAlert(false)
+            util.showSnackbar(binding.root, "Please complete your profile", 2000)
+        }
 
         binding.personalDetails.title.text="Personal Details"
         binding.technicalDetails.title.text="Technical Details"
