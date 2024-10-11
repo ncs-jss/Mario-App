@@ -12,80 +12,235 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_height="wrap_content"
-        android:text="Technical Details"
-        android:fontFamily="@font/catamaran_semibold"
-        android:textColor="@color/better_white"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:textSize="20dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/sf_semibold"
+            android:gravity="center"
+            android:text="Technical Details"
+            android:textColor="@color/better_white"
+            android:textSize="20dp" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:lines="1"
-        android:layout_marginStart="20dp"
-        android:id="@+id/interested_domains_et"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/catamaran_medium"
-        android:textSize="14dp"
-        android:textColorHint="@color/edit_text_hint"
-        android:hint="Interested Domains, eg. web, design"
-        android:inputType="textAutoComplete"
-        android:paddingStart="15dp"
-        android:textColor="@color/better_white"
-        android:background="@drawable/edit_text_bg"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/sf_light"
+            android:text="Select your interested domains (upto 3)"
+            android:textColor="@color/edit_text_hint"
+            android:textSize="12dp" />
 
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginStart="20dp"
-        android:id="@+id/known_programming_languages_et"
-        android:layout_marginEnd="20dp"
-        android:gravity="center|start"
-        android:lines="1"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/catamaran_medium"
-        android:textSize="14dp"
-        android:textColorHint="@color/edit_text_hint"
-        android:hint="Known Languages, eg. C, Python"
-        android:inputType="textAutoComplete"
-        android:paddingStart="15dp"
-        android:textColor="@color/better_white"
-        android:background="@drawable/edit_text_bg"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:weightSum="10">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginStart="20dp"
-        android:id="@+id/custom_et"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/catamaran_medium"
-        android:textSize="14dp"
-        android:textColorHint="@color/edit_text_hint"
-        android:hint="Anything else you wish to add?"
-        android:inputType="textAutoComplete"
-        android:maxLines="2"
-        android:lines="2"
-        android:paddingStart="15dp"
-        android:textColor="@color/better_white"
-        android:background="@drawable/edit_text_bg"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_weight="10"
+                android:fontFamily="@font/sf_medium"
+                android:gravity="start"
+                android:text="Programming"
+                android:textColor="@color/better_white"
+                android:textSize="18dp" />
+
+            <CheckBox
+                android:id="@+id/checkboxProgramming"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_weight="10"
+                android:fontFamily="@font/sf_medium"
+                android:gravity="start"
+                android:text="Design"
+                android:textColor="@color/better_white"
+                android:textSize="18dp" />
+
+            <CheckBox
+                android:id="@+id/checkboxDesign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_weight="10"
+                android:fontFamily="@font/sf_medium"
+                android:gravity="start"
+                android:text="Development"
+                android:textColor="@color/better_white"
+                android:textSize="18dp" />
+
+            <CheckBox
+                android:id="@+id/checkboxDevelopment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_weight="10"
+                android:fontFamily="@font/sf_medium"
+                android:gravity="start"
+                android:text="Android"
+                android:textColor="@color/better_white"
+                android:textSize="18dp" />
+
+            <CheckBox
+                android:id="@+id/checkboxAndroid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_weight="10"
+                android:fontFamily="@font/sf_medium"
+                android:gravity="start"
+                android:text="DevOps"
+                android:textColor="@color/better_white"
+                android:textSize="18dp" />
+
+            <CheckBox
+                android:id="@+id/checkboxdevops"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_weight="10"
+                android:fontFamily="@font/sf_medium"
+                android:gravity="start"
+                android:text="AI/ML"
+                android:textColor="@color/better_white"
+                android:textSize="18dp" />
+
+            <CheckBox
+                android:id="@+id/checkboxaiml"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_weight="10"
+                android:fontFamily="@font/sf_medium"
+                android:gravity="start"
+                android:text="Others"
+                android:textColor="@color/better_white"
+                android:textSize="18dp" />
+
+            <CheckBox
+                android:id="@+id/checkboxothers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/specify_et"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:lines="1"
+            android:visibility="gone"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/edit_text_bg"
+            android:fontFamily="@font/sf_medium"
+            android:hint="Please Specify"
+            android:inputType="textAutoComplete"
+            android:paddingStart="15dp"
+            android:textColor="@color/better_white"
+            android:textColorHint="@color/edit_text_hint"
+            android:textSize="14dp" />
+
+
 
     </LinearLayout>
 
     <ImageView
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginBottom="130dp"
+        android:layout_marginBottom="50dp"
         android:background="@drawable/circle_grey"
         android:padding="12dp"
         android:id="@+id/btnBack"
@@ -101,11 +256,11 @@
         android:layout_height="40dp"
         android:layout_gravity="center"
         android:background="@drawable/button_bg"
-        android:fontFamily="@font/catamaran_medium"
+        android:fontFamily="@font/sf_medium"
         android:gravity="center"
         android:text="Next"
         android:id="@+id/btnNext"
-        android:layout_marginBottom="130dp"
+        android:layout_marginBottom="50dp"
         android:textColor="@color/better_white"
         android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"

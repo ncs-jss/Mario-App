@@ -18,7 +18,7 @@
         android:layout_marginTop="10dp"
         android:layout_height="wrap_content"
         android:textColor="@color/edit_text_hint"
-        android:fontFamily="@font/catamaran_light"
+        android:fontFamily="@font/sf_light"
         android:textSize="14dp"
         android:id="@+id/title"
         android:textAlignment="center"

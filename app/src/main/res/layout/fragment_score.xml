@@ -37,7 +37,7 @@
         android:textColor="@color/baseWhite"
         app:layout_constraintStart_toStartOf="@id/scoreCard"
         android:elevation="2dp"
-        android:fontFamily="@font/catamaran_medium"
+        android:fontFamily="@font/sf_medium"
         android:layout_marginStart="28dp"
         android:layout_marginTop="20dp"/>
 
@@ -56,7 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="2dp"
-        android:fontFamily="@font/catamaran_bold"
+        android:fontFamily="@font/sfbold"
         android:text="100"
         android:textColor="@color/baseWhite"
         android:textSize="64dp"
@@ -68,7 +68,7 @@
         android:id="@+id/level"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/catamaran_medium"
+        android:fontFamily="@font/sf_medium"
         android:text="Level: Noob"
         android:textColor="@color/baseWhite"
         android:textSize="16sp"
@@ -84,7 +84,7 @@
         app:layout_constraintEnd_toEndOf="@id/scoreCard"
         android:text="Past attended events"
         android:textSize="20dp"
-        android:fontFamily="@font/catamaran_extrabold"
+        android:fontFamily="@font/sfbold"
         android:layout_margin="12dp"
         android:textColor="@color/baseWhite"/>
 

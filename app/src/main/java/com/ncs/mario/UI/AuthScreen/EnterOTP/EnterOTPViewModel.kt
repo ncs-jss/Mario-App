@@ -5,17 +5,29 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
+import com.ncs.mario.Domain.Api.AuthApiService
+import com.ncs.mario.Domain.HelperClasses.PrefManager
+import com.ncs.mario.Domain.Models.ResendOTPBody
+import com.ncs.mario.Domain.Models.ServerResponse
+import com.ncs.mario.Domain.Models.SignUpBody
+import com.ncs.mario.Domain.Models.VerifyOTP
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class EnterOTPViewModel @Inject constructor() : ViewModel() {
+class EnterOTPViewModel @Inject constructor(val authApiService: AuthApiService) : ViewModel() {
 
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> get() = _errorMessage
 
     private val _otpResult = MutableLiveData<Boolean>()
     val otpResult: LiveData<Boolean> get() = _otpResult
+
+    private val _progressState = MutableLiveData<Boolean>(false)
+    val progressState: LiveData<Boolean> get() = _progressState
 
     private val _timerText = MutableLiveData<String>()
     val timerText: LiveData<String> get() = _timerText
@@ -66,7 +78,36 @@ class EnterOTPViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun performOTPValidation(otp: String) {
-        _otpResult.value = true
+        viewModelScope.launch {
+            _progressState.postValue(true)
+            val response = authApiService.verifyOTP(VerifyOTP(user_id = PrefManager.getUserID()!!, otp = otp.toInt()))
+            if (response.isSuccessful) {
+                Log.d("signupResult","OTP Successful : ${response.body()}")
+                _otpResult.value = true
+                _progressState.postValue(false)
+            } else {
+                val errorResponse = response.errorBody()?.string()
+                val otpValidationResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
+                _errorMessage.value = otpValidationResponse.message
+                Log.d("signupResult", "OTP Failed: ${otpValidationResponse.message}")
+                _otpResult.value = false
+                _progressState.postValue(false)
+            }
+        }
+    }
+
+    fun resendOTP() {
+        viewModelScope.launch {
+            _errorMessage.value = "Sending OTP again..."
+            val response = authApiService.resendOTP(ResendOTPBody(user_id = PrefManager.getUserID()!!, action = "RESETPASSWORD"))
+            if (response.isSuccessful) {
+                Log.d("signupResult","OTP Resend Successful : ${response.body()}")
+                _errorMessage.value = "OTP sent successfully..."
+            } else {
+                Log.d("signupResult","OTP Resend failed : ${response.body()}")
+                _errorMessage.value = "Failed to resend OTP..."
+            }
+        }
     }
 
     override fun onCleared() {

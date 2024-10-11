@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_weight="1"
-                android:fontFamily="@font/catamaran_extrabold"
+                android:fontFamily="@font/sfbold"
                 android:gravity="start"
                 android:layout_gravity="bottom"
                 android:text="Mario"
