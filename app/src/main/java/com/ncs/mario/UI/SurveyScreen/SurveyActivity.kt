@@ -30,6 +30,7 @@ class SurveyActivity : AppCompatActivity() {
         if (PrefManager.getShowProfileCompletionAlert()){
             PrefManager.setShowProfileCompletionAlert(false)
             util.showSnackbar(binding.root, "Please complete your profile", 2000)
+            setInitials()
         }
 
         binding.personalDetails.title.text="Personal Details"
@@ -40,6 +41,20 @@ class SurveyActivity : AppCompatActivity() {
         surveyViewModel.currentStep.observe(this, Observer { step ->
             updateSurveyProgress(step)
         })
+    }
+
+    fun setInitials(){
+        val currentUserProfile=PrefManager.getUserProfile()!!
+        surveyViewModel.apply {
+            setName(currentUserProfile.name)
+            setAdmissionNum(currentUserProfile.admission_number)
+            setBranch(currentUserProfile.branch)
+            setYear(currentUserProfile.year.toString())
+            setLinkedIn(currentUserProfile.socials.LinkedIn)
+            setGithub(currentUserProfile.socials.GitHub)
+            setBehance(currentUserProfile.socials.Behance)
+            setSelectedDomains(currentUserProfile.domain, currentUserProfile.other_domain)
+        }
     }
 
     private fun updateSurveyProgress(step: SurveyViewModel.SurveyStep) {

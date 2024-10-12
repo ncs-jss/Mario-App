@@ -15,6 +15,7 @@ import com.ncs.mario.Domain.Models.SignUpBody
 import com.ncs.mario.Domain.Models.VerifyOTP
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -78,36 +79,86 @@ class EnterOTPViewModel @Inject constructor(val authApiService: AuthApiService) 
     }
 
     private fun performOTPValidation(otp: String) {
+//        viewModelScope.launch {
+//            _progressState.postValue(true)
+//            val response = authApiService.verifyOTP(VerifyOTP(user_id = PrefManager.getUserID()!!, otp = otp.toInt()))
+//            if (response.isSuccessful) {
+//                Log.d("signupResult","OTP Successful : ${response.body()}")
+//                _otpResult.value = true
+//                _progressState.postValue(false)
+//            } else {
+//                val errorResponse = response.errorBody()?.string()
+//                val otpValidationResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
+//                _errorMessage.value = otpValidationResponse.message
+//                Log.d("signupResult", "OTP Failed: ${otpValidationResponse.message}")
+//                _otpResult.value = false
+//                _progressState.postValue(false)
+//            }
+//        }
         viewModelScope.launch {
             _progressState.postValue(true)
-            val response = authApiService.verifyOTP(VerifyOTP(user_id = PrefManager.getUserID()!!, otp = otp.toInt()))
-            if (response.isSuccessful) {
-                Log.d("signupResult","OTP Successful : ${response.body()}")
-                _otpResult.value = true
-                _progressState.postValue(false)
-            } else {
-                val errorResponse = response.errorBody()?.string()
-                val otpValidationResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
-                _errorMessage.value = otpValidationResponse.message
-                Log.d("signupResult", "OTP Failed: ${otpValidationResponse.message}")
+            try {
+                val response = authApiService.verifyOTP(VerifyOTP(user_id = PrefManager.getUserID()!!, otp = otp.toInt()))
+
+                if (response.isSuccessful) {
+                    Log.d("signupResult", "OTP Successful : ${response.body()}")
+                    _otpResult.value = true
+                } else {
+                    val errorResponse = response.errorBody()?.string()
+                    val otpValidationResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
+                    _errorMessage.value = otpValidationResponse.message
+                    Log.d("signupResult", "OTP Failed: ${otpValidationResponse.message}")
+                    _otpResult.value = false
+                }
+            } catch (e: SocketTimeoutException) {
+                Log.e("signupResult", "Request timed out: ${e.message}")
+                _errorMessage.value = "Network timeout. Please try again."
                 _otpResult.value = false
+            } catch (e: Exception) {
+                Log.e("signupResult", "Error: ${e.message}")
+                _errorMessage.value = "Something went wrong. Please try again."
+                _otpResult.value = false
+            } finally {
                 _progressState.postValue(false)
             }
         }
+
     }
 
     fun resendOTP() {
+//        viewModelScope.launch {
+//            _errorMessage.value = "Sending OTP again..."
+//            val response = authApiService.resendOTP(ResendOTPBody(user_id = PrefManager.getUserID()!!, action = "RESETPASSWORD"))
+//            if (response.isSuccessful) {
+//                Log.d("signupResult","OTP Resend Successful : ${response.body()}")
+//                _errorMessage.value = "OTP sent successfully..."
+//            } else {
+//                Log.d("signupResult","OTP Resend failed : ${response.body()}")
+//                _errorMessage.value = "Failed to resend OTP..."
+//            }
+//        }
         viewModelScope.launch {
             _errorMessage.value = "Sending OTP again..."
-            val response = authApiService.resendOTP(ResendOTPBody(user_id = PrefManager.getUserID()!!, action = "RESETPASSWORD"))
-            if (response.isSuccessful) {
-                Log.d("signupResult","OTP Resend Successful : ${response.body()}")
-                _errorMessage.value = "OTP sent successfully..."
-            } else {
-                Log.d("signupResult","OTP Resend failed : ${response.body()}")
-                _errorMessage.value = "Failed to resend OTP..."
+            try {
+                val response = authApiService.resendOTP(ResendOTPBody(user_id = PrefManager.getUserID()!!, action = "RESETPASSWORD"))
+
+                if (response.isSuccessful) {
+                    Log.d("signupResult", "OTP Resend Successful : ${response.body()}")
+                    _errorMessage.value = "OTP sent successfully..."
+                } else {
+                    val errorResponse = response.errorBody()?.string()
+                    Log.d("signupResult", "OTP Resend failed: $errorResponse")
+                    _errorMessage.value = "Failed to resend OTP..."
+                }
+            } catch (e: SocketTimeoutException) {
+                Log.e("signupResult", "Request timed out: ${e.message}")
+                _errorMessage.value = "Network timeout. Please try again."
+            } catch (e: Exception) {
+                Log.e("signupResult", "Error: ${e.message}")
+                _errorMessage.value = "Something went wrong. Please try again."
             }
         }
+
     }
 
     override fun onCleared() {
