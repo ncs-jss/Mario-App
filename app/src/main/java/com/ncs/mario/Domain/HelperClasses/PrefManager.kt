@@ -13,5 +13,13 @@ object PrefManager {
         editor = sharedPreferences.edit()
     }
 
+    fun setMyPoints(point:Int){
+        editor.putInt("marioScore",point)
+        editor.apply()
+    }
+    fun getMyPoints():Int{
+        return sharedPreferences.getInt("marioScore",0)
+    }
+
 
 }

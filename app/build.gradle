@@ -90,5 +90,11 @@ dependencies {
     //zxing qr scanner lib
     implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
 
+    //retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.okhttp)
+    implementation (libs.adapter.rxjava2)
+    implementation (libs.logging.interceptor)
 }
 
