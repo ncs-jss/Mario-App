@@ -14,6 +14,8 @@ import com.ncs.mario.Domain.Models.ServerResponse
 import com.ncs.mario.Domain.Models.VerifyOTP
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.io.IOException
+import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -65,12 +67,23 @@ class LoginViewModel @Inject constructor(val authApiService: AuthApiService) : V
                     Log.d("signupResult", "Login Failed: ${loginResponse.message}")
                     _loginResult.value = false
                 }
+            } catch (e: SocketTimeoutException) {
+                Log.e("signupResult", "Request timed out: ${e.message}")
+                _errorMessage.value = "Network timeout. Please try again."
+                _loginResult.value = false
+            } catch (e: IOException) {
+                Log.e("signupResult", "Network error: ${e.message}")
+                _errorMessage.value = "Network error. Please check your connection."
+                _loginResult.value = false
             } catch (e: Exception) {
+                Log.e("signupResult", "Error: ${e.message}")
+                _errorMessage.value = "Something went wrong. Please try again."
                 _loginResult.value = false
             } finally {
                 _progressState.postValue(false)
             }
         }
+
 
     }
 

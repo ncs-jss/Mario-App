@@ -28,13 +28,22 @@
             android:textColor="@color/better_white"
             android:textSize="20dp" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/sfbold"
+            android:layout_marginTop="20dp"
+            android:text="Your Name"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/edit_text_hint"
+            android:textSize="12dp" />
         <EditText
             android:id="@+id/name_et"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:lines="1"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:background="@drawable/edit_text_bg"
             android:fontFamily="@font/sf_medium"
@@ -45,13 +54,21 @@
             android:textColorHint="@color/edit_text_hint"
             android:textSize="14dp" />
 
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/sfbold"
+            android:layout_marginTop="20dp"
+            android:text="Your Admission Number"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/edit_text_hint"
+            android:textSize="12dp" />
         <EditText
             android:id="@+id/admission_num_et"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:lines="1"
             android:background="@drawable/edit_text_bg"
@@ -65,11 +82,20 @@
 
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/sfbold"
+            android:layout_marginTop="20dp"
+            android:text="Your Branch"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/edit_text_hint"
+            android:textSize="12dp" />
+        <TextView
             android:id="@+id/branch_et"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:lines="1"
             android:gravity="center|start"
@@ -82,12 +108,22 @@
             android:textColorHint="@color/edit_text_hint"
             android:textSize="14dp" />
 
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/sfbold"
+            android:layout_marginTop="20dp"
+            android:text="Your Year"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/edit_text_hint"
+            android:textSize="12dp" />
         <TextView
             android:id="@+id/year_et"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:lines="1"
             android:gravity="center|start"

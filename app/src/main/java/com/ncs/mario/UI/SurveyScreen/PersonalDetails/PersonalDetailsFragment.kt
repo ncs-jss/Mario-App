@@ -77,6 +77,15 @@ class PersonalDetailsFragment : Fragment(), BottomSheet.SendText {
         super.onResume()
         surveyViewModel.setCurrentStep(SurveyViewModel.SurveyStep.PERSONAL_DETAILS)
         restoreFields()
+        if (PrefManager.getUserProfile()!!.admission_number!=""){
+            val editText=binding.admissionNumEt
+            editText.isEnabled = false
+            editText.isFocusable = false
+            editText.isFocusableInTouchMode = false
+            editText.setOnClickListener {
+                util.showSnackbar(binding.root,"Can't edit admission number now",2000)
+            }
+        }
     }
 
     private fun restoreFields(){

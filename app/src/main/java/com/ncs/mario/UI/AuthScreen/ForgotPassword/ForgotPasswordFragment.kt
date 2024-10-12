@@ -1,7 +1,6 @@
-package com.ncs.mario.UI.AuthScreen.Login
+package com.ncs.mario.UI.AuthScreen.ForgotPassword
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,36 +9,31 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.addCallback
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.ncs.mario.Domain.HelperClasses.PrefManager
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.mario.Domain.Utility.GlobalUtils
 import com.ncs.mario.R
-import com.ncs.mario.UI.MainScreen.MainActivity
-import com.ncs.mario.UI.StartScreen.StartScreen
-import com.ncs.mario.UI.SurveyScreen.SurveyActivity
-import com.ncs.mario.databinding.FragmentLoginBinding
+import com.ncs.mario.databinding.FragmentForgotPasswordBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoginFragment : Fragment() {
+class ForgotPasswordFragment : Fragment() {
 
-    lateinit var binding: FragmentLoginBinding
-    private val viewModel: LoginViewModel by viewModels()
+    lateinit var binding: FragmentForgotPasswordBinding
+    private val viewModel: ForgotPasswordViewModel by activityViewModels()
     private val util: GlobalUtils.EasyElements by lazy {
         GlobalUtils.EasyElements(requireActivity())
     }
-    private var backPressedTime: Long = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentLoginBinding.inflate(inflater, container, false)
+        binding = FragmentForgotPasswordBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -50,49 +44,39 @@ class LoginFragment : Fragment() {
     }
 
     private fun setUpViews(){
-
-        binding.forgotPassword.setOnClickThrottleBounceListener {
-            findNavController().navigate(R.id.action_fragment_login_to_fragment_forgot_password)
-        }
-
-        binding.btntosignUp.setOnClickThrottleBounceListener {
-            findNavController().navigate(R.id.action_fragment_login_to_fragment_sign_up)
+        binding.btnToLogin.setOnClickThrottleBounceListener {
+            findNavController().navigate(R.id.action_fragment_forgot_password_to_fragment_login)
         }
         binding.emailEt.addTextChangedListener {
             viewModel.email.value = it.toString()
         }
-        binding.passwordEt.addTextChangedListener {
-            viewModel.password.value = it.toString()
-        }
         binding.btnContinue.setOnClickThrottleBounceListener {
             closeKeyboard()
-            viewModel.login()
+            viewModel.validateEmail()
         }
     }
 
     private fun observeData(){
 
-        viewModel.loginResult.observe(viewLifecycleOwner, Observer {
+        viewModel.forgotPassFragmentResult.observe(viewLifecycleOwner, Observer {
             if (it){
-                PrefManager.setLoginStatus(true)
-                startActivity(Intent(requireContext(), StartScreen::class.java))
-                requireActivity().finish()
+                findNavController().navigate(R.id.action_fragment_forgot_password_to_fragment_o_t_p)
             }
         })
 
-        viewModel.progressState.observe(viewLifecycleOwner, Observer { isLoading ->
+        viewModel.progressStateForgotPassFragment.observe(viewLifecycleOwner, Observer { isLoading ->
             if (isLoading) {
                 binding.progressBar.visible()
                 binding.btnContinue.text="Hold on..."
                 binding.btnContinue.isEnabled=false
             } else {
                 binding.progressBar.gone()
-                binding.btnContinue.text="Login"
+                binding.btnContinue.text="Continue"
                 binding.btnContinue.isEnabled=true
             }
         })
 
-        viewModel.errorMessage.observe(viewLifecycleOwner, Observer { message ->
+        viewModel.errorMessageForgotPassFragment.observe(viewLifecycleOwner, Observer { message ->
             util.showSnackbar(binding.root,message!!,2000)
         })
     }
@@ -109,18 +93,10 @@ class LoginFragment : Fragment() {
         onBackPress()
     }
 
-
-
     private fun onBackPress() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            if (backPressedTime + 2000 > System.currentTimeMillis()) {
-                requireActivity().finish()
-            } else {
-                util.showSnackbar(binding.root,"Press back again to exit",2000)
-            }
-            backPressedTime = System.currentTimeMillis()
+            findNavController().navigate(R.id.action_fragment_forgot_password_to_fragment_login)
         }
     }
-
 
 }
