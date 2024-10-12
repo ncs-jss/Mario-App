@@ -13,30 +13,37 @@
         android:layout_height="wrap_content"
         android:src="@drawable/header_logo"/>
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_marginTop="30dp"
-        android:layout_height="210dp"
-        android:src="@drawable/banner"/>
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Log In"
-        android:fontFamily="@font/catamaran_bold"
+        android:fontFamily="@font/sfbold"
         android:textColor="@color/better_white"
         android:layout_marginTop="40dp"
         android:gravity="center"
         android:textSize="30dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Type your Email"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/sf_medium"
+        android:textSize="12dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        android:textColor="@color/better_white"/>
     
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="56dp"
         android:layout_marginStart="20dp"
         android:id="@+id/email_et"
         android:layout_marginEnd="20dp"
-        android:layout_marginTop="40dp"
-        android:fontFamily="@font/catamaran_medium"
+        android:drawableStart="@drawable/profile"
+        android:drawablePadding="10dp"
+        android:drawableTint="@color/primary"
+        android:fontFamily="@font/sf_medium"
         android:textSize="14dp"
         android:textColorHint="@color/edit_text_hint"
         android:hint="Email"
@@ -45,15 +52,26 @@
         android:textColor="@color/better_white"
         android:background="@drawable/edit_text_bg"/>
 
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Type your Password"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/sf_medium"
+        android:textSize="12dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/better_white"/>
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="56dp"
+        android:drawableStart="@drawable/password"
+        android:drawablePadding="10dp"
+        android:drawableTint="@color/primary"
         android:layout_marginStart="20dp"
         android:id="@+id/password_et"
         android:layout_marginEnd="20dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/catamaran_medium"
+        android:fontFamily="@font/sf_medium"
         android:textSize="14dp"
         android:inputType="textPassword"
         android:textColorHint="@color/edit_text_hint"
@@ -65,20 +83,38 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Forgot Password"
+        android:fontFamily="@font/sf_light"
+        android:textSize="14dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/forgotPassword"
+        android:textColor="@color/better_white"/>
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/progress_bar"
+        android:indeterminateTint="@color/primary"
+        android:layout_marginTop="40dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_gravity="center"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:paddingStart="30dp"
         android:paddingEnd="30dp"
         android:text="Continue"
         android:id="@+id/btnContinue"
-        android:fontFamily="@font/catamaran_medium"
+        android:fontFamily="@font/sf_medium"
         android:textColor="@color/better_white"
         android:background="@drawable/button_bg"
         android:layout_marginTop="40dp"
         android:gravity="center"
-        android:textSize="20dp"/>
-
+        android:textSize="18dp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -91,7 +127,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="don't have an account? "
-            android:fontFamily="@font/catamaran_light"
+            android:fontFamily="@font/sf_light"
             android:textColor="@color/better_white"
             android:gravity="center"
             android:textSize="14dp"/>
@@ -106,7 +142,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="SIGN UP"
-                android:fontFamily="@font/catamaran_light"
+                android:fontFamily="@font/sf_light"
                 android:textColor="@color/better_white"
                 android:gravity="center"
                 android:textSize="14dp"/>

@@ -24,8 +24,7 @@ class SurveyViewModel @Inject constructor() : ViewModel() {
     private val _errorMessagePersonalDetails = MutableLiveData<String?>()
     val errorMessagePersonalDetails: LiveData<String?> get() = _errorMessagePersonalDetails
 
-    private val _errorMessageTechncialDetails = MutableLiveData<String?>()
-    val errorMessageTechncialDetails: LiveData<String?> get() = _errorMessageTechncialDetails
+    val errorMessageTechncialDetails = MutableLiveData<String?>()
 
     private val _errorMessageSocialDetails = MutableLiveData<String?>()
     val errorMessageSocialDetails: LiveData<String?> get() = _errorMessageSocialDetails
@@ -43,12 +42,12 @@ class SurveyViewModel @Inject constructor() : ViewModel() {
 
     val name = MutableLiveData<String>(null)
     val admission_num = MutableLiveData<String>(null)
-    val phone_num = MutableLiveData<String>(null)
-    val bio = MutableLiveData<String>(null)
+    val branch = MutableLiveData<String>(null)
+    val year = MutableLiveData<String>(null)
 
-    val interestedDomains = MutableLiveData<String>(null)
-    val knownLanguages = MutableLiveData<String>(null)
-    val userInput = MutableLiveData<String>(null)
+    val selectedDomains = MutableLiveData<List<String>>(emptyList())
+    private var othersText: String? = null
+
 
     val linkedIn = MutableLiveData<String>(null)
     val github = MutableLiveData<String>(null)
@@ -59,8 +58,8 @@ class SurveyViewModel @Inject constructor() : ViewModel() {
     private val _personalDetailsPageResult = MutableLiveData<Boolean>()
     val personalDetailsPageResult: LiveData<Boolean> get() = _personalDetailsPageResult
 
-    private val _technicalDetailsPageResult = MutableLiveData<Boolean>()
-    val technicalDetailsPageResult: LiveData<Boolean> get() = _technicalDetailsPageResult
+    val technicalDetailsPageResult = MutableLiveData<Boolean>()
+
 
     private val _socialDetailsPageResult = MutableLiveData<Boolean>()
     val socialDetailsPageResult: LiveData<Boolean> get() = _socialDetailsPageResult
@@ -91,10 +90,11 @@ class SurveyViewModel @Inject constructor() : ViewModel() {
     }
 
     fun resetErrorMessageTechnicalDetails() {
-        _errorMessageTechncialDetails.value = null
+        errorMessageTechncialDetails.value = null
     }
+
     fun resetTechnicalDetailsPageResult() {
-        _technicalDetailsPageResult.value = false
+        technicalDetailsPageResult.value = false
     }
 
     fun resetErrorMessageSocialDetails() {
@@ -115,14 +115,20 @@ class SurveyViewModel @Inject constructor() : ViewModel() {
         _linksCount.value = count
     }
 
+    fun setOthersText(text: String?) {
+        othersText = text
+    }
+
+    fun getOthersText(): String? {
+        return othersText
+    }
 
     fun validateInputsOnPersonalDetailsPage() {
         Log.d("SurveyViewModel", "validateInputsOnPersonalDetailsPage called")
         val nameValue=name.value?.trim()
         val admission_numValue=admission_num.value?.trim()
-        val phone_numValue=phone_num.value?.trim()
-        Log.d("SurveyViewModel", "$nameValue $admission_numValue $phone_numValue")
-
+        val branch_value=branch.value?.trim()
+        val year_value=year.value?.trim()
         if (nameValue.isNullOrEmpty()) {
             _errorMessagePersonalDetails.value = "Name can't be empty"
             return
@@ -133,34 +139,46 @@ class SurveyViewModel @Inject constructor() : ViewModel() {
             return
         }
 
-        if (phone_numValue.isNullOrEmpty()) {
-            _errorMessagePersonalDetails.value = "Phone Number can't be empty"
+        if (branch_value.isNullOrEmpty() || branch_value=="Branch"){
+            _errorMessagePersonalDetails.value = "Select your branch"
             return
         }
 
-        if (phone_numValue.length!=10) {
-            _errorMessagePersonalDetails.value = "Enter a valid Phone Number"
+        if (year_value.isNullOrEmpty() || year_value=="Year"){
+            _errorMessagePersonalDetails.value = "Select your year"
             return
         }
-
 
         _personalDetailsPageResult.value = true
 
     }
 
+    fun addDomain(domain: String) {
+        val currentList = selectedDomains.value.orEmpty().toMutableList()
+        if (currentList.size < 3) {
+            currentList.add(domain)
+            selectedDomains.value = currentList
+        }
+    }
+
+    fun removeDomain(domain: String) {
+        val currentList = selectedDomains.value.orEmpty().toMutableList()
+        currentList.remove(domain)
+        selectedDomains.value = currentList
+    }
+
     fun validateInputsOnTechnicalDetailsPage() {
-
-        if (interestedDomains.value!!.trim().isNullOrEmpty()) {
-            _errorMessageTechncialDetails.value = "Fill atleast one interested domain"
-            return
-        }
-        if (knownLanguages.value!!.trim().isNullOrEmpty()) {
-            _errorMessageTechncialDetails.value = "Fill atleast one known language"
+        if (selectedDomains.value.isNullOrEmpty()) {
+            errorMessageTechncialDetails.value = "Fill at least one interested domain"
             return
         }
 
-        _technicalDetailsPageResult.value = true
+        if (selectedDomains.value!!.contains("Others") && getOthersText().isNullOrBlank()) {
+            errorMessageTechncialDetails.value = "Please specify correctly"
+            return
+        }
 
+        technicalDetailsPageResult.value = true
     }
 
     fun validateInputsOnSocialDetailsPage() {

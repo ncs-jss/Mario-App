@@ -378,6 +378,33 @@ object ExtensionsUtil {
         this.visible()
     }
 
+    fun View.slideDownAndVisible(
+        duration: Long = 300L,
+        onEndAction: (() -> Unit)? = null
+    ): ViewPropertyAnimator {
+        return animate()
+            .translationYBy(height.toFloat())
+            .setDuration(duration)
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .withEndAction {
+                visibility = View.VISIBLE
+                onEndAction?.invoke()
+            }
+    }
+
+    fun View.slideUpAndGone(
+        duration: Long = 300L,
+        onEndAction: (() -> Unit)? = null
+    ): ViewPropertyAnimator {
+        visibility = View.GONE
+        return animate()
+            .translationYBy(-height.toFloat())
+            .setDuration(duration)
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .withEndAction {
+                onEndAction?.invoke()
+            }
+    }
 
     fun View.slideDownAndGone(
         duration: Long = 300L,

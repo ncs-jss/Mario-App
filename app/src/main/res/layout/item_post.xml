@@ -42,11 +42,33 @@
             android:text="Like"
             android:gravity="center"
             android:textColor="@color/neutral400"
-            android:fontFamily="@font/catamaran_medium"
+            android:fontFamily="@font/sf_medium"
             />
     </LinearLayout>
     <LinearLayout
         android:paddingStart="12dp"
+        android:layout_marginHorizontal="8dp"
+        android:id="@+id/discuss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/discuss"
+            android:layout_gravity="center"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Discussion"
+            android:gravity="center"
+            android:textColor="@color/neutral400"
+            android:fontFamily="@font/sf_medium"
+            />
+    </LinearLayout>
+    <LinearLayout
         android:id="@+id/share"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -64,7 +86,7 @@
             android:text="Share"
             android:gravity="center"
             android:textColor="@color/neutral400"
-            android:fontFamily="@font/catamaran_medium"
+            android:fontFamily="@font/sf_medium"
             />
     </LinearLayout>
 </LinearLayout>

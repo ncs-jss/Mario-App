@@ -1,6 +1,7 @@
 package com.ncs.mario.UI.SurveyScreen.PersonalDetails
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,16 +11,18 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.ncs.mario.Domain.HelperClasses.PrefManager
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.isNull
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.mario.Domain.Utility.GlobalUtils
 import com.ncs.mario.R
+import com.ncs.mario.UI.SurveyScreen.BottomSheet
 import com.ncs.mario.UI.SurveyScreen.SurveyViewModel
 import com.ncs.mario.databinding.FragmentPersonalDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PersonalDetailsFragment : Fragment() {
+class PersonalDetailsFragment : Fragment(), BottomSheet.SendText {
 
     lateinit var binding: FragmentPersonalDetailsBinding
     private val surveyViewModel: SurveyViewModel by activityViewModels()
@@ -56,6 +59,13 @@ class PersonalDetailsFragment : Fragment() {
         })
         surveyViewModel.personalDetailsPageResult.observe(viewLifecycleOwner, Observer { result ->
             if (result){
+                val userSurvey= PrefManager.getUserSurvey()!!
+                userSurvey.name=surveyViewModel.name.value!!
+                userSurvey.admissionNum=surveyViewModel.admission_num.value!!
+                userSurvey.branch=surveyViewModel.branch.value!!
+                userSurvey.year=surveyViewModel.year.value!!
+                PrefManager.setUserSurvey(userSurvey)
+                Log.d("usercheck","${PrefManager.getUserSurvey()}")
                 findNavController().navigate(R.id.action_fragment_personal_details_to_fragment_technical)
                 surveyViewModel.resetPersonalDetailsPageResult()
                 surveyViewModel.resetErrorMessagePersonalDetails()
@@ -80,25 +90,45 @@ class PersonalDetailsFragment : Fragment() {
                 binding.admissionNumEt.setText(it)
             }
         })
-        surveyViewModel.phone_num.observe(viewLifecycleOwner, Observer {
+        surveyViewModel.branch.observe(viewLifecycleOwner, Observer {
             if (!it.isNull) {
-                binding.phoneNumEt.setText(it)
+                binding.branchEt.text = it
             }
         })
-        surveyViewModel.bio.observe(viewLifecycleOwner, Observer {
+        surveyViewModel.year.observe(viewLifecycleOwner, Observer {
             if (!it.isNull) {
-                binding.bioEt.setText(it)
+                binding.yearEt.text = it
             }
         })
     }
 
 
     private fun setUpViews(){
+        binding.branchEt.setOnClickThrottleBounceListener {
+            val list= listOf("CSE","CSE-AIML","CSDS","ECE","EEE","EE","IT","ME","CE")
+            var index:Int=-1
+            if (binding.branchEt.text!="Branch"){
+                index=list.indexOf(binding.branchEt.text.toString())
+            }
+            val priorityBottomSheet =
+                BottomSheet(list, "Select Branch", this,index)
+            priorityBottomSheet.show(requireFragmentManager(), "Select Branch")
+        }
+        binding.yearEt.setOnClickThrottleBounceListener {
+            val list= listOf("I Year","II Year","III Year","IV Year")
+            var index:Int=-1
+            if (binding.yearEt.text!="Year"){
+                index=list.indexOf(binding.yearEt.text.toString())
+            }
+            val priorityBottomSheet =
+                BottomSheet(list, "Select Year", this,index)
+            priorityBottomSheet.show(requireFragmentManager(), "Select Year")
+        }
         binding.btnNext.setOnClickThrottleBounceListener {
             surveyViewModel.name.value = binding.nameEt.text.toString()
             surveyViewModel.admission_num.value = binding.admissionNumEt.text.toString()
-            surveyViewModel.phone_num.value = binding.phoneNumEt.text.toString()
-            surveyViewModel.bio.value = binding.bioEt.text.toString()
+            surveyViewModel.branch.value = binding.branchEt.text.toString()
+            surveyViewModel.year.value = binding.yearEt.text.toString()
             surveyViewModel.validateInputsOnPersonalDetailsPage()
         }
     }
@@ -111,6 +141,15 @@ class PersonalDetailsFragment : Fragment() {
                 util.showSnackbar(binding.root,"Press back again to exit",2000)
             }
             backPressedTime = System.currentTimeMillis()
+        }
+    }
+
+    override fun stringtext(text: String, type: String,currentSelected: Int) {
+        if (type=="Select Branch"){
+            binding.branchEt.text = text
+        }
+        if (type=="Select Year"){
+            binding.yearEt.text = text
         }
     }
 

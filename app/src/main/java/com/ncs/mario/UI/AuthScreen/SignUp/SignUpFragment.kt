@@ -11,12 +11,16 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.ncs.mario.Domain.Api.AuthApiService
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.mario.Domain.Utility.GlobalUtils
 import com.ncs.mario.R
 import com.ncs.mario.UI.AuthScreen.Login.LoginViewModel
 import com.ncs.mario.databinding.FragmentSignUpBinding
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SignUpFragment : Fragment() {
@@ -49,6 +53,9 @@ class SignUpFragment : Fragment() {
         binding.emailEt.addTextChangedListener {
             viewModel.email.value = it.toString()
         }
+        binding.phoneNumEt.addTextChangedListener {
+            viewModel.phone_num.value = it.toString()
+        }
         binding.passwordEt.addTextChangedListener {
             viewModel.password.value = it.toString()
         }
@@ -70,6 +77,18 @@ class SignUpFragment : Fragment() {
 
     private fun observeViewModel() {
 
+        viewModel.progressState.observe(viewLifecycleOwner, Observer { isLoading ->
+            if (isLoading) {
+                binding.progressBar.visible()
+                binding.btnContinue.text="Hold on, signing up..."
+                binding.btnContinue.isEnabled=false
+            } else {
+                binding.progressBar.gone()
+                binding.btnContinue.text="Continue"
+                binding.btnContinue.isEnabled=true
+            }
+        })
+
         viewModel.errorMessage.observe(viewLifecycleOwner, Observer { message ->
             util.showSnackbar(binding.root,message!!,2000)
         })
@@ -77,8 +96,6 @@ class SignUpFragment : Fragment() {
         viewModel.signupResult.observe(viewLifecycleOwner, Observer { isSuccess ->
             if (isSuccess) {
                 findNavController().navigate(R.id.action_fragment_sign_up_to_fragment_enter_o_t_p)
-            } else {
-                util.showSnackbar(binding.root, "Sign up failed", 2000)
             }
         })
     }
