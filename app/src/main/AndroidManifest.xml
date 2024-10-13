@@ -25,9 +25,6 @@
             android:name=".UI.WaitScreen.WaitActivity"
             android:exported="false" />
         <activity
-            android:name=".UI.MainScreen.QR.QrScanActivity"
-            android:exported="false" />
-        <activity
             android:name=".UI.SurveyScreen.SurveyActivity"
             android:exported="true"
             android:screenOrientation="portrait">

@@ -1,6 +1,6 @@
 package com.ncs.mario.Domain.Repository
 
-import com.ncs.mario.Domain.API.QRAPI
+import com.ncs.mario.Domain.Api.QRAPI
 import com.ncs.mario.Domain.Interfaces.QrRepository
 import com.ncs.mario.Domain.Models.QR.QrScannedResponse
 import com.ncs.mario.Domain.Models.ServerResult

@@ -1,6 +1,6 @@
 package com.ncs.mario.Domain.Repository
 
-import com.ncs.mario.Domain.API.EventsApi
+import com.ncs.mario.Domain.Api.EventsApi
 import com.ncs.mario.Domain.Interfaces.EventRepository
 import com.ncs.mario.Domain.Models.EVENTS.GetEvents
 import com.ncs.mario.Domain.Models.ServerResult

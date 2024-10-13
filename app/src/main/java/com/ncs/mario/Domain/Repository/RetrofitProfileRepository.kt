@@ -1,6 +1,6 @@
 package com.ncs.mario.Domain.Repository
 
-import com.ncs.mario.Domain.API.ProfileApi
+import com.ncs.mario.Domain.Api.ProfileApi
 import com.ncs.mario.Domain.Interfaces.ProfileRepository
 import com.ncs.mario.Domain.Models.Profile.getMyProfile
 import com.ncs.mario.Domain.Models.ServerResult

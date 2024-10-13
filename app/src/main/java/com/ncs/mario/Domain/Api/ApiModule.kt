@@ -1,5 +1,6 @@
-package com.ncs.mario.Domain.API
+package com.ncs.mario.Domain.Api
 
+import com.ncs.mario.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +19,7 @@ class ApiModule {
     @Provides
     fun provideRetrofitBuilder(): Retrofit.Builder {
         return Retrofit.Builder()
-            .baseUrl("https://jss-collab.onrender.com/api/")
+            .baseUrl(BuildConfig.API_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
     }
     @Singleton
