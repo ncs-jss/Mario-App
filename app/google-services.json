@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "769461356382",
+    "project_id": "ncs-mario",
+    "storage_bucket": "ncs-mario.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:769461356382:android:831f8da584f6738d6ff1cf",
+        "android_client_info": {
+          "package_name": "com.ncs.mario"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3JXgWj9mw3EFBDr7fhT3A9pkbI8Fui2g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

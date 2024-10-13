@@ -14,6 +14,7 @@ import com.ncs.mario.Domain.Models.SignUpBody
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -72,24 +73,54 @@ class SignUpViewModel @Inject constructor(val authApiService: AuthApiService) : 
     }
 
     private fun performSignup(email: String, phone:String,password: String) {
+//        viewModelScope.launch {
+//            _progressState.postValue(true)
+//            val response = authApiService.signUp(SignUpBody(email,phone,password))
+//            if (response.isSuccessful) {
+//                Log.d("signupResult","Signup Successful : ${response.body()}")
+//                _signupResult.value = true
+//                _progressState.postValue(false)
+//                response.body()?.get("user_id")?.let { PrefManager.setUserID(it.asString) }
+//                PrefManager.setUserSignUpEmail(email)
+//            } else {
+//                val errorResponse = response.errorBody()?.string()
+//                val signupresponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
+//                _errorMessage.value = signupresponse.message
+//                Log.d("signupResult", "Signup Failed: ${signupresponse.message}")
+//                _signupResult.value = false
+//                _progressState.postValue(false)
+//            }
+//        }
         viewModelScope.launch {
             _progressState.postValue(true)
-            val response = authApiService.signUp(SignUpBody(email,phone,password))
-            if (response.isSuccessful) {
-                Log.d("signupResult","Signup Successful : ${response.body()}")
-                _signupResult.value = true
-                _progressState.postValue(false)
-                response.body()?.get("user_id")?.let { PrefManager.setUserID(it.asString) }
-                PrefManager.setUserSignUpEmail(email)
-            } else {
-                val errorResponse = response.errorBody()?.string()
-                val signupresponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
-                _errorMessage.value = signupresponse.message
-                Log.d("signupResult", "Signup Failed: ${signupresponse.message}")
+            try {
+                val response = authApiService.signUp(SignUpBody(email, phone, password))
+
+                if (response.isSuccessful) {
+                    Log.d("signupResult", "Signup Successful : ${response.body()}")
+                    _signupResult.value = true
+                    response.body()?.get("user_id")?.let { PrefManager.setUserID(it.asString) }
+                    PrefManager.setUserSignUpEmail(email)
+                } else {
+                    val errorResponse = response.errorBody()?.string()
+                    val signupResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
+                    _errorMessage.value = signupResponse.message
+                    Log.d("signupResult", "Signup Failed: ${signupResponse.message}")
+                    _signupResult.value = false
+                }
+            } catch (e: SocketTimeoutException) {
+                Log.e("signupResult", "Request timed out: ${e.message}")
+                _errorMessage.value = "Network timeout. Please try again."
                 _signupResult.value = false
+            } catch (e: Exception) {
+                Log.e("signupResult", "Error: ${e.message}")
+                _errorMessage.value = "Something went wrong. Please try again."
+                _signupResult.value = false
+            } finally {
                 _progressState.postValue(false)
             }
         }
+
     }
 
 

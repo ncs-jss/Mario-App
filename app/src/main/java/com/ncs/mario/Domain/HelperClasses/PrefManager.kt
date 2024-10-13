@@ -3,6 +3,7 @@ package com.ncs.mario.Domain.HelperClasses
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import com.ncs.mario.Domain.Models.Profile
 import com.ncs.mario.Domain.Models.UserSurvey
 
 object PrefManager {
@@ -81,6 +82,27 @@ object PrefManager {
         return if (json != null) gson.fromJson(json, UserSurvey::class.java) else UserSurvey()
     }
 
+    fun setUserProfile(profile: Profile) {
+        val json = gson.toJson(profile)
+        editor.putString("profile", json)
+        editor.apply()
+    }
+
+    fun getUserProfile(): Profile? {
+        val json = sharedPreferences.getString("profile", null)
+        return if (json != null) gson.fromJson(json, Profile::class.java) else Profile()
+    }
+
+
+    fun setFCMToken(fcmtoken: String){
+        editor.putString("fcmtoken", fcmtoken)
+        editor.apply()
+    }
+
+    fun getFCMToken(): String? {
+        return sharedPreferences.getString("fcmtoken","")
+    }
+
     fun setToken(token: String){
         editor.putString("token", token)
         editor.apply()
@@ -90,6 +112,12 @@ object PrefManager {
         return sharedPreferences.getString("token","")
     }
 
+    fun clearPrefs(){
+        with(sharedPreferences.edit()) {
+            clear()
+            apply()
+        }
+    }
     fun setMyPoints(point:Int){
         editor.putInt("marioScore",point)
         editor.apply()
