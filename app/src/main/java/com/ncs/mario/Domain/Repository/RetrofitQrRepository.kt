@@ -30,7 +30,9 @@ class RetrofitQrRepository@Inject constructor(private val qrAPI: QRAPI): QrRepos
     ) {
         serverResult(ServerResult.Progress)
         try {
-            val response = qrAPI.validateScannedQR(couponCode)
+            val response = qrAPI.validateScannedQR(
+                couponCode = couponCode
+            )
             if(response.isSuccessful){
                 ServerResult.Success(response.body()!!)
             }

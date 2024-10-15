@@ -8,8 +8,7 @@ import com.ncs.mario.Domain.Interfaces.EventRepository
 import com.ncs.mario.Domain.Interfaces.ProfileRepository
 import com.ncs.mario.Domain.Interfaces.QrRepository
 import com.ncs.mario.Domain.Models.EVENTS.Event
-import com.ncs.mario.Domain.Models.Profile.Profile
-import com.ncs.mario.Domain.Models.Profile.getMyProfile
+import com.ncs.mario.Domain.Models.ProfileData.Profile
 import com.ncs.mario.Domain.Models.ServerResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

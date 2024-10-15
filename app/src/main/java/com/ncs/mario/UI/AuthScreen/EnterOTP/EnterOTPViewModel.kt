@@ -103,6 +103,7 @@ class EnterOTPViewModel @Inject constructor(val authApiService: AuthApiService) 
                 if (response.isSuccessful) {
                     Log.d("signupResult", "OTP Successful : ${response.body()}")
                     _otpResult.value = true
+                    PrefManager.setToken(response.body()!!.get("token").asString)
                 } else {
                     val errorResponse = response.errorBody()?.string()
                     val otpValidationResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)

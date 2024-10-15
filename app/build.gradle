@@ -52,6 +52,12 @@ android {
 
             //Profile Endpoint
             buildConfigField("String", "PROFILE_ENDPOINT", "\"${getProps("PROFILE_ENDPOINT")}\"")
+
+            //Event Endpoint
+            buildConfigField("String","EVENT_ENDPOINT","\"${getProps("EVENT_ENDPOINT")}\"")
+
+            //QR EndPoint
+            buildConfigField("String","QR_ENDPOINT","\"${getProps("QR_ENDPOINT")}\"")
         }
 
         release {
@@ -102,20 +108,20 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
     //ViewModel
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.2'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.6'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6'
 
     //Dagger Hilt
-    implementation 'com.google.dagger:hilt-android:2.48.1'
-    kapt "com.google.dagger:hilt-android-compiler:2.48.1"
-    implementation 'androidx.hilt:hilt-common:1.1.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.2'
+    implementation 'com.google.dagger:hilt-android:2.49'
+    kapt "com.google.dagger:hilt-android-compiler:2.49"
+    implementation 'androidx.hilt:hilt-common:1.2.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.6'
 
     
     // Jetpack Navigation
     def nav_version = "2.7.1"
-    implementation ("androidx.navigation:navigation-fragment-ktx:$nav_version")
-    implementation ("androidx.navigation:navigation-ui-ktx:$nav_version")
+    implementation (libs.androidx.navigation.fragment.ktx)
+    implementation (libs.androidx.navigation.ui.ktx)
 
     // Material Components (for BottomNavigationView)
     implementation ("com.google.android.material:material:1.9.0")

@@ -1,4 +1,4 @@
-package com.ncs.mario.Domain.Models.Profile
+package com.ncs.mario.Domain.Models.ProfileData
 
 data class getMyProfile(
     val success: Boolean,
