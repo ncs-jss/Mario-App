@@ -35,9 +35,17 @@
             android:layout_height="wrap_content"
             android:background="@color/neutral900"
             app:menu="@menu/bottom_nav_menu"
-            app:itemActiveIndicatorStyle="@color/neutral900"
-            app:itemTextColor="@color/white"
-            app:labelVisibilityMode="labeled" />
+            android:elevation="8dp"
+            app:labelVisibilityMode="labeled"
+            app:activeIndicatorLabelPadding="10dp"
+            app:itemIconSize="25sp"
+            android:padding="2dp"
+            app:itemPaddingBottom="5dp"
+            style="@style/Widget.BottomNavigationView"
+            app:itemActiveIndicatorStyle="@color/dim_primary"
+            app:itemIconTint="@drawable/bnv_tab_item_foreground"
+            app:itemTextColor="@drawable/bnv_tab_item_foreground"
+            app:itemRippleColor="@color/dim_primary" />
 
     </LinearLayout>
 

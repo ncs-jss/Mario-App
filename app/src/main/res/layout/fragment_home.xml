@@ -5,25 +5,151 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@color/baseBlack">
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_height="match_parent">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/bannerRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        tools:listitem="@layout/item_banner"/>
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginHorizontal="10dp"
-        android:id="@+id/recyclerView"/>
-</LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/bannerRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="10"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sf_semibold"
+                    android:textColor="@color/account"
+                    android:text="Latest events"
+                    android:textSize="14dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sf_light"
+                        android:textColor="@color/account"
+                        android:text="View All"
+                        android:textSize="14dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_weight="10"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-13dp"
+                        android:fontFamily="@font/sf_light"
+                        android:textColor="@color/account"
+                        android:text="............."
+                        android:textSize="14dp"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/EventsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="10"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/sf_semibold"
+                    android:textColor="@color/account"
+                    android:text="Straight from NCS"
+                    android:textSize="14dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sf_light"
+                        android:textColor="@color/account"
+                        android:text="View All"
+                        android:textSize="14dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_weight="10"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-13dp"
+                        android:fontFamily="@font/sf_light"
+                        android:textColor="@color/account"
+                        android:text="............."
+                        android:textSize="14dp"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/recyclerView"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sfbold"
+                android:textColor="@color/account"
+                android:text="Live it\nup!"
+                android:textSize="80dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sfbold"
+                android:layout_marginBottom="50dp"
+                android:layout_marginTop="-20dp"
+                android:textColor="@color/account"
+                android:text="Made with ❤️ by NCS"
+                android:textSize="20dp"/>
+
+        </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
+
 </LinearLayout>
