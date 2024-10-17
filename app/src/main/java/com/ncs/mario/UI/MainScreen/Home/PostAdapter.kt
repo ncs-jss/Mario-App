@@ -134,7 +134,7 @@ class PostAdapter(private val items: List<ListItem>) : RecyclerView.Adapter<Recy
         fun bind(post: ListItem.Post) {
             Glide.with(binding.root.context).load(post.logo).placeholder(R.drawable.placeholder_image).into(binding.postImage)
             binding.like.setOnClickListener {
-                binding.likeImage.setImageResource(R.drawable.clicked_heart)
+                binding.likeImage.setImageResource(R.drawable.baseline_favorite_24)
             }
         }
     }

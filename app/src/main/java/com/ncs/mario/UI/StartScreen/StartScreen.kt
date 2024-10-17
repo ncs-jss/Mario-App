@@ -26,8 +26,8 @@ class StartScreen : AppCompatActivity() {
     private val viewModel: StartScreenViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(binding.root)
+        enableEdgeToEdge()
         if (PrefManager.getToken()==""){
             startActivity(Intent(this, AuthActivity::class.java))
             finish()

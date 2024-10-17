@@ -7,20 +7,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.ncs.mario.Domain.Models.EVENTS.Event
 import com.ncs.mario.Domain.Models.EVENTS.PollItem
 import com.ncs.mario.R
 import com.ncs.mario.databinding.FragmentHomeBinding
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), EventsAdapter.Callback {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private var currentPosition = Int.MAX_VALUE / 2
     private val delayMillis: Long = 2000
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var adapter: PostAdapter
+    lateinit var eventsAdapter: EventsAdapter
 
     private lateinit var bannerAdapter: BannerAdapter
     override fun onCreateView(
@@ -72,6 +75,16 @@ class HomeFragment : Fragment() {
         adapter = PostAdapter(samplePosts)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
+
+        setEventsRecyclerView(mutableListOf(1,2,3,4))
+    }
+
+    private fun setEventsRecyclerView(events:MutableList<Int>){
+        val recyclerView = binding.EventsRecyclerView
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager = layoutManager
+        eventsAdapter= EventsAdapter(events, this)
+        recyclerView.adapter = eventsAdapter
     }
 
     private fun setupBannerRecyclerView() {
@@ -120,6 +133,9 @@ class HomeFragment : Fragment() {
         startAutoScroll()
     }
 
+    override fun onClick(event: Event) {
+
+    }
 
 
 }
