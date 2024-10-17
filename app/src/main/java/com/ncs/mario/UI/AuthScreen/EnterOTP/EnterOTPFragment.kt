@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.ncs.mario.Domain.HelperClasses.PrefManager
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.visible
@@ -54,6 +55,22 @@ class EnterOTPFragment : Fragment() {
     private fun setUpViews() {
         val otpEditTexts = listOf(binding.otpEt1, binding.otpEt2, binding.otpEt3, binding.otpEt4, binding.otpEt5, binding.otpEt6)
 
+        val email = PrefManager.getUserSignUpEmail()!!
+        val userEmailTextView = binding.userEmail
+
+        val atIndex = email.indexOf("@")
+        val localPart = email.substring(0, atIndex)
+        val domainPart = email.substring(atIndex)
+
+        val maskedEmail = if (localPart.length > 1) {
+            "${localPart[0]}..." + domainPart
+        } else {
+            "${localPart}..." + domainPart
+        }
+
+        userEmailTextView.text = "An OTP has been sent to $maskedEmail"
+
+
         otpEditTexts.forEachIndexed { index, editText ->
             editText.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -86,16 +103,32 @@ class EnterOTPFragment : Fragment() {
         binding.btnResendOTP.setOnClickThrottleBounceListener {
             viewModel.startTimer()
             viewModel.setIsResendVisible(false)
+            viewModel.resendOTP()
+            binding.btnResendOTP.gone()
             clearOTPFields()
+
         }
     }
 
 
     private fun setUpObservers() {
+        viewModel.progressState.observe(viewLifecycleOwner, Observer { isLoading ->
+            if (isLoading) {
+                binding.progressBar.visible()
+                binding.btnContinue.text="Verifying..."
+                binding.btnContinue.isEnabled=false
+            } else {
+                binding.progressBar.gone()
+                binding.btnContinue.text="Verify"
+                binding.btnContinue.isEnabled=true
+            }
+        })
+
         viewModel.isResendVisible.observe(viewLifecycleOwner, Observer {
             binding.otpTimer.visibility = if (it) View.GONE else View.VISIBLE
             binding.btnResendOTP.visibility = if (it) View.VISIBLE else View.GONE
         })
+
         viewModel.timerText.observe(viewLifecycleOwner, Observer {
             binding.otpTimer.text = it
         })
@@ -108,6 +141,7 @@ class EnterOTPFragment : Fragment() {
 
         viewModel.otpResult.observe(viewLifecycleOwner, Observer { result ->
             if (result) {
+                PrefManager.setLoginStatus(true)
                 findNavController().navigate(R.id.action_fragment_enter_o_t_p_to_fragment_o_t_p_verified)
             }
         })

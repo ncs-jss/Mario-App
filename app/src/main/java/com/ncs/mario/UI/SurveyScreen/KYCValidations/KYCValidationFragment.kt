@@ -2,6 +2,7 @@ package com.ncs.mario.UI.SurveyScreen.KYCValidations
 
 import android.Manifest
 import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -11,6 +12,7 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,14 +25,18 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.ncs.mario.Domain.HelperClasses.PrefManager
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.isNull
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.showProgressDialog
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.mario.Domain.Utility.GlobalUtils
 import com.ncs.mario.R
 import com.ncs.mario.UI.MainScreen.MainActivity
+import com.ncs.mario.UI.StartScreen.StartScreen
 import com.ncs.mario.UI.SurveyScreen.SurveyViewModel
+import com.ncs.mario.UI.WaitScreen.WaitActivity
 import com.ncs.mario.databinding.FragmentKYCValidationBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -49,6 +55,8 @@ class KYCValidationFragment : Fragment() {
     private val util: GlobalUtils.EasyElements by lazy {
         GlobalUtils.EasyElements(requireActivity())
     }
+    lateinit var dialog: Dialog
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -74,6 +82,31 @@ class KYCValidationFragment : Fragment() {
     }
 
     private fun observeViewModel(){
+
+        surveyViewModel.profileCreateResult.observe(viewLifecycleOwner, Observer { result ->
+            if (result){
+                surveyViewModel.uploadUserImage(uri = Uri.parse(surveyViewModel.userSelfie.value!!), context = requireContext())
+            }
+        })
+
+        surveyViewModel.progressStateImageUpload.observe(viewLifecycleOwner, Observer { isLoading ->
+            if (isLoading) {
+                setUpLoader(true,"Uploading the images...")
+            } else {
+                setUpLoader(false,"")
+            }
+        })
+
+        surveyViewModel.progressState.observe(viewLifecycleOwner, Observer { isLoading ->
+            if (isLoading) {
+                setUpLoader(true,"Creating your profile...")
+            } else {
+                setUpLoader(false,"")
+            }
+        })
+
+
+
         surveyViewModel.errorMessageKYCDetails.observe(viewLifecycleOwner, Observer { message ->
             if (message != null) {
                 util.showSnackbar(binding.root,message!!,2000)
@@ -84,7 +117,12 @@ class KYCValidationFragment : Fragment() {
             if (result){
                 surveyViewModel.resetKYCDetailsPageResult()
                 surveyViewModel.resetErrorMessageKYCDetails()
-                startActivity(Intent(requireContext(),MainActivity::class.java))
+                val userSurvey= PrefManager.getUserSurvey()!!
+                userSurvey.userImg=surveyViewModel.userSelfie.value!!
+                userSurvey.collegeIdImg=surveyViewModel.userCollegeID.value!!
+                PrefManager.setUserSurvey(userSurvey)
+                Log.d("usercheck","${PrefManager.getUserSurvey()}")
+                startActivity(Intent(requireContext(),StartScreen::class.java))
                 requireActivity().finish()
             }
         })
@@ -257,6 +295,20 @@ class KYCValidationFragment : Fragment() {
             else -> bitmap
         }
         return rotatedBitmap
+    }
+
+    private fun setUpLoader(show: Boolean, message: String) {
+        if (show) {
+            if (this::dialog.isInitialized && dialog.isShowing) {
+                dialog.dismiss()
+            }
+            dialog = showProgressDialog(requireContext(), message)
+            dialog.show()
+        } else {
+            if (this::dialog.isInitialized && dialog.isShowing) {
+                dialog.dismiss()
+            }
+        }
     }
 
     private fun rotateImage(source: Bitmap, angle: Float): Bitmap {

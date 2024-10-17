@@ -16,6 +16,60 @@
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_left"/>
 
+        <action
+            android:id="@+id/action_fragment_login_to_fragment_forgot_password"
+            app:destination="@id/fragment_forgot_password"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_forgot_password"
+        tools:layout="@layout/fragment_forgot_password"
+        android:name="com.ncs.mario.UI.AuthScreen.ForgotPassword.ForgotPasswordFragment"
+        android:label="fragment_forgot_password" >
+
+        <action
+            android:id="@+id/action_fragment_forgot_password_to_fragment_login"
+            app:destination="@id/fragment_login"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"/>
+
+        <action
+            android:id="@+id/action_fragment_forgot_password_to_fragment_o_t_p"
+            app:destination="@id/fragment_o_t_p"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_o_t_p"
+        tools:layout="@layout/fragment_o_t_p"
+        android:name="com.ncs.mario.UI.AuthScreen.ForgotPassword.OTPFragment"
+        android:label="fragment_o_t_p" >
+
+        <action
+            android:id="@+id/action_fragment_o_t_p_to_fragment_set_password"
+            app:destination="@id/fragment_set_password"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_set_password"
+        tools:layout="@layout/fragment_set_password"
+        android:name="com.ncs.mario.UI.AuthScreen.ForgotPassword.SetPasswordFragment"
+        android:label="fragment_set_password" >
+
+        <action
+            android:id="@+id/action_fragment_set_password_to_fragment_login"
+            app:destination="@id/fragment_login"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"/>
+
     </fragment>
 
     <fragment

@@ -6,6 +6,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.ncs.mario.Domain.HelperClasses.PrefManager
+import com.ncs.mario.Domain.Utility.GlobalUtils
 import com.ncs.mario.R
 import com.ncs.mario.databinding.ActivitySurveyBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,11 +19,19 @@ class SurveyActivity : AppCompatActivity() {
     }
 
     private val surveyViewModel: SurveyViewModel by viewModels()
-
+    private val util: GlobalUtils.EasyElements by lazy {
+        GlobalUtils.EasyElements(this)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(binding.root)
+
+        if (PrefManager.getShowProfileCompletionAlert()){
+            PrefManager.setShowProfileCompletionAlert(false)
+            util.showSnackbar(binding.root, "Please complete your profile", 2000)
+            setInitials()
+        }
 
         binding.personalDetails.title.text="Personal Details"
         binding.technicalDetails.title.text="Technical Details"
@@ -31,6 +41,20 @@ class SurveyActivity : AppCompatActivity() {
         surveyViewModel.currentStep.observe(this, Observer { step ->
             updateSurveyProgress(step)
         })
+    }
+
+    fun setInitials(){
+        val currentUserProfile=PrefManager.getUserProfile()!!
+        surveyViewModel.apply {
+            setName(currentUserProfile.name)
+            setAdmissionNum(currentUserProfile.admission_number)
+            setBranch(currentUserProfile.branch)
+            setYear(currentUserProfile.year.toString())
+            setLinkedIn(currentUserProfile.socials.LinkedIn)
+            setGithub(currentUserProfile.socials.GitHub)
+            setBehance(currentUserProfile.socials.Behance)
+            setSelectedDomains(currentUserProfile.domain, currentUserProfile.other_domain)
+        }
     }
 
     private fun updateSurveyProgress(step: SurveyViewModel.SurveyStep) {

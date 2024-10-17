@@ -3,6 +3,8 @@ package com.ncs.mario.Domain.Utility
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.app.Activity
+import android.app.AlertDialog
+import android.app.Dialog
 import android.app.DownloadManager
 import android.content.Context
 import android.content.pm.PackageInfo
@@ -42,6 +44,9 @@ import com.ncs.mario.Domain.Utility.ExtensionsUtil.bounce
 import com.ncs.mario.R
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.view.LayoutInflater
+import android.widget.TextView
+import com.airbnb.lottie.LottieAnimationView
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -55,6 +60,26 @@ object ExtensionsUtil {
 
     fun Any?.printToLog(tag: String = "Debug Log") {
         Timber.tag(tag).d(toString())
+    }
+
+    fun showProgressDialog(context: Context, message: String): Dialog {
+        val inflater = LayoutInflater.from(context)
+        val view = inflater.inflate(R.layout.progress_dialog, null)
+
+        val lottieAnimationView: LottieAnimationView = view.findViewById(R.id.animationView)
+        val textView: TextView = view.findViewById(R.id.textView)
+
+        lottieAnimationView.setAnimation(R.raw.loading)
+        lottieAnimationView.playAnimation()
+        textView.text = message
+
+        val dialog = AlertDialog.Builder(context)
+            .setView(view)
+            .setCancelable(false)
+            .create()
+
+        dialog.show()
+        return dialog
     }
 
 
@@ -378,6 +403,33 @@ object ExtensionsUtil {
         this.visible()
     }
 
+    fun View.slideDownAndVisible(
+        duration: Long = 300L,
+        onEndAction: (() -> Unit)? = null
+    ): ViewPropertyAnimator {
+        return animate()
+            .translationYBy(height.toFloat())
+            .setDuration(duration)
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .withEndAction {
+                visibility = View.VISIBLE
+                onEndAction?.invoke()
+            }
+    }
+
+    fun View.slideUpAndGone(
+        duration: Long = 300L,
+        onEndAction: (() -> Unit)? = null
+    ): ViewPropertyAnimator {
+        visibility = View.GONE
+        return animate()
+            .translationYBy(-height.toFloat())
+            .setDuration(duration)
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .withEndAction {
+                onEndAction?.invoke()
+            }
+    }
 
     fun View.slideDownAndGone(
         duration: Long = 300L,

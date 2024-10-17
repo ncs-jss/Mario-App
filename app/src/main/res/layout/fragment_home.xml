@@ -5,12 +5,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@color/baseBlack">
-
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/bannerRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/recyclerView_icons"
         android:layout_marginHorizontal="10dp"
         tools:listitem="@layout/item_banner"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="10dp"
+        android:id="@+id/recyclerView"/>
+</LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

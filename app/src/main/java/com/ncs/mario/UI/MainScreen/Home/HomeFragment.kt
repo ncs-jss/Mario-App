@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.ncs.mario.Domain.Models.EVENTS.PollItem
 import com.ncs.mario.R
 import com.ncs.mario.databinding.FragmentHomeBinding
 
@@ -19,6 +20,7 @@ class HomeFragment : Fragment() {
     private var currentPosition = Int.MAX_VALUE / 2
     private val delayMillis: Long = 2000
     private val handler = Handler(Looper.getMainLooper())
+    private lateinit var adapter: PostAdapter
 
     private lateinit var bannerAdapter: BannerAdapter
     override fun onCreateView(
@@ -40,7 +42,38 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val samplePosts = listOf(
+            ListItem.Post(
+                title = "Event 1",
+                description = "A great event!",
+                logo = "https://gratisography.com/wp-content/uploads/2024/03/gratisography-vr-glasses-1170x780.jpg"
+            ),
+            ListItem.Poll(
+                title = "Poll: Favorite Language?",
+                pollItem = PollItem(
+                    question = "What's your favorite programming language?",
+                    options = listOf(
+                        PollItem.Option(text = "Kotlin", votes = 10),
+                        PollItem.Option(text = "Java", votes = 5),
+                        PollItem.Option(text = "Python", votes = 8),
+                        PollItem.Option(text = "Swift", votes = 3)
+                    )
+                )
+            ),
+            ListItem.Post(
+                title = "Event 2",
+                description = "Another awesome event!",
+                logo = "https://gratisography.com/wp-content/uploads/2024/03/gratisography-vr-glasses-1170x780.jpg"
+            )
+        )
+
+        // Initialize the RecyclerView
+        adapter = PostAdapter(samplePosts)
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.adapter = adapter
     }
+
     private fun setupBannerRecyclerView() {
         binding.bannerRecyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)

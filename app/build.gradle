@@ -5,6 +5,18 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
     id 'kotlin-parcelize'
+    id 'com.google.gms.google-services'
+}
+
+def getProps(String propName) {
+    def propsFile = rootProject.file('local.properties')
+    if (propsFile.exists()) {
+        def props = new Properties()
+        props.load(new FileInputStream(propsFile))
+        return props[propName]
+    } else {
+        return NullPointerException
+    }
 }
 
 android {
@@ -13,7 +25,7 @@ android {
 
     defaultConfig {
         applicationId "com.ncs.mario"
-        minSdk 24
+        minSdk 26
         targetSdk 34
         versionCode 1
         versionName "1.0"
@@ -27,9 +39,29 @@ android {
     }
 
     buildTypes {
-        release {
-            minifyEnabled false
+
+        debug {
+            debuggable true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            //Base API URL
+            buildConfigField("String", "API_BASE_URL", "\"${getProps("API_BASE_URL")}\"")
+
+            //Auth Endpoint
+            buildConfigField("String", "AUTH_ENDPOINT", "\"${getProps("AUTH_ENDPOINT")}\"")
+
+            //Profile Endpoint
+            buildConfigField("String", "PROFILE_ENDPOINT", "\"${getProps("PROFILE_ENDPOINT")}\"")
+
+            //Event Endpoint
+            buildConfigField("String","EVENT_ENDPOINT","\"${getProps("EVENT_ENDPOINT")}\"")
+
+            //QR EndPoint
+            buildConfigField("String","QR_ENDPOINT","\"${getProps("QR_ENDPOINT")}\"")
+        }
+
+        release {
+
         }
     }
     compileOptions {
@@ -53,6 +85,13 @@ dependencies {
     androidTestImplementation libs.androidx.junit
     androidTestImplementation libs.androidx.espresso.core
 
+
+    implementation(libs.lottie)
+
+    //Gson
+    implementation 'com.google.code.gson:gson:2.11.0'
+
+
     //Timber
     implementation 'com.jakewharton.timber:timber:5.0.1'
 
@@ -69,26 +108,39 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
     //ViewModel
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.2'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.6'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6'
 
     //Dagger Hilt
-    implementation 'com.google.dagger:hilt-android:2.48.1'
-    kapt "com.google.dagger:hilt-android-compiler:2.48.1"
-    implementation 'androidx.hilt:hilt-common:1.1.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.2'
+    implementation 'com.google.dagger:hilt-android:2.49'
+    kapt "com.google.dagger:hilt-android-compiler:2.49"
+    implementation 'androidx.hilt:hilt-common:1.2.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.6'
 
     
     // Jetpack Navigation
     def nav_version = "2.7.1"
-    implementation ("androidx.navigation:navigation-fragment-ktx:$nav_version")
-    implementation ("androidx.navigation:navigation-ui-ktx:$nav_version")
+    implementation (libs.androidx.navigation.fragment.ktx)
+    implementation (libs.androidx.navigation.ui.ktx)
 
     // Material Components (for BottomNavigationView)
     implementation ("com.google.android.material:material:1.9.0")
 
     //zxing qr scanner lib
     implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
+
+    //retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.3"
+
+    //Firebase messaging
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+
+    //Firebase
+    implementation platform('com.google.firebase:firebase-bom:33.4.0')
+    implementation 'com.google.firebase:firebase-analytics'
 
 }
 
