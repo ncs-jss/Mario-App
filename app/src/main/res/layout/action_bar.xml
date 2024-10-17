@@ -73,7 +73,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="4"
+                    android:text="0"
+                    android:paddingEnd="4dp"
                     android:textColor="@color/secondary"
                     android:textSize="24sp" />
 
@@ -82,20 +83,11 @@
                     android:layout_height="32dp"
                     android:layout_gravity="center"
                     android:paddingVertical="2dp"
+                    android:layout_marginEnd="12dp"
                     android:paddingEnd="2dp"
                     android:src="@drawable/token"/>
             </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/scanQr"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_gravity="center"
-                android:background="@android:color/transparent"
-                android:scaleType="fitXY"
-                android:src="@drawable/baseline_qr_code_scanner_24"
-                android:layout_marginEnd="12dp"
-                />
 
 
 

@@ -10,6 +10,10 @@
         android:icon="@drawable/baseline_settings_24"
         android:title="Settings"/>
     <item
+        android:id="@+id/nav_scanQr"
+        android:icon="@drawable/baseline_qr_code_scanner_24"
+        android:title="Scan QR"/>
+    <item
         android:id="@+id/nav_logout"
         android:icon="@drawable/logout"
         android:title="Logout"/>

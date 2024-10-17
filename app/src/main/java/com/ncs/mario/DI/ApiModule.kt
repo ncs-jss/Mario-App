@@ -3,7 +3,9 @@ package com.ncs.mario.DI
 
 import com.ncs.mario.BuildConfig
 import com.ncs.mario.Domain.Api.AuthApiService
+import com.ncs.mario.Domain.Api.EventsApi
 import com.ncs.mario.Domain.Api.ProfileApiService
+import com.ncs.mario.Domain.Api.QRAPI
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -57,6 +59,28 @@ object ApiModule {
             .create(ProfileApiService::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun getEventsApiService(okkHttpClient: OkHttpClient): EventsApi {
+        return Retrofit.Builder()
+            .baseUrl("${BuildConfig.API_BASE_URL}${BuildConfig.EVENT_ENDPOINT}")
+            .client(okkHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(EventsApi::class.java)
+    }
+
+
+    @Provides
+    @Singleton
+    fun getQRApiService(okkHttpClient: OkHttpClient): QRAPI {
+        return Retrofit.Builder()
+            .baseUrl("${BuildConfig.API_BASE_URL}${BuildConfig.QR_ENDPOINT}")
+            .client(okkHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(QRAPI::class.java)
+    }
 
 
 }
