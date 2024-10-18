@@ -9,7 +9,33 @@
         android:id="@+id/fragment_home"
         android:name="com.ncs.mario.UI.MainScreen.Home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+
+        <action
+            android:id="@+id/action_fragment_home_to_fragment_score"
+            app:destination="@id/fragment_score"/>
+
+        <action
+            android:id="@+id/action_fragment_home_to_fragment_view_all"
+            app:destination="@id/fragment_view_all"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_view_all"
+        android:name="com.ncs.mario.UI.MainScreen.Home.ViewAllFragment"
+        android:label="fragment_view_all"
+        tools:layout="@layout/fragment_view_all">
+
+        <action
+            android:id="@+id/action_fragment_view_all_to_fragment_home"
+            app:destination="@id/fragment_home"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_right"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/fragment_internship"

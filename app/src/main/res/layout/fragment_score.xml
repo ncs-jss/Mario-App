@@ -19,11 +19,11 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/mario_score_bg"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
             android:layout_margin="0dp"
-            android:padding="0dp"/>
+            android:adjustViewBounds="true"
+            android:padding="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/score_banner" />
 
     </androidx.cardview.widget.CardView>
     <TextView
@@ -38,16 +38,17 @@
         app:layout_constraintStart_toStartOf="@id/scoreCard"
         android:elevation="2dp"
         android:fontFamily="@font/sf_medium"
-        android:layout_marginStart="28dp"
+        android:layout_marginStart="35dp"
         android:layout_marginTop="20dp"/>
 
     <ImageView
         android:id="@+id/token"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_marginStart="1dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="10dp"
         android:elevation="2dp"
-        android:src="@drawable/token"
+        android:src="@drawable/token_ic"
         app:layout_constraintStart_toEndOf="@+id/score"
         app:layout_constraintTop_toBottomOf="@id/name_score" />
 
@@ -56,10 +57,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="2dp"
-        android:fontFamily="@font/sfbold"
+        android:fontFamily="@font/sf_semibold"
         android:text="100"
+        android:layout_marginTop="15dp"
         android:textColor="@color/baseWhite"
-        android:textSize="64dp"
+        android:textSize="48dp"
         app:layout_constraintBottom_toBottomOf="@+id/token"
         app:layout_constraintStart_toStartOf="@+id/name_score"
         app:layout_constraintTop_toBottomOf="@+id/name_score" />
@@ -72,6 +74,7 @@
         android:text="Level: Noob"
         android:textColor="@color/baseWhite"
         android:textSize="16sp"
+        android:layout_marginTop="12dp"
         android:elevation="2dp"
         app:layout_constraintStart_toStartOf="@+id/score"
         app:layout_constraintTop_toBottomOf="@+id/token" />
@@ -83,8 +86,8 @@
         app:layout_constraintStart_toStartOf="@id/scoreCard"
         app:layout_constraintEnd_toEndOf="@id/scoreCard"
         android:text="Past attended events"
-        android:textSize="20dp"
-        android:fontFamily="@font/sfbold"
+        android:textSize="16dp"
+        android:fontFamily="@font/sf_medium"
         android:layout_margin="12dp"
         android:textColor="@color/baseWhite"/>
 

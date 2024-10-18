@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.mario.R
+import com.ncs.mario.UI.MainScreen.MainActivity
 import com.ncs.mario.databinding.FragmentStoreBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -14,7 +16,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class StoreFragment : Fragment() {
     private var _binding:FragmentStoreBinding?=null
     private val binding get() = _binding!!
-
+    private val activityBinding: MainActivity by lazy {
+        (requireActivity() as MainActivity)
+    }
     private val viewModel: StoreViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,6 +31,10 @@ class StoreFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
     override fun onDestroy() {

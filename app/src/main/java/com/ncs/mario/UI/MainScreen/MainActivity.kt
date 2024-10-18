@@ -15,11 +15,13 @@ import androidx.core.view.WindowInsetsCompat
 import com.ncs.mario.R
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
 import com.ncs.mario.Domain.Models.ServerResult
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.mario.Domain.Utility.GlobalUtils
 import com.ncs.mario.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
 
-    private val binding: ActivityMainBinding by lazy {
+    val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
@@ -57,6 +59,29 @@ class MainActivity : AppCompatActivity() {
         val bottomNav = binding.bottomNavigationView
         bottomNav.setupWithNavController(navController)
 
+        bottomNav.setOnItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.fragment_home -> {
+                    navController.navigate(R.id.fragment_home)
+                    true
+                }
+                R.id.fragment_internship -> {
+                    navController.navigate(R.id.fragment_internship)
+                    true
+                }
+                R.id.fragment_score -> {
+                    navController.navigate(R.id.fragment_score)
+                    true
+                }
+                R.id.fragment_store -> {
+                    navController.navigate(R.id.fragment_store)
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
     }
 
     private fun bindObeservers() {
