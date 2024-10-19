@@ -43,7 +43,7 @@
     <fragment
         android:id="@+id/fragment_social_links"
         tools:layout="@layout/fragment_social_links"
-        android:name="com.ncs.mario.UI.SurveyScreen.SocialDetails.SocialLinksFragment"
+        android:name="com.ncs.mario.UI.SettingsScreen.EditProfile.SocialDetails.SocialLinksFragment"
         android:label="fragment_social_links" >
 
         <action

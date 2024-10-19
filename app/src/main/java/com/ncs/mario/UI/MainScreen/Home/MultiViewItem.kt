@@ -18,5 +18,5 @@ sealed class MultiViewItem {
         val _id:String,
         val title:String,
         val votes:Int
-        )
+    )
 }
