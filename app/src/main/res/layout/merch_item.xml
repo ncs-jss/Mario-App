@@ -9,6 +9,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:cardCornerRadius="12dp"
+    android:outlineAmbientShadowColor="@color/white"
+    android:outlineSpotShadowColor="@color/white"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -17,8 +19,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:id="@+id/constraintLayout"
+        android:padding="2dp"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/neutral900"
         >
         <LinearLayout
             android:layout_width="match_parent"
@@ -85,14 +88,16 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/sfbold"
                 android:layout_weight="1"
+                android:lines="2"
                 android:text="ItemName"
-                android:textColor="@color/primary"
+                android:textColor="@color/green"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
             <LinearLayout
+                android:layout_marginTop="2dp"
                 android:gravity="end"
-                android:layout_gravity="center"
+                android:layout_gravity="top"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/pointsLayout"
@@ -104,7 +109,7 @@
                     android:layout_height="match_parent"
                     android:fontFamily="@font/sfbold"
                     android:text="800"
-                    android:textColor="@color/pureblack"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
                     />
                 <ImageView

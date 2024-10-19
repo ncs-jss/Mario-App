@@ -4,6 +4,6 @@ data class Merch(
     val id:String="",
     val image:String="",
     val name:String="",
-    val cost:Int=1000,
-    val stock:Int=0
+    val cost:Int,
+    val stock:Int
 )

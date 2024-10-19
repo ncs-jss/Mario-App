@@ -12,8 +12,9 @@ import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListe
 import com.ncs.mario.R
 import com.ncs.mario.databinding.MerchItemBinding
 
-class StoreAdapter(private var items: List<Merch>) :
+class StoreAdapter(private var items: List<Merch>, private val onRedeemClick: (Merch) -> Unit) :
     RecyclerView.Adapter<StoreAdapter.StoreViewHolder>() {
+
     class StoreViewHolder(val binding: MerchItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -34,21 +35,26 @@ class StoreAdapter(private var items: List<Merch>) :
             itemName.text = item.name
             points.text = item.cost.toString()
 
-            if (PrefManager.getMyPoints()>=item.cost){
+            if (PrefManager.getUserProfile()!!.points >= item.cost) {
                 lockLayout.setBackgroundResource(R.drawable.filled_primary_box)
                 lockText.text = "Redeem"
                 lockImage.visibility = View.GONE
-            }
 
-            root.setOnClickThrottleBounceListener{
-                Toast.makeText(root.context, "You don't have enough score!!", Toast.LENGTH_SHORT).show()
+                root.setOnClickThrottleBounceListener {
+                    onRedeemClick(item)
+                }
+            } else {
+                root.setOnClickThrottleBounceListener {
+                    Toast.makeText(root.context, "You don't have enough points!!", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
 
     override fun getItemCount(): Int = items.size
+
     fun updateItems(newItems: List<Merch>) {
         this.items = newItems
-        notifyDataSetChanged()  // Notify the adapter about the updated data
+        notifyDataSetChanged()
     }
 }

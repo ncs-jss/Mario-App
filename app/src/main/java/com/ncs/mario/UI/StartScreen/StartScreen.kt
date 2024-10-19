@@ -2,7 +2,6 @@ package com.ncs.mario.UI.StartScreen
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -29,7 +28,6 @@ class StartScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         enableEdgeToEdge()
-        Log.d("token",PrefManager.getToken().toString())
         if (PrefManager.getToken()==""){
             startActivity(Intent(this, AuthActivity::class.java))
             finish()

@@ -2,6 +2,7 @@ package com.ncs.mario.UI.MainScreen
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.Menu
 import android.widget.Toast
@@ -16,12 +17,15 @@ import com.ncs.mario.R
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.Glide
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
+import com.ncs.mario.Domain.HelperClasses.PrefManager
 import com.ncs.mario.Domain.Models.ServerResult
 import com.ncs.mario.Domain.Utility.GlobalUtils
 import com.ncs.mario.databinding.ActivityMainBinding
+import com.ncs.mario.databinding.NavHeaderBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -51,6 +55,33 @@ class MainActivity : AppCompatActivity() {
                 binding.drawerLayout.openDrawer(GravityCompat.START)
             }
         }
+        val headerBinding = NavHeaderBinding.bind(binding.navigationView.getHeaderView(0))
+        Glide.with(this).load(PrefManager.getUserProfile()?.photo?.secure_url).into(headerBinding.profileImage)
+        headerBinding.profileName.text = PrefManager.getUserProfile()?.name
+        headerBinding.profileEmail.text = PrefManager.getUserProfile()?.domain?.joinToString (", ")
+        binding.actionbar.scoreTV.text = PrefManager.getUserProfile()?.points.toString()
+        binding.navigationView.setNavigationItemSelectedListener {item->
+            when(item.itemId){
+                R.id.nav_profile -> {
+                    true
+                }
+                R.id.nav_settings -> {
+                    true
+                }
+                R.id.nav_logout -> {
+                    true
+                }
+                R.id.nav_scanQr->{
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                    scannerLauncher.launch(
+                        ScanOptions().setPrompt("Scan to get Mario Points")
+                            .setDesiredBarcodeFormats(ScanOptions.QR_CODE)
+                    )
+                    true
+                }
+                else -> false
+            }
+        }
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
@@ -60,20 +91,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun bindObeservers() {
-        mainViewModel.myMarioScore.observe(this) { result ->
-            when (result) {
-                is ServerResult.Progress -> {
-                    showLoading()
-                }
-                is ServerResult.Success -> {
-                    val marioScore = result.data
-                    updateScoreUI(marioScore)
-                }
-                is ServerResult.Failure -> {
-                    showError(result.exception.message)
-                }
-            }
-        }
+
         mainViewModel.validateScannedQR.observe(this){result ->
             when(result){
                 is ServerResult.Failure ->{

@@ -9,6 +9,7 @@
 
     <ImageView
         android:id="@+id/profile_image"
+        android:scaleType="centerCrop"
         android:layout_width="72dp"
         android:layout_height="72dp"
         android:src="@drawable/profile_pic_placeholder"
