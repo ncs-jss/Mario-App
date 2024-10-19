@@ -6,9 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.ncs.mario.Domain.Utility.ExtensionsUtil.gone
+import com.ncs.mario.Domain.HelperClasses.PrefManager
 import com.ncs.mario.R
-import com.ncs.mario.UI.MainScreen.MainActivity
 import com.ncs.mario.databinding.FragmentScoreBinding
 
 class ScoreFragment : Fragment() {
@@ -19,21 +18,25 @@ class ScoreFragment : Fragment() {
     private var _binding: FragmentScoreBinding? = null
     private val binding get() = _binding!!
     private val viewModel: ScoreViewModel by viewModels()
-    private val activityBinding: MainActivity by lazy {
-        (requireActivity() as MainActivity)
-    }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentScoreBinding.inflate(inflater, container, false)
+        val profile = PrefManager.getUserProfile()
+        binding.score.text = profile?.points.toString()
+        binding.nameScore.text=profile?.name.toString()
+        if(profile?.points!!>100){
+            binding.level.text="Level: Intermediate"
+        }
+        else if(profile.points>400){
+            binding.level.text="Level: Pro"
+        }
+
         return binding.root
-    }
-
-
-    override fun onResume() {
-        super.onResume()
     }
 
     override fun onDestroy() {

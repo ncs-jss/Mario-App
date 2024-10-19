@@ -64,6 +64,9 @@ android {
 
             //QR EndPoint
             buildConfigField("String","QR_ENDPOINT","\"${getProps("QR_ENDPOINT")}\"")
+
+            //Merch Endpoint
+            buildConfigField("String","MERCH_ENDPOINT","\"${getProps("MERCH_ENDPOINT")}\"")
         }
 
         release {
