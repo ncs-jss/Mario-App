@@ -11,7 +11,7 @@ import retrofit2.http.Headers
 interface EventsApi {
     @Headers("Content-Type: application/json")
     @GET("/get-events")
-    suspend fun getEvents(@Header("Authorization") authToken: String= PrefManager.getToken()!!): Response<ServerResult<GetEvents>>
+    suspend fun getEvents(@Header("Authorization") authToken: String= PrefManager.getToken()!!): Response<GetEvents>
 
 
 }

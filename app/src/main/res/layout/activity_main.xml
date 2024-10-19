@@ -35,19 +35,39 @@
             android:layout_height="wrap_content"
             android:background="@color/neutral900"
             app:menu="@menu/bottom_nav_menu"
-            app:itemActiveIndicatorStyle="@color/neutral900"
-            app:itemTextColor="@color/white"
-            app:labelVisibilityMode="labeled" />
+            android:elevation="8dp"
+            app:labelVisibilityMode="labeled"
+            app:activeIndicatorLabelPadding="10dp"
+            app:itemIconSize="25sp"
+            android:padding="2dp"
+            app:itemPaddingBottom="5dp"
+            style="@style/Widget.BottomNavigationView"
+            app:itemActiveIndicatorStyle="@color/dim_primary"
+            app:itemIconTint="@drawable/bnv_tab_item_foreground"
+            app:itemTextColor="@drawable/bnv_tab_item_foreground"
+            app:itemRippleColor="@color/dim_primary" />
 
     </LinearLayout>
 
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationView"
-        android:layout_width="wrap_content"
+        android:layout_width="350dp"
+        android:background="@color/secondary_bg_lighter"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:headerLayout="@layout/nav_header"
-        app:menu="@menu/nav_menu" />
+        android:layout_gravity="start">
+
+        <LinearLayout
+            android:id="@+id/drawer_menu_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/drawerheaderfile"
+                layout="@layout/nav_header" />
+        </LinearLayout>
+
+    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

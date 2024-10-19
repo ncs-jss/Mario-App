@@ -13,10 +13,10 @@ import retrofit2.http.Path
 interface QRAPI {
 
     @Headers("Content-Type: application/json")
-    @GET("qr/scanned/{coupon_code}")
-    suspend fun validateScannedQR(@Header("Authorization") authToken: String= PrefManager.getToken()!!, @Path("coupon_code") couponCode: String): Response<ServerResult<QrScannedResponse>>
+    @GET("scanned/{coupon_code}")
+    suspend fun validateScannedQR(@Header("Authorization") authToken: String= PrefManager.getToken()!!, @Path("coupon_code") couponCode: String): Response<QrScannedResponse>
 
     @Headers("Content-Type: application/json")
-    @GET("qr/get-my-rewards/")
-    suspend fun getMyRewards(@Header("Authorization") authToken: String= PrefManager.getToken()!!):Response<ServerResult<QrScannedResponse>>
+    @GET("get-my-rewards/")
+    suspend fun getMyRewards(@Header("Authorization") authToken: String= PrefManager.getToken()!!):Response<QrScannedResponse>
 }

@@ -3,22 +3,24 @@
     >
 
     <item
-        android:id="@+id/nav_home"
-        android:icon="@drawable/home_selected"
+        android:id="@+id/fragment_home"
+        android:icon="@drawable/home_ic"
         android:title="Home"/>
 
     <item
-        android:id="@+id/nav_store"
-        android:icon="@drawable/store"
-        android:title="Store"/>
+        android:id="@+id/fragment_score"
+        android:icon="@drawable/token_ic"
+        android:title="Score"/>
 
     <item
-        android:id="@+id/nav_score"
-        android:icon="@drawable/token"
-        android:title="Xp Score"/>
+        android:id="@+id/fragment_store"
+        android:icon="@drawable/store_ic"
+        android:title="Nerd Store"/>
+
     <item
-        android:id="@+id/nav_internships"
-        android:icon="@drawable/internship"
+        android:id="@+id/fragment_internship"
+        android:icon="@drawable/internships_ic"
         android:title="Internships"/>
+
 
 </menu>

@@ -1,4 +1,4 @@
-package com.ncs.mario.UI.MainScreen.Home
+package com.ncs.mario.UI.MainScreen.Home.Adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
