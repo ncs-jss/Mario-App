@@ -2,13 +2,13 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/survey_nav"
-    app:startDestination="@id/fragment_personal_details">
+    app:startDestination="@id/fragment_personal_details"
+    android:id="@+id/edit_profile_nav">
 
     <fragment
         android:id="@+id/fragment_personal_details"
         tools:layout="@layout/fragment_personal_details"
-        android:name="com.ncs.mario.UI.SurveyScreen.PersonalDetails.PersonalDetailsFragment"
+        android:name="com.ncs.mario.UI.SettingsScreen.EditProfile.PersonalDetails.PersonalDetailsFragmentEditProfile"
         android:label="fragment_personal_details" >
 
 
@@ -23,7 +23,7 @@
     <fragment
         android:id="@+id/fragment_technical"
         tools:layout="@layout/fragment_technical"
-        android:name="com.ncs.mario.UI.SurveyScreen.TechnicalDetails.TechnicalFragment"
+        android:name="com.ncs.mario.UI.SettingsScreen.EditProfile.TechnicalDetails.TechnicalFragmentEditProfile"
         android:label="fragment_technical" >
 
         <action
@@ -43,14 +43,9 @@
     <fragment
         android:id="@+id/fragment_social_links"
         tools:layout="@layout/fragment_social_links"
-        android:name="com.ncs.mario.UI.SettingsScreen.EditProfile.SocialDetails.SocialLinksFragment"
+        android:name="com.ncs.mario.UI.SettingsScreen.EditProfile.SocialDetails.SocialLinksFragmentEditProfile"
         android:label="fragment_social_links" >
 
-        <action
-            android:id="@+id/action_fragment_social_links_to_fragment_k_y_c_validation"
-            app:destination="@id/fragment_k_y_c_validation"
-            app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_out_left"/>
 
         <action
             android:id="@+id/action_fragment_social_links_to_fragment_technical"
@@ -60,18 +55,7 @@
 
     </fragment>
 
-    <fragment
-        android:id="@+id/fragment_k_y_c_validation"
-        tools:layout="@layout/fragment_k_y_c_validation"
-        android:name="com.ncs.mario.UI.SurveyScreen.KYCValidations.KYCValidationFragment"
-        android:label="fragment_k_y_c_validation" >
 
-        <action
-            android:id="@+id/action_fragment_k_y_c_validation_to_fragment_social_links"
-            app:destination="@id/fragment_social_links"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_right"/>
 
-    </fragment>
 
 </navigation>

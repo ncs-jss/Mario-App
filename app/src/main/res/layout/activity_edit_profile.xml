@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/stripped_bg"
+    android:layout_height="match_parent"
+    tools:context=".UI.SettingsScreen.EditProfile.EditProfileActivity">
+
+    <include
+        android:id="@+id/actionbar"
+        layout="@layout/action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <include
+            android:id="@+id/personal_details"
+            layout="@layout/survey_progress_item"/>
+        <View
+            android:layout_width="50dp"
+            android:layout_gravity="center"
+            android:id="@+id/after_personal_details"
+            android:layout_height="2dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@color/edit_text_hint"/>
+        <include
+            android:id="@+id/technical_details"
+            layout="@layout/survey_progress_item"/>
+
+        <View
+            android:layout_width="50dp"
+            android:layout_gravity="center"
+            android:layout_height="2dp"
+            android:id="@+id/after_technical_details"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@color/edit_text_hint"/>
+
+        <include
+            android:id="@+id/social_details"
+            layout="@layout/survey_progress_item"/>
+
+
+
+
+
+    </LinearLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment_activity_survey"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        android:background="@color/secondary_bg"
+        android:visibility="visible"
+        app:navGraph="@navigation/edit_profile_nav" />
+
+
+
+</LinearLayout>

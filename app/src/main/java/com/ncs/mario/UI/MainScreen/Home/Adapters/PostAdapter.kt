@@ -1,4 +1,4 @@
-package com.ncs.mario.UI.MainScreen.Home
+package com.ncs.mario.UI.MainScreen.Home.Adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ncs.mario.Domain.Models.EVENTS.PollItem
-import com.ncs.mario.Domain.Models.EVENTS.Posts
 import com.ncs.mario.R
 import com.ncs.mario.databinding.ItemPostBinding
 import com.ncs.mario.databinding.PollItemBinding

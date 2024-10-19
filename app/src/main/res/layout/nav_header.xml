@@ -1,39 +1,316 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/card_view_gray"
-    android:padding="16dp">
-
-    <ImageView
-        android:id="@+id/profile_image"
-        android:scaleType="centerCrop"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:src="@drawable/profile_pic_placeholder"
-        android:layout_gravity="center"/>
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginStart="12dp"
-    >
-    <TextView
-        android:id="@+id/profile_name"
-        android:layout_width="wrap_content"
+    android:scrollbars="none"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:background="@color/secondary_bg_lighter"
         android:layout_height="wrap_content"
-        android:text="John Doe"
-        android:layout_marginTop="8dp"
-        android:textStyle="bold"
-        android:textColor="@android:color/white"/>
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/profile_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="johndoe@example.com"
-        android:textColor="@android:color/white"/>
-</LinearLayout>
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/secondary_bg_lighter">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardBackgroundColor="@color/secondary_bg_lighter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp">
+
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="63dp"
+                        app:cardBackgroundColor="@color/baseBlack"
+                        app:cardCornerRadius="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="60dp"
+                                android:fontFamily="@font/sf_semibold"
+                                android:text="User's Name"
+                                android:textColor="@color/better_white"
+                                android:textSize="24dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.505"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/email"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:fontFamily="@font/sf_medium"
+                                android:text="Email"
+                                android:textColor="@color/better_white"
+                                android:textSize="15sp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.501"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/name" />
+
+                            <TextView
+                                android:id="@+id/Usernumber"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="@font/sf_medium"
+                                android:text="Phone Number"
+                                android:textColor="@color/better_white"
+                                android:textSize="15sp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/email" />
+
+                            <ImageView
+                                android:id="@+id/iv_qr_code"
+                                android:layout_width="200dp"
+                                android:layout_height="200dp"
+                                android:layout_marginTop="8dp"
+                                android:src="@drawable/placeholder_image"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/Usernumber" />
+
+
+                            <TextView
+                                android:id="@+id/description"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:fontFamily="@font/sf_medium"
+                                android:textAlignment="center"
+                                android:text="This is your unique QR, it can be used \nfor accessing events hosted by NCS"
+                                android:textColor="@color/better_white"
+                                android:textSize="12sp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.503"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/iv_qr_code" />
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/scan_button"
+                                android:layout_width="150dp"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="20dp"
+                                android:background="@drawable/hollow_button_bg"
+                                android:drawableStart="@drawable/qr_ic"
+                                android:drawableTint="@color/better_white"
+                                android:fontFamily="@font/sfbold"
+                                android:paddingLeft="25dp"
+                                android:paddingRight="25dp"
+                                android:text="Scan QR"
+                                android:textAllCaps="false"
+                                android:textColor="@color/better_white"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/description" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="5dp"
+                                android:layout_marginTop="20dp"
+                                android:background="@color/better_white"
+                                app:layout_constraintBottom_toTopOf="@+id/view2"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/scan_button"
+                                app:layout_constraintVertical_bias="1.0" />
+
+                            <View
+                                android:id="@+id/view2"
+                                android:layout_width="match_parent"
+                                android:layout_height="10dp"
+                                android:background="@color/primary"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        app:cardCornerRadius="60dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/profile_pic"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/profile_pic_placeholder" />
+                    </androidx.cardview.widget.CardView>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:id="@+id/redemptions"
+                android:gravity="center|start"
+                android:layout_marginBottom="1dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:src="@drawable/baseline_card_giftcard_24"
+                    app:tint="@color/better_white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:fontFamily="@font/sf_medium"
+                    android:text="My Redemptions"
+                    android:textColor="@color/better_white"
+                    android:textSize="20dp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/card_bg"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:id="@+id/shareQ"
+                android:gravity="center|start"
+                android:layout_marginBottom="1dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:src="@drawable/share"
+                    app:tint="@color/better_white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:fontFamily="@font/sf_medium"
+                    android:text="Share QR"
+                    android:textColor="@color/better_white"
+                    android:textSize="20dp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/card_bg"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:id="@+id/settings"
+                android:gravity="center|start"
+                android:layout_marginBottom="1dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:src="@drawable/baseline_settings_24"
+                    app:tint="@color/better_white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:fontFamily="@font/sf_medium"
+                    android:text="Settings"
+                    android:textColor="@color/better_white"
+                    android:textSize="20dp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/card_bg"/>
+
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"
+            android:src="@drawable/logo"/>
+
+        <TextView
+            android:id="@+id/version_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/sfbold"
+            android:text="Version : 1.0"
+            android:textColor="#686666"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+
+    </LinearLayout>
+</ScrollView>

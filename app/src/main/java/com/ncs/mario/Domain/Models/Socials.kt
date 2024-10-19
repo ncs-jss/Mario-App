@@ -1,13 +1,13 @@
 package com.ncs.mario.Domain.Models
 
 data class Socials(
-    val Behance: String = "",
+    var Behance: String = "",
     val CodeChef: String= "",
     val CodeForces: String= "",
     val Facebook: String= "",
-    val GitHub: String= "",
+    var GitHub: String= "",
     val HackerRank: String= "",
     val LeetCode: String= "",
-    val LinkedIn: String= "",
+    var LinkedIn: String= "",
     val Twitter: String= ""
 )
