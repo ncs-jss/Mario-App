@@ -1,4 +1,4 @@
-package com.ncs.mario.Domain.Api
+package com.ncs.mario.DI
 
 import com.ncs.mario.Domain.Interfaces.EventRepository
 import com.ncs.mario.Domain.Interfaces.ProfileRepository

@@ -4,8 +4,10 @@ package com.ncs.mario.DI
 import com.ncs.mario.BuildConfig
 import com.ncs.mario.Domain.Api.AuthApiService
 import com.ncs.mario.Domain.Api.EventsApi
+import com.ncs.mario.Domain.Api.MerchApi
 import com.ncs.mario.Domain.Api.ProfileApiService
 import com.ncs.mario.Domain.Api.QRAPI
+import com.ncs.mario.Domain.Models.Merch
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -82,5 +84,15 @@ object ApiModule {
             .create(QRAPI::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun getMerchApiService(okkHttpClient: OkHttpClient): MerchApi {
+        return Retrofit.Builder()
+            .baseUrl("${BuildConfig.API_BASE_URL}${BuildConfig.MERCH_ENDPOINT}")
+            .client(okkHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(MerchApi::class.java)
+    }
 
 }
