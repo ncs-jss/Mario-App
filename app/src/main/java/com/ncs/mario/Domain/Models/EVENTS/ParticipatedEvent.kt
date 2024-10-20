@@ -1,8 +1,6 @@
 package com.ncs.mario.Domain.Models.EVENTS
 
-import java.util.Date
-
-data class Event(
+data class ParticipatedEvent(
     val createdAt: Long,
     val points:Int?=20,
     val enrolled: List<String>,
@@ -15,5 +13,4 @@ data class Event(
     val registrationLink: String? = null,
     val venue: String? = null,
     val enrolledCount: Int
-
 )
