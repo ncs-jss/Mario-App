@@ -16,6 +16,89 @@
         android:layout_height="wrap_content"
         />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="App Notifications"
+        android:fontFamily="@font/sfbold"
+        android:textColor="@color/better_white"
+        android:textSize="14sp"
+        android:layout_marginStart="20dp"/>
 
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/allNotificationsSwitch"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:checked="true"
+        android:fontFamily="@font/sf_medium"
+        android:gravity="left"
+        android:text="All Notifications"
+        android:textColor="@color/better_white"
+        android:textSize="20dp"
+        app:thumbTint="@color/better_white"
+        app:trackTint="@color/button_selector" />
 
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/postNotificationsSwitch"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:checked="true"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/sf_light"
+        android:gravity="left"
+        android:text="Post Notifications"
+        android:textColor="@color/better_white"
+        android:textSize="16dp"
+        app:thumbTint="@color/better_white"
+        app:trackTint="@color/button_selector" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/eventNotificationsSwitch"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:checked="true"
+        android:fontFamily="@font/sf_light"
+        android:gravity="left"
+        android:text="Event Notifications"
+        android:textColor="@color/better_white"
+        android:textSize="16dp"
+        app:thumbTint="@color/better_white"
+        app:trackTint="@color/button_selector" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/pollNotificationsSwitch"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:checked="true"
+        android:fontFamily="@font/sf_light"
+        android:gravity="left"
+        android:text="Poll Notifications"
+        android:textColor="@color/better_white"
+        android:textSize="16dp"
+        app:thumbTint="@color/better_white"
+        app:trackTint="@color/button_selector" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/merchNotificationsSwitch"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:checked="true"
+        android:fontFamily="@font/sf_light"
+        android:gravity="left"
+        android:text="Merchandise Notifications"
+        android:textColor="@color/better_white"
+        android:textSize="16dp"
+        app:thumbTint="@color/better_white"
+        app:trackTint="@color/button_selector" />
 </LinearLayout>

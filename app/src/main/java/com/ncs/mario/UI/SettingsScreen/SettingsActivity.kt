@@ -13,6 +13,7 @@ import com.ncs.mario.Domain.Utility.ExtensionsUtil.toast
 import com.ncs.mario.Domain.Utility.GlobalUtils
 import com.ncs.mario.R
 import com.ncs.mario.UI.SettingsScreen.EditProfile.EditProfileActivity
+import com.ncs.mario.UI.SettingsScreen.Feedback.FeedbackActivity
 import com.ncs.mario.UI.SettingsScreen.NewChanges.NewChanges
 import com.ncs.mario.UI.SettingsScreen.Notifications.NotificationsPrefActivity
 import com.ncs.mario.UI.StartScreen.StartScreen
@@ -110,9 +111,7 @@ class SettingsActivity : AppCompatActivity(), settingAdater.onSettingClick {
                     startActivity(intent)
                     overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
                     toast("Logged out")
-                }, {
-
-                })
+                }, {})
 
         }
         else if (Codes.STRINGS.clickedSetting == "App Notifications") {
@@ -121,22 +120,13 @@ class SettingsActivity : AppCompatActivity(), settingAdater.onSettingClick {
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
 
         }
-//        } else if (Codes.STRINGS.clickedSetting == "Shake to Report") {
-//            val intent = Intent(this, ShakeDetectedActivity::class.java)
-//            intent.putExtra("type", "settings")
-//            startActivity(intent)
-//            this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
-//        } else if (Codes.STRINGS.clickedSetting == "Feedback") {
-//            if (PrefManager.getAppMode() == Endpoints.ONLINE_MODE) {
-//                val intent = Intent(this, ShakeDetectedActivity::class.java)
-//                intent.putExtra("type", "report")
-//                startActivity(intent)
-//                this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
-//            } else {
-//                util.showSnackbar(binding.root, "Feedback can't be given in offline mode", 2000)
-//            }
-//
-//        }
+
+        else if (Codes.STRINGS.clickedSetting == "Feedback") {
+
+            startActivity(Intent(this, FeedbackActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
+
+        }
 
     }
 

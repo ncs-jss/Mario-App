@@ -126,5 +126,42 @@ object PrefManager {
         return sharedPreferences.getInt("marioScore",0)
     }
 
+    fun setPostNotifPref(isAllowed:Boolean){
+        editor.putBoolean("postNotifPref",isAllowed)
+        editor.apply()
+    }
+
+    fun getPostNotifPref():Boolean{
+        return sharedPreferences.getBoolean("postNotifPref",true)
+    }
+
+    fun setPollNotifPref(isAllowed:Boolean){
+        editor.putBoolean("pollNotifPref",isAllowed)
+        editor.apply()
+    }
+
+    fun getPollNotifPref():Boolean{
+        return sharedPreferences.getBoolean("pollNotifPref",true)
+    }
+
+    fun setMerchNotifPref(isAllowed:Boolean){
+        editor.putBoolean("merchNotifPref",isAllowed)
+        editor.apply()
+    }
+
+    fun getMerchNotifPref():Boolean{
+        return sharedPreferences.getBoolean("merchNotifPref",true)
+    }
+
+    fun setEventNotifPref(isAllowed:Boolean){
+        editor.putBoolean("eventNotifPref",isAllowed)
+        editor.apply()
+    }
+
+    fun getEventNotifPref():Boolean{
+        return sharedPreferences.getBoolean("eventNotifPref",true)
+    }
+
+
 
 }
