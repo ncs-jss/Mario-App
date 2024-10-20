@@ -23,6 +23,24 @@
         android:theme="@style/Theme.NCSMario"
         tools:targetApi="31">
         <activity
+            android:name=".UI.SettingsScreen.ImageView.ImageViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UI.SettingsScreen.Feedback.FeedbackActivity"
+            android:exported="false" />
+
+        <service
+            android:name=".Services.FCMessagingService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+            android:exported="false" />
+
+        <activity
             android:name=".UI.SettingsScreen.Notifications.NotificationsPrefActivity"
             android:exported="false" />
         <activity
