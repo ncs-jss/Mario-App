@@ -1,25 +1,32 @@
 package com.ncs.mario.UI.MainScreen
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
+import com.ncs.mario.Domain.Api.BannerApiService
 import com.ncs.mario.Domain.Interfaces.EventRepository
 import com.ncs.mario.Domain.Interfaces.ProfileRepository
 import com.ncs.mario.Domain.Interfaces.QrRepository
-import com.ncs.mario.Domain.Models.EVENTS.Event
+import com.ncs.mario.Domain.Models.Banner
+import com.ncs.mario.Domain.Models.BannerResponse
+import com.ncs.mario.Domain.Models.Events.Event
 import com.ncs.mario.Domain.Models.ProfileData.Profile
+import com.ncs.mario.Domain.Models.ServerResponse
 import com.ncs.mario.Domain.Models.ServerResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.io.IOException
+import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val qrRepository: QrRepository,
     private val profileRepository: ProfileRepository,
-    private val eventRepository: EventRepository
+    private val eventRepository: EventRepository,
+    private val bannerApiService: BannerApiService
 ) : ViewModel() {
     private val _myMarioScore = MutableLiveData<ServerResult<Int>>()
     val myMarioScore: LiveData<ServerResult<Int>> = _myMarioScore
@@ -33,8 +40,21 @@ class MainViewModel @Inject constructor(
     private val _getEventsResponse = MutableLiveData<ServerResult<List<Event>>>()
     val getEventsResponse: LiveData<ServerResult<List<Event>>> = _getEventsResponse
 
+    private val _errorMessage = MutableLiveData<String?>()
+    val errorMessage: LiveData<String?> get() = _errorMessage
+
+    private val _progressState = MutableLiveData<Boolean>(false)
+    val progressState: LiveData<Boolean> get() = _progressState
+
+    private val _bannerResult = MutableLiveData<Boolean>()
+    val bannerResult: LiveData<Boolean> get() = _bannerResult
+
+    private val _banners = MutableLiveData<List<Banner>>()
+    val banners: LiveData<List<Banner>> get() = _banners
+
     init {
         getMyProfile()
+        getBanners()
     }
 
 //    fun getMyMarioScore() {
@@ -58,6 +78,31 @@ class MainViewModel @Inject constructor(
 //            }
 //        }
 //    }
+
+
+    fun getBanners(){
+        viewModelScope.launch {
+            try {
+                val response = bannerApiService.getBanners()
+                if (response.isSuccessful) {
+                    val responseBody=response.body()?.asString
+                    val bannerResponse = Gson().fromJson(responseBody, BannerResponse::class.java)
+                    _banners.value=bannerResponse.banners
+                } else {
+                    val errorResponse = response.errorBody()?.string()
+                    val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
+                    _bannerResult.value = false
+                    _errorMessage.value=loginResponse.message
+                }
+            } catch (e: SocketTimeoutException) {
+                _errorMessage.value = "Network timeout. Please try again."
+            } catch (e: IOException) {
+                _errorMessage.value = "Network error. Please check your connection."
+            } catch (e: Exception) {
+                _errorMessage.value = "Something went wrong. Please try again."
+            }
+        }
+    }
 
     fun validateScannedQR(couponCode: String) {
         viewModelScope.launch {
@@ -110,7 +155,7 @@ class MainViewModel @Inject constructor(
                     }
                     is ServerResult.Success -> {
                         if (it.data.success) {
-                            _getEventsResponse.value = ServerResult.Success(it.data.event)
+                            _getEventsResponse.value = ServerResult.Success(it.data.events)
                         } else {
                         }
                     }

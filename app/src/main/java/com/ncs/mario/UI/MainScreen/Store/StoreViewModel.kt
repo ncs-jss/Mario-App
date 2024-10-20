@@ -36,15 +36,15 @@ class StoreViewModel @Inject constructor(val merchApi: MerchApi): ViewModel() {
         viewModelScope.launch {
             try {
             val response = merchApi.getMerch()
-            if (response.isSuccessful) {
-                val res= response.body().toString()
-                val Merch =Gson().fromJson(res,MerchResponse::class.java)
-                _getMerch.value = Merch
-            } else {
-                val error = response.errorBody()?.string()
-                _errorMessage.value = error
-                _getMerch.value = MerchResponse(false,"Something went wrong!!", null)
-            }
+                if (response.isSuccessful) {
+                    val res= response.body().toString()
+                    val Merch =Gson().fromJson(res,MerchResponse::class.java)
+                    _getMerch.value = Merch
+                } else {
+                    val error = response.errorBody()?.string()
+                    _errorMessage.value = error
+                    _getMerch.value = MerchResponse(false,"Something went wrong!!", null)
+                }
             }
             catch (e: SocketTimeoutException) {
                 Log.e("merchResult", "Request timed out: ${e.message}")

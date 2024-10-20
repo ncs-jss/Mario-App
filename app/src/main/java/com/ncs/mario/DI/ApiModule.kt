@@ -3,8 +3,10 @@ package com.ncs.mario.DI
 
 import com.ncs.mario.BuildConfig
 import com.ncs.mario.Domain.Api.AuthApiService
+import com.ncs.mario.Domain.Api.BannerApiService
 import com.ncs.mario.Domain.Api.EventsApi
 import com.ncs.mario.Domain.Api.MerchApi
+import com.ncs.mario.Domain.Api.PostApiService
 import com.ncs.mario.Domain.Api.ProfileApiService
 import com.ncs.mario.Domain.Api.QRAPI
 import com.ncs.mario.Domain.Models.Merch
@@ -93,6 +95,28 @@ object ApiModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(MerchApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun getBannersApiService(okkHttpClient: OkHttpClient): BannerApiService {
+        return Retrofit.Builder()
+            .baseUrl("${BuildConfig.API_BASE_URL}${BuildConfig.BANNER_ENDPOINT}")
+            .client(okkHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(BannerApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun getPostsApiService(okkHttpClient: OkHttpClient): PostApiService {
+        return Retrofit.Builder()
+            .baseUrl("${BuildConfig.API_BASE_URL}${BuildConfig.POST_ENDPOINT}")
+            .client(okkHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(PostApiService::class.java)
     }
 
 }
