@@ -44,9 +44,12 @@ import com.ncs.mario.Domain.Utility.ExtensionsUtil.bounce
 import com.ncs.mario.R
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.view.LayoutInflater
 import android.widget.TextView
 import com.airbnb.lottie.LottieAnimationView
+import com.google.firebase.dynamiclinks.DynamicLink
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -55,6 +58,29 @@ import java.util.Locale
 
 
 object ExtensionsUtil {
+
+    fun generateShareLink(postId:String, link:(Uri?) -> Unit){
+        val dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
+            .setLink(Uri.parse("https://ncsmario.page.link/share/${postId}"))
+            .setDomainUriPrefix("https://ncsmario.page.link")
+            .setAndroidParameters(
+                DynamicLink.AndroidParameters.Builder("com.ncs.mario")
+                    .setMinimumVersion(1)
+                    .build()
+            )
+            .buildDynamicLink()
+        FirebaseDynamicLinks.getInstance().createDynamicLink()
+            .setLongLink(dynamicLink.uri)
+            .buildShortDynamicLink()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val shortLink = task.result?.shortLink
+                    link(shortLink!!)
+                } else {
+                    link(null)
+                }
+            }
+    }
 
     //Logging extensions
 

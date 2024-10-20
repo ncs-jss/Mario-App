@@ -1,4 +1,4 @@
-package com.ncs.mario.Domain.Models.EVENTS
+package com.ncs.mario.Domain.Models.Events
 
 data class PollItem(
     val question: String,  // The poll question

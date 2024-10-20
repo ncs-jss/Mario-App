@@ -1,10 +1,9 @@
 package com.ncs.mario.Domain.Repository
 
-import android.util.Log
 import com.ncs.mario.Domain.Api.EventsApi
 import com.ncs.mario.Domain.Interfaces.EventRepository
-import com.ncs.mario.Domain.Models.EVENTS.GetEvents
-import com.ncs.mario.Domain.Models.EVENTS.ParticipatedEventResponse
+import com.ncs.mario.Domain.Models.Events.GetEvents
+import com.ncs.mario.Domain.Models.Events.ParticipatedEventResponse
 import com.ncs.mario.Domain.Models.ServerResult
 import javax.inject.Inject
 

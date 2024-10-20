@@ -8,10 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.ncs.mario.Domain.HelperClasses.PrefManager
-import com.ncs.mario.Domain.Models.EVENTS.ParticipatedEvent
+import com.ncs.mario.Domain.Models.Events.ParticipatedEvent
 import com.ncs.mario.Domain.Models.ServerResult
 import com.ncs.mario.Domain.Utility.GlobalUtils
-import com.ncs.mario.R
 import com.ncs.mario.databinding.FragmentScoreBinding
 import dagger.hilt.android.AndroidEntryPoint
 

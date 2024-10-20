@@ -1,4 +1,4 @@
-package com.ncs.mario.Domain.Models.EVENTS
+package com.ncs.mario.Domain.Models.Events
 
 data class ParticipatedEvent(
     val createdAt: Long,

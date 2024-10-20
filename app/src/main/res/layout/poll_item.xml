@@ -5,12 +5,15 @@
     android:orientation="horizontal"
     android:gravity="center_vertical"
     android:paddingVertical="4dp"
+    android:layout_marginBottom="10dp"
     android:paddingHorizontal="8dp">
 
     <RadioButton
         android:id="@+id/radioButton"
         android:layout_gravity="center"
         android:gravity="center"
+        android:checked="false"
+        android:buttonTint="@color/primary"
         android:layout_width="32dp"
         android:layout_height="32dp" />
 
@@ -21,6 +24,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_marginBottom="5dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -30,7 +34,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Option"
-                android:textColor="@color/pureblack"
+                android:fontFamily="@font/sfregular"
+                android:textColor="@color/better_white"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:paddingStart="16dp"
@@ -41,8 +46,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
+                android:fontFamily="@font/sfregular"
                 android:textSize="16sp"
-                android:textColor="@color/pureblack"
+                android:textColor="@color/better_white"
                 android:paddingEnd="16dp"
                 android:textStyle="bold"
                 android:gravity="center_vertical" />
@@ -55,7 +61,7 @@
             android:max="100"
             android:progressDrawable="@drawable/progress_track"
             android:progress="30"
-            android:thumb="@android:color/transparent" />
+            android:thumb="@color/track_tint" />
 
     </LinearLayout>
 </LinearLayout>

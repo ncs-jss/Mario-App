@@ -1,7 +1,7 @@
-package com.ncs.mario.Domain.Models.EVENTS
+package com.ncs.mario.Domain.Models.Events
 
 data class GetEvents(
     val success: Boolean,
     val message: String,
-    val event: List<Event>
+    val events: List<Event>
 )

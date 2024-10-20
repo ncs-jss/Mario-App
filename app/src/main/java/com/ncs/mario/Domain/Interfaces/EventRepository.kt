@@ -1,8 +1,7 @@
 package com.ncs.mario.Domain.Interfaces
 
-import com.ncs.mario.Domain.Models.EVENTS.GetEvents
-import com.ncs.mario.Domain.Models.EVENTS.ParticipatedEventResponse
-import com.ncs.mario.Domain.Models.QR.QrScannedResponse
+import com.ncs.mario.Domain.Models.Events.GetEvents
+import com.ncs.mario.Domain.Models.Events.ParticipatedEventResponse
 import com.ncs.mario.Domain.Models.ServerResult
 
 interface EventRepository {

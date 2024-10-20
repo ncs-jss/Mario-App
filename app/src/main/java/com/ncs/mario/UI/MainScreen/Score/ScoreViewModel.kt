@@ -1,12 +1,11 @@
 package com.ncs.mario.UI.MainScreen.Score
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ncs.mario.Domain.Interfaces.EventRepository
-import com.ncs.mario.Domain.Models.EVENTS.ParticipatedEventResponse
+import com.ncs.mario.Domain.Models.Events.ParticipatedEventResponse
 import com.ncs.mario.Domain.Models.ServerResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

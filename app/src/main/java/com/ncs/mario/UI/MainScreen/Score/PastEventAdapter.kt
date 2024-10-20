@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.ncs.mario.Domain.Models.EVENTS.ParticipatedEvent
+import com.ncs.mario.Domain.Models.Events.ParticipatedEvent
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.mario.R
 import com.ncs.mario.databinding.ItemPastEventBinding
