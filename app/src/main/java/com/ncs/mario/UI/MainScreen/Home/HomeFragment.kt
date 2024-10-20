@@ -287,13 +287,13 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack {
             requireContext().performHapticFeedback()
             adapter.removePost(ListItem.Post(post))
             viewModel.likePost(LikePostBody(post_id = post._id, action = "LIKE"))
-            val newpost=post.copy(likes = if (!post.liked) post.likes+1 else post.likes, liked = true)
+            val newpost=post.copy(likes = if (!post.liked) post.likes+1 else post.likes, liked = true,image = post.image ?: "default_image_url")
             adapter.appendPosts(mutableListOf(ListItem.Post(newpost)))
         }
         else {
             adapter.removePost(ListItem.Post(post))
             viewModel.likePost(LikePostBody(post_id = post._id, action = "UNLIKE"))
-            val newpost=post.copy(likes = post.likes-1, liked = false)
+            val newpost=post.copy(likes = post.likes-1, liked = false,image = post.image ?: "default_image_url")
             adapter.appendPosts(mutableListOf(ListItem.Post(newpost)))
         }
     }
