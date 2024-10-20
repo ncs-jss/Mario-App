@@ -1,7 +1,7 @@
 package com.ncs.mario.Domain.Models
 
 data class Merch(
-    val id:String="",
+    val _id:String="",
     val image:String="",
     val name:String="",
     val cost:Int,
