@@ -1,5 +1,6 @@
 package com.ncs.mario.UI.MainScreen.Store
 
+import StoreAdapter
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -40,9 +41,14 @@ class StoreFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = StoreAdapter(emptyList()){
-                    viewModel.purchaseMerch(it.id)
+        adapter = StoreAdapter {
+            if (!it._id.isNullOrEmpty()) {
+                viewModel.purchaseMerch(it._id)
+            } else {
+                Toast.makeText(requireContext(), "Invalid item selected", Toast.LENGTH_SHORT).show()
+            }
         }
+
         binding.recyclerViewItems.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.recyclerViewItems.adapter = adapter
         viewModel.getNCSMerch()
@@ -57,7 +63,7 @@ class StoreFragment : Fragment() {
         viewModel.getMerch.observe(viewLifecycleOwner){
             if (it!=null){
                 if(it.success){
-                    adapter.updateItems(it.merchandise)
+                    adapter.submitList(it.merchandise)
                 }
                 else{
                     util.showActionSnackbar(binding.root,it.message,10000,"Retry"){

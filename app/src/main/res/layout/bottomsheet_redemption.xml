@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:minHeight="200dp"
+    android:background="@color/secondary_bg_lighter"
+    >
+
+
+    <View
+        android:layout_width="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_height="2dp"
+        android:background="@color/white"
+        />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:weightSum="10"
+        >
+
+        <ImageButton
+            android:id="@+id/close_btn"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@null"
+            android:visibility="invisible"
+            android:src="@drawable/baseline_keyboard_arrow_down_24"
+            app:tint="@color/white" />
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="9"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/sf_semibold"
+                android:gravity="center"
+                android:id="@+id/title"
+                android:visibility="visible"
+                android:layout_gravity="center"
+                android:text="Description"
+                android:textColor="@color/better_white"
+                android:textSize="18dp" />
+
+        </RelativeLayout>
+
+
+        <ImageButton
+            android:id="@+id/done_btn"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@null"
+            android:visibility="invisible"
+            android:src="@drawable/baseline_keyboard_arrow_down_24"
+            app:tint="@color/dim_primary" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/card_bg"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        >
+        <TextView
+            android:id="@+id/orderId"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="OrderId: 7192"
+            />
+        <TextView
+            android:id="@+id/date"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Place On: 12 Oct, 2024"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="6dp"
+        android:background="@color/neutral700"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        >
+        <LinearLayout
+            android:padding="6dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/product_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="NCS T-shirt"
+                android:textStyle="bold"
+                android:fontFamily="@font/sfbold"
+                android:textSize="18sp"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Quantity: 1"
+                android:textColor="@color/neutral400"
+                android:textSize="14sp"
+                android:fontFamily="@font/sf_medium"
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end"
+                >
+                <TextView
+                    android:layout_gravity="center"
+                    android:id="@+id/points"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="400"
+                    android:layout_marginRight="2dp"
+                    android:gravity="center"
+                    android:fontFamily="@font/sfbold"
+                    android:textSize="40sp"
+                    android:textColor="@color/secondary"
+                    android:layout_marginEnd="1dp"
+                    />
+                <ImageView
+                    android:padding="1dp"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/token_ic"
+                    />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+
+            android:layout_margin="8dp"
+            android:layout_width="124dp"
+            android:layout_height="124dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginStart="2dp"
+            app:cardCornerRadius="8dp">
+            <ImageView
+                android:id="@+id/item_icon"
+                android:layout_width="124dp"
+                android:layout_weight="1"
+                android:layout_height="124dp"
+                android:src="@drawable/profile_pic_placeholder"
+                android:scaleType="centerCrop"
+                android:background="@android:color/darker_gray"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="Item Icon"
+                android:backgroundTint="@android:color/white"
+                android:clipToOutline="true"
+                />
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="8dp"
+        android:orientation="horizontal"
+        >
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/outline_check_circle_outline_24"
+            />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/neutral200"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            />
+        <ImageView
+            android:id="@+id/progressView"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/twotone_circle_24"
+            />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/neutral200"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            />
+        <ImageView
+            android:id="@+id/completeView"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/outline_circle_24"/>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PLACED"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            />
+        <TextView
+            android:paddingStart="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PROCESSING"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_weight="1"
+            />
+        <TextView
+            android:id="@+id/completeTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="COMPLETE"
+            android:textStyle="bold"
+            android:gravity="end"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+
+
+
+</LinearLayout>
