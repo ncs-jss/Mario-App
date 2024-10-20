@@ -1,10 +1,19 @@
 package com.ncs.mario.UI.StartScreen
 
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.ncs.mario.Domain.HelperClasses.PrefManager
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.isNull
 import com.ncs.mario.Domain.Utility.GlobalUtils
@@ -28,6 +37,37 @@ class StartScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         enableEdgeToEdge()
+        handleDynamicLink(intent)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.POST_NOTIFICATIONS
+                ) ==
+                PackageManager.PERMISSION_GRANTED
+            ) {
+                runNormally(true)
+            } else if (shouldShowRequestPermissionRationale(android.Manifest.permission.POST_NOTIFICATIONS)) {
+                util.twoBtnDialog(
+                    title = "Notification Permission required",
+                    msg = "Notification permission is required for better functioning of the app",
+                    positiveBtnText = "OK",
+                    positive = {
+                        requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+                    },
+                    negativeBtnText = "Cancel",
+                    negative = {
+                        runNormally(false)
+                    })
+            } else {
+                requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+        else{
+            runNormally(true)
+        }
+    }
+
+    private fun runNormally(isPermissionGranted:Boolean){
         if (PrefManager.getToken()==""){
             startActivity(Intent(this, AuthActivity::class.java))
             finish()
@@ -37,6 +77,53 @@ class StartScreen : AppCompatActivity() {
             observeViewModel()
         }
     }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            runNormally(true)
+        } else {
+            util.twoBtnDialog(
+                title = "Notification Permission required",
+                msg = "You can always allow permissions from the App's settings.",
+                positiveBtnText = "Take me there",
+                positive = {
+                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                        data = Uri.fromParts("package", this@StartScreen.packageName, null)
+                    }
+                    startActivity(intent)
+                },
+                negativeBtnText = "Cancel",
+                negative = {
+                    runNormally(false)
+                }
+            )
+        }
+    }
+
+    private fun handleDynamicLink(intent: Intent?) {
+        val dynamicLinkTask = FirebaseDynamicLinks.getInstance().getDynamicLink(intent!!)
+        dynamicLinkTask.addOnCompleteListener(this) { task ->
+            if (task.isSuccessful) {
+                val dynamicLink = task.result
+                if (dynamicLink != null) {
+                    handleDeepLink(dynamicLink.link!!)
+                }
+            } else {
+                Log.e("DynamicLink", "Error getting dynamic link", task.exception)
+            }
+        }
+    }
+
+    private fun handleDeepLink(uri: Uri) {
+        Log.d("shareLinkTest", uri.toString())
+        val pathSegments = uri.pathSegments
+        Log.d("shareLinkTest", pathSegments.toString())
+    }
+
+
     fun observeViewModel(){
 
         viewModel.userDetails.observe(this){

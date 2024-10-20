@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:name=".MarioApp"
@@ -22,6 +23,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NCSMario"
         tools:targetApi="31">
+        <activity
+            android:name=".UI.SettingsScreen.ImageView.ImageViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UI.SettingsScreen.Feedback.FeedbackActivity"
+            android:exported="false" />
+
+        <service
+            android:name=".Services.FCMessagingService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+            android:exported="false" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_channel_id" />
+
         <activity
             android:name=".UI.SettingsScreen.Notifications.NotificationsPrefActivity"
             android:exported="false" />
@@ -51,8 +73,16 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="https" />
+                <data android:host="ncsmario.page.link" />
             </intent-filter>
         </activity>
 

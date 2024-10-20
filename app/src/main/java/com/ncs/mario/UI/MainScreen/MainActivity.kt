@@ -73,6 +73,14 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this@MainActivity, MyRedemptionsActivity::class.java))
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
         }
+        binding.drawerheaderfile.scanButton.setOnClickThrottleBounceListener {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+            scannerLauncher.launch(
+                ScanOptions().setPrompt("Scan to get Mario Points")
+                    .setDesiredBarcodeFormats(ScanOptions.QR_CODE)
+            )
+        }
+        binding.actionbar.scoreTV.text = PrefManager.getUserProfile()?.points.toString()
 
         binding.drawerheaderfile.settings.setOnClickThrottleBounceListener {
             startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
@@ -123,7 +131,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun qrGenerator(qrImage: ImageView) {
         val size = 400
-        val bits = QRCodeWriter().encode("PrefManager.getUserID()", BarcodeFormat.QR_CODE, size, size)
+        val bits = QRCodeWriter().encode(PrefManager.getUserID(), BarcodeFormat.QR_CODE, size, size)
         val bitmap = createBitmap(size, size, Bitmap.Config.RGB_565).also {
             for (x in 0 until size) {
                 for (y in 0 until size) {

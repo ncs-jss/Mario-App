@@ -59,6 +59,7 @@ class LoginViewModel @Inject constructor(val authApiService: AuthApiService) : V
                     Log.d("signupResult", "Login Successful: ${response.body()}")
                     _loginResult.value = true
                     _errorMessage.value = "Login Successful"
+                    response.body()?.get("_id")?.let { PrefManager.setUserID(it.asString) }
                     PrefManager.setUserSignUpEmail(email)
                     PrefManager.setToken(response.body()!!.get("token").asString)
                 } else {

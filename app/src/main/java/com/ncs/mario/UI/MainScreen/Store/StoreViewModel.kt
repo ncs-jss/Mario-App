@@ -11,6 +11,7 @@ import com.ncs.mario.Domain.Models.CommonResponse
 import com.ncs.mario.Domain.Models.Merch
 import com.ncs.mario.Domain.Models.MerchPurchase
 import com.ncs.mario.Domain.Models.MerchResponse
+import com.ncs.mario.Domain.Models.MyOrderResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -35,15 +36,15 @@ class StoreViewModel @Inject constructor(val merchApi: MerchApi): ViewModel() {
         viewModelScope.launch {
             try {
             val response = merchApi.getMerch()
-            if (response.isSuccessful) {
-                val res= response.body().toString()
-                val Merch =Gson().fromJson(res,MerchResponse::class.java)
-                _getMerch.value = Merch
-            } else {
-                val error = response.errorBody()?.string()
-                _errorMessage.value = error
-                _getMerch.value = MerchResponse(false,"", listOf(Merch(cost = 0, stock = 0)))
-            }
+                if (response.isSuccessful) {
+                    val res= response.body().toString()
+                    val Merch =Gson().fromJson(res,MerchResponse::class.java)
+                    _getMerch.value = Merch
+                } else {
+                    val error = response.errorBody()?.string()
+                    _errorMessage.value = error
+                    _getMerch.value = MerchResponse(false,"Something went wrong!!", null)
+                }
             }
             catch (e: SocketTimeoutException) {
                 Log.e("merchResult", "Request timed out: ${e.message}")
@@ -85,6 +86,6 @@ class StoreViewModel @Inject constructor(val merchApi: MerchApi): ViewModel() {
             }
         }
 
-            }
+    }
 
 }

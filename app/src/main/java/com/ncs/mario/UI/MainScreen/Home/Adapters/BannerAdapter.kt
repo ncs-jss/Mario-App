@@ -4,14 +4,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.ncs.mario.Domain.Models.Banner
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.load
 import com.ncs.mario.R
 import com.ncs.mario.databinding.ItemBannerBinding
 
-class BannerAdapter(private val banners: List<Int>) : RecyclerView.Adapter<BannerAdapter.BannerViewHolder>() {
+class BannerAdapter(private val banners: List<Banner>) : RecyclerView.Adapter<BannerAdapter.BannerViewHolder>() {
 
     inner class BannerViewHolder(private val binding: ItemBannerBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(bannerImg: Int) {
-            Glide.with(binding.root.context).load(bannerImg).placeholder(R.drawable.placeholder_image).into(binding.bannerImage)
+        fun bind(bannerImg: Banner) {
+            binding.bannerImage.load(bannerImg.image,binding.root.context.getDrawable(R.drawable.placeholder_image)!!)
         }
     }
 
@@ -21,12 +23,11 @@ class BannerAdapter(private val banners: List<Int>) : RecyclerView.Adapter<Banne
     }
 
     override fun onBindViewHolder(holder: BannerViewHolder, position: Int) {
-        val actualPosition = position % banners.size // Circular logic
+        val actualPosition = position % banners.size
         holder.bind(banners[actualPosition])
     }
 
     override fun getItemCount(): Int {
-        // Large enough to simulate infinite scrolling
         return Int.MAX_VALUE
     }
 }

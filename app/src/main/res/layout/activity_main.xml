@@ -29,6 +29,16 @@
             app:navGraph="@navigation/home_bottom_nav"
             app:defaultNavHost="true" />
 
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/linearProgressIndicator"
+            android:layout_width="match_parent"
+            android:indeterminate="true"
+            android:layout_height="5dp"
+            android:visibility="visible"
+            app:indicatorColor="@color/green"
+            app:indicatorDirectionLinear="leftToRight"
+            app:trackColor="@color/item_bg_glow"
+            />
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
             android:layout_width="match_parent"
