@@ -11,6 +11,7 @@ import com.ncs.mario.Domain.Models.CommonResponse
 import com.ncs.mario.Domain.Models.Merch
 import com.ncs.mario.Domain.Models.MerchPurchase
 import com.ncs.mario.Domain.Models.MerchResponse
+import com.ncs.mario.Domain.Models.MyOrderResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -42,7 +43,7 @@ class StoreViewModel @Inject constructor(val merchApi: MerchApi): ViewModel() {
             } else {
                 val error = response.errorBody()?.string()
                 _errorMessage.value = error
-                _getMerch.value = MerchResponse(false,"", listOf(Merch(cost = 0, stock = 0)))
+                _getMerch.value = MerchResponse(false,"Something went wrong!!", null)
             }
             }
             catch (e: SocketTimeoutException) {
@@ -85,6 +86,6 @@ class StoreViewModel @Inject constructor(val merchApi: MerchApi): ViewModel() {
             }
         }
 
-            }
+    }
 
 }

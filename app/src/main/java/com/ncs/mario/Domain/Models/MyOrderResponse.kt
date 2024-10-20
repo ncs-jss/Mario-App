@@ -1,7 +1,7 @@
 package com.ncs.mario.Domain.Models
 
-data class MerchResponse(
+data class MyOrderResponse(
     val success: Boolean,
     val message: String,
-    val merchandise: List<Merch>?
+    val orders: List<MyOrderData>?
 )

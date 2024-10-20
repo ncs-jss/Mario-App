@@ -20,4 +20,8 @@ interface MerchApi {
     @Headers("Content-Type: application/json")
     @POST("buy-merch")
     suspend fun buyMerch(@Header("Authorization") authToken: String= PrefManager.getToken()!!,@Body payload:MerchPurchase): Response<JsonObject>
+
+    @Headers("Content-Type: application/json")
+    @GET("get-my-orders")
+    suspend fun getMyOrders(@Header("Authorization") authToken: String= PrefManager.getToken()!!): Response<JsonObject>
 }
