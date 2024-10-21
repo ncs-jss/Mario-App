@@ -155,6 +155,7 @@ class KYCValidationFragment : Fragment() {
                     arrayOf(Manifest.permission.CAMERA),
                     CAMERA_PERMISSION_REQUEST
                 )
+                util.showSnackbar(binding.root,"Camera permission is required",2000)
             } else {
                 pickUserImage()
             }
@@ -166,6 +167,7 @@ class KYCValidationFragment : Fragment() {
                     arrayOf(Manifest.permission.CAMERA),
                     CAMERA_PERMISSION_REQUEST
                 )
+                util.showSnackbar(binding.root,"Camera permission is required",2000)
             } else {
                 pickCollegeIDImage()
             }
@@ -177,6 +179,7 @@ class KYCValidationFragment : Fragment() {
                     arrayOf(Manifest.permission.CAMERA),
                     CAMERA_PERMISSION_REQUEST
                 )
+                util.showSnackbar(binding.root,"Camera permission is required",2000)
             } else {
                 pickUserImage()
             }
@@ -188,6 +191,7 @@ class KYCValidationFragment : Fragment() {
                     arrayOf(Manifest.permission.CAMERA),
                     CAMERA_PERMISSION_REQUEST
                 )
+                util.showSnackbar(binding.root,"Camera permission is required",2000)
             } else {
                 pickCollegeIDImage()
             }

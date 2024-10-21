@@ -78,6 +78,14 @@ class MyRedemptionsActivity : AppCompatActivity(), RedemptionAdapter.OnOrderClic
                     }
                 }
                 else{
+                    binding.shimmerLayout.apply {
+                        stopShimmer()
+                        visibility = View.GONE
+                    }
+                    binding.redemptionsRv.visible()
+                    if (binding.swiperefresh.isRefreshing){
+                        binding.swiperefresh.isRefreshing = false
+                    }
                     binding.redemptionsRv.visibility = View.GONE
                     binding.noRedemptionsTV.visibility = View.VISIBLE
                 }

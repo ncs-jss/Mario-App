@@ -67,7 +67,7 @@ class PersonalDetailsFragmentEditProfile : Fragment(), BottomSheet.SendText {
                 userSurvey.year=surveyViewModel.year.value!!
                 PrefManager.setUserSurvey(userSurvey)
                 Log.d("usercheck","${PrefManager.getUserSurvey()}")
-                findNavController().navigate(R.id.action_fragment_personal_details_to_fragment_technical)
+                findNavController().navigate(R.id.action_fragment_personal_details_ep_to_fragment_technical_ep)
                 surveyViewModel.resetPersonalDetailsPageResult()
                 surveyViewModel.resetErrorMessagePersonalDetails()
             }

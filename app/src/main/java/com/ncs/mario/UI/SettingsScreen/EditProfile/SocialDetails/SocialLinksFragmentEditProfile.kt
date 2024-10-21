@@ -153,7 +153,7 @@ class SocialLinksFragmentEditProfile : Fragment() {
     }
 
     fun moveToPrevious(){
-        findNavController().navigate(R.id.action_fragment_social_links_to_fragment_technical)
+        findNavController().navigate(R.id.action_fragment_social_links_ep_to_fragment_technical_ep)
     }
 
 }
