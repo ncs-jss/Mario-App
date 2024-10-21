@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.core.content.FileProvider
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,6 +34,7 @@ import com.ncs.mario.UI.MainScreen.Home.Adapters.EventsAdapter
 import com.ncs.mario.UI.MainScreen.Home.Adapters.ListItem
 import com.ncs.mario.UI.MainScreen.Home.Adapters.PostAdapter
 import com.ncs.mario.UI.MainScreen.MainActivity
+import com.ncs.mario.UI.MainScreen.MainViewModel
 import com.ncs.mario.databinding.FragmentViewAllBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -50,10 +52,11 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
     }
     lateinit var eventsAdapter: EventsAdapter
     private lateinit var adapter: PostAdapter
-    private val viewModel: HomeViewModel by viewModels()
+    private val viewModel: HomeViewModel by activityViewModels()
     private val util: GlobalUtils.EasyElements by lazy {
         GlobalUtils.EasyElements(requireActivity())
     }
+    private val activityViewModel : MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -98,13 +101,32 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
     }
 
     private fun observeViewModel(){
+
+        viewModel.enrollResult.observe(viewLifecycleOwner){
+            if (it){
+                activityViewModel.fetchCriticalInfo()
+            }
+        }
+
+        viewModel.unenrollResult.observe(viewLifecycleOwner){
+            if (it){
+                activityViewModel.fetchCriticalInfo()
+            }
+        }
+
         viewModel.normalErrorMessage.observe(viewLifecycleOwner){
-            util.showSnackbar(binding.root,it.toString(),2000)
+            if (!it.isNull) {
+                util.showSnackbar(binding.root, it.toString(), 2000)
+                viewModel.resetErrorMessage()
+            }
         }
 
         viewModel.errorMessage.observe(viewLifecycleOwner){
-            util.showActionSnackbar(binding.root,it.toString(),2000,"Retry") {
-                requireActivity().recreate()
+            if (!it.isNull) {
+                util.showActionSnackbar(binding.root, it.toString(), 2000, "Retry", {
+                    requireActivity().recreate()
+                })
+                viewModel.resetErrorMessage()
             }
         }
 
@@ -183,17 +205,6 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
         adapter = PostAdapter(posts, this)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        onBackPress()
-    }
-
-    private fun onBackPress() {
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            moveToPrevious()
-        }
     }
 
     fun moveToPrevious(){

@@ -30,8 +30,8 @@ class OrderDetailsBottomSheet:BottomSheetDialogFragment() {
     private fun populateOrderDetails(binding: BottomsheetRedemptionBinding) {
         binding.productName.text = order.name
         binding.points.text = order.cost.toString()
-        binding.orderId.text = "OrderId:${order._id}"
-        binding.date.text = "Placed on ${formatLongToDate(order.createdAt)}"
+        binding.orderId.text = "Order ID: ${order._id}"
+        binding.date.text = "Placed on: ${formatLongToDate(order.createdAt)}"
         Glide.with(binding.root).load(order.image).placeholder(R.drawable.profile_pic_placeholder).into(binding.itemIcon)
         when(order.status){
             OrderStatus.PENDING -> {}

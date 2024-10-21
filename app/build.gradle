@@ -180,6 +180,14 @@ dependencies {
     implementation 'io.github.igreenwood.loupe:loupe:1.2.2'
     implementation 'io.github.igreenwood.loupe:extensions:1.0.1'
 
+    //Shimmer Effect
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
+    //Swipe to refresh
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
+
+
+
 
 }
 

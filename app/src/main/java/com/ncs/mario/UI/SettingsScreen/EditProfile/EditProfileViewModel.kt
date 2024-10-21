@@ -17,9 +17,12 @@ import com.ncs.mario.Domain.Models.CreateProfileBody
 import com.ncs.mario.Domain.Models.ImageBody
 import com.ncs.mario.Domain.Models.ServerResponse
 import com.ncs.mario.Domain.Models.UpdateProfileBody
+import com.ncs.mario.Domain.Models.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
+import java.io.IOException
+import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -299,6 +302,7 @@ class EditProfileViewModel @Inject constructor(val profileApiService: ProfileApi
                     Log.d("signupResult", "Profile Update: ${response.body()}")
                     _errorMessageSocialDetails.value = "Profile Updated"
                     _socialDetailsPageResult.value = true
+
                 } else {
                     val errorResponse = response.errorBody()?.string()
                     val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
@@ -313,7 +317,5 @@ class EditProfileViewModel @Inject constructor(val profileApiService: ProfileApi
             }
         }
     }
-
-
 
 }

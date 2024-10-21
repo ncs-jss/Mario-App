@@ -15,25 +15,84 @@
         android:layout_height="wrap_content"
         />
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:id="@+id/swiperefresh"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:layout_width="match_parent"
+        android:visibility="visible"
+        android:id="@+id/shimmerLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/event"
+        android:layout_height="wrap_content"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <include layout="@layout/item_past_event_shimmer"/>
+            <include layout="@layout/item_past_event_shimmer"/>
+            <include layout="@layout/item_past_event_shimmer"/>
+            <include layout="@layout/item_past_event_shimmer"/>
+            <include layout="@layout/item_past_event_shimmer"/>
+            <include layout="@layout/item_past_event_shimmer"/>
+            <include layout="@layout/item_past_event_shimmer"/>
+            <include layout="@layout/item_past_event_shimmer"/>
+            <include layout="@layout/item_past_event_shimmer"/>
+            <include layout="@layout/item_past_event_shimmer"/>
+
+
+        </LinearLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_margin="12dp"
         android:id="@+id/redemptions_rv"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintTop_toBottomOf="@id/actionbar"/>
 
-    <TextView
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fontFamily="@font/sf_semibold"
-        android:textColor="@color/better_white"
-        android:textSize="14sp"
-        android:gravity="center"
-        android:id="@+id/noRedemptionsTV"
-        android:text="No redemptions yet, redeem now using\nyour Mario score from NCS Store"/>
+        <TextView
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/sf_semibold"
+            android:textColor="@color/better_white"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:id="@+id/noRedemptionsTV"
+            android:text="No redemptions yet, redeem now using\nyour Mario score from NCS Store"/>
+
+
+    </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 
 
 </LinearLayout>
