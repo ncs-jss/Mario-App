@@ -2,54 +2,54 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/fragment_personal_details"
+    app:startDestination="@id/fragment_personal_details_ep"
     android:id="@+id/edit_profile_nav">
 
     <fragment
-        android:id="@+id/fragment_personal_details"
+        android:id="@+id/fragment_personal_details_ep"
         tools:layout="@layout/fragment_personal_details"
         android:name="com.ncs.mario.UI.SettingsScreen.EditProfile.PersonalDetails.PersonalDetailsFragmentEditProfile"
-        android:label="fragment_personal_details" >
+        android:label="fragment_personal_details_ep" >
 
 
         <action
-            android:id="@+id/action_fragment_personal_details_to_fragment_technical"
-            app:destination="@id/fragment_technical"
+            android:id="@+id/action_fragment_personal_details_ep_to_fragment_technical_ep"
+            app:destination="@id/fragment_technical_ep"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_left"/>
 
     </fragment>
 
     <fragment
-        android:id="@+id/fragment_technical"
+        android:id="@+id/fragment_technical_ep"
         tools:layout="@layout/fragment_technical"
         android:name="com.ncs.mario.UI.SettingsScreen.EditProfile.TechnicalDetails.TechnicalFragmentEditProfile"
-        android:label="fragment_technical" >
+        android:label="fragment_technical_ep" >
 
         <action
-            android:id="@+id/action_fragment_technical_to_fragment_social_links"
-            app:destination="@id/fragment_social_links"
+            android:id="@+id/action_fragment_technical_ep_to_fragment_social_links_ep"
+            app:destination="@id/fragment_social_links_ep"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_left"/>
 
         <action
-            android:id="@+id/action_fragment_technical_to_fragment_personal_details"
-            app:destination="@id/fragment_personal_details"
+            android:id="@+id/action_fragment_technical_ep_to_fragment_personal_details_ep"
+            app:destination="@id/fragment_personal_details_ep"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_right"/>
 
     </fragment>
 
     <fragment
-        android:id="@+id/fragment_social_links"
+        android:id="@+id/fragment_social_links_ep"
         tools:layout="@layout/fragment_social_links"
         android:name="com.ncs.mario.UI.SettingsScreen.EditProfile.SocialDetails.SocialLinksFragmentEditProfile"
-        android:label="fragment_social_links" >
+        android:label="fragment_social_links_ep" >
 
 
         <action
-            android:id="@+id/action_fragment_social_links_to_fragment_technical"
-            app:destination="@id/fragment_technical"
+            android:id="@+id/action_fragment_social_links_ep_to_fragment_technical_ep"
+            app:destination="@id/fragment_technical_ep"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_right"/>
 
