@@ -25,7 +25,7 @@ class PastEventAdapter :ListAdapter<ParticipatedEvent, PastEventAdapter.PastEven
 
             binding.eventDate.text = formatDateString(event.time)
 
-            binding.points.text = event.points.toString()
+            binding.points.text = "+ ${event.points.toString()}"
 
             binding.root.setOnClickThrottleBounceListener{}
 
@@ -38,10 +38,10 @@ class PastEventAdapter :ListAdapter<ParticipatedEvent, PastEventAdapter.PastEven
             val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val outputFormat = SimpleDateFormat("dd MMM, yyyy", Locale.getDefault())
             return try {
-                val date: Date = inputFormat.parse(dateString) ?: return "TBD"
+                val date: Date = inputFormat.parse(dateString) ?: return "TBA"
                 outputFormat.format(date)
             } catch (e: Exception) {
-                "TBD"
+                "TBA"
             }
         }
     }

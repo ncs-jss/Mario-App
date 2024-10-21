@@ -12,6 +12,7 @@ import com.ncs.mario.Domain.Models.Merch
 import com.ncs.mario.Domain.Models.MerchPurchase
 import com.ncs.mario.Domain.Models.MerchResponse
 import com.ncs.mario.Domain.Models.MyOrderResponse
+import com.ncs.mario.UI.MainScreen.MainViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -67,7 +68,7 @@ class StoreViewModel @Inject constructor(val merchApi: MerchApi): ViewModel() {
                 if (response.isSuccessful) {
                     val res= response.body().toString()
                     val comRes =Gson().fromJson(res,CommonResponse::class.java)
-                        purchaseResult.value = comRes
+                    purchaseResult.value = comRes
                 }
                 else {
                     val error = response.errorBody()?.string()

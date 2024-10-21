@@ -27,7 +27,7 @@ class RedemptionAdapter(private val listener: OnOrderClickListener) :
         fun bind(order: MyOrderData, listener: OnOrderClickListener) {
             binding.eventTitle.text = order.name
             binding.eventDate.text = formatDate(order.createdAt)
-            binding.status.text = order.status.name
+            binding.status.text = "${order.status.name.toLowerCase().capitalize()}"
 
             Glide.with(binding.root.context)
                 .load(order.image)

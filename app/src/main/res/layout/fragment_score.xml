@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/swiperefresh"
     android:background="@color/baseBlack"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".UI.MainScreen.Score.ScoreFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/baseBlack"
     tools:context=".UI.MainScreen.Score.ScoreFragment">
 
     <androidx.cardview.widget.CardView
@@ -27,67 +40,64 @@
             android:scaleType="fitXY"
             android:src="@drawable/mario_score_bg" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="2dp"
+                    android:fontFamily="@font/sf_semibold"
+                    android:text="0"
+                    android:textColor="@color/baseWhite"
+                    android:textSize="40dp"
+                    android:layout_marginEnd="10dp" />
+
+                <ImageView
+                    android:id="@+id/token"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:elevation="2dp"
+                    android:src="@drawable/token_ic" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="2dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/sf_medium"
+                android:text="Level: Noobie"
+                android:textColor="@color/baseWhite"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </androidx.cardview.widget.CardView>
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:elevation="2dp"
-        android:gravity="start"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/scoreCard"
-        app:layout_constraintEnd_toStartOf="@+id/score"
-        app:layout_constraintStart_toStartOf="@+id/scoreCard"
-        app:layout_constraintTop_toTopOf="@id/scoreCard">
 
-        <TextView
-            android:id="@+id/name_score"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:elevation="2dp"
-            android:fontFamily="@font/sfbold"
-            android:gravity="start"
-            android:maxLines="1"
-            android:text="Nibblite"
-            android:textColor="@color/baseWhite"
-            android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/level"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:elevation="2dp"
-            android:fontFamily="@font/sf_medium"
-            android:text="Level: Noobie"
-            android:textColor="@color/baseWhite"
-            android:textSize="16sp" />
-    </LinearLayout>
-    <ImageView
-        android:id="@+id/token"
-        android:layout_width="52dp"
-        android:layout_marginEnd="40dp"
-        android:layout_height="52dp"
-        android:elevation="2dp"
-        android:src="@drawable/token_ic"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/event"
-        app:layout_constraintTop_toTopOf="@+id/scoreCard" />
-
-
-    <TextView
-        android:id="@+id/score"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="2dp"
-        android:fontFamily="@font/sfbold"
-        android:text="0"
-        android:textColor="@color/baseWhite"
-        android:textSize="56dp"
-        app:layout_constraintEnd_toStartOf="@+id/token"
-        app:layout_constraintBottom_toTopOf="@+id/event"
-        app:layout_constraintTop_toTopOf="@+id/scoreCard"/>
 
     <TextView
         android:id="@+id/event"
@@ -97,17 +107,50 @@
         app:layout_constraintStart_toStartOf="@id/scoreCard"
         app:layout_constraintEnd_toEndOf="@id/scoreCard"
         android:text="Past attended events"
-        android:textSize="20dp"
-        android:fontFamily="@font/sfbold"
+        android:textSize="14dp"
+        android:fontFamily="@font/sf_semibold"
         android:layout_margin="12dp"
-        android:textColor="@color/baseWhite"/>
+        android:textColor="@color/account"/>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:layout_width="match_parent"
+        android:visibility="visible"
+        android:id="@+id/shimmerLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/event"
+        android:layout_height="wrap_content"
+        >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:orientation="vertical"
+        >
+
+        <include layout="@layout/item_past_event_shimmer"/>
+        <include layout="@layout/item_past_event_shimmer"/>
+        <include layout="@layout/item_past_event_shimmer"/>
+        <include layout="@layout/item_past_event_shimmer"/>
+        <include layout="@layout/item_past_event_shimmer"/>
+        <include layout="@layout/item_past_event_shimmer"/>
+        <include layout="@layout/item_past_event_shimmer"/>
+        <include layout="@layout/item_past_event_shimmer"/>
+        <include layout="@layout/item_past_event_shimmer"/>
+        <include layout="@layout/item_past_event_shimmer"/>
+
+
+    </LinearLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/pastEventRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/event"
@@ -115,3 +158,7 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -3,14 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginTop="16dp"
-    android:layout_marginHorizontal="6dp"
-    android:layout_marginBottom="6dp"
+    android:layout_marginBottom="16dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:cardCornerRadius="12dp"
-    android:outlineAmbientShadowColor="@color/white"
-    android:outlineSpotShadowColor="@color/white"
+    android:layout_marginStart="6dp"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -19,7 +16,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:id="@+id/constraintLayout"
-        android:padding="2dp"
         android:layout_height="wrap_content"
         android:background="@color/neutral900"
         >
@@ -31,22 +27,31 @@
             android:id="@+id/layoutTop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
-                android:layout_weight="1"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
 
 
                 <androidx.cardview.widget.CardView
 
-                    android:layout_marginBottom="4dp"
                     android:id="@+id/contentIconCard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="12dp"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginBottom="4dp"
+                    android:elevation="0dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@color/neutral900"
+                    app:cardCornerRadius="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="180dp"
+                        android:layout_height="180dp">
+
                     <ImageView
                         android:id="@+id/contentIcon"
                         android:layout_width="180dp"
@@ -56,6 +61,65 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+
+                        <LinearLayout
+                            android:id="@+id/linearLayout2"
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/card_bg"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent">
+
+                            <LinearLayout
+                                android:id="@+id/pointsLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="top"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/points"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="5dp"
+                                    android:fontFamily="@font/sf_medium"
+                                    android:gravity="center"
+                                    android:text="800"
+                                    android:textColor="@color/white"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:id="@+id/logo"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:padding="4dp"
+                                    android:src="@drawable/token" />
+                            </LinearLayout>
+
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginEnd="-4dp"
+                            android:layout_marginBottom="-3dp"
+                            android:background="@drawable/arrow"
+                            android:orientation="horizontal"
+                            android:rotationY="180"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/linearLayout2" />
+
+
+
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                 </androidx.cardview.widget.CardView>
 
@@ -86,45 +150,24 @@
                 android:id="@+id/itemName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/sfbold"
+                android:fontFamily="@font/sf_medium"
                 android:layout_weight="1"
+                android:maxLines="2"
                 android:lines="2"
-                android:text="ItemName"
-                android:textColor="@color/green"
+                android:text="..."
+                android:ellipsize="end"
+                android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
-            <LinearLayout
-                android:layout_marginTop="2dp"
-                android:gravity="end"
-                android:layout_gravity="top"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/pointsLayout"
-                android:orientation="horizontal"
-                >
-                <TextView
-                    android:id="@+id/points"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/sfbold"
-                    android:text="800"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    />
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:id="@+id/logo"
-                    android:src="@drawable/token"
-                    android:padding="4dp"/>
-            </LinearLayout>
+
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/lockLayout"
-                android:gravity="center"
+                android:gravity="center|center_vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginBottom="5dp"
                 android:orientation="horizontal"
                 android:background="@drawable/filled_red_box"
                 >
@@ -134,17 +177,17 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
                     android:text="Locked"
-                    android:fontFamily="@font/sfbold"
+                    android:fontFamily="@font/sf_semibold"
                     android:gravity="center"
                     />
                 <ImageView
                     android:id="@+id/lockImage"
                     android:layout_gravity="top"
                     android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="2dp"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="3dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingTop="9dp"
+                    android:paddingBottom="9dp"
                     android:src="@drawable/lock"/>
 
             </LinearLayout>

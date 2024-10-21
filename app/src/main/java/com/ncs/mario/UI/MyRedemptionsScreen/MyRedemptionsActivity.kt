@@ -6,12 +6,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.ncs.mario.Domain.Models.MyOrderData
-import com.ncs.mario.Domain.Models.OrderStatus
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.gone
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.mario.Domain.Utility.GlobalUtils
 import com.ncs.mario.R
 import com.ncs.mario.UI.MainScreen.Score.RedemptionAdapter
-import com.ncs.mario.databinding.ActivityMainBinding
 import com.ncs.mario.databinding.ActivityMyRedemptionsBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,6 +30,16 @@ class MyRedemptionsActivity : AppCompatActivity(), RedemptionAdapter.OnOrderClic
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        binding.swiperefresh.setOnRefreshListener {
+            viewModel.getMyMerch()
+        }
+
+        binding.shimmerLayout.apply {
+            startShimmer()
+            visibility = View.VISIBLE
+        }
+        binding.redemptionsRv.gone()
+
         setUpViews()
         viewModel.getMyMerch()
         redemptionAdapter = RedemptionAdapter(this)
@@ -44,41 +53,7 @@ class MyRedemptionsActivity : AppCompatActivity(), RedemptionAdapter.OnOrderClic
     }
 
     private fun yourOrderList(): List<MyOrderData> {
-        return listOf(
-            MyOrderData(
-                _id = 1,
-                name = "Wireless Headphones",
-                image = "https://res.cloudinary.com/x5fsdgeq3/image/upload/v1729354130/m-merchandise/h1plp8w2x5trbydh2bwc.jpg",
-                cost = 800,
-                status = OrderStatus.PENDING,
-                createdAt = System.currentTimeMillis() - 86400000L // 1 day ago
-            ),
-            MyOrderData(
-                _id = 2,
-                name = "Smartphone Case",
-                image = "https://res.cloudinary.com/x5fsdgeq3/image/upload/v1729354130/m-merchandise/h1plp8w2x5trbydh2bwc.jpg",
-                cost = 400,
-                status = OrderStatus.FULFILLED,
-                createdAt = System.currentTimeMillis() - 604800000L // 7 days ago
-            ),
-            MyOrderData(
-                _id = 3,
-                name = "Bluetooth Speaker",
-                image = "https://res.cloudinary.com/x5fsdgeq3/image/upload/v1729354130/m-merchandise/h1plp8w2x5trbydh2bwc.jpg",
-                cost = 500,
-                status = OrderStatus.CANCELLED,
-                createdAt = System.currentTimeMillis() - 2592000000L // 30 days ago
-            ),
-            MyOrderData(
-                _id = 4,
-                name = "Fitness Tracker",
-                image = "https://res.cloudinary.com/x5fsdgeq3/image/upload/v1729354130/m-merchandise/h1plp8w2x5trbydh2bwc.jpg",
-                cost = 200,
-                status = OrderStatus.REFUND,
-                createdAt = System.currentTimeMillis() - 432000000L // 5 days ago
-            )
-        )
-
+        return listOf()
     }
 
     private fun bindingObserver() {
@@ -93,6 +68,14 @@ class MyRedemptionsActivity : AppCompatActivity(), RedemptionAdapter.OnOrderClic
             if(it.success){
                 if(!it.orders.isNullOrEmpty()){
                     redemptionAdapter.submitList(it.orders)
+                    binding.shimmerLayout.apply {
+                        stopShimmer()
+                        visibility = View.GONE
+                    }
+                    binding.redemptionsRv.visible()
+                    if (binding.swiperefresh.isRefreshing){
+                        binding.swiperefresh.isRefreshing = false
+                    }
                 }
                 else{
                     binding.redemptionsRv.visibility = View.GONE

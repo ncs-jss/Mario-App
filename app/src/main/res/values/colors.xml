@@ -8,6 +8,8 @@
     <color name="green">#37D553</color>
     <color name="app_black">#0A0A0A</color>
     <color name="transparent">#00000000</color>
+    <color name="shimmerColor">#C2C2C2</color>
+    <color name="onShimmerColor">#565656</color>
 
 <!--  ⚠️⚠️  dont consult colors below this-->
 

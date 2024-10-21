@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import androidx.core.content.FileProvider
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,6 +40,7 @@ import com.ncs.mario.UI.MainScreen.Home.Adapters.EventsAdapter
 import com.ncs.mario.UI.MainScreen.Home.Adapters.ListItem
 import com.ncs.mario.UI.MainScreen.Home.Adapters.PostAdapter
 import com.ncs.mario.UI.MainScreen.MainActivity
+import com.ncs.mario.UI.MainScreen.MainViewModel
 import com.ncs.mario.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -59,7 +61,8 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack {
     private val activityBinding: MainActivity by lazy {
         (requireActivity() as MainActivity)
     }
-    private val viewModel: HomeViewModel by viewModels()
+    private val viewModel: HomeViewModel by activityViewModels()
+    private val activityViewModel : MainViewModel by activityViewModels()
     private val util: GlobalUtils.EasyElements by lazy {
         GlobalUtils.EasyElements(requireActivity())
     }
@@ -72,9 +75,34 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setUpPostsRV(mutableListOf())
         super.onViewCreated(view, savedInstanceState)
+        binding.swiperefresh.setOnRefreshListener {
+            viewModel.getHomePageItems()
+            activityViewModel.fetchCriticalInfo()
+        }
+        setViews()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startAutoScroll()
+        activityBinding.binding.actionbar.titleTv.text="Mario"
+    }
+
+
+    private fun setViews(){
+        if (viewModel.posts.value.isNullOrEmpty()) {
+            viewModel.getHomePageItems()
+        }
+        binding.postsShimmerLayout.apply {
+            startShimmer()
+            visibility = View.VISIBLE
+        }
+
+        binding.recyclerView.gone()
+        setUpPostsRV(mutableListOf())
 
         activityBinding.binding.actionbar.btnHam.setImageResource(R.drawable.ham)
         activityBinding.binding.actionbar.score.visible()
@@ -93,13 +121,32 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack {
     }
 
     private fun observeViewModel(){
+
+        viewModel.enrollResult.observe(viewLifecycleOwner){
+            if (it){
+                activityViewModel.fetchCriticalInfo()
+            }
+        }
+
+        viewModel.unenrollResult.observe(viewLifecycleOwner){
+            if (it){
+                activityViewModel.fetchCriticalInfo()
+            }
+        }
+
         viewModel.normalErrorMessage.observe(viewLifecycleOwner){
-            util.showSnackbar(binding.root,it.toString(),2000)
+            if (!it.isNull) {
+                util.showSnackbar(binding.root, it.toString(), 2000)
+                viewModel.resetErrorMessage()
+            }
         }
         viewModel.errorMessage.observe(viewLifecycleOwner){
-            util.showActionSnackbar(binding.root,it.toString(),2000,"Retry",{
-                viewModel.getHomePageItems()
-            })
+            if (!it.isNull) {
+                util.showActionSnackbar(binding.root, it.toString(), 2000, "Retry", {
+                    viewModel.getHomePageItems()
+                })
+                viewModel.resetErrorMessage()
+            }
         }
         viewModel.banners.observe(viewLifecycleOwner){banners->
             setupBannerRecyclerView(banners.distinctBy { it._id }.sortedByDescending { it.createdAt })
@@ -154,6 +201,14 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack {
                 }
                 val topPosts = combinedList.take(5)
                 adapter.appendPosts(topPosts)
+                binding.postsShimmerLayout.apply {
+                    stopShimmer()
+                    visibility = View.GONE
+                }
+                binding.recyclerView.visible()
+                if (binding.swiperefresh.isRefreshing){
+                    binding.swiperefresh.isRefreshing = false
+                }
             }
         }
 
@@ -209,16 +264,31 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack {
     }
 
     private fun setupBannerRecyclerView(list: List<Banner>) {
+        binding.bannerShimmerLayout.apply {
+            stopShimmer()
+            visibility = View.GONE
+        }
+        binding.bannerRecyclerView.visible()
+
+        if (binding.bannerRecyclerView.onFlingListener == null) {
+            LinearSnapHelper().attachToRecyclerView(binding.bannerRecyclerView)
+        }
+
         binding.bannerRecyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = BannerAdapter(list)
             scrollToPosition(currentPosition)
-            LinearSnapHelper().attachToRecyclerView(this)
             addOnScrollListener(autoScrollListener)
         }
     }
 
+
     private fun setEventsRecyclerView(events:List<Event>){
+        binding.eventsShimmerLayout.apply {
+            stopShimmer()
+            visibility = View.GONE
+        }
+        binding.EventsRecyclerView.visible()
         val recyclerView = binding.EventsRecyclerView
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = layoutManager
@@ -263,10 +333,6 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack {
     override fun onPause() {
         super.onPause()
         stopAutoScroll()
-    }
-    override fun onResume() {
-        super.onResume()
-        startAutoScroll()
     }
 
     override fun onClick(event: Event, isEnrolled: Boolean) {
