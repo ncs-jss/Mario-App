@@ -67,7 +67,7 @@ class TechnicalFragmentEditProfile : Fragment() {
                 userSurvey.domains=domains
                 PrefManager.setUserSurvey(userSurvey)
                 Log.d("usercheck","${PrefManager.getUserSurvey()}")
-                findNavController().navigate(R.id.action_fragment_technical_to_fragment_social_links)
+                findNavController().navigate(R.id.action_fragment_technical_ep_to_fragment_social_links_ep)
                 surveyViewModel.resetTechnicalDetailsPageResult()
                 surveyViewModel.resetErrorMessageTechnicalDetails()
             }
@@ -168,6 +168,6 @@ class TechnicalFragmentEditProfile : Fragment() {
     }
 
     private fun moveToPrevious() {
-        findNavController().navigate(R.id.action_fragment_technical_to_fragment_personal_details)
+        findNavController().navigate(R.id.action_fragment_technical_ep_to_fragment_personal_details_ep)
     }
 }

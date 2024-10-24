@@ -86,20 +86,33 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="OrderId: 7192"
+            android:text="Order ID: 7192"
             />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        >
         <TextView
             android:id="@+id/date"
             android:layout_weight="1"
-            android:gravity="end"
+            android:gravity="start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Place On: 12 Oct, 2024"/>
+            android:text="Placed On: 12 Oct, 2024"/>
+
     </LinearLayout>
+
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginHorizontal="6dp"
+        android:layout_marginTop="5dp"
         android:background="@color/neutral700"
         />
     <LinearLayout

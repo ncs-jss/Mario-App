@@ -89,23 +89,29 @@ class KYCValidationFragment : Fragment() {
             }
         })
 
-        surveyViewModel.progressStateImageUpload.observe(viewLifecycleOwner, Observer { isLoading ->
+//        surveyViewModel.progressStateImageUpload.observe(viewLifecycleOwner, Observer { isLoading ->
+//            if (isLoading) {
+//                setUpLoader(true,"Uploading the images...")
+//            } else {
+//                setUpLoader(false,"")
+//            }
+//        })
+
+//        surveyViewModel.progressState.observe(viewLifecycleOwner, Observer { isLoading ->
+//            if (isLoading) {
+//                setUpLoader(true,"Please wait...")
+//            } else {
+//                setUpLoader(false,"")
+//            }
+//        })
+
+        surveyViewModel.finalProgressState.observe(viewLifecycleOwner, Observer { isLoading ->
             if (isLoading) {
-                setUpLoader(true,"Uploading the images...")
+                setUpLoader(true,"Please wait...")
             } else {
                 setUpLoader(false,"")
             }
         })
-
-        surveyViewModel.progressState.observe(viewLifecycleOwner, Observer { isLoading ->
-            if (isLoading) {
-                setUpLoader(true,"Creating your profile...")
-            } else {
-                setUpLoader(false,"")
-            }
-        })
-
-
 
         surveyViewModel.errorMessageKYCDetails.observe(viewLifecycleOwner, Observer { message ->
             if (message != null) {
@@ -113,6 +119,7 @@ class KYCValidationFragment : Fragment() {
                 surveyViewModel.resetErrorMessageKYCDetails()
             }
         })
+
         surveyViewModel.kycDetailsPageResult.observe(viewLifecycleOwner, Observer { result ->
             if (result){
                 surveyViewModel.resetKYCDetailsPageResult()
@@ -127,7 +134,7 @@ class KYCValidationFragment : Fragment() {
             }
         })
         surveyViewModel.userSelfie.observe(viewLifecycleOwner) {
-            if (!it.isNull){
+            if (!it.isNull && it!=""){
                 binding.userDP.gone()
                 binding.userDPLayout.root.visible()
                 val imageBitmap = handleImageRotation(Uri.parse(it!!))
@@ -137,7 +144,7 @@ class KYCValidationFragment : Fragment() {
         }
 
         surveyViewModel.userCollegeID.observe(viewLifecycleOwner) {
-            if (!it.isNull){
+            if (!it.isNull && it!=""){
                 binding.collegeID.gone()
                 binding.collegeIDlayout.root.visible()
                 val imageBitmap = handleImageRotation(Uri.parse(it!!))
@@ -155,6 +162,7 @@ class KYCValidationFragment : Fragment() {
                     arrayOf(Manifest.permission.CAMERA),
                     CAMERA_PERMISSION_REQUEST
                 )
+                util.showSnackbar(binding.root,"Camera permission is required",2000)
             } else {
                 pickUserImage()
             }
@@ -166,6 +174,7 @@ class KYCValidationFragment : Fragment() {
                     arrayOf(Manifest.permission.CAMERA),
                     CAMERA_PERMISSION_REQUEST
                 )
+                util.showSnackbar(binding.root,"Camera permission is required",2000)
             } else {
                 pickCollegeIDImage()
             }
@@ -177,6 +186,7 @@ class KYCValidationFragment : Fragment() {
                     arrayOf(Manifest.permission.CAMERA),
                     CAMERA_PERMISSION_REQUEST
                 )
+                util.showSnackbar(binding.root,"Camera permission is required",2000)
             } else {
                 pickUserImage()
             }
@@ -188,6 +198,7 @@ class KYCValidationFragment : Fragment() {
                     arrayOf(Manifest.permission.CAMERA),
                     CAMERA_PERMISSION_REQUEST
                 )
+                util.showSnackbar(binding.root,"Camera permission is required",2000)
             } else {
                 pickCollegeIDImage()
             }
@@ -271,11 +282,13 @@ class KYCValidationFragment : Fragment() {
                 REQUEST_USER_IMAGE_CAPTURE -> {
                     capturedUserImageUri?.let { uri ->
                         surveyViewModel.setUserSelfie(uri.toString())
+                        PrefManager.setUserDPCacheData(uri.toString())
                     }
                 }
                 REQUEST_COLLEGE_ID_IMAGE_CAPTURE -> {
                     capturedCollegeIDImageUri?.let { uri ->
                         surveyViewModel.setUserCollegeID(uri.toString())
+                        PrefManager.setCollegeIDCacheData(uri.toString())
                     }
                 }
             }

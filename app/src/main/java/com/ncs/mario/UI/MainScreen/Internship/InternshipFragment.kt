@@ -35,6 +35,7 @@ class InternshipFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        activityBinding.binding.actionbar.titleTv.text="Internships"
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -31,8 +31,10 @@ import com.journeyapps.barcodescanner.ScanOptions
 import com.ncs.mario.BuildConfig
 import com.ncs.mario.Domain.HelperClasses.PrefManager
 import com.ncs.mario.Domain.Models.ServerResult
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.load
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.mario.Domain.Utility.GlobalUtils
 import com.ncs.mario.UI.MyRedemptionsScreen.MyRedemptionsActivity
 import com.ncs.mario.UI.SettingsScreen.SettingsActivity
@@ -61,11 +63,14 @@ class MainActivity : AppCompatActivity() {
 
         val qrImage = binding.drawerheaderfile.ivQrCode
         qrGenerator(qrImage)
-        val currentUser=PrefManager.getUserProfile()!!
-        binding.drawerheaderfile.profilePic.load(currentUser.photo.secure_url,this.getDrawable(R.drawable.profile_pic_placeholder)!!)
-        binding.drawerheaderfile.name.text=currentUser.name
-        binding.drawerheaderfile.email.text=PrefManager.getUserSignUpEmail()
-        binding.drawerheaderfile.Usernumber.text=currentUser.admission_number
+
+        mainViewModel.cachedUserProfile.observe(this){
+            val currentUser=it
+            binding.drawerheaderfile.profilePic.load(currentUser.photo.secure_url,this.getDrawable(R.drawable.profile_pic_placeholder)!!)
+            binding.drawerheaderfile.name.text=currentUser.name
+            binding.drawerheaderfile.email.text=PrefManager.getUserSignUpEmail()
+            binding.drawerheaderfile.Usernumber.text=currentUser.admission_number
+        }
 
         binding.drawerheaderfile.versionCode.text="Version : ${BuildConfig.VERSION_NAME}"
 
@@ -80,7 +85,7 @@ class MainActivity : AppCompatActivity() {
                     .setDesiredBarcodeFormats(ScanOptions.QR_CODE)
             )
         }
-        binding.actionbar.scoreTV.text = PrefManager.getUserProfile()?.points.toString()
+//        binding.actionbar.scoreTV.text = PrefManager.getUserProfile()?.points.toString()
 
         binding.drawerheaderfile.settings.setOnClickThrottleBounceListener {
             startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
@@ -96,8 +101,6 @@ class MainActivity : AppCompatActivity() {
                 binding.drawerLayout.openDrawer(GravityCompat.START)
             }
         }
-
-
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
@@ -131,7 +134,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun qrGenerator(qrImage: ImageView) {
         val size = 400
-        val bits = QRCodeWriter().encode(PrefManager.getUserID(), BarcodeFormat.QR_CODE, size, size)
+        val bits = QRCodeWriter().encode(PrefManager.getUserProfile()?.admission_number, BarcodeFormat.QR_CODE, size, size)
         val bitmap = createBitmap(size, size, Bitmap.Config.RGB_565).also {
             for (x in 0 until size) {
                 for (y in 0 until size) {
@@ -143,19 +146,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun bindObeservers() {
-        mainViewModel.myMarioScore.observe(this) { result ->
-            when (result) {
-                is ServerResult.Progress -> {
-                    showLoading()
-                }
-                is ServerResult.Success -> {
-                    val marioScore = result.data
-                    updateScoreUI(marioScore)
-                }
-                is ServerResult.Failure -> {
-                    showError(result.exception.message)
-                }
+
+        mainViewModel.errorMessage.observe(this) {
+            showError(it)
+        }
+
+        mainViewModel.progressState.observe(this) {
+            if (it) {
+                binding.linearProgressIndicator.visible()
+            } else {
+                binding.linearProgressIndicator.gone()
             }
+        }
+
+        mainViewModel.userCoins.observe(this) { result ->
+            updateScoreUI(result)
         }
         mainViewModel.validateScannedQR.observe(this){result ->
             when(result){
@@ -169,7 +174,6 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this,result.data,Toast.LENGTH_SHORT).show()
                 }
             }
-
         }
     }
 
@@ -178,10 +182,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateScoreUI(marioScore: Int) {
-        binding.actionbar.scoreTV.text = marioScore.toString()
+        binding.actionbar.coinsTV.text = marioScore.toString()
     }
 
     private fun showLoading() {
+        binding.linearProgressIndicator.visible()
     }
 
 
@@ -206,6 +211,11 @@ class MainActivity : AppCompatActivity() {
         } else {
             mainViewModel.validateScannedQR(result.contents)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mainViewModel.fetchUserProfile()
     }
 
 }

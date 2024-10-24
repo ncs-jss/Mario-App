@@ -15,13 +15,19 @@ interface MerchApi {
 
     @Headers("Content-Type: application/json")
     @GET("get-merch")
-    suspend fun getMerch(@Header("Authorization") authToken: String= PrefManager.getToken()!!): Response<JsonObject>
+    suspend fun getMerch(@Header("Authorization") authToken: String= PrefManager.getToken()!!,
+                         @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
+    ): Response<JsonObject>
 
     @Headers("Content-Type: application/json")
     @POST("buy-merch")
-    suspend fun buyMerch(@Header("Authorization") authToken: String= PrefManager.getToken()!!,@Body payload:MerchPurchase): Response<JsonObject>
+    suspend fun buyMerch(@Header("Authorization") authToken: String= PrefManager.getToken()!!,
+                         @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
+                         @Body payload:MerchPurchase): Response<JsonObject>
 
     @Headers("Content-Type: application/json")
     @GET("get-my-orders")
-    suspend fun getMyOrders(@Header("Authorization") authToken: String= PrefManager.getToken()!!): Response<JsonObject>
+    suspend fun getMyOrders(@Header("Authorization") authToken: String= PrefManager.getToken()!!,
+                            @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
+    ): Response<JsonObject>
 }

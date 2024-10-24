@@ -1,5 +1,6 @@
 package com.ncs.mario.UI.MainScreen.Home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -35,10 +36,10 @@ class HomeViewModel @Inject constructor(
     private val eventsApi: EventsApi,
     private val postApiService: PostApiService
     ) : ViewModel(){
-    private val _errorMessage = MutableLiveData<String?>()
+    private val _errorMessage = MutableLiveData<String?>(null)
     val errorMessage: LiveData<String?> get() = _errorMessage
 
-    private val _normalErrorMessage = MutableLiveData<String?>()
+    private val _normalErrorMessage = MutableLiveData<String?>(null)
     val normalErrorMessage: LiveData<String?> get() = _normalErrorMessage
 
     private val _errorMessageEventEnroll = MutableLiveData<String?>()
@@ -68,9 +69,6 @@ class HomeViewModel @Inject constructor(
     private val _unenrollResult = MutableLiveData<Boolean>()
     val unenrollResult: LiveData<Boolean> = _unenrollResult
 
-    init {
-        getHomePageItems()
-    }
 
     fun getHomePageItems(){
         getBanners()
@@ -78,6 +76,13 @@ class HomeViewModel @Inject constructor(
         getMyEvents()
         getPolls()
         getPosts()
+    }
+
+
+
+    fun resetErrorMessage(){
+        _errorMessage.value=null
+        _normalErrorMessage.value=null
     }
 
     fun getBanners(){
@@ -95,6 +100,7 @@ class HomeViewModel @Inject constructor(
                     val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
                     _progressState.value = false
                     _errorMessage.value=loginResponse.message
+                    Log.d("exceptionCheck", errorResponse!!)
                 }
             } catch (e: SocketTimeoutException) {
                 _errorMessage.value = "Network timeout. Please try again."
@@ -103,6 +109,7 @@ class HomeViewModel @Inject constructor(
                 _errorMessage.value = "Network error. Please check your connection."
                 _progressState.value = false
             } catch (e: Exception) {
+                Log.d("exceptionCheck", e.message.toString())
                 _errorMessage.value = "Something went wrong. Please try again."
                 _progressState.value = false
             }
@@ -162,11 +169,10 @@ class HomeViewModel @Inject constructor(
             _normalErrorMessage.value = "Enrolling you to the event"
             try {
                 val response = eventsApi.enrollUser(payload = EnrollUser(eventId))
-
                 if (response.isSuccessful) {
                     _progressState.value = false
                     _normalErrorMessage.value = "Enrolled you to the event"
-//                    _enrollResult.value=true
+                    _enrollResult.value=true
                     getMyEvents()
                 } else {
                     _progressState.value = false
@@ -177,6 +183,9 @@ class HomeViewModel @Inject constructor(
                 _progressState.value = false
                 _normalErrorMessage.value = "Network timeout. Please try again."
             } catch (e: Exception) {
+                Log.d("checkexc",e.message.toString())
+                Log.d("checkexc",e.toString())
+                Log.d("checkexc",e.localizedMessage.toString())
                 _progressState.value = false
                 _normalErrorMessage.value = "Something went wrong. Please try again."
             }
@@ -193,7 +202,7 @@ class HomeViewModel @Inject constructor(
                 if (response.isSuccessful) {
                     _progressState.value = false
                     _normalErrorMessage.value = "Unenrolled you from the event"
-//                    _unenrollResult.value=true
+                    _unenrollResult.value=true
                     getMyEvents()
                 } else {
                     val errorResponse = response.errorBody()?.string()
@@ -225,6 +234,8 @@ class HomeViewModel @Inject constructor(
                     val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
                     _progressState.value = false
                     _errorMessage.value=loginResponse.message
+                    Log.d("exceptionCheck", errorResponse!!)
+
                 }
             } catch (e: SocketTimeoutException) {
                 _progressState.value = false
@@ -233,6 +244,7 @@ class HomeViewModel @Inject constructor(
                 _progressState.value = false
                 _errorMessage.value = "Network error. Please check your connection."
             } catch (e: Exception) {
+                Log.d("exceptionCheck", e.message.toString())
                 _progressState.value = false
                 _errorMessage.value = "Something went wrong. Please try again."
             }
@@ -275,6 +287,7 @@ class HomeViewModel @Inject constructor(
                     val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
                     _progressState.value = false
                     _errorMessage.value=loginResponse.message
+                    Log.d("exceptionCheck", errorResponse!!)
                 }
             } catch (e: SocketTimeoutException) {
                 _errorMessage.value = "Network timeout. Please try again."
@@ -283,6 +296,7 @@ class HomeViewModel @Inject constructor(
                 _errorMessage.value = "Network error. Please check your connection."
                 _progressState.value = false
             } catch (e: Exception) {
+                Log.d("exceptionCheck", e.message.toString())
                 _errorMessage.value = "Something went wrong. Please try again."
                 _progressState.value = false
             }
