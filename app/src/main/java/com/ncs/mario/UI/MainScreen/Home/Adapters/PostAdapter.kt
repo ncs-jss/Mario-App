@@ -252,6 +252,7 @@ class PostAdapter(private val items: MutableList<ListItem>, private val callBack
     }
 
     fun appendPosts(posts: List<ListItem>) {
+        items.clear()
         items.addAll(posts.distinctBy {
             when (it) {
                 is ListItem.Poll -> it.poll._id

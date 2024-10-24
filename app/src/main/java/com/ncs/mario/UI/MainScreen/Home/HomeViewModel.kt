@@ -78,6 +78,8 @@ class HomeViewModel @Inject constructor(
         getPosts()
     }
 
+
+
     fun resetErrorMessage(){
         _errorMessage.value=null
         _normalErrorMessage.value=null
@@ -167,7 +169,6 @@ class HomeViewModel @Inject constructor(
             _normalErrorMessage.value = "Enrolling you to the event"
             try {
                 val response = eventsApi.enrollUser(payload = EnrollUser(eventId))
-
                 if (response.isSuccessful) {
                     _progressState.value = false
                     _normalErrorMessage.value = "Enrolled you to the event"
@@ -182,6 +183,9 @@ class HomeViewModel @Inject constructor(
                 _progressState.value = false
                 _normalErrorMessage.value = "Network timeout. Please try again."
             } catch (e: Exception) {
+                Log.d("checkexc",e.message.toString())
+                Log.d("checkexc",e.toString())
+                Log.d("checkexc",e.localizedMessage.toString())
                 _progressState.value = false
                 _normalErrorMessage.value = "Something went wrong. Please try again."
             }

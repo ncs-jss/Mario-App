@@ -193,6 +193,11 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
         }
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        onBackPress()
+    }
+
     private fun setEventsRecyclerView(events:List<Event>){
         val recyclerView = binding.recyclerView
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -205,6 +210,12 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
         adapter = PostAdapter(posts, this)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
+    }
+
+    private fun onBackPress() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            moveToPrevious()
+        }
     }
 
     fun moveToPrevious(){

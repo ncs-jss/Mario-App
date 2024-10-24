@@ -17,6 +17,45 @@ object PrefManager {
         editor = sharedPreferences.edit()
     }
 
+
+    fun setUserCoins(coins:Int){
+        editor.putInt("coins",coins)
+        editor.apply()
+    }
+
+    fun getUserCoins():Int{
+        return sharedPreferences.getInt("coins",0)
+    }
+
+    fun setKYCHeaderToken(uri:String){
+        editor.putString("KYCHeaderToken",uri)
+        editor.apply()
+    }
+
+    fun getKYCHeaderToken():String?{
+        return sharedPreferences.getString("KYCHeaderToken","")
+    }
+
+
+    fun setUserDPCacheData(uri:String){
+        editor.putString("userDPCache",uri)
+        editor.apply()
+    }
+
+    fun getUserDPCacheData():String?{
+        return sharedPreferences.getString("userDPCache","")
+    }
+
+    fun setCollegeIDCacheData(uri:String){
+        editor.putString("collegeIDCache",uri)
+        editor.apply()
+    }
+
+    fun getCollegeIDCacheData():String?{
+        return sharedPreferences.getString("collegeIDCache","")
+    }
+
+
     fun getUserID(): String? {
         return sharedPreferences.getString("userID","")
     }
