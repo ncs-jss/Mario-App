@@ -8,14 +8,22 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.chip.Chip
+import com.ncs.mario.Domain.Models.Report.ReportBody
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.gone
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.isNull
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.runDelayed
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.toast
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.visible
+import com.ncs.mario.Domain.Utility.GlobalUtils
 import com.ncs.mario.R
+import com.ncs.mario.UI.MainScreen.Home.HomeViewModel
 import com.ncs.mario.UI.SettingsScreen.ImageView.ImageViewActivity
 import com.ncs.mario.databinding.ActivityFeedbackBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,7 +41,9 @@ class FeedbackActivity : AppCompatActivity() {
     }
 
     lateinit var bitmap: Bitmap
-
+    private val util: GlobalUtils.EasyElements by lazy {
+        GlobalUtils.EasyElements(this)
+    }
     var imageCount=0
     var imagesPosted=0
     val urls:MutableList<String> = mutableListOf()
@@ -46,6 +56,9 @@ class FeedbackActivity : AppCompatActivity() {
     private val REQUEST_IMAGE_PICK = 2
 
     var fileName:String?=null
+
+    private val viewModel: FeedbackViewModel by viewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,10 +75,37 @@ class FeedbackActivity : AppCompatActivity() {
             }
         }
         binding.desc.requestFocus()
-
+        observeViewModel()
         setUpViews()
         setImages()
     }
+
+    private fun observeViewModel(){
+        viewModel.progressState.observe(this) {
+            if (it) {
+                binding.linearProgressIndicator.visible()
+            } else {
+                binding.linearProgressIndicator.gone()
+            }
+        }
+        viewModel.errorMessage.observe(this) {
+            showError(it)
+        }
+        viewModel.feedbackResult.observe(this){
+            if (it){
+                runDelayed(1500) {
+                    onBackPressed()
+                }
+            }
+        }
+    }
+
+    private fun showError(message: String?) {
+        if (!message.isNull) {
+            util.showSnackbar(binding.root, message!!, 2000)
+        }
+    }
+
 
     private fun setImages(){
 
@@ -239,28 +279,49 @@ class FeedbackActivity : AppCompatActivity() {
 
 
         binding.submitIssue.setOnClickThrottleBounceListener{
-            binding.layout.gone()
-            binding.progressbar.visible()
-
             if (type.isEmpty()){
                 binding.layout.visible()
-                binding.progressbar.gone()
-
                 toast("Issue Type is required")
             }
             else if (binding.desc.text?.trim().isNullOrBlank()){
                 binding.layout.visible()
-                binding.progressbar.gone()
-
                 toast("Description is required")
             }
             else{
                 if (bitmaps.isNotEmpty()){
-                    //upload issue here
+                    val images= mutableListOf<String>()
+                    for (bit in bitmaps){
+                        images.add(bitmapToBase64WithMimeType(bit))
+                    }
+                    val reportBody = ReportBody(
+                        type=if (type[0]=="Bug Found 🐞") "BUG" else "FEEDBACK",
+                        description = binding.desc.text.toString(),
+                        images = images
+                    )
+                    viewModel.addReport(reportBody)
+                }
+                else{
+                    val images= mutableListOf<String>()
+                    val reportBody = ReportBody(
+                        type=if (type[0]=="Bug Found 🐞") "BUG" else "FEEDBACK",
+                        description = binding.desc.text.toString(),
+                        images = images
+                    )
+                    viewModel.addReport(reportBody)
                 }
             }
 
         }
+    }
+
+    private fun bitmapToBase64WithMimeType(bitmap: Bitmap): String {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+        val byteArray = byteArrayOutputStream.toByteArray()
+
+        val base64Image = Base64.encodeToString(byteArray, Base64.DEFAULT)
+
+        return "data:image/jpeg;base64,$base64Image"
     }
 
 }

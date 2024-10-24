@@ -1,8 +1,13 @@
 package com.ncs.mario.UI.MainScreen.Home
 
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -36,11 +41,15 @@ import com.ncs.mario.UI.MainScreen.Home.Adapters.PostAdapter
 import com.ncs.mario.UI.MainScreen.MainActivity
 import com.ncs.mario.UI.MainScreen.MainViewModel
 import com.ncs.mario.databinding.FragmentViewAllBinding
+import com.ncs.mario.databinding.TicketDialogBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.io.FileOutputStream
 import java.net.HttpURLConnection
 import java.net.URL
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @AndroidEntryPoint
 class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack {
@@ -300,6 +309,67 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
         requireContext().startActivity(Intent.createChooser(shareIntent, "Share news article"))
+    }
+
+    override fun onGetTicketClick(event: Event) {
+        showTicketDialog(requireContext(), event)
+    }
+
+    fun showTicketDialog(context: Context, event: Event): Dialog {
+        val binding = TicketDialogBinding.inflate(LayoutInflater.from(context))
+
+        viewModel.resetTicketResult()
+        viewModel.getTicket(event._id)
+        viewModel.ticketResultBitmap.observe(viewLifecycleOwner) {
+            if (it != null) {
+                binding.ticketShimmerLayout.apply {
+                    stopShimmer()
+                    visibility = View.GONE
+                }
+                binding.normalTicketLayout.visible()
+                binding.qr.setImageBitmap(it)
+            } else {
+                binding.ticketShimmerLayout.apply {
+                    startShimmer()
+                    visibility = View.VISIBLE
+                }
+                binding.normalTicketLayout.gone()
+            }
+        }
+
+        binding.title.text = event.title
+        if (event.time.isNullOrEmpty()) {
+            binding.time.text = "TBA"
+            binding.date.text = "TBA"
+        } else {
+            val (formattedDate, formattedTime) = formatTimestamp(event.time.toLong())
+            binding.time.text = formattedTime
+            binding.date.text = formattedDate
+        }
+        binding.venue.text = event.venue
+
+        val dialog = AlertDialog.Builder(context)
+            .setView(binding.root)
+            .setCancelable(true)
+            .create()
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        dialog.show()
+
+        val width = context.resources.getDimensionPixelSize(R.dimen.dialog_width)
+        val height = context.resources.getDimensionPixelSize(R.dimen.dialog_height)
+        dialog.window?.setLayout(width, height)
+        return dialog
+    }
+
+    fun formatTimestamp(timestamp: Long): Pair<String, String> {
+        val date = Date(timestamp)
+        val dateFormat = SimpleDateFormat("dd MMM, yyyy", Locale.getDefault())
+        val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+        val formattedDate = dateFormat.format(date)
+        val formattedTime = timeFormat.format(date)
+        return Pair(formattedDate, formattedTime)
     }
 
 }

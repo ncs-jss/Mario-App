@@ -9,6 +9,7 @@ import com.ncs.mario.Domain.Api.MerchApi
 import com.ncs.mario.Domain.Api.PostApiService
 import com.ncs.mario.Domain.Api.ProfileApiService
 import com.ncs.mario.Domain.Api.QRAPI
+import com.ncs.mario.Domain.Api.ReportApiService
 import com.ncs.mario.Domain.Models.Merch
 import dagger.Module
 import dagger.Provides
@@ -118,5 +119,17 @@ object ApiModule {
             .build()
             .create(PostApiService::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun getReportsApiService(okkHttpClient: OkHttpClient): ReportApiService {
+        return Retrofit.Builder()
+            .baseUrl("${BuildConfig.API_BASE_URL}${BuildConfig.REPORTS_ENDPOINT}")
+            .client(okkHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ReportApiService::class.java)
+    }
+
 
 }

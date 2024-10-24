@@ -6,12 +6,15 @@ import com.ncs.mario.Domain.Models.Events.AnswerPollBody
 import com.ncs.mario.Domain.Models.Events.EnrollUser
 import com.ncs.mario.Domain.Models.Events.GetEvents
 import com.ncs.mario.Domain.Models.Events.ParticipatedEventResponse
+import com.ncs.mario.Domain.Models.QR.QrScannedResponse
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface EventsApi {
     @Headers("Content-Type: application/json")
@@ -49,4 +52,10 @@ interface EventsApi {
     suspend fun answerPoll(@Header("Authorization") authToken: String=PrefManager.getToken()!!,
                            @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
                            @Body payload: AnswerPollBody): Response<JsonObject>
+
+    @Headers("Content-Type: application/json")
+    @GET("get-ticket/{event_id}")
+    suspend fun getTicket(@Header("Authorization") authToken: String= PrefManager.getToken()!!,
+                                  @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
+                                  @Path("event_id") eventID: String): Response<ResponseBody>
 }

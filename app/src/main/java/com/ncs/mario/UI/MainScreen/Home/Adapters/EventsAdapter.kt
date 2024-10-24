@@ -6,8 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ncs.mario.Domain.Models.Events.Event
 import com.ncs.mario.Domain.Models.Events.ParticipatedEvent
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.load
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.mario.R
 import com.ncs.mario.databinding.EventsItemViewBinding
 import java.text.SimpleDateFormat
@@ -38,11 +40,16 @@ class EventsAdapter(private var events: List<Event>, private val callback: Callb
         if (isEnrolled) {
             holder.binding.btnEnroll.text = "Enrolled!"
             holder.binding.btnEnrollMe.setBackgroundResource(R.drawable.selected_enroll_button)
+            holder.binding.claimTicketBtn.visible()
         } else {
             holder.binding.btnEnroll.text = "Enroll"
             holder.binding.btnEnrollMe.setBackgroundResource(R.drawable.enroll_button)
+            holder.binding.claimTicketBtn.gone()
         }
 
+        holder.binding.claimTicketBtn.setOnClickThrottleBounceListener {
+            callback.onGetTicketClick(event)
+        }
 
         if (event.time.isNullOrEmpty()){
             holder.binding.time.text="TBA"
@@ -66,12 +73,12 @@ class EventsAdapter(private var events: List<Event>, private val callback: Callb
         }
         else if (event.enrolled.size==2){
             holder.binding.profilePic1.setImageResource(R.drawable.apphd)
-            holder.binding.profilePic3.load(event.enrolled[1],holder.binding.image.context.getDrawable(R.drawable.profile_pic_placeholder)!!)
+            holder.binding.profilePic2.load(event.enrolled[1],holder.binding.image.context.getDrawable(R.drawable.profile_pic_placeholder)!!)
             holder.binding.profilePic3.load(event.enrolled[0],holder.binding.image.context.getDrawable(R.drawable.profile_pic_placeholder)!!)
         }
-        else if (event.enrolled.size==3){
-            holder.binding.profilePic3.load(event.enrolled[2],holder.binding.image.context.getDrawable(R.drawable.profile_pic_placeholder)!!)
-            holder.binding.profilePic3.load(event.enrolled[1],holder.binding.image.context.getDrawable(R.drawable.profile_pic_placeholder)!!)
+        else{
+            holder.binding.profilePic1.load(event.enrolled[2],holder.binding.image.context.getDrawable(R.drawable.profile_pic_placeholder)!!)
+            holder.binding.profilePic2.load(event.enrolled[1],holder.binding.image.context.getDrawable(R.drawable.profile_pic_placeholder)!!)
             holder.binding.profilePic3.load(event.enrolled[0],holder.binding.image.context.getDrawable(R.drawable.profile_pic_placeholder)!!)
         }
 
@@ -137,5 +144,6 @@ class EventsAdapter(private var events: List<Event>, private val callback: Callb
 
     interface Callback{
         fun onClick(event: Event, isEnrolled:Boolean)
+        fun onGetTicketClick(event: Event)
     }
 }
