@@ -85,8 +85,6 @@ class LoginViewModel @Inject constructor(val authApiService: AuthApiService) : V
                 _progressState.postValue(false)
             }
         }
-
-
     }
 
 }

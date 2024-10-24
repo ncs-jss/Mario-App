@@ -19,36 +19,68 @@ interface ProfileApiService {
 
     @Headers("Content-Type: application/json")
     @POST("create-profile")
-    suspend fun createUserProfile(@Header("Authorization") authToken: String=PrefManager.getToken()!!, @Body payload: CreateProfileBody): Response<JsonObject>
+    suspend fun createUserProfile(@Header("Authorization") authToken: String=PrefManager.getToken()!!,
+                                  @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
+                                  @Body payload: CreateProfileBody): Response<JsonObject>
 
     @Headers("Content-Type: application/json")
     @GET("get-my-details")
-    suspend fun getMyDetails(@Header("Authorization") authToken: String=PrefManager.getToken()!!): Response<JsonObject>
+    suspend fun getMyDetails(@Header("Authorization") authToken: String=PrefManager.getToken()!!,
+                             @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
+    ): Response<JsonObject>
+
+    @Headers("Content-Type: application/json")
+    @GET("is-approved")
+    suspend fun getKYCHeader(@Header("Authorization") authToken: String=PrefManager.getToken()!!,
+                             @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
+    ): Response<JsonObject>
 
     @Headers("Content-Type: application/json")
     @PUT("update-picture")
-    suspend fun uploadUserPicture(@Header("Authorization") authToken: String=PrefManager.getToken()!!, @Body payload: ImageBody): Response<JsonObject>
+    suspend fun uploadUserPicture(@Header("Authorization") authToken: String=PrefManager.getToken()!!,
+                                  @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
+                                  @Body payload: ImageBody): Response<JsonObject>
 
     @Headers("Content-Type: application/json")
     @POST("add-id-card")
-    suspend fun addCollegeIDPicture(@Header("Authorization") authToken: String=PrefManager.getToken()!!, @Body payload: ImageBody): Response<JsonObject>
+    suspend fun addCollegeIDPicture(@Header("Authorization") authToken: String=PrefManager.getToken()!!,
+                                    @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
+                                    @Body payload: ImageBody): Response<JsonObject>
 
     @Headers("Content-Type: application/json")
     @GET("is-kyc-verified")
-    suspend fun getKycStatus(@Header("Authorization") authToken: String=PrefManager.getToken()!!): Response<JsonObject>
+    suspend fun getKycStatus(@Header("Authorization") authToken: String=PrefManager.getToken()!!,
+                             @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
+    ): Response<JsonObject>
 
     @Headers("Content-Type: application/json")
     @PUT("set-fcm-token")
-    suspend fun setFCMToken(@Header("Authorization") authToken: String=PrefManager.getToken()!!, @Body payload: SetFCMTokenBody): Response<JsonObject>
+    suspend fun setFCMToken(@Header("Authorization") authToken: String=PrefManager.getToken()!!,
+                            @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!, @Body payload: SetFCMTokenBody): Response<JsonObject>
 
     @Headers("Content-Type: application/json")
     @PUT("update-profile")
-    suspend fun updateUserProfile(@Header("Authorization") authToken: String=PrefManager.getToken()!!, @Body payload: UpdateProfileBody): Response<JsonObject>
-
+    suspend fun updateUserProfile(@Header("Authorization") authToken: String=PrefManager.getToken()!!,
+                                  @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
+                                  @Body payload: UpdateProfileBody): Response<JsonObject>
 
     @Headers("Content-Type: application/json")
-    @PUT("handle-kyc")
-    suspend fun handleKYCStatus(@Body payload: UpdateProfileBody): Response<JsonObject>
+    @GET("get-my-points")
+    suspend fun getUserPoints(@Header("Authorization") authToken: String=PrefManager.getToken()!!,
+                             @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
+    ): Response<JsonObject>
+
+    @Headers("Content-Type: application/json")
+    @GET("get-my-coins")
+    suspend fun getUserCoins(@Header("Authorization") authToken: String=PrefManager.getToken()!!,
+                              @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
+    ): Response<JsonObject>
+
+    @Headers("Content-Type: application/json")
+    @PUT("request-KYC")
+    suspend fun requestKYCToPending(@Header("Authorization") authToken: String=PrefManager.getToken()!!,
+                              @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
+    ): Response<JsonObject>
 
 
 

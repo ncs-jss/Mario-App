@@ -13,5 +13,7 @@ import retrofit2.http.POST
 interface BannerApiService {
     @Headers("Content-Type: application/json")
     @GET("get-banners")
-    suspend fun getBanners(@Header("Authorization") authToken: String= PrefManager.getToken()!!): Response<JsonObject>
+    suspend fun getBanners(@Header("Authorization") authToken: String= PrefManager.getToken()!!,
+                           @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
+    ): Response<JsonObject>
 }

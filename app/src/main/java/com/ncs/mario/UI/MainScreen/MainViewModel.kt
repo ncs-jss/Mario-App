@@ -31,6 +31,12 @@ class MainViewModel @Inject constructor(
     private val _getMyProfileResponse = MutableLiveData<Profile>()
     val getMyProfileResponse: LiveData<Profile> = _getMyProfileResponse
 
+    private val _userCoins = MutableLiveData<Int>()
+    val userCoins: LiveData<Int> = _userCoins
+
+    private val _userPoints = MutableLiveData<Int>()
+    val userPoints: LiveData<Int> = _userPoints
+
     private val _cachedUserProfile = MutableLiveData<Profile>()
     val cachedUserProfile: LiveData<Profile> = _cachedUserProfile
 
@@ -53,7 +59,8 @@ class MainViewModel @Inject constructor(
 
 
     fun fetchCriticalInfo(){
-        getMyProfile()
+        getMyPoints()
+        getMyCoins()
     }
 
     fun validateScannedQR(couponCode: String) {
@@ -74,17 +81,45 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun getMyProfile() {
+    fun getMyPoints() {
         _progressState.value=true
         viewModelScope.launch {
             try {
-                val response = profileApiService.getMyDetails()
+                val response = profileApiService.getUserPoints()
                 if (response.isSuccessful) {
-                    val loginResponse = response.body().toString()
-                    val User= Gson().fromJson(loginResponse, User::class.java)
-                    PrefManager.setUserProfile(User.profile)
+                    val points=response.body()?.get("points")
+                    if (points != null) {
+                        _userPoints.value = points.asInt
+                    }
                     _progressState.value=false
-                    _getMyProfileResponse.value=User.profile
+                } else {
+                    val errorResponse = response.errorBody()?.string()
+                    val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
+                    _progressState.value=false
+                }
+            } catch (e: SocketTimeoutException) {
+                _progressState.value=false
+            } catch (e: IOException) {
+                _progressState.value=false
+            } catch (e: Exception) {
+                _progressState.value=false
+            }
+        }
+    }
+
+    fun getMyCoins() {
+        _progressState.value=true
+        viewModelScope.launch {
+            try {
+                val response = profileApiService.getUserCoins()
+                if (response.isSuccessful) {
+
+                    val coins=response.body()?.get("coins")
+                    if (coins != null) {
+                        _userCoins.value = coins.asInt
+                        PrefManager.setUserCoins(coins.asInt)
+                    }
+                    _progressState.value=false
                 } else {
                     val errorResponse = response.errorBody()?.string()
                     val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)

@@ -30,6 +30,9 @@ class WaitScreenViewModel @Inject constructor(val profileApiService: ProfileApiS
     private val _kycStatus = MutableLiveData<String>(null)
     val kycStatus: LiveData<String> get() = _kycStatus
 
+    private val _kycRequestStatus = MutableLiveData<Boolean>(null)
+    val kycRequestStatus: LiveData<Boolean> get() = _kycRequestStatus
+
     private val handler = Handler(Looper.getMainLooper())
     private val kycRunnable = object : Runnable {
         override fun run() {
@@ -49,11 +52,14 @@ class WaitScreenViewModel @Inject constructor(val profileApiService: ProfileApiS
     fun getKYCStatus(){
         viewModelScope.launch {
             try {
-                val response = profileApiService.getKycStatus()
+                val response = profileApiService.getKYCHeader()
                 if (response.isSuccessful) {
-                    val status=response.body()?.get("approved")
-                    _kycStatus.value=status?.asString
-                } else {
+                    response.body()?.get("approvalToken")?.let { PrefManager.setKYCHeaderToken(it.asString) }
+                    val status=response.body()?.get("is_approved")
+                    if (status != null) {
+                        _kycStatus.value=status.asString
+                    }
+                }  else {
                     val errorResponse = response.errorBody()?.string()
                     val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
                 }
@@ -63,6 +69,30 @@ class WaitScreenViewModel @Inject constructor(val profileApiService: ProfileApiS
                 _errorMessage.value = "Network error. Please check your connection."
             } catch (e: Exception) {
                 _errorMessage.value = "Something went wrong. Please try again."
+            }
+        }
+    }
+
+    fun requestKYCToPending(){
+        viewModelScope.launch {
+            try {
+                val response = profileApiService.requestKYCToPending()
+                if (response.isSuccessful) {
+                    _kycRequestStatus.value=true
+                }  else {
+                    val errorResponse = response.errorBody()?.string()
+                    val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
+                    _kycRequestStatus.value=false
+                }
+            } catch (e: SocketTimeoutException) {
+                _errorMessage.value = "Network timeout. Please try again."
+                _kycRequestStatus.value=false
+            } catch (e: IOException) {
+                _errorMessage.value = "Network error. Please check your connection."
+                _kycRequestStatus.value=false
+            } catch (e: Exception) {
+                _errorMessage.value = "Something went wrong. Please try again."
+                _kycRequestStatus.value=false
             }
         }
     }

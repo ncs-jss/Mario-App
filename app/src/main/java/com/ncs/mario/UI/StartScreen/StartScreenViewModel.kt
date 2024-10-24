@@ -38,11 +38,37 @@ class StartScreenViewModel @Inject constructor(val profileApiService: ProfileApi
     private val _userDetails = MutableLiveData<User>(null)
     val userDetails: LiveData<User> get() = _userDetails
 
-    private val _kycStatus = MutableLiveData<Boolean>(null)
-    val kycStatus: LiveData<Boolean> get() = _kycStatus
+    private val _kycStatus = MutableLiveData<String>(null)
+    val kycStatus: LiveData<String> get() = _kycStatus
 
     init {
         getFCMToken()
+    }
+
+    fun fetchUserKYCHeaderToken(){
+        viewModelScope.launch {
+            try {
+                val response = profileApiService.getKYCHeader()
+                if (response.isSuccessful) {
+                    response.body()?.get("approvalToken")?.let { PrefManager.setKYCHeaderToken(it.asString) }
+                    val status=response.body()?.get("is_approved")
+                    if (status != null) {
+                        _kycStatus.value=status.asString
+                    }
+                } else {
+                    val errorResponse = response.errorBody()?.string()
+                    val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
+                    _userDetails.value=User(message = "", profile = Profile(),success = false)
+                    _userDetailsResult.value = false
+                }
+            } catch (e: SocketTimeoutException) {
+                _errorMessage.value = "Network timeout. Please try again."
+            } catch (e: IOException) {
+                _errorMessage.value = "Network error. Please check your connection."
+            } catch (e: Exception) {
+                _errorMessage.value = "Something went wrong. Please try again."
+            }
+        }
     }
 
     fun fetchUserDetails() {
@@ -54,6 +80,7 @@ class StartScreenViewModel @Inject constructor(val profileApiService: ProfileApi
                     val loginResponse = response.body().toString()
                     val User= Gson().fromJson(loginResponse, User::class.java)
                     _userDetails.value=User
+                    PrefManager.setUserProfile(User.profile)
                     _userDetailsResult.value = true
                 } else {
                     val errorResponse = response.errorBody()?.string()
@@ -76,37 +103,37 @@ class StartScreenViewModel @Inject constructor(val profileApiService: ProfileApi
 
     }
 
-    fun getKYCStatus(){
-        viewModelScope.launch {
-            try {
-                val response = profileApiService.getKycStatus()
-                if (response.isSuccessful) {
-                    Log.d("signupResult", "KYC Successful: ${response.body()}")
-                    val status=response.body()?.get("approved")
-                    if (status!!.asString=="ACCEPT"){
-                        _kycStatus.value=true
-                    }
-                    else{
-                        _kycStatus.value=false
-                    }
-                } else {
-                    val errorResponse = response.errorBody()?.string()
-                    val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
-                    Log.d("signupResult", "KYC Failed: ${loginResponse.message}")
-                    _userDetailsResult.value = false
-                }
-            } catch (e: SocketTimeoutException) {
-                Log.e("signupResult", "Request timed out: ${e.message}")
-                _errorMessage.value = "Network timeout. Please try again."
-            } catch (e: IOException) {
-                Log.e("signupResult", "Network error: ${e.message}")
-                _errorMessage.value = "Network error. Please check your connection."
-            } catch (e: Exception) {
-                Log.e("signupResult", "Error: ${e.message}")
-                _errorMessage.value = "Something went wrong. Please try again."
-            }
-        }
-    }
+//    fun getKYCStatus(){
+//        viewModelScope.launch {
+//            try {
+//                val response = profileApiService.getKycStatus()
+//                if (response.isSuccessful) {
+//                    Log.d("signupResult", "KYC Successful: ${response.body()}")
+//                    val status=response.body()?.get("approved")
+//                    if (status!!.asString=="ACCEPT"){
+//                        _kycStatus.value=true
+//                    }
+//                    else{
+//                        _kycStatus.value=false
+//                    }
+//                } else {
+//                    val errorResponse = response.errorBody()?.string()
+//                    val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
+//                    Log.d("signupResult", "KYC Failed: ${loginResponse.message}")
+//                    _userDetailsResult.value = false
+//                }
+//            } catch (e: SocketTimeoutException) {
+//                Log.e("signupResult", "Request timed out: ${e.message}")
+//                _errorMessage.value = "Network timeout. Please try again."
+//            } catch (e: IOException) {
+//                Log.e("signupResult", "Network error: ${e.message}")
+//                _errorMessage.value = "Network error. Please check your connection."
+//            } catch (e: Exception) {
+//                Log.e("signupResult", "Error: ${e.message}")
+//                _errorMessage.value = "Something went wrong. Please try again."
+//            }
+//        }
+//    }
 
     fun setFCMToken(newFCMToken:String) {
         viewModelScope.launch {

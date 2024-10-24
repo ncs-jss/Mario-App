@@ -14,9 +14,13 @@ interface QRAPI {
 
     @Headers("Content-Type: application/json")
     @GET("scanned/{coupon_code}")
-    suspend fun validateScannedQR(@Header("Authorization") authToken: String= PrefManager.getToken()!!, @Path("coupon_code") couponCode: String): Response<QrScannedResponse>
+    suspend fun validateScannedQR(@Header("Authorization") authToken: String= PrefManager.getToken()!!,
+                                  @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
+                                  @Path("coupon_code") couponCode: String): Response<QrScannedResponse>
 
     @Headers("Content-Type: application/json")
     @GET("get-my-rewards/")
-    suspend fun getMyRewards(@Header("Authorization") authToken: String= PrefManager.getToken()!!):Response<QrScannedResponse>
+    suspend fun getMyRewards(@Header("Authorization") authToken: String= PrefManager.getToken()!!,
+                             @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
+    ):Response<QrScannedResponse>
 }

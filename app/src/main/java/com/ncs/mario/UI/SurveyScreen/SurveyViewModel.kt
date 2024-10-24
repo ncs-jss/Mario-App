@@ -1,6 +1,7 @@
 package com.ncs.mario.UI.SurveyScreen
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -26,6 +27,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
+import java.io.IOException
+import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,6 +42,10 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
 
     private val _progressState = MutableLiveData<Boolean>(false)
     val progressState: LiveData<Boolean> get() = _progressState
+
+    private val _finalProgressState = MutableLiveData<Boolean>(false)
+    val finalProgressState: LiveData<Boolean> get() = _finalProgressState
+
 
     private val _progressStateImageUpload = MutableLiveData<Boolean>(false)
     val progressStateImageUpload: LiveData<Boolean> get() = _progressStateImageUpload
@@ -97,6 +104,11 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
 
     private val _currentStep = MutableLiveData(SurveyStep.PERSONAL_DETAILS)
     val currentStep: LiveData<SurveyStep> = _currentStep
+
+    init {
+        _userSelfie.value = PrefManager.getUserDPCacheData()
+        _userCollegeID.value = PrefManager.getCollegeIDCacheData()
+    }
 
     fun setName(_name: String) {
         name.value = _name
@@ -272,11 +284,28 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
             _errorMessageKYCDetails.value = "Your college ID is required"
             return
         }
-        if (PrefManager.getUserProfile()!!.name!=""){
-            updateProfile()
-        }
-        else {
-            uploadUserProfile()
+        _finalProgressState.value=true
+
+        requestKYCToPending()
+    }
+
+    fun requestKYCToPending(){
+        _progressState.postValue(true)
+        viewModelScope.launch {
+            try {
+                val response = profileApiService.requestKYCToPending()
+                if (response.isSuccessful) {
+                    if (PrefManager.getUserProfile()!!.name!=""){
+                        updateProfile()
+                    }
+                    else {
+                        uploadUserProfile()
+                    }
+                }  else {
+                    val errorResponse = response.errorBody()?.string()
+                    val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
+                }
+            } catch (e: SocketTimeoutException) {} catch (e: IOException) {} catch (e: Exception) {}
         }
     }
 
@@ -315,7 +344,7 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                     Log.d("signupResult", "Profile Create: ${response.body()}")
                     _errorMessageKYCDetails.value = "Profile Created"
                     _profileCreateResult.value = true
-
+                    _progressState.postValue(false)
                 } else {
                     val errorResponse = response.errorBody()?.string()
                     val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
@@ -323,10 +352,12 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                     _errorMessageKYCDetails.value = loginResponse.message
                     _kycDetailsPageResult.value = false
                     _profileCreateResult.value = false
+                    _finalProgressState.value=false
                 }
             } catch (e: Exception) {
                 _kycDetailsPageResult.value = false
                 _profileCreateResult.value = false
+                _finalProgressState.value=false
             } finally {
                 _progressState.postValue(false)
             }
@@ -366,6 +397,7 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                     Log.d("signupResult", "Profile Update: ${response.body()}")
                     _errorMessageKYCDetails.value = "Profile Updated"
                     _profileCreateResult.value = true
+                    _progressState.postValue(false)
 
                 } else {
                     val errorResponse = response.errorBody()?.string()
@@ -374,10 +406,12 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                     _errorMessageKYCDetails.value = loginResponse.message
                     _kycDetailsPageResult.value = false
                     _profileCreateResult.value = false
+                    _finalProgressState.value=false
                 }
             } catch (e: Exception) {
                 _kycDetailsPageResult.value = false
                 _profileCreateResult.value = false
+                _finalProgressState.value=false
             } finally {
                 _progressState.postValue(false)
             }
@@ -386,7 +420,7 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
 
     fun uploadUserImage(uri: Uri, context: Context) {
         viewModelScope.launch {
-            _progressStateImageUpload.postValue(true)
+            _progressState.value=true
             try {
                 val bitmap = getBitmapFromUri(uri, context)
                 val base64Image = bitmapToBase64WithMimeType(bitmap)
@@ -396,24 +430,27 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                     Log.d("signupResult", "User Image Upload: ${response.body()}")
                     _errorMessageKYCDetails.value = "Your selfie was uploaded"
                     uploadCollegeIDImage(uri = Uri.parse(userCollegeID.value), context = context)
+                    _progressState.postValue(false)
                 } else {
                     val errorResponse = response.errorBody()?.string()
                     val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
                     Log.d("signupResult", "User Image Upload Failed: ${loginResponse.message}")
                     _errorMessageKYCDetails.value = loginResponse.message
                     _kycDetailsPageResult.value = false
+                    _finalProgressState.value=false
                 }
             } catch (e: Exception) {
                 _kycDetailsPageResult.value = false
+                _finalProgressState.value=false
             } finally {
-                _progressStateImageUpload.postValue(false)
+                _progressState.value=false
             }
         }
     }
 
     fun uploadCollegeIDImage(uri: Uri, context: Context) {
         viewModelScope.launch {
-            _progressStateImageUpload.postValue(true)
+            _progressState.value=true
             try {
                 val bitmap = getBitmapFromUri(uri, context)
                 val base64Image = bitmapToBase64WithMimeType(bitmap)
@@ -423,17 +460,21 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                     Log.d("signupResult", "CollegeID Image Upload: ${response.body()}")
                     _errorMessageKYCDetails.value = "Your College ID was uploaded"
                     _kycDetailsPageResult.value = true
+                    _progressState.postValue(false)
+                    _finalProgressState.value=false
                 } else {
                     val errorResponse = response.errorBody()?.string()
                     val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
                     Log.d("signupResult", "CollegeID Image Upload Failed: ${loginResponse.message}")
                     _errorMessageKYCDetails.value = loginResponse.message
                     _kycDetailsPageResult.value = false
+                    _finalProgressState.value=false
                 }
             } catch (e: Exception) {
                 _kycDetailsPageResult.value = false
+                _finalProgressState.value=false
             } finally {
-                _progressStateImageUpload.postValue(false)
+                _progressState.value=false
             }
         }
     }

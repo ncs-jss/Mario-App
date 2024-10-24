@@ -130,7 +130,7 @@ class StartScreen : AppCompatActivity() {
                 val user=it
                 PrefManager.setUserProfile(user.profile)
                 if (user.profile.photo.secure_url!="" &&  user.profile.id_card.secure_url!=""){
-                    viewModel.getKYCStatus()
+                    viewModel.fetchUserKYCHeaderToken()
                 }
                 else{
                     PrefManager.setShowProfileCompletionAlert(true)
@@ -141,13 +141,21 @@ class StartScreen : AppCompatActivity() {
         }
         viewModel.kycStatus.observe(this){
             if (!it.isNull) {
-                if (it) {
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
-                } else {
-                    startActivity(Intent(this, WaitActivity::class.java))
-                    finish()
+                when(it){
+                    "ACCEPT"->{
+                        startActivity(Intent(this, MainActivity::class.java))
+                        finish()
+                    }
+                    "PENDING"->{
+                        startActivity(Intent(this, WaitActivity::class.java))
+                        finish()
+                    }
+                    "REJECT"->{
+                        startActivity(Intent(this, WaitActivity::class.java))
+                        finish()
+                    }
                 }
+
             }
         }
         viewModel.errorMessage.observe(this){

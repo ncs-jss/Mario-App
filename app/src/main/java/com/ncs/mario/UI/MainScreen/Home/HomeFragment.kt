@@ -7,9 +7,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.core.content.FileProvider
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
@@ -66,6 +68,8 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack {
     private val util: GlobalUtils.EasyElements by lazy {
         GlobalUtils.EasyElements(requireActivity())
     }
+    private var lastRefreshTime = 0L
+    private var backPressedTime: Long = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,9 +82,14 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getHomePageItems()
         binding.swiperefresh.setOnRefreshListener {
-            viewModel.getHomePageItems()
-            activityViewModel.fetchCriticalInfo()
+            val currentTime = System.currentTimeMillis()
+            if (currentTime - lastRefreshTime > 2000) {
+                activityViewModel.fetchCriticalInfo()
+                viewModel.getHomePageItems()
+                lastRefreshTime = currentTime
+            }
         }
         setViews()
     }
@@ -93,9 +102,6 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack {
 
 
     private fun setViews(){
-        if (viewModel.posts.value.isNullOrEmpty()) {
-            viewModel.getHomePageItems()
-        }
         binding.postsShimmerLayout.apply {
             startShimmer()
             visibility = View.VISIBLE
@@ -184,6 +190,7 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack {
         }
 
         viewModel.polls.observe(viewLifecycleOwner) { polls ->
+            Log.d("chckk", "observeViewModel: $polls")
             val posts: MutableList<ListItem> = mutableListOf()
             for (poll in polls) {
                 posts.add(ListItem.Poll(title = poll.question, poll = poll))
@@ -310,6 +317,25 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack {
             }
         }
     }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        onBackPress()
+    }
+
+    private fun onBackPress() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            val currentTime = System.currentTimeMillis()
+
+            if (currentTime - backPressedTime < 2000) {
+                requireActivity().finish()
+            } else {
+                util.showSnackbar(binding.root,"Press back again to exit", 2000)
+                backPressedTime = currentTime
+            }
+        }
+    }
+
     private fun startAutoScroll() {
         handler.postDelayed(autoScrollRunnable, delayMillis)
     }
