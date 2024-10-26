@@ -54,7 +54,7 @@ class EnterOTPViewModel @Inject constructor(val authApiService: AuthApiService) 
     }
 
     fun startTimer() {
-        countDownTimer = object : CountDownTimer(180000, 1000) {
+        countDownTimer = object : CountDownTimer(60000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val minutes = millisUntilFinished / 1000 / 60
                 val seconds = millisUntilFinished / 1000 % 60

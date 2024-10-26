@@ -197,8 +197,8 @@ dependencies {
     //Swipe to refresh
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
 
-
-
+    //slide to success
+    implementation("com.ncorti:slidetoact:0.11.0")
 
 }
 

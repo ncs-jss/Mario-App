@@ -7,17 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import com.ncs.mario.Domain.HelperClasses.PrefManager
-import com.ncs.mario.Domain.Models.Merch
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.gone
-import com.ncs.mario.Domain.Utility.ExtensionsUtil.isNull
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.mario.Domain.Utility.GlobalUtils
-import com.ncs.mario.R
 import com.ncs.mario.UI.MainScreen.MainActivity
 import com.ncs.mario.UI.MainScreen.MainViewModel
 import com.ncs.mario.databinding.FragmentStoreBinding
@@ -39,7 +33,7 @@ class StoreFragment : Fragment() {
 
     private val activityViewModel : MainViewModel by activityViewModels()
 
-    private val viewModel: StoreViewModel by viewModels()
+    private val viewModel: StoreViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -69,7 +63,8 @@ class StoreFragment : Fragment() {
 
         adapter = StoreAdapter {
             if (!it._id.isNullOrEmpty()) {
-                viewModel.purchaseMerch(it._id)
+                val bottomSheet = StoreItemBottomSheet.newInstance(it)
+                bottomSheet.show(parentFragmentManager, "OrderDetailsBottomSheet")
             } else {
                 Toast.makeText(requireContext(), "Invalid item selected", Toast.LENGTH_SHORT).show()
             }
@@ -118,10 +113,21 @@ class StoreFragment : Fragment() {
                 }
             }
         }
-        viewModel.purchaseResultLiveData.observe(viewLifecycleOwner){
-            if (it!=null){
+        viewModel.purchaseResultLiveData.observe(viewLifecycleOwner) {
+            if (it != null) {
                 activityViewModel.fetchCriticalInfo()
-                Toast.makeText(requireContext(),it.message,Toast.LENGTH_SHORT).show()
+                viewModel.getNCSMerch()
+                Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                viewModel.clearPurchaseResult()
+            }
+        }
+
+        viewModel.purchaseMerch.observe(viewLifecycleOwner) {
+            if (it != null) {
+                Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
+                activityViewModel.fetchCriticalInfo()
+                viewModel.getNCSMerch()
+                viewModel.clearPurchaseMessage()
             }
         }
 
