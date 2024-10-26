@@ -2,6 +2,7 @@ package com.ncs.mario.UI.MainScreen.Score
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -68,7 +69,24 @@ class ScoreFragment : Fragment() {
             startShimmer()
             visibility = View.VISIBLE
         }
+        binding.shimmerLayoutPoints.apply {
+            startShimmer()
+            visibility = View.VISIBLE
+        }
+        binding.shimmerCoinsLayout.apply {
+            startShimmer()
+            visibility = View.VISIBLE
+        }
+        binding.shimmerProgressLayout.apply {
+            startShimmer()
+            visibility = View.VISIBLE
+        }
+
+        binding.pointsView.gone()
+        binding.progresslayout.gone()
+        binding.coinsView.gone()
         binding.pastEventRecyclerView.gone()
+
         activityViewModel.fetchCriticalInfo()
         viewModel.getMyEvents()
         pastEventAdapter = PastEventAdapter()
@@ -85,6 +103,11 @@ class ScoreFragment : Fragment() {
 
         activityViewModel.userCoins.observe(viewLifecycleOwner){
             binding.coins.text = it?.toString()
+            binding.shimmerCoinsLayout.apply {
+                stopShimmer()
+                visibility = View.GONE
+            }
+            binding.coinsView.visible()
         }
 
         activityViewModel.userPoints.observe(viewLifecycleOwner){
@@ -113,6 +136,16 @@ class ScoreFragment : Fragment() {
                 binding.afterNobbie.setBackgroundColor(getColor(requireContext(), R.color.green))
                 binding.afterIntermediate.setBackgroundColor(getColor(requireContext(), R.color.green))
             }
+            binding.shimmerLayoutPoints.apply {
+                stopShimmer()
+                visibility = View.GONE
+            }
+            binding.shimmerProgressLayout.apply {
+                stopShimmer()
+                visibility = View.GONE
+            }
+            binding.pointsView.visible()
+            binding.progresslayout.visible()
         }
 
         viewModel.progressState.observe(viewLifecycleOwner) {
@@ -139,6 +172,7 @@ class ScoreFragment : Fragment() {
                         }
                         binding.pastEventRecyclerView.visible()
                         pastEventAdapter.submitList(it.data.events)
+                        Log.d("checkEvnets", it.data.events.toString())
                         if (binding.swiperefresh.isRefreshing){
                             binding.swiperefresh.isRefreshing = false
                         }

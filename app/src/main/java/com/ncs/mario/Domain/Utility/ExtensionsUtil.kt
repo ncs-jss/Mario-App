@@ -88,6 +88,8 @@ object ExtensionsUtil {
         Timber.tag(tag).d(toString())
     }
 
+
+
     fun showProgressDialog(context: Context, message: String): Dialog {
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.progress_dialog, null)

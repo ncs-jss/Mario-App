@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.ncs.mario.Domain.HelperClasses.PrefManager
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.isNull
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.popInfinity
 import com.ncs.mario.Domain.Utility.GlobalUtils
 import com.ncs.mario.UI.AuthScreen.AuthActivity
 import com.ncs.mario.UI.MainScreen.MainActivity
@@ -36,6 +37,7 @@ class StartScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        binding.imageView3.popInfinity(this)
         handleDynamicLink(intent)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(

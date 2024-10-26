@@ -75,6 +75,9 @@ android {
 
             //Banner Endpoint
             buildConfigField("String","BANNER_ENDPOINT","\"${getProps("BANNER_ENDPOINT")}\"")
+
+            //Reports Endpoint
+            buildConfigField("String","REPORTS_ENDPOINT","\"${getProps("REPORTS_ENDPOINT")}\"")
         }
 
         release {

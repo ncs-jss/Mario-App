@@ -42,5 +42,6 @@
     <dimen name="font_size_timestamp">15dp</dimen>
     <dimen name="timestamp_size">15dp</dimen>
     <dimen name="start_offset">25dp</dimen>
-
+    <dimen name="dialog_width">300dp</dimen>
+    <dimen name="dialog_height">450dp</dimen>
 </resources>
