@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.ncs.mario.Domain.HelperClasses.PrefManager
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.isNull
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.popInfinity
 import com.ncs.mario.Domain.Utility.GlobalUtils
 import com.ncs.mario.UI.AuthScreen.AuthActivity
 import com.ncs.mario.UI.MainScreen.MainActivity
@@ -129,6 +130,9 @@ class StartScreen : AppCompatActivity() {
             if (it!=null){
                 val user=it
                 PrefManager.setUserProfile(user.profile)
+                if (user.profile.name!=""){
+                    PrefManager.setUserProfileForCache(user.profile)
+                }
                 if (user.profile.photo.secure_url!="" &&  user.profile.id_card.secure_url!=""){
                     viewModel.fetchUserKYCHeaderToken()
                 }

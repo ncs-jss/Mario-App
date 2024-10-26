@@ -304,6 +304,11 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                 }  else {
                     val errorResponse = response.errorBody()?.string()
                     val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
+
+                    if (loginResponse.message=="User not found!"){
+                        uploadUserProfile()
+                    }
+
                 }
             } catch (e: SocketTimeoutException) {} catch (e: IOException) {} catch (e: Exception) {}
         }

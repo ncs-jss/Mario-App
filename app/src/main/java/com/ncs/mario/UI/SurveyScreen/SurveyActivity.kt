@@ -43,12 +43,18 @@ class SurveyActivity : AppCompatActivity() {
     }
 
     fun setInitials(){
-        val currentUserProfile=PrefManager.getUserProfile()!!
+        val currentUserProfile=PrefManager.getUserProfileForCache()!!
         surveyViewModel.apply {
             setName(currentUserProfile.name)
             setAdmissionNum(currentUserProfile.admission_number)
             setBranch(currentUserProfile.branch)
-            setYear(currentUserProfile.year.toString())
+            setYear(when(currentUserProfile.year){
+                1->"I Year"
+                2->"II Year"
+                3->"III Year"
+                4->"IV Year"
+                else->"0"
+            })
             setLinkedIn(currentUserProfile.socials.LinkedIn)
             setGithub(currentUserProfile.socials.GitHub)
             setBehance(currentUserProfile.socials.Behance)

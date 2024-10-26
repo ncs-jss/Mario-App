@@ -75,6 +75,9 @@ android {
 
             //Banner Endpoint
             buildConfigField("String","BANNER_ENDPOINT","\"${getProps("BANNER_ENDPOINT")}\"")
+
+            //Reports Endpoint
+            buildConfigField("String","REPORTS_ENDPOINT","\"${getProps("REPORTS_ENDPOINT")}\"")
         }
 
         release {
@@ -194,8 +197,8 @@ dependencies {
     //Swipe to refresh
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
 
-
-
+    //slide to success
+    implementation "com.ncorti:slidetoact:0.11.0"
 
 }
 

@@ -59,13 +59,18 @@ class PersonalDetailsFragment : Fragment(), BottomSheet.SendText {
         })
         surveyViewModel.personalDetailsPageResult.observe(viewLifecycleOwner, Observer { result ->
             if (result){
-                val userSurvey= PrefManager.getUserSurvey()!!
+                val userSurvey= PrefManager.getUserProfileForCache()!!
                 userSurvey.name=surveyViewModel.name.value!!
-                userSurvey.admissionNum=surveyViewModel.admission_num.value!!
+                userSurvey.admission_number=surveyViewModel.admission_num.value!!
                 userSurvey.branch=surveyViewModel.branch.value!!
-                userSurvey.year=surveyViewModel.year.value!!
-                PrefManager.setUserSurvey(userSurvey)
-                Log.d("usercheck","${PrefManager.getUserSurvey()}")
+                userSurvey.year=when(surveyViewModel.year.value!!){
+                    "I Year"->1
+                    "II Year"->2
+                    "III Year"->3
+                    "IV Year"->4
+                    else->0
+                }
+                PrefManager.setUserProfileForCache(userSurvey)
                 findNavController().navigate(R.id.action_fragment_personal_details_to_fragment_technical)
                 surveyViewModel.resetPersonalDetailsPageResult()
                 surveyViewModel.resetErrorMessagePersonalDetails()

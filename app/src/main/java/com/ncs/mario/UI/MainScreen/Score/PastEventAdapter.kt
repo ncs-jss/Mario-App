@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ncs.mario.Domain.Models.Events.ParticipatedEvent
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.mario.R
 import com.ncs.mario.databinding.ItemPastEventBinding
 import java.text.SimpleDateFormat
@@ -27,12 +29,22 @@ class PastEventAdapter :ListAdapter<ParticipatedEvent, PastEventAdapter.PastEven
 
             binding.points.text = "+ ${event.points.toString()}"
 
+            binding.coins.text = "+ ${((event.points!!)/5).toInt().toString()}"
+
             binding.root.setOnClickThrottleBounceListener{}
 
             Glide.with(binding.root.context)
                 .load(event.image)
                 .placeholder(R.drawable.profile_pic_placeholder)
                 .into(binding.itemIcon)
+
+            if (event.attended){
+                binding.coinsView.visible()
+            }
+            else{
+                binding.coinsView.gone()
+            }
+
         }
         fun formatDateString(dateString: String?): String {
             val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())

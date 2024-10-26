@@ -60,11 +60,12 @@ class SocialLinksFragment : Fragment() {
         })
         surveyViewModel.socialDetailsPageResult.observe(viewLifecycleOwner, Observer { result ->
             if (result){
-                val userSurvey= PrefManager.getUserSurvey()!!
+                val userSurvey= PrefManager.getUserProfileForCache()!!
                 val links= listOf(surveyViewModel.linkedIn.value!!,surveyViewModel.github.value!!,surveyViewModel.behance.value!!,surveyViewModel.link1.value!!,surveyViewModel.link2.value!!)
-                userSurvey.links=links
-                PrefManager.setUserSurvey(userSurvey)
-                Log.d("usercheck","${PrefManager.getUserSurvey()}")
+                userSurvey.socials.LinkedIn=links[0]
+                userSurvey.socials.GitHub=links[1]
+                userSurvey.socials.Behance=links[2]
+                PrefManager.setUserProfileForCache(userSurvey)
                 findNavController().navigate(R.id.action_fragment_social_links_to_fragment_k_y_c_validation)
                 surveyViewModel.resetSocialDetailsPageResult()
                 surveyViewModel.resetErrorMessageSocialDetails()

@@ -12,5 +12,6 @@ data class ParticipatedEvent(
     val description: String,
     val registrationLink: String? = null,
     val venue: String? = null,
-    val enrolledCount: Int
+    val enrolledCount: Int,
+    val attended:Boolean = false
 )

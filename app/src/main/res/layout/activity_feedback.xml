@@ -21,13 +21,18 @@
             />
 
 
-        <ProgressBar
-            android:id="@+id/progressbar"
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/linearProgressIndicator"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:indeterminateTint="@color/primary"
-            android:visibility="gone" />
+            android:indeterminate="true"
+            android:layout_height="5dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            app:indicatorColor="@color/green"
+            app:indicatorDirectionLinear="leftToRight"
+            app:trackColor="@color/item_bg_glow"
+            />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/layout"

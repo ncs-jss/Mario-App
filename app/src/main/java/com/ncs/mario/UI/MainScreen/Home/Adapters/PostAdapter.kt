@@ -278,6 +278,32 @@ class PostAdapter(private val items: MutableList<ListItem>, private val callBack
         }
     }
 
+    fun appendLikePosts(posts: List<ListItem>) {
+        items.addAll(posts.distinctBy {
+            when (it) {
+                is ListItem.Poll -> it.poll._id
+                is ListItem.Post -> it.post._id
+            }
+        })
+        items.sortByDescending {
+            when (it) {
+                is ListItem.Poll -> it.poll.createdAt
+                is ListItem.Post -> it.post.createdAt
+            }
+        }
+        notifyDataSetChanged()
+    }
+
+    fun removeLikePost(post: ListItem) {
+        items.remove(post)
+        items.sortByDescending {
+            when (it) {
+                is ListItem.Poll -> it.poll.createdAt
+                is ListItem.Post -> it.post.createdAt
+            }
+        }
+    }
+
 }
 
 sealed class ListItem {

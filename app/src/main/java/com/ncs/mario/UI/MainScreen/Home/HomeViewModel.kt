@@ -1,5 +1,7 @@
 package com.ncs.mario.UI.MainScreen.Home
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -26,6 +28,7 @@ import com.ncs.mario.Domain.Models.ServerResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.IOException
+import java.io.InputStream
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 
@@ -69,6 +72,8 @@ class HomeViewModel @Inject constructor(
     private val _unenrollResult = MutableLiveData<Boolean>()
     val unenrollResult: LiveData<Boolean> = _unenrollResult
 
+    private val _ticketResultBitmap = MutableLiveData<Bitmap>(null)
+    val ticketResultBitmap: LiveData<Bitmap> = _ticketResultBitmap
 
     fun getHomePageItems(){
         getBanners()
@@ -90,6 +95,7 @@ class HomeViewModel @Inject constructor(
             try {
                 _progressState.value = true
                 val response = bannerApiService.getBanners()
+                Log.d("exceptionCheck", response.toString())
                 if (response.isSuccessful) {
                     val responseBody=response.body()
                     val bannerResponse = Gson().fromJson(responseBody, BannerResponse::class.java)
@@ -163,6 +169,30 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun resetTicketResult(){
+        _ticketResultBitmap.value=null
+    }
+
+    fun getTicket(eventId: String) {
+        viewModelScope.launch {
+            try {
+                val response = eventsApi.getTicket(eventID = eventId)
+                if (response.isSuccessful) {
+                    val inputStream: InputStream = response.body()!!.byteStream()
+                    val bitmap: Bitmap = BitmapFactory.decodeStream(inputStream)
+                    _ticketResultBitmap.value=bitmap
+                } else {
+                    val errorResponse = response.errorBody()?.string()
+                    _normalErrorMessage.value = "Failed to get your ticket"
+                }
+            } catch (e: SocketTimeoutException) {
+                _normalErrorMessage.value = "Network timeout. Please try again."
+            } catch (e: Exception) {
+                _normalErrorMessage.value = "Something went wrong. Please try again."
+            }
+        }
+    }
+
     fun enrollUser(eventId:String){
         viewModelScope.launch {
             _progressState.value = true
@@ -170,11 +200,15 @@ class HomeViewModel @Inject constructor(
             try {
                 val response = eventsApi.enrollUser(payload = EnrollUser(eventId))
                 if (response.isSuccessful) {
+                    val inputStream: InputStream = response.body()!!.byteStream()
+                    val bitmap: Bitmap = BitmapFactory.decodeStream(inputStream)
+                    _ticketResultBitmap.value=bitmap
                     _progressState.value = false
                     _normalErrorMessage.value = "Enrolled you to the event"
                     _enrollResult.value=true
                     getMyEvents()
-                } else {
+                }
+                else {
                     _progressState.value = false
                     val errorResponse = response.errorBody()?.string()
                     _normalErrorMessage.value = "Failed to enroll you to the event"

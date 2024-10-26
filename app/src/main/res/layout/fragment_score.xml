@@ -38,17 +38,69 @@
             android:padding="0dp"
             android:paddingBottom="4dp"
             android:scaleType="fitXY"
-            android:src="@drawable/mario_score_bg" />
+            android:src="@drawable/mario_score_bg_2" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/shimmerLayoutPoints"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="30dp"
+                        android:orientation="horizontal">
+
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/onShimmerColor"
+                        android:elevation="2dp"
+                        android:fontFamily="@font/sf_medium"
+                        android:textColor="@color/baseWhite"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/onShimmerColor"
+                        android:elevation="2dp"
+                        android:fontFamily="@font/sf_medium"
+                        android:textColor="@color/baseWhite"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/pointsView"
+                android:visibility="gone"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -104,16 +156,37 @@
         app:layout_constraintStart_toStartOf="@id/scoreCard"
         app:layout_constraintTop_toBottomOf="@+id/scoreCard">
 
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/shimmerProgressLayout">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:background="@color/onShimmerColor"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="15dp"
+            android:paddingHorizontal="24dp"
+            android:paddingVertical="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/scoreCard"/>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
 
 
 
         <LinearLayout
-            android:id="@+id/layout"
+            android:id="@+id/progresslayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="15dp"
             android:paddingHorizontal="24dp"
+            android:visibility="gone"
             android:paddingVertical="8dp"
             app:layout_constraintTop_toBottomOf="@+id/scoreCard">
 
@@ -209,6 +282,27 @@
 
         </LinearLayout>
 
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/shimmerCoinsLayout">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:background="@color/onShimmerColor"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="15dp"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/scoreCard"/>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -217,6 +311,9 @@
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:paddingTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/coinsView"
+            android:visibility="gone"
             android:layout_marginTop="12dp"
             android:gravity="center|center_vertical"
             android:background="@drawable/hollow_button_bg"
@@ -320,7 +417,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/pastEventRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_margin="12dp"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"

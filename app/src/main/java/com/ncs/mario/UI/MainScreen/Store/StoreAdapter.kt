@@ -24,17 +24,19 @@ class StoreAdapter(private val onRedeemClick: (Merch) -> Unit) :
                 itemName.text = item.name
                 points.text = item.cost.toString()
 
-                if (PrefManager.getUserProfile()?.points ?: 0 >= item.cost) {
+                if (PrefManager.getUserCoins() >= item.cost) {
                     lockLayout.setBackgroundResource(R.drawable.filled_primary_box)
                     lockText.text = "Redeem"
                     lockImage.visibility = View.GONE
-
                     root.setOnClickListener {
                         onRedeemClick(item)
                     }
                 } else {
+                    lockLayout.setBackgroundResource(R.drawable.filled_red_box)
+                    lockText.text = "Locked"
+                    lockImage.visibility = View.VISIBLE
                     root.setOnClickListener {
-                        Toast.makeText(root.context, "You don't have enough points!!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(root.context, "You don't have enough coins", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -62,7 +64,7 @@ class StoreAdapter(private val onRedeemClick: (Merch) -> Unit) :
         }
 
         override fun areContentsTheSame(oldItem: Merch, newItem: Merch): Boolean {
-            return oldItem == newItem
+            return false
         }
     }
 }
