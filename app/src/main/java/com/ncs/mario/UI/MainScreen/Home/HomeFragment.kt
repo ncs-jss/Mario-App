@@ -392,29 +392,34 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack {
     override fun onLikeClick(post: Post, isLiked: Boolean, isDoubleTapped: Boolean) {
         if (!isLiked){
             requireContext().performHapticFeedback()
-            adapter.removePost(ListItem.Post(post))
+            adapter.removeLikePost(ListItem.Post(post))
             viewModel.likePost(LikePostBody(post_id = post._id, action = "LIKE"))
             val newpost=post.copy(likes = if (!post.liked) post.likes+1 else post.likes, liked = true,image = post.image ?: "default_image_url")
-            adapter.appendPosts(mutableListOf(ListItem.Post(newpost)))
+            adapter.appendLikePosts(mutableListOf(ListItem.Post(newpost)))
         }
         else {
-            adapter.removePost(ListItem.Post(post))
+            adapter.removeLikePost(ListItem.Post(post))
             viewModel.likePost(LikePostBody(post_id = post._id, action = "UNLIKE"))
             val newpost=post.copy(likes = post.likes-1, liked = false,image = post.image ?: "default_image_url")
-            adapter.appendPosts(mutableListOf(ListItem.Post(newpost)))
+            adapter.appendLikePosts(mutableListOf(ListItem.Post(newpost)))
         }
     }
 
     override fun onShareClick(post: Post) {
-        ExtensionsUtil.generateShareLink(post._id) { link ->
-            if (link.isNull) {
-                util.showSnackbar(binding.root, "Something went wrong, try again later", 2000)
-            } else {
-                downloadImage(post.image) { bitmap ->
-                    if (bitmap != null) {
-                        sharePost(bitmap, post, link.toString())
-                    } else {
-                        util.showSnackbar(binding.root, "Failed to load image", 2000)
+        if (post.image.isNullOrEmpty()) {
+            util.showSnackbar(binding.root, "Something went wrong, try again later", 2000)
+        }
+        else{
+            ExtensionsUtil.generateShareLink(post._id) { link ->
+                if (link.isNull) {
+                    util.showSnackbar(binding.root, "Something went wrong, try again later", 2000)
+                } else {
+                    downloadImage(post.image) { bitmap ->
+                        if (bitmap != null) {
+                            sharePost(bitmap, post, link.toString())
+                        } else {
+                            util.showSnackbar(binding.root, "Failed to load image", 2000)
+                        }
                     }
                 }
             }
@@ -439,7 +444,7 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack {
     }
 
     private fun sharePost(bitmap: Bitmap, post: Post, link:String) {
-        val cachePath = File(requireContext().cacheDir, "images")
+        val cachePath = File(requireContext().filesDir, "images")
         cachePath.mkdirs()
         val stream = FileOutputStream(File(cachePath, "shared_image.png"))
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)

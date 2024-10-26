@@ -95,6 +95,7 @@ class HomeViewModel @Inject constructor(
             try {
                 _progressState.value = true
                 val response = bannerApiService.getBanners()
+                Log.d("exceptionCheck", response.toString())
                 if (response.isSuccessful) {
                     val responseBody=response.body()
                     val bannerResponse = Gson().fromJson(responseBody, BannerResponse::class.java)
@@ -199,11 +200,15 @@ class HomeViewModel @Inject constructor(
             try {
                 val response = eventsApi.enrollUser(payload = EnrollUser(eventId))
                 if (response.isSuccessful) {
+                    val inputStream: InputStream = response.body()!!.byteStream()
+                    val bitmap: Bitmap = BitmapFactory.decodeStream(inputStream)
+                    _ticketResultBitmap.value=bitmap
                     _progressState.value = false
                     _normalErrorMessage.value = "Enrolled you to the event"
                     _enrollResult.value=true
                     getMyEvents()
-                } else {
+                }
+                else {
                     _progressState.value = false
                     val errorResponse = response.errorBody()?.string()
                     _normalErrorMessage.value = "Failed to enroll you to the event"

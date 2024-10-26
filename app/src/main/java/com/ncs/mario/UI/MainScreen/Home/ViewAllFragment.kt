@@ -261,15 +261,20 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
     }
 
     override fun onShareClick(post: Post) {
-        ExtensionsUtil.generateShareLink(post._id) { link ->
-            if (link.isNull) {
-                util.showSnackbar(binding.root, "Something went wrong, try again later", 2000)
-            } else {
-                downloadImage(post.image) { bitmap ->
-                    if (bitmap != null) {
-                        sharePost(bitmap, post, link.toString())
-                    } else {
-                        util.showSnackbar(binding.root, "Failed to load image", 2000)
+        if (post.image.isNullOrEmpty()) {
+            util.showSnackbar(binding.root, "Something went wrong, try again later", 2000)
+        }
+        else{
+            ExtensionsUtil.generateShareLink(post._id) { link ->
+                if (link.isNull) {
+                    util.showSnackbar(binding.root, "Something went wrong, try again later", 2000)
+                } else {
+                    downloadImage(post.image) { bitmap ->
+                        if (bitmap != null) {
+                            sharePost(bitmap, post, link.toString())
+                        } else {
+                            util.showSnackbar(binding.root, "Failed to load image", 2000)
+                        }
                     }
                 }
             }
@@ -294,7 +299,7 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
     }
 
     private fun sharePost(bitmap: Bitmap, post: Post, link:String) {
-        val cachePath = File(requireContext().cacheDir, "images")
+        val cachePath = File(requireContext().filesDir, "images")
         cachePath.mkdirs()
         val stream = FileOutputStream(File(cachePath, "shared_image.png"))
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)

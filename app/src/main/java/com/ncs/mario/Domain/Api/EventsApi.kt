@@ -33,7 +33,7 @@ interface EventsApi {
     @POST("enroll-me")
     suspend fun enrollUser(@Header("Authorization") authToken: String=PrefManager.getToken()!!,
                            @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
-                           @Body payload: EnrollUser): Response<JsonObject>
+                           @Body payload: EnrollUser): Response<ResponseBody>
 
     @Headers("Content-Type: application/json")
     @POST("opt-out")

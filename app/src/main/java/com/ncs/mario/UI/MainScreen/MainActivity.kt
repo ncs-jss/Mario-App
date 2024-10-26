@@ -134,7 +134,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun qrGenerator(qrImage: ImageView) {
         val size = 400
-        val bits = QRCodeWriter().encode(PrefManager.getUserProfile()?.admission_number, BarcodeFormat.QR_CODE, size, size)
+        val bits = QRCodeWriter().encode(PrefManager.getUserID(), BarcodeFormat.QR_CODE, size, size)
         val bitmap = createBitmap(size, size, Bitmap.Config.RGB_565).also {
             for (x in 0 until size) {
                 for (y in 0 until size) {

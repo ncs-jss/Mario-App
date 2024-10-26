@@ -270,6 +270,8 @@
             android:background="@drawable/enroll_button"
             android:gravity="center">
 
+
+
             <TextView
                 android:id="@+id/btnEnroll"
                 android:layout_width="wrap_content"
