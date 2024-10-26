@@ -33,7 +33,7 @@ object NotificationBuilderUtil {
         )
 
         notificationBuilder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.logo)
+            .setSmallIcon(R.drawable.mario_m)
             .setContentTitle(notification.title)
             .setContentText(notification.body)
             .setPriority(NotificationCompat.PRIORITY_HIGH)

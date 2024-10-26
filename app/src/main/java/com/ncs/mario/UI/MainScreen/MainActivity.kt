@@ -81,8 +81,7 @@ class MainActivity : AppCompatActivity() {
         binding.drawerheaderfile.scanButton.setOnClickThrottleBounceListener {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             scannerLauncher.launch(
-                ScanOptions().setPrompt("Scan to get Mario Points")
-                    .setDesiredBarcodeFormats(ScanOptions.QR_CODE)
+                ScanOptions().setPrompt("Scan to get Mario Points").setDesiredBarcodeFormats(ScanOptions.QR_CODE)
             )
         }
 //        binding.actionbar.scoreTV.text = PrefManager.getUserProfile()?.points.toString()

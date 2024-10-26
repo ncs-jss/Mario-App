@@ -6,9 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
+import com.ncs.mario.Domain.Api.EventsApi
 import com.ncs.mario.Domain.Api.ProfileApiService
 import com.ncs.mario.Domain.HelperClasses.PrefManager
 import com.ncs.mario.Domain.Interfaces.QrRepository
+import com.ncs.mario.Domain.Models.Events.AnswerPollBody
+import com.ncs.mario.Domain.Models.Events.ScanTicketBody
 import com.ncs.mario.Domain.Models.Profile
 import com.ncs.mario.Domain.Models.ServerResponse
 import com.ncs.mario.Domain.Models.ServerResult
@@ -23,6 +26,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val qrRepository: QrRepository,
     private val profileApiService: ProfileApiService,
+    private val eventsApi: EventsApi
 ) : ViewModel() {
 
     private val _validateScannedQR = MutableLiveData<ServerResult<String>>()
@@ -77,6 +81,29 @@ class MainViewModel @Inject constructor(
                         _validateScannedQR.value = ServerResult.Success(it.data.message)
                     }
                 }
+            }
+            scanTicket(scanTicketBody = ScanTicketBody(event_ticket = couponCode ))
+        }
+    }
+
+    fun scanTicket(scanTicketBody: ScanTicketBody){
+        viewModelScope.launch {
+            _progressState.value = true
+            try {
+                val response = eventsApi.scanTicket(payload = scanTicketBody)
+                if (response.isSuccessful) {
+                    _progressState.value = false
+                    _errorMessage.value = "Attendance Marked"
+                } else {
+                    _progressState.value = false
+                    _errorMessage.value = "Failed to scan ticket"
+                }
+            } catch (e: SocketTimeoutException) {
+                _progressState.value = false
+                _errorMessage.value = "Network timeout. Please try again."
+            } catch (e: Exception) {
+                _progressState.value = false
+                _errorMessage.value = "Something went wrong. Please try again."
             }
         }
     }

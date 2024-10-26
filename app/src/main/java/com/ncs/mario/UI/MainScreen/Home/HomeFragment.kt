@@ -374,10 +374,12 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack {
 
     override fun onClick(event: Event, isEnrolled: Boolean) {
         if (isEnrolled){
-            viewModel.unenrollUser(event._id)
+            val bottomSheet = EventActionBottomSheet(event,"Unenroll")
+            bottomSheet.show(childFragmentManager, bottomSheet.tag)
         }
         else{
-            viewModel.enrollUser(event._id)
+            val bottomSheet = EventActionBottomSheet(event,"Enroll")
+            bottomSheet.show(childFragmentManager, bottomSheet.tag)
         }
     }
 

@@ -29,8 +29,8 @@ class FCMessagingService : FirebaseMessagingService() {
 
             val data = remoteMessage.data
             val type = data["type"]
-            val title = remoteMessage.notification!!.title
-            val body = remoteMessage.notification!!.body
+            val title=data["title"]
+            val body=data["body"]
 
             if (type != null) {
                 when (type) {

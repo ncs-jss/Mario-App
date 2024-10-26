@@ -14,6 +14,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.chip.Chip
+import com.ncs.mario.BuildConfig
 import com.ncs.mario.Domain.Models.Report.ReportBody
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.isNull
@@ -295,7 +296,7 @@ class FeedbackActivity : AppCompatActivity() {
                     }
                     val reportBody = ReportBody(
                         type=if (type[0]=="Bug Found 🐞") "BUG" else "FEEDBACK",
-                        description = binding.desc.text.toString(),
+                        description = "${binding.desc.text.toString()} \n\n My version name: ${BuildConfig.VERSION_NAME} \n\n My version code: ${BuildConfig.VERSION_CODE}",
                         images = images
                     )
                     viewModel.addReport(reportBody)
@@ -304,7 +305,7 @@ class FeedbackActivity : AppCompatActivity() {
                     val images= mutableListOf<String>()
                     val reportBody = ReportBody(
                         type=if (type[0]=="Bug Found 🐞") "BUG" else "FEEDBACK",
-                        description = binding.desc.text.toString(),
+                        description = "${binding.desc.text.toString()} \n\n My version name: ${BuildConfig.VERSION_NAME} \n\n My version code: ${BuildConfig.VERSION_CODE}",
                         images = images
                     )
                     viewModel.addReport(reportBody)
