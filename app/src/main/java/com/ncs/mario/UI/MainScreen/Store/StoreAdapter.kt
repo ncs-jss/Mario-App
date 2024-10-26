@@ -36,7 +36,7 @@ class StoreAdapter(private val onRedeemClick: (Merch) -> Unit) :
                     lockText.text = "Locked"
                     lockImage.visibility = View.VISIBLE
                     root.setOnClickListener {
-                        Toast.makeText(root.context, "You don't have enough points!!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(root.context, "You don't have enough coins", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

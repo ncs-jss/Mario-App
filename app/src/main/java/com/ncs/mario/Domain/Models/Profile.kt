@@ -1,7 +1,7 @@
 package com.ncs.mario.Domain.Models
 
 data class Profile(
-    val admission_number: String="",
+    var admission_number: String="",
     var branch: String="",
     var domain: List<String> = emptyList(),
     val id_card: IdCard = IdCard(),

@@ -132,6 +132,18 @@ object PrefManager {
         return if (json != null) gson.fromJson(json, Profile::class.java) else Profile()
     }
 
+    fun setUserProfileForCache(profile: Profile) {
+        val json = gson.toJson(profile)
+        editor.putString("profile_cache", json)
+        editor.apply()
+    }
+
+    fun getUserProfileForCache(): Profile? {
+        val json = sharedPreferences.getString("profile_cache", null)
+        return if (json != null) gson.fromJson(json, Profile::class.java) else Profile()
+    }
+
+
 
     fun setFCMToken(fcmtoken: String){
         editor.putString("fcmtoken", fcmtoken)

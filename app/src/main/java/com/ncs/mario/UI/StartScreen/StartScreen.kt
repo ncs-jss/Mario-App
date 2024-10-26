@@ -37,7 +37,6 @@ class StartScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        binding.imageView3.popInfinity(this)
         handleDynamicLink(intent)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(
@@ -131,6 +130,9 @@ class StartScreen : AppCompatActivity() {
             if (it!=null){
                 val user=it
                 PrefManager.setUserProfile(user.profile)
+                if (user.profile.name!=""){
+                    PrefManager.setUserProfileForCache(user.profile)
+                }
                 if (user.profile.photo.secure_url!="" &&  user.profile.id_card.secure_url!=""){
                     viewModel.fetchUserKYCHeaderToken()
                 }

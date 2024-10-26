@@ -62,15 +62,15 @@ class TechnicalFragment : Fragment() {
         })
         surveyViewModel.technicalDetailsPageResult.observe(viewLifecycleOwner, Observer { result ->
             if (result) {
-                val userSurvey=PrefManager.getUserSurvey()!!
+                val userSurvey=PrefManager.getUserProfileForCache()!!
                 val domains=surveyViewModel.selectedDomains.value!!.toMutableList()
                 if (domains.contains("Others")){
                     domains.remove("Others")
-                    domains.add(surveyViewModel.getOthersText()!!)
+                    domains.add("Other")
                 }
-                userSurvey.domains=domains
-                PrefManager.setUserSurvey(userSurvey)
-                Log.d("usercheck","${PrefManager.getUserSurvey()}")
+                userSurvey.domain=domains
+                userSurvey.other_domain=surveyViewModel.getOthersText()!!
+                PrefManager.setUserProfileForCache(userSurvey)
                 findNavController().navigate(R.id.action_fragment_technical_to_fragment_social_links)
                 surveyViewModel.resetTechnicalDetailsPageResult()
                 surveyViewModel.resetErrorMessageTechnicalDetails()
@@ -97,8 +97,6 @@ class TechnicalFragment : Fragment() {
             surveyViewModel.setOthersText(othersText)
             surveyViewModel.validateInputsOnTechnicalDetailsPage()
         }
-
-
         setupCheckboxListeners()
     }
 
