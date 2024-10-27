@@ -26,7 +26,11 @@ import com.ncs.mario.Domain.Models.Posts.PostResponse
 import com.ncs.mario.Domain.Models.ServerResponse
 import com.ncs.mario.Domain.Models.ServerResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.io.InputStream
 import java.net.SocketTimeoutException
@@ -69,18 +73,45 @@ class HomeViewModel @Inject constructor(
     private val _enrollResult = MutableLiveData<Boolean>()
     val enrollResult: LiveData<Boolean> = _enrollResult
 
+    private val _likeResult = MutableLiveData<Boolean>(false)
+    val likeResult: LiveData<Boolean> = _likeResult
+
+    private val _unlikeResult = MutableLiveData<Boolean>(false)
+    val unlikeResult: LiveData<Boolean> = _unlikeResult
+
     private val _unenrollResult = MutableLiveData<Boolean>()
     val unenrollResult: LiveData<Boolean> = _unenrollResult
 
     private val _ticketResultBitmap = MutableLiveData<Bitmap>(null)
     val ticketResultBitmap: LiveData<Bitmap> = _ticketResultBitmap
 
-    fun getHomePageItems(){
-        getBanners()
-        getEvents()
-        getMyEvents()
-        getPolls()
-        getPosts()
+    fun getHomePageItems() {
+        viewModelScope.launch {
+            val startTime = System.currentTimeMillis()
+
+            try {
+                _progressState.value = true
+
+                val bannersDeferred = async { getBanners() }
+                val eventsDeferred = async { getEvents() }
+                val myEventsDeferred = async { getMyEvents() }
+                val pollsDeferred = async { getPolls() }
+                val postsDeferred = async { getPosts() }
+
+                awaitAll(bannersDeferred, eventsDeferred, myEventsDeferred, pollsDeferred, postsDeferred)
+
+                _progressState.value = false
+            } catch (e: Exception) {
+                _errorMessage.value = "Failed to load home page items."
+                _progressState.value = false
+            } finally {
+                val endTime = System.currentTimeMillis()
+                val duration = endTime - startTime
+
+                Log.d("Timing", "getHomePageItems completed in $duration ms")
+
+            }
+        }
     }
 
 
@@ -90,84 +121,53 @@ class HomeViewModel @Inject constructor(
         _normalErrorMessage.value=null
     }
 
-    fun getBanners(){
-        viewModelScope.launch {
-            try {
-                _progressState.value = true
-                val response = bannerApiService.getBanners()
-                Log.d("exceptionCheck", response.toString())
-                if (response.isSuccessful) {
-                    val responseBody=response.body()
-                    val bannerResponse = Gson().fromJson(responseBody, BannerResponse::class.java)
-                    _banners.value=bannerResponse.banners
-                    _progressState.value = false
-                } else {
-                    val errorResponse = response.errorBody()?.string()
-                    val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
-                    _progressState.value = false
-                    _errorMessage.value=loginResponse.message
-                    Log.d("exceptionCheck", errorResponse!!)
-                }
-            } catch (e: SocketTimeoutException) {
-                _errorMessage.value = "Network timeout. Please try again."
-                _progressState.value = false
-            } catch (e: IOException) {
-                _errorMessage.value = "Network error. Please check your connection."
-                _progressState.value = false
-            } catch (e: Exception) {
-                Log.d("exceptionCheck", e.message.toString())
-                _errorMessage.value = "Something went wrong. Please try again."
-                _progressState.value = false
+    suspend fun getBanners(): Unit = withContext(Dispatchers.IO) {
+        try {
+            val response = bannerApiService.getBanners()
+            if (response.isSuccessful) {
+                val responseBody = response.body()
+                val bannerResponse = Gson().fromJson(responseBody, BannerResponse::class.java)
+                _banners.postValue(bannerResponse.banners)
+            } else {
+                val errorResponse = response.errorBody()?.string()
+                val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
+                _errorMessage.postValue(loginResponse.message)
+            }
+        } catch (e: SocketTimeoutException) {
+            _errorMessage.postValue("Network timeout. Please try again.")
+        } catch (e: IOException) {
+            _errorMessage.postValue("Network error. Please check your connection.")
+        } catch (e: Exception) {
+            _errorMessage.postValue("Something went wrong. Please try again.")
+        } finally {
+            _progressState.postValue(false)
+        }
+    }
+
+    suspend fun getEvents(): Unit = withContext(Dispatchers.IO) {
+        eventRepository.getEvents {
+            when (it) {
+                is ServerResult.Failure -> _getEventsResponse.postValue(ServerResult.Failure(it.exception))
+                ServerResult.Progress -> _getEventsResponse.postValue(ServerResult.Progress)
+                is ServerResult.Success -> _getEventsResponse.postValue(ServerResult.Success(it.data.events))
             }
         }
     }
 
-    fun getEvents() {
-        viewModelScope.launch {
-            _progressState.value = true
-            eventRepository.getEvents {
-                when (it) {
-                    is ServerResult.Failure -> {
-                        _errorMessage.value = it.exception.message
-                        _progressState.value = false
-                        _getEventsResponse.value = ServerResult.Failure(it.exception)
-                    }
-                    ServerResult.Progress -> {
-                        _progressState.value = true
-                        _getEventsResponse.value = ServerResult.Progress
-                    }
-                    is ServerResult.Success -> {
-                        if (it.data.success) {
-                            _progressState.value = false
-                            _getEventsResponse.value = ServerResult.Success(it.data.events)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    fun getMyEvents() {
-        viewModelScope.launch {
+    suspend fun getMyEvents(): Unit = withContext(Dispatchers.IO) {
+        try {
             eventRepository.getMyEvents {
                 when (it) {
-                    is ServerResult.Failure -> {
-                        _errorMessage.value = it.exception.message
-                        _progressState.value = false
-                        _getMyEventsResponse.value = ServerResult.Failure(it.exception)
-                    }
-                    ServerResult.Progress -> {
-                        _progressState.value = true
-                        _getMyEventsResponse.value = ServerResult.Progress
-                    }
-                    is ServerResult.Success -> {
-                        _progressState.value = false
-                        _getMyEventsResponse.postValue(ServerResult.Success(it.data.events))
-                    }
+                    is ServerResult.Failure -> _getMyEventsResponse.postValue(ServerResult.Failure(it.exception))
+                    ServerResult.Progress -> _getMyEventsResponse.postValue(ServerResult.Progress)
+                    is ServerResult.Success -> _getMyEventsResponse.postValue(ServerResult.Success(it.data.events))
                 }
             }
+        } catch (e: Exception) {
+            _errorMessage.postValue("Failed to load my events.")
         }
     }
+
 
     fun resetTicketResult(){
         _ticketResultBitmap.value=null
@@ -253,7 +253,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getPolls() {
+    suspend fun getPolls(): Unit = withContext(Dispatchers.IO) {
         viewModelScope.launch {
             _progressState.value = true
             try {
@@ -306,7 +306,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getPosts(){
+    suspend fun getPosts(): Unit = withContext(Dispatchers.IO) {
         viewModelScope.launch {
             try {
                 _progressState.value = true
@@ -344,7 +344,17 @@ class HomeViewModel @Inject constructor(
                 val response = postApiService.likePost(payload = likePostBody)
                 if (response.isSuccessful) {
                     _progressState.value = false
+                    if (likePostBody.action=="LIKE"){
+                        _likeResult.value=true
+                    }else{
+                        _unlikeResult.value=true
+                    }
                 } else {
+                    if (likePostBody.action=="LIKE"){
+                        _likeResult.value=false
+                    }else{
+                        _unlikeResult.value=false
+                    }
                     _progressState.value = false
                     _normalErrorMessage.value = "Failed to like the post"
                 }

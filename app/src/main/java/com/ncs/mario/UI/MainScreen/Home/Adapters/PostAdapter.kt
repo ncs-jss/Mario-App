@@ -1,5 +1,6 @@
 package com.ncs.mario.UI.MainScreen.Home.Adapters
 
+
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,69 +12,58 @@ import android.webkit.WebViewClient
 import android.widget.RadioButton
 import android.widget.SeekBar
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import br.tiagohm.markdownview.css.InternalStyleSheet
-import br.tiagohm.markdownview.css.styles.Github
 import com.bumptech.glide.Glide
 import com.ncs.mario.Domain.Models.Events.Option
 import com.ncs.mario.Domain.Models.Events.Poll
 import com.ncs.mario.Domain.Models.Posts.Post
-import com.ncs.mario.Domain.Utility.ExtensionsUtil.performHapticFeedback
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
-import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnDoubleClickListener
-import com.ncs.mario.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.mario.R
 import com.ncs.mario.databinding.ItemPostBinding
 import com.ncs.mario.databinding.PollItemBinding
 import com.ncs.mario.databinding.PollUiBinding
-import me.shouheng.utils.device.VibrateUtils.vibrate
-import kotlin.random.Random
+import br.tiagohm.markdownview.css.InternalStyleSheet
+import br.tiagohm.markdownview.css.styles.Github
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.visible
 
-class PostAdapter(private val items: MutableList<ListItem>, private val callBack: CallBack) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PostAdapter(private val callBack: CallBack) : ListAdapter<ListItem, RecyclerView.ViewHolder>(PostDiffCallback()) {
 
     companion object {
         private const val POLL = 0
         private const val EVENT = 1
-        private const val QNA = 2
     }
 
+
     override fun getItemViewType(position: Int): Int {
-        return when (items[position]) {
+        return when (getItem(position)) {
             is ListItem.Poll -> POLL
             is ListItem.Post -> EVENT
-            else -> throw IllegalArgumentException("Invalid type of data at position $position")
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            POLL -> {
-                val binding = PollUiBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                PollViewHolder(binding)
-            }
-            EVENT -> {
-                val binding = ItemPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                PostViewHolder(binding)
-            }
+            POLL -> PollViewHolder(PollUiBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            EVENT -> PostViewHolder(ItemPostBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is PollViewHolder -> holder.bind(items[position] as ListItem.Poll)
-            is PostViewHolder -> holder.bind(items[position] as ListItem.Post)
+            is PollViewHolder -> holder.bind(getItem(position) as ListItem.Poll)
+            is PostViewHolder -> holder.bind(getItem(position) as ListItem.Post)
         }
     }
-
-    override fun getItemCount(): Int = items.size
 
     inner class PollViewHolder(private val binding: PollUiBinding) : RecyclerView.ViewHolder(binding.root) {
         private var selectedOption = -1
         private var previousSelectedOption = -1
 
         fun bind(poll: ListItem.Poll) {
-            binding.tvQuestion.text=poll.poll.question
+            binding.tvQuestion.text = poll.poll.question
             setupUI(poll.poll)
         }
 
@@ -125,11 +115,8 @@ class PostAdapter(private val items: MutableList<ListItem>, private val callBack
         private fun updateUI(options: List<Option>) {
             options.forEachIndexed { index, option ->
                 val optionBinding = binding.container.getChildAt(index) as ViewGroup
-                val percentText = optionBinding.findViewById<TextView>(R.id.tvScore)
-                val seekBar = optionBinding.findViewById<SeekBar>(R.id.seekBar)
-                val percent = (option.votes.toDouble() / options.sumOf { it.votes }) * 100
-                percentText.text = option.votes.toString()
-                seekBar.progress = percent.toInt()
+                optionBinding.findViewById<TextView>(R.id.tvScore).text = option.votes.toString()
+                optionBinding.findViewById<SeekBar>(R.id.seekBar).progress = (option.votes.toDouble() / options.sumOf { it.votes } * 100).toInt()
             }
         }
 
@@ -138,14 +125,12 @@ class PostAdapter(private val items: MutableList<ListItem>, private val callBack
             for (i in 0 until totalOptions) {
                 val optionBinding = binding.container.getChildAt(i) as ViewGroup
                 val radioButton = optionBinding.findViewById<RadioButton>(R.id.radioButton)
-
                 radioButton.isChecked = (i == selectedOption)
             }
         }
     }
 
     inner class PostViewHolder(private val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root) {
-
         fun bind(post: ListItem.Post) {
             Glide.with(binding.root.context).load(post.post.image).placeholder(R.drawable.placeholder_image).into(binding.postImage)
 
@@ -155,11 +140,6 @@ class PostAdapter(private val items: MutableList<ListItem>, private val callBack
                 binding.likeImage.setImageResource(R.drawable.baseline_favorite_24)
             }else{
                 binding.likeImage.setImageResource(R.drawable.baseline_favorite_border_24)
-            }
-
-            binding.root.setOnDoubleClickListener {
-                binding.likeImage.setImageResource(R.drawable.baseline_favorite_24)
-                callBack.onLikeClick(post.post,false, true)
             }
 
             binding.share.setOnClickThrottleBounceListener {
@@ -176,6 +156,7 @@ class PostAdapter(private val items: MutableList<ListItem>, private val callBack
             }
             setUpMarkdown(post.post.caption)
         }
+
 
         private fun setUpMarkdown(description: String) {
             val css: InternalStyleSheet = Github()
@@ -234,77 +215,47 @@ class PostAdapter(private val items: MutableList<ListItem>, private val callBack
             binding.markdownView.visible()
 
         }
-
-
         inner class AndroidToJsInterface {
             @JavascriptInterface
-            fun sendCode(codeText: String, language: String?) {
-            }
-
+            fun sendCode(codeText: String, language: String?) {}
         }
-
-
     }
-    interface CallBack{
-        fun onCheckBoxClick(poll: Poll, selectedOption:String)
-        fun onLikeClick(post: Post, isLiked:Boolean, isDoubleTapped:Boolean=false)
+
+    fun updatePost(updatedPost: Post) {
+        val position = currentList.indexOfFirst { it is ListItem.Post && it.post._id == updatedPost._id }
+        if (position != -1) {
+            val newList = currentList.toMutableList()
+            newList[position] = ListItem.Post(updatedPost)
+            submitList(newList)
+        }
+    }
+
+
+    interface CallBack {
+        fun onCheckBoxClick(poll: Poll, selectedOption: String)
+        fun onLikeClick(post: Post, isLiked: Boolean)
         fun onShareClick(post: Post)
     }
-
-    fun appendPosts(posts: List<ListItem>) {
-        items.clear()
-        items.addAll(posts.distinctBy {
-            when (it) {
-                is ListItem.Poll -> it.poll._id
-                is ListItem.Post -> it.post._id
-            }
-        })
-        items.sortByDescending {
-            when (it) {
-                is ListItem.Poll -> it.poll.createdAt
-                is ListItem.Post -> it.post.createdAt
-            }
-        }
-        notifyDataSetChanged()
-    }
-
-    fun removePost(post: ListItem) {
-        items.remove(post)
-        items.sortByDescending {
-            when (it) {
-                is ListItem.Poll -> it.poll.createdAt
-                is ListItem.Post -> it.post.createdAt
-            }
-        }
-    }
-
-    fun appendLikePosts(posts: List<ListItem>) {
-        items.addAll(posts.distinctBy {
-            when (it) {
-                is ListItem.Poll -> it.poll._id
-                is ListItem.Post -> it.post._id
-            }
-        })
-        items.sortByDescending {
-            when (it) {
-                is ListItem.Poll -> it.poll.createdAt
-                is ListItem.Post -> it.post.createdAt
-            }
-        }
-        notifyDataSetChanged()
-    }
-
-    fun removeLikePost(post: ListItem) {
-        items.remove(post)
-        items.sortByDescending {
-            when (it) {
-                is ListItem.Poll -> it.poll.createdAt
-                is ListItem.Post -> it.post.createdAt
-            }
-        }
-    }
-
 }
+
+class PostDiffCallback : DiffUtil.ItemCallback<ListItem>() {
+    override fun areItemsTheSame(oldItem: ListItem, newItem: ListItem): Boolean {
+        return when {
+            oldItem is ListItem.Post && newItem is ListItem.Post -> oldItem.post._id == newItem.post._id
+            oldItem is ListItem.Poll && newItem is ListItem.Poll -> oldItem.poll._id == newItem.poll._id
+            else -> false
+        }
+    }
+
+    override fun areContentsTheSame(oldItem: ListItem, newItem: ListItem): Boolean {
+        return when {
+            oldItem is ListItem.Post && newItem is ListItem.Post -> oldItem.post == newItem.post
+            oldItem is ListItem.Poll && newItem is ListItem.Poll -> oldItem.poll == newItem.poll
+            else -> false
+        }
+    }
+}
+
 
 sealed class ListItem {
     data class Poll(val title: String, val poll: com.ncs.mario.Domain.Models.Events.Poll) : ListItem()

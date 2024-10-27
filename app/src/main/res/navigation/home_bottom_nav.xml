@@ -21,6 +21,21 @@
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_left"/>
 
+
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_events"
+        android:name="com.ncs.mario.UI.MainScreen.Events.EventsFragment"
+        android:label="fragment_events"
+        tools:layout="@layout/fragment_events" >
+
+        <action
+            android:id="@+id/action_fragment_events_to_fragment_home"
+            app:destination="@id/fragment_home"
+            />
+
     </fragment>
 
     <fragment
@@ -47,7 +62,30 @@
         android:id="@+id/fragment_score"
         android:name="com.ncs.mario.UI.MainScreen.Score.ScoreFragment"
         android:label="fragment_score"
-        tools:layout="@layout/fragment_score" />
+        tools:layout="@layout/fragment_score" >
+
+        <action
+            android:id="@+id/action_fragment_score_to_fragment_coin_transactions"
+            app:destination="@id/fragment_coin_transactions"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"/>
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/fragment_coin_transactions"
+        android:name="com.ncs.mario.UI.MainScreen.Score.CoinTransactionsFragment"
+        android:label="fragment_coin_transactions"
+        tools:layout="@layout/fragment_coin_transactions">
+
+        <action
+            android:id="@+id/action_fragment_coin_transactions_to_fragment_score"
+            app:destination="@id/fragment_score"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_right"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/fragment_store"

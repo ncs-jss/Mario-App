@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/baseBlack"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/swiperefresh"
+    tools:context=".UI.MainScreen.Score.CoinTransactionsFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:layout_width="match_parent"
+                android:visibility="visible"
+                android:id="@+id/transactionsShimmerLayout"
+                android:layout_height="wrap_content"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/transaction_item_shimmer_layout"/>
+                    <include layout="@layout/transaction_item_shimmer_layout"/>
+                    <include layout="@layout/transaction_item_shimmer_layout"/>
+                    <include layout="@layout/transaction_item_shimmer_layout"/>
+                    <include layout="@layout/transaction_item_shimmer_layout"/>
+                    <include layout="@layout/transaction_item_shimmer_layout"/>
+                    <include layout="@layout/transaction_item_shimmer_layout"/>
+                    <include layout="@layout/transaction_item_shimmer_layout"/>
+                    <include layout="@layout/transaction_item_shimmer_layout"/>
+                    <include layout="@layout/transaction_item_shimmer_layout"/>
+                    <include layout="@layout/transaction_item_shimmer_layout"/>
+                    <include layout="@layout/transaction_item_shimmer_layout"/>
+
+                </LinearLayout>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:id="@+id/recyclerView"/>
+
+        </LinearLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
