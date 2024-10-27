@@ -111,9 +111,8 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
         super.onResume()
         startAutoScroll()
         activityBinding.binding.actionbar.titleTv.text="Mario"
-        if (viewModel.banners.value.isNullOrEmpty()){
-            viewModel.getHomePageItems()
-        }
+        viewModel.getHomePageItems()
+
     }
 
 
