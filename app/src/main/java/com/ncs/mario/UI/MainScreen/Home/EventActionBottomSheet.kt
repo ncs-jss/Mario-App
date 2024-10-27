@@ -20,7 +20,9 @@ import java.util.Locale
 
 @AndroidEntryPoint
 class EventActionBottomSheet(val event: Event, val type:String): BottomSheetDialogFragment() {
-
+    override fun getTheme(): Int {
+        return R.style.AppBottomSheetDialogTheme
+    }
 
     private val viewModel: HomeViewModel by activityViewModels()
 

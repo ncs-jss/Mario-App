@@ -9,12 +9,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.visible
+import com.ncs.mario.R
 import com.ncs.mario.databinding.BottomSheetBinding
 
 
 class BottomSheet(private val dataList: List<String>,private val type:String, private val sendText: SendText, val currentSelected:Int):BottomSheetDialogFragment (),
     BottomSheetRVAdapter.onClickString{
     lateinit var binding: BottomSheetBinding
+    override fun getTheme(): Int {
+        return R.style.AppBottomSheetDialogTheme
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
