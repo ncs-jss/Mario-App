@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:minHeight="200dp"
-    android:background="@color/secondary_bg_lighter"
+    style="@style/AppBottomSheetDialogTheme"
     >
 
 
@@ -243,6 +243,7 @@
         <TextView
             android:id="@+id/orderId"
             android:layout_width="0dp"
+            android:textColor="@color/neutral300"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Order ID: 7192"
@@ -260,6 +261,7 @@
         <TextView
             android:id="@+id/date"
             android:layout_weight="1"
+            android:textColor="@color/neutral300"
             android:gravity="start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -412,6 +414,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="PLACED"
+            android:textColor="@color/better_white"
             android:textStyle="bold"
             android:layout_weight="1"
             />
@@ -420,6 +423,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="PROCESSING"
+            android:textColor="@color/better_white"
             android:textStyle="bold"
             android:gravity="center"
             android:layout_weight="1"
@@ -429,6 +433,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="COMPLETE"
+            android:textColor="@color/better_white"
             android:textStyle="bold"
             android:gravity="end"
             android:layout_weight="1"

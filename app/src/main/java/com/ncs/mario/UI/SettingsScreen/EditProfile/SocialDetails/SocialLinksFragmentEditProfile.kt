@@ -67,9 +67,8 @@ class SocialLinksFragmentEditProfile : Fragment() {
                 userSurvey.links=links
                 PrefManager.setUserSurvey(userSurvey)
                 Log.d("usercheck","${PrefManager.getUserSurvey()}")
-                startActivity(Intent(requireContext(), SettingsActivity::class.java))
-                requireActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
                 requireActivity().finish()
+                requireActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
                 surveyViewModel.resetSocialDetailsPageResult()
                 surveyViewModel.resetErrorMessageSocialDetails()
             }

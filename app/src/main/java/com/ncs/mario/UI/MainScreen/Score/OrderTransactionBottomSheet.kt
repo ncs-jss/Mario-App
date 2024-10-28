@@ -27,6 +27,10 @@ class OrderTransactionBottomSheet(val id:String):BottomSheetDialogFragment() {
     private val viewModel: ScoreViewModel by activityViewModels()
     private lateinit var binding: BottomsheetRedemptionBinding
 
+    override fun getTheme(): Int {
+        return R.style.AppBottomSheetDialogTheme
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

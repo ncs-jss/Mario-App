@@ -145,9 +145,8 @@ class PersonalDetailsFragmentEditProfile : Fragment(), BottomSheet.SendText {
 
     private fun onBackPress() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            startActivity(Intent(requireContext(),SettingsActivity::class.java))
-            requireActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
             requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right)
         }
     }
 
