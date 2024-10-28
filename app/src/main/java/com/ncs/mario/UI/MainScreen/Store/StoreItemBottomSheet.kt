@@ -20,7 +20,9 @@ class StoreItemBottomSheet: BottomSheetDialogFragment() {
     private lateinit var order: Merch
     private val viewModel: StoreViewModel by activityViewModels()
     private val activityViewModel : MainViewModel by activityViewModels()
-
+    override fun getTheme(): Int {
+        return R.style.AppBottomSheetDialogTheme
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

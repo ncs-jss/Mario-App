@@ -17,7 +17,9 @@ import java.util.Locale
 
 class OrderDetailsBottomSheet:BottomSheetDialogFragment() {
     private lateinit var order:MyOrderData
-
+    override fun getTheme(): Int {
+        return R.style.AppBottomSheetDialogTheme
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

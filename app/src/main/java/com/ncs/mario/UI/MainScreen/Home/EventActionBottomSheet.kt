@@ -19,6 +19,10 @@ import java.util.Date
 import java.util.Locale
 
 @AndroidEntryPoint
+class EventActionBottomSheet(val event: Event, val type:String): BottomSheetDialogFragment() {
+    override fun getTheme(): Int {
+        return R.style.AppBottomSheetDialogTheme
+    }
 class EventActionBottomSheet(val event: Event, val type:String, val callback: Callback): BottomSheetDialogFragment() {
 
 
