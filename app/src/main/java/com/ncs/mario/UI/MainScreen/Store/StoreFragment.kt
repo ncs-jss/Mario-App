@@ -7,11 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.mario.Domain.Utility.GlobalUtils
+import com.ncs.mario.R
 import com.ncs.mario.UI.MainScreen.MainActivity
 import com.ncs.mario.UI.MainScreen.MainViewModel
 import com.ncs.mario.databinding.FragmentStoreBinding
@@ -44,7 +46,16 @@ class StoreFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        activityBinding.binding.actionbar.score.visibility=View.VISIBLE
+        activityBinding.binding.actionbar.btnHam.setImageResource(R.drawable.ham)
         activityBinding.binding.actionbar.titleTv.text="Nerd Store"
+        activityBinding.binding.actionbar.btnHam.setOnClickListener {
+            if (activityBinding.binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                activityBinding.binding.drawerLayout.closeDrawer(GravityCompat.START)
+            } else {
+                activityBinding.binding.drawerLayout.openDrawer(GravityCompat.START)
+            }
+        }
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

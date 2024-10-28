@@ -107,21 +107,36 @@ class MainActivity : AppCompatActivity() {
         bottomNav.setupWithNavController(navController)
 
         bottomNav.setOnItemSelectedListener { menuItem ->
+            val currentDestination = navController.currentDestination?.id
             when (menuItem.itemId) {
                 R.id.fragment_home -> {
-                    navController.navigate(R.id.fragment_home)
+                    if (currentDestination != R.id.fragment_home) {
+                        navController.navigate(R.id.fragment_home)
+                    }
+                    true
+                }
+                R.id.fragment_events -> {
+                    if (currentDestination != R.id.fragment_events) {
+                        navController.navigate(R.id.fragment_events)
+                    }
                     true
                 }
                 R.id.fragment_internship -> {
-                    navController.navigate(R.id.fragment_internship)
+                    if (currentDestination != R.id.fragment_internship) {
+                        navController.navigate(R.id.fragment_internship)
+                    }
                     true
                 }
                 R.id.fragment_score -> {
-                    navController.navigate(R.id.fragment_score)
+                    if (currentDestination != R.id.fragment_score) {
+                        navController.navigate(R.id.fragment_score)
+                    }
                     true
                 }
                 R.id.fragment_store -> {
-                    navController.navigate(R.id.fragment_store)
+                    if (currentDestination != R.id.fragment_store) {
+                        navController.navigate(R.id.fragment_store)
+                    }
                     true
                 }
                 else -> {
@@ -129,6 +144,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
     }
 
     private fun qrGenerator(qrImage: ImageView) {

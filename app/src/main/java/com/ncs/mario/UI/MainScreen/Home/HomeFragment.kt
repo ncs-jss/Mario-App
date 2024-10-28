@@ -53,6 +53,9 @@ import com.ncs.mario.UI.MainScreen.MainViewModel
 import com.ncs.mario.databinding.FragmentHomeBinding
 import com.ncs.mario.databinding.TicketDialogBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.net.HttpURLConnection
@@ -62,12 +65,12 @@ import java.util.Date
 import java.util.Locale
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack {
+class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, EventActionBottomSheet.Callback {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private var currentPosition = Int.MAX_VALUE / 2
-    private val delayMillis: Long = 2000
+    private val delayMillis: Long = 3000
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var adapter: PostAdapter
     lateinit var eventsAdapter: EventsAdapter
@@ -93,7 +96,6 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getHomePageItems()
         binding.swiperefresh.setOnRefreshListener {
             val currentTime = System.currentTimeMillis()
             if (currentTime - lastRefreshTime > 2000) {
@@ -109,6 +111,8 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack {
         super.onResume()
         startAutoScroll()
         activityBinding.binding.actionbar.titleTv.text="Mario"
+        viewModel.getHomePageItems()
+
     }
 
 
@@ -218,7 +222,7 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack {
                     }
                 }
                 val topPosts = combinedList.take(5)
-                adapter.appendPosts(topPosts)
+                adapter.submitList(topPosts)
                 binding.postsShimmerLayout.apply {
                     stopShimmer()
                     visibility = View.GONE
@@ -239,9 +243,7 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack {
     private fun setUpViews(){
 
         binding.viewAllEvents.setOnClickThrottleBounceListener {
-            val bundle = Bundle()
-            bundle.putString("type", "Events")
-            findNavController().navigate(R.id.action_fragment_home_to_fragment_view_all, bundle)
+            findNavController().navigate(R.id.fragment_events)
         }
 
         binding.viewAllPosts.setOnClickThrottleBounceListener {
@@ -315,7 +317,7 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack {
     }
 
     private fun setUpPostsRV(posts:List<ListItem>){
-        adapter = PostAdapter(posts.toMutableList(), this)
+        adapter = PostAdapter( this)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
     }
@@ -374,13 +376,21 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack {
 
     override fun onClick(event: Event, isEnrolled: Boolean) {
         if (isEnrolled){
-            val bottomSheet = EventActionBottomSheet(event,"Unenroll")
+            val bottomSheet = EventActionBottomSheet(event,"Unenroll", this)
             bottomSheet.show(childFragmentManager, bottomSheet.tag)
         }
         else{
-            val bottomSheet = EventActionBottomSheet(event,"Enroll")
+            val bottomSheet = EventActionBottomSheet(event,"Enroll", this)
             bottomSheet.show(childFragmentManager, bottomSheet.tag)
         }
+    }
+
+    override fun onEnroll(event: Event) {
+        viewModel.enrollUser(event._id)
+    }
+
+    override fun onUnenroll(event: Event) {
+        viewModel.unenrollUser(event._id)
     }
 
     override fun onGetTicketClick(event: Event) {
@@ -391,19 +401,34 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack {
         viewModel.answerPoll(AnswerPollBody(poll_id = poll._id, option = selectedOption))
     }
 
-    override fun onLikeClick(post: Post, isLiked: Boolean, isDoubleTapped: Boolean) {
+    override fun onLikeClick(post: Post, isLiked: Boolean) {
         if (!isLiked){
             requireContext().performHapticFeedback()
-            adapter.removeLikePost(ListItem.Post(post))
             viewModel.likePost(LikePostBody(post_id = post._id, action = "LIKE"))
-            val newpost=post.copy(likes = if (!post.liked) post.likes+1 else post.likes, liked = true,image = post.image ?: "default_image_url")
-            adapter.appendLikePosts(mutableListOf(ListItem.Post(newpost)))
+            viewModel.likeResult.observe(viewLifecycleOwner){ success->
+                if (success){
+                    val updatedPost = post.copy(
+                        likes = post.likes + 1 ,
+                        liked = true,
+                        image = post.image ?: "default_image_url"
+                    )
+                    adapter.updatePost(updatedPost)
+
+                }
+            }
         }
         else {
-            adapter.removeLikePost(ListItem.Post(post))
             viewModel.likePost(LikePostBody(post_id = post._id, action = "UNLIKE"))
-            val newpost=post.copy(likes = post.likes-1, liked = false,image = post.image ?: "default_image_url")
-            adapter.appendLikePosts(mutableListOf(ListItem.Post(newpost)))
+            viewModel.unlikeResult.observe(viewLifecycleOwner){ success->
+                if (success){
+                    val updatedPost = post.copy(
+                        likes = post.likes - 1 ,
+                        liked = false,
+                        image = post.image ?: "default_image_url"
+                    )
+                    adapter.updatePost(updatedPost)
+                }
+            }
         }
     }
 

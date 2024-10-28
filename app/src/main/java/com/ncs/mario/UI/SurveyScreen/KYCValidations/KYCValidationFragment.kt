@@ -294,9 +294,10 @@ class KYCValidationFragment : Fragment() {
             }
         }
     }
-    private fun handleImageRotation(imageUri: Uri): Bitmap {
+    private fun handleImageRotation(imageUri: Uri): Bitmap? {
         val inputStream = requireContext().contentResolver.openInputStream(imageUri)
         val bitmap = BitmapFactory.decodeStream(inputStream)
+
         val exif = ExifInterface(requireContext().contentResolver.openInputStream(imageUri)!!)
         val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED)
 
@@ -305,10 +306,36 @@ class KYCValidationFragment : Fragment() {
             ExifInterface.ORIENTATION_ROTATE_180 -> rotateImage(bitmap, 180f)
             ExifInterface.ORIENTATION_ROTATE_270 -> rotateImage(bitmap, 270f)
             ExifInterface.ORIENTATION_NORMAL -> bitmap
-            else -> bitmap
+            else -> bitmap // Default case
         }
-        return rotatedBitmap
+
+        return rotatedBitmap?.let { maintainAspectRatio(it) }
     }
+
+    private fun rotateImage(source: Bitmap, angle: Float): Bitmap {
+        val matrix = Matrix().apply {
+            postRotate(angle)
+        }
+        return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
+    }
+
+    private fun maintainAspectRatio(bitmap: Bitmap): Bitmap {
+        val width = bitmap.width
+        val height = bitmap.height
+        val maxSize = 1024
+
+        val scale = if (width > height) {
+            maxSize.toFloat() / width
+        } else {
+            maxSize.toFloat() / height
+        }
+
+        val newWidth = (width * scale).toInt()
+        val newHeight = (height * scale).toInt()
+
+        return Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true)
+    }
+
 
     private fun setUpLoader(show: Boolean, message: String) {
         if (show) {
@@ -324,11 +351,6 @@ class KYCValidationFragment : Fragment() {
         }
     }
 
-    private fun rotateImage(source: Bitmap, angle: Float): Bitmap {
-        val matrix = Matrix()
-        matrix.postRotate(angle)
-        return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
-    }
 
     private fun onBackPress() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {

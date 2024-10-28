@@ -82,6 +82,10 @@ interface ProfileApiService {
                               @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
     ): Response<JsonObject>
 
-
+    @Headers("Content-Type: application/json")
+    @GET("my-coins-statement")
+    suspend fun getUserCoinStatement(@Header("Authorization") authToken: String=PrefManager.getToken()!!,
+                             @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
+    ): Response<JsonObject>
 
 }

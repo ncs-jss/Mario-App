@@ -50,33 +50,31 @@
             <LinearLayout
                 android:id="@+id/score"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|center_vertical"
-                android:gravity="end|center_vertical"
+                android:layout_height="35dp"
                 android:background="@drawable/events_border"
                 android:layout_marginEnd="10dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
                 android:paddingStart="15dp"
+                android:gravity="center"
+                android:layout_gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/coinsTV"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center"
                     android:text="0"
-                    android:fontFamily="@font/sf_medium"
+                    android:gravity="center"
+                    android:fontFamily="@font/sfregular"
                     android:paddingEnd="4dp"
                     android:textColor="@color/white"
-                    android:textSize="18sp" />
+                    android:textSize="19sp" />
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginStart="5dp"
+                    android:layout_width="23dp"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:paddingVertical="2dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="1dp"
                     android:layout_marginEnd="12dp"
                     android:paddingEnd="2dp"
                     android:src="@drawable/coin"/>

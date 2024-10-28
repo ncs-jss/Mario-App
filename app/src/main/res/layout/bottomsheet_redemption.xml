@@ -69,6 +69,165 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/orderDetailsShimmerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="vertical">
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/card_bg"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:background="@color/onShimmerColor"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                >
+                <TextView
+                    android:gravity="start"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/onShimmerColor"
+                    android:text=""/>
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/neutral700"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                >
+                <LinearLayout
+                    android:padding="6dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:textColor="@color/white"
+                        android:text=""
+                        android:background="@color/onShimmerColor"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/sfbold"
+                        android:textSize="18sp"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_height="wrap_content"
+                        android:background="@color/onShimmerColor"
+                        android:textColor="@color/neutral400"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/sf_medium"
+                        />
+                    <LinearLayout
+                        android:layout_width="120dp"
+                        android:layout_height="40dp"
+                        android:background="@color/onShimmerColor"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:gravity="end"
+                        >
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+
+                    android:layout_margin="8dp"
+                    android:layout_width="124dp"
+                    android:background="@color/onShimmerColor"
+                    android:layout_height="124dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginStart="2dp"
+                    app:cardCornerRadius="8dp">
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/onShimmerColor"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="8dp"
+                android:orientation="horizontal"
+                >
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/orderDetailsView"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical">
+
+
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
@@ -281,6 +440,9 @@
             />
     </LinearLayout>
 
+    </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </LinearLayout>

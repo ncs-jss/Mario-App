@@ -196,6 +196,7 @@
                         <ImageView
                             android:id="@+id/profile_pic1"
                             android:layout_width="match_parent"
+                            android:scaleType="centerCrop"
                             android:layout_height="match_parent"
                             android:src="@drawable/profile_pic_placeholder" />
 
@@ -213,6 +214,7 @@
                         <ImageView
                             android:id="@+id/profile_pic2"
                             android:layout_width="match_parent"
+                            android:scaleType="centerCrop"
                             android:layout_height="match_parent"
                             android:src="@drawable/profile_pic_placeholder" />
 
@@ -231,6 +233,7 @@
                             android:id="@+id/profile_pic3"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
                             android:src="@drawable/profile_pic_placeholder" />
 
                     </androidx.cardview.widget.CardView>
