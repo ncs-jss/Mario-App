@@ -74,6 +74,7 @@ class StartScreen : AppCompatActivity() {
             finish()
         }
         else{
+            bindObservers()
             observeViewModel()
         }
     }
@@ -124,7 +125,7 @@ class StartScreen : AppCompatActivity() {
         Log.d("shareLinkTest", pathSegments.toString())
     }
 
-    private fun observeViewModel() {
+    private fun bindObservers(){
         viewModel.errorMessage.observe(this) {
             if (!it.isNullOrEmpty()) {
                 if (it=="User not found!"){
@@ -137,9 +138,12 @@ class StartScreen : AppCompatActivity() {
                         observeViewModel()
                     }
                 }
-
             }
         }
+    }
+
+    private fun observeViewModel() {
+
         lifecycleScope.launch {
             try {
                 val userDetailsDeferred = async { viewModel.fetchUserDetails() }
