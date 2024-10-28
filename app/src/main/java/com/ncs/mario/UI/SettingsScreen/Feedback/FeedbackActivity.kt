@@ -85,7 +85,6 @@ class FeedbackActivity : AppCompatActivity() {
                 bitmaps.add(bitmap)
             }
         }
-        binding.desc.requestFocus()
         observeViewModel()
         setUpViews()
         setImages()

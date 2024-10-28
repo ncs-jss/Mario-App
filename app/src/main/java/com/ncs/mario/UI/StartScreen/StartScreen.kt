@@ -125,6 +125,13 @@ class StartScreen : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
+        viewModel.errorMessage.observe(this) {
+            if (!it.isNullOrEmpty()) {
+                util.showActionSnackbar(binding.root, it, 200000, "Retry") {
+                    observeViewModel()
+                }
+            }
+        }
         lifecycleScope.launch {
             try {
                 val userDetailsDeferred = async { viewModel.fetchUserDetails() }
@@ -136,9 +143,7 @@ class StartScreen : AppCompatActivity() {
                 handleUserDetails(userDetails!!)
                 handleKYCStatus(kycStatus)
             } catch (e: Exception) {
-                util.showActionSnackbar(binding.root, "Something went wrong.", 200000, "Retry") {
-                    observeViewModel()
-                }
+
             }
         }
     }

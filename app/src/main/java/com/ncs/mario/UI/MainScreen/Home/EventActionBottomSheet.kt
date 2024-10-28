@@ -19,12 +19,10 @@ import java.util.Date
 import java.util.Locale
 
 @AndroidEntryPoint
-class EventActionBottomSheet(val event: Event, val type:String): BottomSheetDialogFragment() {
+class EventActionBottomSheet(val event: Event, val type:String, val callback: Callback): BottomSheetDialogFragment() {
     override fun getTheme(): Int {
         return R.style.AppBottomSheetDialogTheme
     }
-class EventActionBottomSheet(val event: Event, val type:String, val callback: Callback): BottomSheetDialogFragment() {
-
 
     private val viewModel: HomeViewModel by activityViewModels()
 
@@ -76,7 +74,7 @@ class EventActionBottomSheet(val event: Event, val type:String, val callback: Ca
 
         binding.confirmButtonUnenroll.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener {
             override fun onSlideComplete(view: SlideToActView) {
-                callback.onUnenroll(event)
+                viewModel.unenrollUser(event._id)
                 dismiss()
             }
         }

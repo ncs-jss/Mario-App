@@ -17,6 +17,9 @@ import java.util.Locale
 @AndroidEntryPoint
 class EventTranactionBottomSheet(val event: ParticipatedEvent): BottomSheetDialogFragment() {
 
+    override fun getTheme(): Int {
+        return R.style.AppBottomSheetDialogTheme
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
