@@ -23,7 +23,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.chip.Chip
 import com.ncs.mario.BuildConfig
-import com.ncs.mario.Domain.Models.Events.Event
 import com.ncs.mario.Domain.Models.Report.ReportBody
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.isNull
