@@ -27,6 +27,7 @@ class MyRedemptionsActivity : AppCompatActivity(), RedemptionAdapter.OnOrderClic
     private lateinit var redemptionAdapter: RedemptionAdapter
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)

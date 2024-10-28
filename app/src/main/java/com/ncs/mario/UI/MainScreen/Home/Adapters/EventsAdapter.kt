@@ -84,7 +84,7 @@ class EventsAdapter(private var events: List<Event>, private val callback: Callb
 
         holder.binding.enrolledCount.text="${getInflatedEnrolledUserCount(event.enrolledCount)} +"
 
-        holder.binding.btnEnrollMe.setOnClickThrottleBounceListener{
+        holder.binding.btnEnrollMe.setOnClickListener{
             if (holder.binding.btnEnroll.text=="Enroll"){
                 callback.onClick(event,false)
             }

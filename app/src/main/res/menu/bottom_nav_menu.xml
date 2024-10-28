@@ -8,6 +8,11 @@
         android:title="Home"/>
 
     <item
+        android:id="@+id/fragment_events"
+        android:icon="@drawable/baseline_calendar_today_24"
+        android:title="Events"/>
+
+    <item
         android:id="@+id/fragment_score"
         android:icon="@drawable/token_ic"
         android:title="Score"/>
@@ -15,7 +20,7 @@
     <item
         android:id="@+id/fragment_store"
         android:icon="@drawable/store_ic"
-        android:title="Nerd Store"/>
+        android:title= "Store"/>
 
     <item
         android:id="@+id/fragment_internship"

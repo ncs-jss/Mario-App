@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.GravityCompat
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.mario.R
 import com.ncs.mario.UI.MainScreen.MainActivity
@@ -35,7 +36,16 @@ class InternshipFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        activityBinding.binding.actionbar.score.visibility=View.VISIBLE
+        activityBinding.binding.actionbar.btnHam.setImageResource(R.drawable.ham)
         activityBinding.binding.actionbar.titleTv.text="Internships"
+        activityBinding.binding.actionbar.btnHam.setOnClickListener {
+            if (activityBinding.binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                activityBinding.binding.drawerLayout.closeDrawer(GravityCompat.START)
+            } else {
+                activityBinding.binding.drawerLayout.openDrawer(GravityCompat.START)
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

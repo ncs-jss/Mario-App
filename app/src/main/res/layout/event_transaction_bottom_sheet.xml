@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:minHeight="200dp"
-    style="@style/AppBottomSheetDialogTheme"
+    android:background="@color/secondary_bg_lighter"
     >
 
 
@@ -47,7 +47,7 @@
                 android:id="@+id/title"
                 android:visibility="visible"
                 android:layout_gravity="center"
-                android:text="Enroll"
+                android:text="Event"
                 android:textColor="@color/better_white"
                 android:textSize="18dp" />
 
@@ -228,61 +228,12 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:ellipsize="end"
         android:textColor="@color/neutral400"
         android:textSize="14sp"
         android:fontFamily="@font/sf_medium"
         />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="8dp"
-        android:orientation="vertical"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="10dp"
-        android:paddingVertical="8dp"
-        >
-        <com.ncorti.slidetoact.SlideToActView
-            android:id="@+id/confirm_button_enroll"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="6dp"
-            app:area_margin="0dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            app:icon_margin="12dp"
-            app:bump_vibration="50"
-            app:animation_duration="250"
-            app:outer_color="@color/neutral800"
-            app:inner_color="@color/white"
-            app:border_radius="40dp"
-            app:text="Enroll to event"
-            app:text_style="bold"
-            app:text_size="20sp"
-            app:slider_height="60dp"
-            app:slider_locked="false"
-            app:bounce_on_start="true" />
 
-        <com.ncorti.slidetoact.SlideToActView
-            android:id="@+id/confirm_button_unenroll"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="6dp"
-            app:area_margin="0dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            app:icon_margin="12dp"
-            app:bump_vibration="50"
-            app:animation_duration="250"
-            app:outer_color="@color/neutral800"
-            app:inner_color="@color/white"
-            app:border_radius="40dp"
-            app:text="Un-enroll from event"
-            app:text_style="bold"
-            app:text_size="20sp"
-            app:slider_height="60dp"
-            app:slider_locked="false"
-            app:bounce_on_start="true" />
-    </LinearLayout>
 </LinearLayout>

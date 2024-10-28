@@ -19,8 +19,10 @@ import java.util.Date
 import java.util.Locale
 
 @AndroidEntryPoint
-class EventActionBottomSheet(val event: Event, val type:String): BottomSheetDialogFragment() {
-
+class EventActionBottomSheet(val event: Event, val type:String, val callback: Callback): BottomSheetDialogFragment() {
+    override fun getTheme(): Int {
+        return R.style.AppBottomSheetDialogTheme
+    }
 
     private val viewModel: HomeViewModel by activityViewModels()
 
@@ -65,7 +67,7 @@ class EventActionBottomSheet(val event: Event, val type:String): BottomSheetDial
 
         binding.confirmButtonEnroll.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener {
             override fun onSlideComplete(view: SlideToActView) {
-                viewModel.enrollUser(event._id)
+                callback.onEnroll(event)
                 dismiss()
             }
         }
@@ -86,6 +88,11 @@ class EventActionBottomSheet(val event: Event, val type:String): BottomSheetDial
         val formattedDate = dateFormat.format(date)
         val formattedTime = timeFormat.format(date)
         return Pair(formattedDate, formattedTime)
+    }
+
+    interface Callback{
+        fun onEnroll(event: Event)
+        fun onUnenroll(event: Event)
     }
 
 

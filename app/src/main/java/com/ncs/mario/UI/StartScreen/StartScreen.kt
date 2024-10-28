@@ -7,16 +7,15 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.ncs.mario.Domain.HelperClasses.PrefManager
-import com.ncs.mario.Domain.Utility.ExtensionsUtil.isNull
-import com.ncs.mario.Domain.Utility.ExtensionsUtil.popInfinity
+import com.ncs.mario.Domain.Models.User
 import com.ncs.mario.Domain.Utility.GlobalUtils
 import com.ncs.mario.UI.AuthScreen.AuthActivity
 import com.ncs.mario.UI.MainScreen.MainActivity
@@ -24,6 +23,8 @@ import com.ncs.mario.UI.SurveyScreen.SurveyActivity
 import com.ncs.mario.UI.WaitScreen.WaitActivity
 import com.ncs.mario.databinding.ActivityStartScreenBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class StartScreen : AppCompatActivity() {
@@ -73,10 +74,10 @@ class StartScreen : AppCompatActivity() {
             finish()
         }
         else{
-            viewModel.fetchUserDetails()
             observeViewModel()
         }
     }
+
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private val requestPermissionLauncher = registerForActivityResult(
@@ -123,51 +124,58 @@ class StartScreen : AppCompatActivity() {
         Log.d("shareLinkTest", pathSegments.toString())
     }
 
-
-    fun observeViewModel(){
-
-        viewModel.userDetails.observe(this){
-            if (it!=null){
-                val user=it
-                PrefManager.setUserProfile(user.profile)
-                if (user.profile.name!=""){
-                    PrefManager.setUserProfileForCache(user.profile)
+    private fun observeViewModel() {
+        viewModel.errorMessage.observe(this) {
+            if (!it.isNullOrEmpty()) {
+                util.showActionSnackbar(binding.root, it, 200000, "Retry") {
+                    observeViewModel()
                 }
-                if (user.profile.photo.secure_url!="" &&  user.profile.id_card.secure_url!=""){
-                    viewModel.fetchUserKYCHeaderToken()
+            }
+        }
+        lifecycleScope.launch {
+            try {
+                val userDetailsDeferred = async { viewModel.fetchUserDetails() }
+                val kycTokenDeferred = async { viewModel.fetchUserKYCHeaderToken() }
+
+                val userDetails = userDetailsDeferred.await()
+                val kycStatus = kycTokenDeferred.await()
+
+                handleUserDetails(userDetails!!)
+                handleKYCStatus(kycStatus)
+            } catch (e: Exception) {
+
+            }
+        }
+    }
+
+    private fun handleUserDetails(user: User) {
+        PrefManager.setUserProfile(user.profile)
+        if (user.profile.name.isNotEmpty()) {
+            PrefManager.setUserProfileForCache(user.profile)
+        }
+        if (user.profile.photo.secure_url.isNotEmpty() && user.profile.id_card.secure_url.isNotEmpty()) {
+            PrefManager.setShowProfileCompletionAlert(false)
+        }
+        else {
+            PrefManager.setShowProfileCompletionAlert(true)
+            startActivity(Intent(this, SurveyActivity::class.java))
+            finish()
+        }
+    }
+
+    private fun handleKYCStatus(kycStatus: String?) {
+        if (!kycStatus.isNullOrEmpty()) {
+            when (kycStatus) {
+                "ACCEPT" -> {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
                 }
-                else{
-                    PrefManager.setShowProfileCompletionAlert(true)
-                    startActivity(Intent(this, SurveyActivity::class.java))
+                "PENDING", "REJECT" -> {
+                    startActivity(Intent(this, WaitActivity::class.java))
                     finish()
                 }
             }
         }
-        viewModel.kycStatus.observe(this){
-            if (!it.isNull) {
-                when(it){
-                    "ACCEPT"->{
-                        startActivity(Intent(this, MainActivity::class.java))
-                        finish()
-                    }
-                    "PENDING"->{
-                        startActivity(Intent(this, WaitActivity::class.java))
-                        finish()
-                    }
-                    "REJECT"->{
-                        startActivity(Intent(this, WaitActivity::class.java))
-                        finish()
-                    }
-                }
-
-            }
-        }
-        viewModel.errorMessage.observe(this){
-            if (it!=null){
-                util.showActionSnackbar(binding.root,it,200000,"Retry"){
-                    viewModel.fetchUserDetails()
-                }
-            }
-        }
     }
+
 }
