@@ -127,9 +127,17 @@ class StartScreen : AppCompatActivity() {
     private fun observeViewModel() {
         viewModel.errorMessage.observe(this) {
             if (!it.isNullOrEmpty()) {
-                util.showActionSnackbar(binding.root, it, 200000, "Retry") {
-                    observeViewModel()
+                if (it=="User not found!"){
+                    PrefManager.setShowProfileCompletionAlert(true)
+                    startActivity(Intent(this, SurveyActivity::class.java))
+                    finish()
                 }
+                else {
+                    util.showActionSnackbar(binding.root, it, 200000, "Retry") {
+                        observeViewModel()
+                    }
+                }
+
             }
         }
         lifecycleScope.launch {
