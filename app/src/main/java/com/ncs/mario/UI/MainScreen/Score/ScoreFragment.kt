@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat.getColor
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.ncs.mario.Domain.HelperClasses.PrefManager
 import com.ncs.mario.Domain.Models.Events.ParticipatedEvent
@@ -32,6 +34,7 @@ class ScoreFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: ScoreViewModel by viewModels()
     private lateinit var pastEventAdapter: PastEventAdapter
+    private lateinit var enrolledEventAdapter: PastEventAdapter
 
     private val util: GlobalUtils.EasyElements by lazy {
         GlobalUtils.EasyElements(requireActivity())
@@ -54,7 +57,16 @@ class ScoreFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        activityBinding.binding.actionbar.score.visibility=View.VISIBLE
+        activityBinding.binding.actionbar.btnHam.setImageResource(R.drawable.ham)
         activityBinding.binding.actionbar.titleTv.text="Mario Score"
+        activityBinding.binding.actionbar.btnHam.setOnClickListener {
+            if (activityBinding.binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                activityBinding.binding.drawerLayout.closeDrawer(GravityCompat.START)
+            } else {
+                activityBinding.binding.drawerLayout.openDrawer(GravityCompat.START)
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -85,7 +97,12 @@ class ScoreFragment : Fragment() {
         binding.pointsView.gone()
         binding.progresslayout.gone()
         binding.coinsView.gone()
-        binding.pastEventRecyclerView.gone()
+        binding.pastEventLayout.gone()
+        binding.enrolledEventsLayout.gone()
+
+        binding.coinTransactionHistory.setOnClickListener {
+            findNavController().navigate(R.id.action_fragment_score_to_fragment_coin_transactions)
+        }
 
         activityViewModel.fetchCriticalInfo()
         viewModel.getMyEvents()
@@ -96,6 +113,14 @@ class ScoreFragment : Fragment() {
 
         }
         pastEventAdapter.submitList(getList())
+
+        enrolledEventAdapter = PastEventAdapter()
+        binding.enrolledEventRecyclerView.apply {
+            layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+            adapter = enrolledEventAdapter
+
+        }
+        enrolledEventAdapter.submitList(getList())
         bindObserver()
     }
 
@@ -156,29 +181,47 @@ class ScoreFragment : Fragment() {
             }
         }
 
-        viewModel.getEventsResponse.observe(viewLifecycleOwner){
-            when(it){
+        viewModel.getEventsResponse.observe(viewLifecycleOwner){ result ->
+            when(result){
                 is ServerResult.Failure ->{
-                    util.showSnackbar(binding.root,it.exception.message.toString(),20000)
+                    util.showSnackbar(binding.root,result.exception.message.toString(),20000)
                 }
                 ServerResult.Progress -> {
 
                 }
                 is ServerResult.Success -> {
-                    if(it.data.success){
+                    if(result.data.success){
                         binding.shimmerLayout.apply {
                             stopShimmer()
                             visibility = View.GONE
                         }
-                        binding.pastEventRecyclerView.visible()
-                        pastEventAdapter.submitList(it.data.events)
-                        Log.d("checkEvnets", it.data.events.toString())
+                        binding.enrolledEventsLayout.visible()
+                        binding.pastEventLayout.visible()
+
+                        val allEvents=result.data.events
+
+                        val enrolledEvents = allEvents.filter { !it.attended }.sortedByDescending { it.createdAt }
+                        val pastEvents = allEvents.filter { it.attended }.sortedByDescending { it.createdAt }
+
+                        if (enrolledEvents.isEmpty()){
+                            binding.enrolledEventsLayout.gone()
+                        }
+
+                        if (pastEvents.isEmpty()){
+                            binding.pastEventLayout.gone()
+                        }
+
+                        pastEventAdapter.submitList(pastEvents)
+
+                        enrolledEventAdapter.submitList(enrolledEvents)
+
+                        Log.d("checkEvnets", result.data.events.toString())
                         if (binding.swiperefresh.isRefreshing){
                             binding.swiperefresh.isRefreshing = false
                         }
                     }
                     else{
-                        util.showSnackbar(binding.root,it.data.message,20000)
+                        util.showSnackbar(binding.root,result.data.message,20000)
                     }
                 }
             }

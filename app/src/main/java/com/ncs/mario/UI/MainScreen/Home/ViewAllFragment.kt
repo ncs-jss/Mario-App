@@ -52,7 +52,7 @@ import java.util.Date
 import java.util.Locale
 
 @AndroidEntryPoint
-class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack {
+class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, EventActionBottomSheet.Callback {
 
     lateinit var binding: FragmentViewAllBinding
     var type:String?=null
@@ -166,7 +166,7 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
                         }
                     }
 
-                    adapter.appendPosts(combinedList)
+                    adapter.submitList(combinedList)
                 }
             }
 
@@ -216,7 +216,7 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
     }
 
     private fun setUpPostsRV(posts:MutableList<ListItem>){
-        adapter = PostAdapter(posts, this)
+        adapter = PostAdapter(this)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
     }
@@ -233,32 +233,55 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
 
     override fun onClick(event: Event, isEnrolled: Boolean) {
         if (isEnrolled){
-            val bottomSheet = EventActionBottomSheet(event,"Unenroll")
+            val bottomSheet = EventActionBottomSheet(event,"Unenroll", this)
             bottomSheet.show(childFragmentManager, bottomSheet.tag)
         }
         else{
-            val bottomSheet = EventActionBottomSheet(event,"Enroll")
+            val bottomSheet = EventActionBottomSheet(event,"Enroll", this)
             bottomSheet.show(childFragmentManager, bottomSheet.tag)
         }
+    }
+
+    override fun onEnroll(event: Event) {
+        viewModel.enrollUser(event._id)
+    }
+
+    override fun onUnenroll(event: Event) {
+        viewModel.unenrollUser(event._id)
     }
 
     override fun onCheckBoxClick(poll: Poll, selectedOption:String) {
         viewModel.answerPoll(AnswerPollBody(poll_id = poll._id, option = selectedOption))
     }
 
-    override fun onLikeClick(post: Post, isLiked: Boolean, isDoubleTapped: Boolean) {
+    override fun onLikeClick(post: Post, isLiked: Boolean) {
         if (!isLiked){
             requireContext().performHapticFeedback()
-            adapter.removePost(ListItem.Post(post))
             viewModel.likePost(LikePostBody(post_id = post._id, action = "LIKE"))
-            val newpost=post.copy(likes = if (!post.liked) post.likes+1 else post.likes, liked = true,image = post.image ?: "default_image_url")
-            adapter.appendPosts(mutableListOf(ListItem.Post(newpost)))
+            viewModel.likeResult.observe(viewLifecycleOwner){ success->
+                if (success){
+                    val updatedPost = post.copy(
+                        likes = post.likes + 1 ,
+                        liked = true,
+                        image = post.image ?: "default_image_url"
+                    )
+                    adapter.updatePost(updatedPost)
+
+                }
+            }
         }
         else {
-            adapter.removePost(ListItem.Post(post))
             viewModel.likePost(LikePostBody(post_id = post._id, action = "UNLIKE"))
-            val newpost=post.copy(likes = post.likes-1, liked = false,image = post.image ?: "default_image_url")
-            adapter.appendPosts(mutableListOf(ListItem.Post(newpost)))
+            viewModel.unlikeResult.observe(viewLifecycleOwner){ success->
+                if (success){
+                    val updatedPost = post.copy(
+                        likes = post.likes - 1 ,
+                        liked = false,
+                        image = post.image ?: "default_image_url"
+                    )
+                    adapter.updatePost(updatedPost)
+                }
+            }
         }
     }
 
