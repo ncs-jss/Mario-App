@@ -1,20 +1,29 @@
 package com.ncs.mario.UI.SettingsScreen.Feedback
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.ContentResolver
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.chip.Chip
 import com.ncs.mario.BuildConfig
+import com.ncs.mario.Domain.Models.Events.Event
 import com.ncs.mario.Domain.Models.Report.ReportBody
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.isNull
@@ -27,6 +36,8 @@ import com.ncs.mario.R
 import com.ncs.mario.UI.MainScreen.Home.HomeViewModel
 import com.ncs.mario.UI.SettingsScreen.ImageView.ImageViewActivity
 import com.ncs.mario.databinding.ActivityFeedbackBinding
+import com.ncs.mario.databinding.TicketDialogBinding
+import com.ncs.mario.databinding.WaDialogBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -194,6 +205,10 @@ class FeedbackActivity : AppCompatActivity() {
 
     private fun setUpViews(){
 
+        binding.contactWA.setOnClickThrottleBounceListener {
+            showWADialog(this)
+        }
+
         binding.actionbar.btnHam.setImageResource(R.drawable.ic_back_arrow)
         binding.actionbar.btnHam.setOnClickListener {
             onBackPressed()
@@ -314,6 +329,48 @@ class FeedbackActivity : AppCompatActivity() {
 
         }
     }
+
+
+    fun showWADialog(context: Context): Dialog {
+        val binding = WaDialogBinding.inflate(LayoutInflater.from(context))
+
+        binding.btnContactAlok.setOnClickThrottleBounceListener {
+            openWhatsAppChat("918887358051")
+        }
+
+        binding.btnContactMohit.setOnClickThrottleBounceListener {
+            openWhatsAppChat("917017305615")
+        }
+
+        val dialog = AlertDialog.Builder(context)
+            .setView(binding.root)
+            .setCancelable(true)
+            .create()
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        dialog.show()
+
+        val width = context.resources.getDimensionPixelSize(R.dimen.dialog_width_wa)
+        val height = context.resources.getDimensionPixelSize(R.dimen.dialog_height_wa)
+        dialog.window?.setLayout(width, height)
+        return dialog
+    }
+
+    fun openWhatsAppChat(phoneNumber: String) {
+        val formattedNumber = "https://wa.me/$phoneNumber"
+
+        try {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse(formattedNumber)
+                setPackage("com.whatsapp")
+            }
+            startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(this, "WhatsApp is not installed", Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
     private fun bitmapToBase64WithMimeType(bitmap: Bitmap): String {
         val byteArrayOutputStream = ByteArrayOutputStream()
