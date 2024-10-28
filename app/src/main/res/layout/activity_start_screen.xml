@@ -1,43 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
-    android:background="#0A0A0A"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.StartScreen.StartScreen">
+    android:background="@color/app_black">
 
+    <TextView
+        android:id="@+id/text_to_reveal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mario"
+        android:textSize="60sp"
+        android:fontFamily="@font/sfbold"
+        android:textColor="@android:color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="80dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="100dp"
-        android:src="@drawable/ncs_logo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_marginTop="64dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/logo" />
-
-
-
-    </LinearLayout>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:src="@drawable/ncs_logo"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        />
+    <View
+        android:id="@+id/blackCircle"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:background="@drawable/circle_black"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
+</RelativeLayout>
