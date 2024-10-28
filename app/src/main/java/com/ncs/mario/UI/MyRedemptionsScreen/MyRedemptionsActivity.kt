@@ -65,10 +65,10 @@ class MyRedemptionsActivity : AppCompatActivity(), RedemptionAdapter.OnOrderClic
                 }
             }
         }
-        viewModel.merchResponse.observe(this){
-            if(it.success){
-                if(!it.orders.isNullOrEmpty()){
-                    redemptionAdapter.submitList(it.orders)
+        viewModel.merchResponse.observe(this){ response ->
+            if(response.success){
+                if(!response.orders.isNullOrEmpty()){
+                    redemptionAdapter.submitList(response.orders.sortedByDescending { it.createdAt })
                     binding.shimmerLayout.apply {
                         stopShimmer()
                         visibility = View.GONE
@@ -92,7 +92,7 @@ class MyRedemptionsActivity : AppCompatActivity(), RedemptionAdapter.OnOrderClic
                 }
             }
             else{
-                util.showActionSnackbar(binding.root,it.message,200000,"Retry"){
+                util.showActionSnackbar(binding.root,response.message,200000,"Retry"){
                     viewModel.getMyMerch()
                 }
             }
