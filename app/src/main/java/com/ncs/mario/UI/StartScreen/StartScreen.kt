@@ -7,6 +7,10 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -17,6 +21,7 @@ import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.ncs.mario.Domain.HelperClasses.PrefManager
 import com.ncs.mario.Domain.Models.User
 import com.ncs.mario.Domain.Utility.GlobalUtils
+import com.ncs.mario.R
 import com.ncs.mario.UI.AuthScreen.AuthActivity
 import com.ncs.mario.UI.MainScreen.MainActivity
 import com.ncs.mario.UI.SurveyScreen.SurveyActivity
@@ -39,6 +44,7 @@ class StartScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         handleDynamicLink(intent)
+        startAnim()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(
                     this,
@@ -66,6 +72,34 @@ class StartScreen : AppCompatActivity() {
         else{
             runNormally(true)
         }
+    }
+
+    private fun startAnim() {
+        val slideOutAnim = AnimationUtils.loadAnimation(this, R.anim.slide_out_right)
+        val fadeInAnim = AnimationUtils.loadAnimation(this, R.anim.fadein)
+        slideOutAnim.duration = 2000
+        fadeInAnim.duration = 2500
+        binding.blackCircle.startAnimation(slideOutAnim)
+        binding.imageView2.startAnimation(fadeInAnim)
+        slideOutAnim.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation) {}
+
+            override fun onAnimationEnd(animation: Animation) {
+
+                binding.blackCircle.visibility = View.GONE
+            }
+
+            override fun onAnimationRepeat(animation: Animation) {}
+        })
+        fadeInAnim.setAnimationListener(object :Animation.AnimationListener{
+            override fun onAnimationStart(animation: Animation) {}
+
+            override fun onAnimationEnd(animation: Animation) {
+                binding.imageView2.alpha = 1f
+            }
+
+            override fun onAnimationRepeat(animation: Animation) {}
+        })
     }
 
     private fun runNormally(isPermissionGranted:Boolean){
@@ -186,6 +220,7 @@ class StartScreen : AppCompatActivity() {
                     startActivity(Intent(this, WaitActivity::class.java))
                     finish()
                 }
+
             }
         }
     }
