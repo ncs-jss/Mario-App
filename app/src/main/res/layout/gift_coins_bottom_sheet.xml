@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:minHeight="200dp"
+    android:background="@color/baseBlack"
+    style="@style/AppBottomSheetDialogTheme"
+    >
+
+
+    <View
+        android:layout_width="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_height="2dp"
+        android:background="@color/white"
+        />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:weightSum="10"
+        >
+
+        <ImageButton
+            android:id="@+id/close_btn"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@null"
+            android:visibility="invisible"
+            android:src="@drawable/baseline_keyboard_arrow_down_24"
+            app:tint="@color/white" />
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="9"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/sf_semibold"
+                android:gravity="center"
+                android:id="@+id/title"
+                android:visibility="visible"
+                android:layout_gravity="center"
+                android:text="Gift Coins"
+                android:textColor="@color/better_white"
+                android:textSize="18dp" />
+
+        </RelativeLayout>
+
+
+        <ImageButton
+            android:id="@+id/done_btn"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@null"
+            android:visibility="invisible"
+            android:src="@drawable/baseline_keyboard_arrow_down_24"
+            app:tint="@color/dim_primary" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Type the quantity"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/sf_medium"
+        android:textSize="12dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/better_white"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginStart="20dp"
+        android:id="@+id/coins_et"
+        android:layout_marginEnd="20dp"
+        android:drawableStart="@drawable/baseline_card_giftcard_24"
+        android:drawablePadding="10dp"
+        android:drawableTint="@color/primary"
+        android:fontFamily="@font/sf_medium"
+        android:textSize="14dp"
+        android:textColorHint="@color/edit_text_hint"
+        android:hint="Coins (Max. 40 per trxn)"
+        android:inputType="numberSigned"
+        android:paddingStart="15dp"
+        android:textColor="@color/better_white"
+        android:background="@drawable/edit_text_bg"/>
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginStart="20dp"
+        android:id="@+id/progress_bar"
+        android:layout_marginEnd="20dp"
+        android:fontFamily="@font/sf_medium"
+        android:visibility="gone"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:indeterminateTint="@color/primary"
+        android:textColorHint="@color/edit_text_hint"
+        android:textColor="@color/better_white"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginStart="20dp"
+        android:id="@+id/btnGiftCoins"
+        android:layout_marginEnd="20dp"
+        android:fontFamily="@font/sf_medium"
+        android:textSize="14dp"
+        android:layout_marginTop="40dp"
+        android:text="Gift Coins"
+        android:gravity="center"
+        android:textColorHint="@color/edit_text_hint"
+        android:textColor="@color/better_white"
+        android:background="@drawable/button_bg"/>
+
+</LinearLayout>

@@ -82,7 +82,6 @@ class MainViewModel @Inject constructor(
                     }
                 }
             }
-            scanTicket(scanTicketBody = ScanTicketBody(event_ticket = couponCode ))
         }
     }
 
