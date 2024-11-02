@@ -36,12 +36,12 @@ import com.ncs.mario.Domain.Utility.ExtensionsUtil.load
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.mario.Domain.Utility.GlobalUtils
+import com.ncs.mario.UI.AdminScreen.AdminMainActivity
 import com.ncs.mario.UI.MyRedemptionsScreen.MyRedemptionsActivity
 import com.ncs.mario.UI.SettingsScreen.SettingsActivity
 import com.ncs.mario.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.File
-import java.io.FileOutputStream
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -70,6 +70,17 @@ class MainActivity : AppCompatActivity() {
             binding.drawerheaderfile.name.text=currentUser.name
             binding.drawerheaderfile.email.text=PrefManager.getUserSignUpEmail()
             binding.drawerheaderfile.Usernumber.text=currentUser.admission_number
+            if (currentUser.role==1){
+                binding.drawerheaderfile.adminPanel.visible()
+            }
+            else{
+                binding.drawerheaderfile.adminPanel.gone()
+            }
+        }
+
+        binding.drawerheaderfile.adminPanel.setOnClickThrottleBounceListener {
+            startActivity(Intent(this@MainActivity, AdminMainActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
         }
 
         binding.drawerheaderfile.versionCode.text="Version : ${BuildConfig.VERSION_NAME}"
