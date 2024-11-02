@@ -184,6 +184,9 @@ class CoinTransactionsFragment : Fragment(), TransactionAdapter.Callback {
                 }
 
             }
+            "admin-gift"->{
+                util.showSnackbar(binding.root,"You have received these coins as gift from admin", 3000)
+            }
             else -> {
                 util.showSnackbar(binding.root,"You have received these coins for redeeming a QR Code", 3000)
             }

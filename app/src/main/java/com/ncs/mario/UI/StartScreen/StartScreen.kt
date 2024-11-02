@@ -7,16 +7,33 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.InstallStateUpdatedListener
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
+import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
+import com.ncs.mario.BuildConfig
 import com.ncs.mario.Domain.HelperClasses.PrefManager
+import com.ncs.mario.Domain.HelperClasses.RemoteConfigHelper
 import com.ncs.mario.Domain.Models.User
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.toast
 import com.ncs.mario.Domain.Utility.GlobalUtils
+import com.ncs.mario.R
+import com.ncs.mario.UI.AdminScreen.AdminMainActivity
 import com.ncs.mario.UI.AuthScreen.AuthActivity
 import com.ncs.mario.UI.MainScreen.MainActivity
 import com.ncs.mario.UI.SurveyScreen.SurveyActivity
@@ -24,7 +41,9 @@ import com.ncs.mario.UI.WaitScreen.WaitActivity
 import com.ncs.mario.databinding.ActivityStartScreenBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
 class StartScreen : AppCompatActivity() {
@@ -35,37 +54,137 @@ class StartScreen : AppCompatActivity() {
         GlobalUtils.EasyElements(this)
     }
     private val viewModel: StartScreenViewModel by viewModels()
+
+    private val updateType = AppUpdateType.IMMEDIATE
+    private val APP_UPDATE_REQUEST_CODE=101
+    private lateinit var appUpdateManager: AppUpdateManager
+    private lateinit var remoteConfigHelper: RemoteConfigHelper
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        remoteConfigHelper = RemoteConfigHelper(this)
+        appUpdateManager= AppUpdateManagerFactory.create(applicationContext)
         handleDynamicLink(intent)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(
+        startAnim()
+
+        if (updateType==AppUpdateType.IMMEDIATE){
+            appUpdateManager.registerListener(installStateUpdatedListener)
+            checkforAppUpdates()
+            initializeProcesses()
+        }
+
+    }
+
+    private fun  checkforAppUpdates(){
+        appUpdateManager.appUpdateInfo.addOnSuccessListener {info->
+            val isUpdateAvailable=info.updateAvailability()== UpdateAvailability.UPDATE_AVAILABLE
+            val isUpdateAllowed=when(updateType){
+                AppUpdateType.IMMEDIATE-> info.isImmediateUpdateAllowed
+                else-> false
+            }
+            if (isUpdateAvailable && isUpdateAllowed){
+                appUpdateManager.startUpdateFlowForResult(
+                    info,
+                    updateType,
                     this,
-                    android.Manifest.permission.POST_NOTIFICATIONS
-                ) ==
-                PackageManager.PERMISSION_GRANTED
-            ) {
-                runNormally(true)
-            } else if (shouldShowRequestPermissionRationale(android.Manifest.permission.POST_NOTIFICATIONS)) {
-                util.twoBtnDialog(
-                    title = "Notification Permission required",
-                    msg = "Notification permission is required for better functioning of the app",
-                    positiveBtnText = "OK",
-                    positive = {
-                        requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
-                    },
-                    negativeBtnText = "Cancel",
-                    negative = {
-                        runNormally(false)
-                    })
-            } else {
-                requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+                    APP_UPDATE_REQUEST_CODE
+                )
             }
         }
-        else{
-            runNormally(true)
+    }
+
+    private fun initializeProcesses(){
+        remoteConfigHelper.fetchRemoteConfig {
+            if (BuildConfig.VERSION_CODE>=it.toInt()){
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    if (ContextCompat.checkSelfPermission(
+                            this,
+                            android.Manifest.permission.POST_NOTIFICATIONS
+                        ) ==
+                        PackageManager.PERMISSION_GRANTED
+                    ) {
+                        runNormally(true)
+                    } else if (shouldShowRequestPermissionRationale(android.Manifest.permission.POST_NOTIFICATIONS)) {
+                        util.twoBtnDialog(
+                            title = "Notification Permission required",
+                            msg = "Notification permission is required for better functioning of the app",
+                            positiveBtnText = "OK",
+                            positive = {
+                                requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+                            },
+                            negativeBtnText = "Cancel",
+                            negative = {
+                                runNormally(false)
+                            })
+                    } else {
+                        requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+                    }
+                }
+                else{
+                    runNormally(true)
+                }
+            }
+            else{
+                util.twoBtnDialogNonCancellable("Update Available",
+                    "Hooray! A new version on NCS Mario has been released on playstore, please update your app to continue using forward",
+                    positiveBtnText = "Update", positive = {
+                        //TODO: Open playstore
+                    }, negativeBtnText = "Cancel", negative = {
+                        finishAffinity()
+                    })
+            }
         }
+    }
+
+    private val installStateUpdatedListener = InstallStateUpdatedListener{state->
+        if (state.installStatus() == InstallStatus.DOWNLOADED){
+            toast("Download Successful")
+            lifecycleScope.launch {
+                delay(5.seconds)
+                appUpdateManager.completeUpdate()
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode==APP_UPDATE_REQUEST_CODE){
+            if (resultCode!= RESULT_OK){
+                finish()
+                toast("Something went wrong while updating the app")
+            }
+        }
+    }
+
+    private fun startAnim() {
+        val slideOutAnim = AnimationUtils.loadAnimation(this, R.anim.slide_out_right)
+        val fadeInAnim = AnimationUtils.loadAnimation(this, R.anim.fadein)
+        slideOutAnim.duration = 2000
+        fadeInAnim.duration = 2500
+        binding.blackCircle.startAnimation(slideOutAnim)
+        binding.imageView2.startAnimation(fadeInAnim)
+        slideOutAnim.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation) {}
+
+            override fun onAnimationEnd(animation: Animation) {
+
+                binding.blackCircle.visibility = View.GONE
+            }
+
+            override fun onAnimationRepeat(animation: Animation) {}
+        })
+        fadeInAnim.setAnimationListener(object :Animation.AnimationListener{
+            override fun onAnimationStart(animation: Animation) {}
+
+            override fun onAnimationEnd(animation: Animation) {
+                binding.imageView2.alpha = 1f
+            }
+
+            override fun onAnimationRepeat(animation: Animation) {}
+        })
     }
 
     private fun runNormally(isPermissionGranted:Boolean){
@@ -153,7 +272,7 @@ class StartScreen : AppCompatActivity() {
                 val kycStatus = kycTokenDeferred.await()
 
                 handleUserDetails(userDetails!!)
-                handleKYCStatus(kycStatus)
+                handleKYCStatus(kycStatus, userDetails.profile.role)
             } catch (e: Exception) {
 
             }
@@ -175,17 +294,24 @@ class StartScreen : AppCompatActivity() {
         }
     }
 
-    private fun handleKYCStatus(kycStatus: String?) {
+    private fun handleKYCStatus(kycStatus: String?, role:Int) {
         if (!kycStatus.isNullOrEmpty()) {
             when (kycStatus) {
                 "ACCEPT" -> {
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
+                    if (role==1){
+                        startActivity(Intent(this, AdminMainActivity::class.java))
+                        finish()
+                    }
+                    else {
+                        startActivity(Intent(this, MainActivity::class.java))
+                        finish()
+                    }
                 }
                 "PENDING", "REJECT" -> {
                     startActivity(Intent(this, WaitActivity::class.java))
                     finish()
                 }
+
             }
         }
     }

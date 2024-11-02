@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_bottom_nav"
+    app:startDestination="@id/fragment_admin_home">
+
+    <fragment
+        android:id="@+id/fragment_admin_home"
+        android:name="com.ncs.mario.UI.MainScreen.Admin.AdminHomeFragment"
+        android:label="fragment_admin_home"
+        tools:layout="@layout/fragment_admin_home" >
+
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_events"
+        android:name="com.ncs.mario.UI.MainScreen.Events.EventsFragment"
+        android:label="fragment_events"
+        tools:layout="@layout/fragment_events" >
+
+        <action
+            android:id="@+id/action_fragment_events_to_fragment_home"
+            app:destination="@id/fragment_home"
+            />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_view_all"
+        android:name="com.ncs.mario.UI.MainScreen.Home.ViewAllFragment"
+        android:label="fragment_view_all"
+        tools:layout="@layout/fragment_view_all">
+
+        <action
+            android:id="@+id/action_fragment_view_all_to_fragment_home"
+            app:destination="@id/fragment_home"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_right"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_internship"
+        android:name="com.ncs.mario.UI.MainScreen.Internship.InternshipFragment"
+        android:label="fragment_internship"
+        tools:layout="@layout/fragment_internship" />
+
+    <fragment
+        android:id="@+id/fragment_score"
+        android:name="com.ncs.mario.UI.MainScreen.Score.ScoreFragment"
+        android:label="fragment_score"
+        tools:layout="@layout/fragment_score" >
+
+        <action
+            android:id="@+id/action_fragment_score_to_fragment_coin_transactions"
+            app:destination="@id/fragment_coin_transactions"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"/>
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/fragment_coin_transactions"
+        android:name="com.ncs.mario.UI.MainScreen.Score.CoinTransactionsFragment"
+        android:label="fragment_coin_transactions"
+        tools:layout="@layout/fragment_coin_transactions">
+
+        <action
+            android:id="@+id/action_fragment_coin_transactions_to_fragment_score"
+            app:destination="@id/fragment_score"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_right"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_store"
+        android:name="com.ncs.mario.UI.MainScreen.Store.StoreFragment"
+        android:label="fragment_store"
+        tools:layout="@layout/fragment_store" />
+
+</navigation>

@@ -1,13 +1,17 @@
 package com.ncs.mario.UI.MyRedemptionsScreen
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.ncs.mario.Domain.Models.MyOrderData
 import com.ncs.mario.Domain.Models.OrderStatus
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.mario.R
 import com.ncs.mario.UI.SurveyScreen.BottomSheet
 import com.ncs.mario.databinding.BottomsheetRedemptionBinding
@@ -30,6 +34,9 @@ class OrderDetailsBottomSheet:BottomSheetDialogFragment() {
     }
 
     private fun populateOrderDetails(binding: BottomsheetRedemptionBinding) {
+        binding.contactWA.setOnClickThrottleBounceListener{
+            openWhatsAppChat("917017305615")
+        }
         binding.productName.text = order.name
         binding.points.text = order.cost.toString()
         binding.orderId.text = "Order ID: ${order._id}"
@@ -54,6 +61,21 @@ class OrderDetailsBottomSheet:BottomSheetDialogFragment() {
             }
         }
     }
+
+    fun openWhatsAppChat(phoneNumber: String) {
+        val formattedNumber = "https://wa.me/$phoneNumber"
+
+        try {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse(formattedNumber)
+                setPackage("com.whatsapp")
+            }
+            startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "WhatsApp is not installed", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     fun formatLongToDate(timestamp: Long): String {
         val dateFormat = SimpleDateFormat("dd MMM, yyyy", Locale.getDefault())
         val date = Date(timestamp)
