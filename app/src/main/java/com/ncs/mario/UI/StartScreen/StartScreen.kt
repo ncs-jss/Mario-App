@@ -72,6 +72,7 @@ class StartScreen : AppCompatActivity() {
         if (updateType==AppUpdateType.IMMEDIATE){
             appUpdateManager.registerListener(installStateUpdatedListener)
             checkforAppUpdates()
+            initializeProcesses()
         }
 
     }
@@ -91,48 +92,49 @@ class StartScreen : AppCompatActivity() {
                     APP_UPDATE_REQUEST_CODE
                 )
             }
-            else if (!isUpdateAvailable){
-                remoteConfigHelper.fetchRemoteConfig {
-                    if (BuildConfig.VERSION_CODE>=it.toInt()){
+        }
+    }
 
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            if (ContextCompat.checkSelfPermission(
-                                    this,
-                                    android.Manifest.permission.POST_NOTIFICATIONS
-                                ) ==
-                                PackageManager.PERMISSION_GRANTED
-                            ) {
-                                runNormally(true)
-                            } else if (shouldShowRequestPermissionRationale(android.Manifest.permission.POST_NOTIFICATIONS)) {
-                                util.twoBtnDialog(
-                                    title = "Notification Permission required",
-                                    msg = "Notification permission is required for better functioning of the app",
-                                    positiveBtnText = "OK",
-                                    positive = {
-                                        requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
-                                    },
-                                    negativeBtnText = "Cancel",
-                                    negative = {
-                                        runNormally(false)
-                                    })
-                            } else {
+    private fun initializeProcesses(){
+        remoteConfigHelper.fetchRemoteConfig {
+            if (BuildConfig.VERSION_CODE>=it.toInt()){
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    if (ContextCompat.checkSelfPermission(
+                            this,
+                            android.Manifest.permission.POST_NOTIFICATIONS
+                        ) ==
+                        PackageManager.PERMISSION_GRANTED
+                    ) {
+                        runNormally(true)
+                    } else if (shouldShowRequestPermissionRationale(android.Manifest.permission.POST_NOTIFICATIONS)) {
+                        util.twoBtnDialog(
+                            title = "Notification Permission required",
+                            msg = "Notification permission is required for better functioning of the app",
+                            positiveBtnText = "OK",
+                            positive = {
                                 requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
-                            }
-                        }
-                        else{
-                            runNormally(true)
-                        }
-                    }
-                    else{
-                        util.twoBtnDialogNonCancellable("Update Available",
-                            "Hooray! A new version on NCS Mario has been released on playstore, please update your app to continue using forward",
-                            positiveBtnText = "Update", positive = {
-                                //TODO: Open playstore
-                            }, negativeBtnText = "Cancel", negative = {
-                                finishAffinity()
+                            },
+                            negativeBtnText = "Cancel",
+                            negative = {
+                                runNormally(false)
                             })
+                    } else {
+                        requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
                     }
                 }
+                else{
+                    runNormally(true)
+                }
+            }
+            else{
+                util.twoBtnDialogNonCancellable("Update Available",
+                    "Hooray! A new version on NCS Mario has been released on playstore, please update your app to continue using forward",
+                    positiveBtnText = "Update", positive = {
+                        //TODO: Open playstore
+                    }, negativeBtnText = "Cancel", negative = {
+                        finishAffinity()
+                    })
             }
         }
     }

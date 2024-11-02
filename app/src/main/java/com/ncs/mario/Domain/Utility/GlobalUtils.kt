@@ -80,7 +80,7 @@ object GlobalUtils {
 
                 if (!activity.isFinishing && !activity.isDestroyed) {
                     val builder = android.app.AlertDialog.Builder(context)
-                    builder.setIcon(R.drawable.logogradhd)
+                    builder.setIcon(R.drawable.logo)
                     builder.setTitle(title)
                     builder.setMessage(msg)
                     builder.setCancelable(false)
@@ -104,7 +104,7 @@ object GlobalUtils {
 
                 if (!activity.isFinishing && !activity.isDestroyed) {
                     val builder = android.app.AlertDialog.Builder(context)
-                    builder.setIcon(R.drawable.logogradhd)
+                    builder.setIcon(R.drawable.logo)
                     builder.setTitle(title)
                     builder.setMessage(msg)
                     builder.setCancelable(false)
@@ -135,7 +135,7 @@ object GlobalUtils {
 
                 if (!activity.isFinishing && !activity.isDestroyed) {
                     val builder = AlertDialog.Builder(context)
-                    builder.setIcon(R.drawable.logogradhd)
+                    builder.setIcon(R.drawable.logo)
                     builder.setTitle(title)
                     builder.setCancelable(false)
                     builder.setMessage(msg)
@@ -168,7 +168,7 @@ object GlobalUtils {
 
                 if (!activity.isFinishing && !activity.isDestroyed) {
                     val builder = AlertDialog.Builder(context)
-                    builder.setIcon(R.drawable.logogradhd)
+                    builder.setIcon(R.drawable.logo)
                     builder.setTitle(title)
                     builder.setMessage(msg)
                     builder.setPositiveButton(positiveBtnText) { dialog, which ->
@@ -200,7 +200,7 @@ object GlobalUtils {
 
                 if (!activity.isFinishing && !activity.isDestroyed) {
                     val builder = AlertDialog.Builder(context)
-                    builder.setIcon(R.drawable.logogradhd)
+                    builder.setIcon(R.drawable.logo)
                     builder.setTitle(title)
                     builder.setMessage(msg)
                     builder.setPositiveButton(positiveBtnText) { dialog, which ->

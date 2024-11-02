@@ -440,6 +440,37 @@
             />
     </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:id="@+id/contactWA"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="40dp"
+            android:gravity="center"
+            android:background="@drawable/button_bg"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contact us on"
+                android:fontFamily="@font/sf_semibold"
+                android:textSize="16dp"
+                android:textColor="@color/white"
+                />
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/whatsapp_svgrepo_com"
+                android:layout_marginStart="10dp"/>
+
+        </LinearLayout>
+
+
     </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
