@@ -26,6 +26,7 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
+import com.google.firebase.messaging.FirebaseMessaging
 import com.ncs.mario.BuildConfig
 import com.ncs.mario.Domain.HelperClasses.PrefManager
 import com.ncs.mario.Domain.HelperClasses.RemoteConfigHelper
@@ -68,6 +69,15 @@ class StartScreen : AppCompatActivity() {
         appUpdateManager= AppUpdateManagerFactory.create(applicationContext)
         handleDynamicLink(intent)
         startAnim()
+
+        FirebaseMessaging.getInstance().subscribeToTopic("mario-general")
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("FCM", "Subscribed to topic successfully")
+                } else {
+                    Log.d("FCM", "Failed to subscribe to topic")
+                }
+            }
 
         if (updateType==AppUpdateType.IMMEDIATE){
             appUpdateManager.registerListener(installStateUpdatedListener)

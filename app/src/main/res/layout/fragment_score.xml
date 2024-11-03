@@ -180,13 +180,20 @@
 
 
         <LinearLayout
+            android:layout_width="match_parent"
             android:id="@+id/progresslayout"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="15dp"
             android:paddingHorizontal="24dp"
-            android:visibility="gone"
+            android:visibility="visible"
             android:paddingVertical="8dp"
             app:layout_constraintTop_toBottomOf="@+id/scoreCard">
 
@@ -281,6 +288,53 @@
 
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/marioScoreInfoButton"
+            android:layout_marginBottom="15dp"
+            android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            android:gravity="center">
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/baseline_info_24"
+            android:layout_marginEnd="7dp"
+            app:tint="@color/account"/>
+
+            <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="What is Mario Score?"
+            android:fontFamily="@font/sf_medium"
+            android:textSize="14dp"
+            android:textColor="@color/account"/>
+
+        </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _"
+                android:fontFamily="@font/sf_medium"
+                android:layout_marginTop="-13dp"
+                android:textSize="14dp"
+                android:textColor="@color/account"/>
+
+        </LinearLayout>
+
+        </LinearLayout>
+
+
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:layout_width="match_parent"

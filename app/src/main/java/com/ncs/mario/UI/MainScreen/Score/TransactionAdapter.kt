@@ -35,17 +35,21 @@ class TransactionAdapter(private var transactions: List<Transaction>, private va
         holder.binding.title.text=transaction.title
         holder.binding.time.text = "${formatTimestamp(transaction.time).first} | ${formatTimestamp(transaction.time).second}"
         if (transaction.operation=="DEBIT"){
-            holder.binding.operation.text="DEBIT"
+            holder.binding.operation.text="Debit"
             holder.binding.operation.setBackgroundResource(R.drawable.status_failure)
             holder.binding.coins.text = "- ${transaction.coins}"
         }
         else{
-            holder.binding.operation.text="CREDIT"
+            holder.binding.operation.text="Credit"
             holder.binding.operation.setBackgroundResource(R.drawable.status_success)
             holder.binding.coins.text = "+ ${transaction.coins}"
         }
-        holder.binding.type.text="${transaction.type.toString().capitalize()}"
-
+        if (transaction.type=="admin-gift"){
+            holder.binding.type.text="Gift"
+        }
+        else {
+            holder.binding.type.text = "${transaction.type.toString().capitalize()}"
+        }
         holder.binding.root.setOnClickThrottleBounceListener {
             callback.onClick(transaction)
         }

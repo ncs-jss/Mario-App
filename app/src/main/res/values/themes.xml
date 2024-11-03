@@ -7,7 +7,7 @@
 
     <style name="Theme.NCSMario" parent="Base.Theme.NCSMario">
 
-        <item name="android:windowBackground">@drawable/splashscreen</item>
+        <item name="android:windowBackground">@drawable/splash_new</item>
         <item name="android:statusBarColor">@color/baseBlack</item>
         <item name="android:navigationBarColor">@color/baseBlack</item>
         <item name="android:windowLightStatusBar">false</item>

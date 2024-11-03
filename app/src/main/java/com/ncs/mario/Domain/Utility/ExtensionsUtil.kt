@@ -59,6 +59,27 @@ import java.util.Locale
 
 object ExtensionsUtil {
 
+    fun getEligibilityScore(eligibility: String): Int{
+        return when(eligibility){
+            "NOOBIE"-> 1
+            "INTERMEDIATE" -> 2
+            "PRO"-> 3
+            else -> 1
+        }
+    }
+
+    fun getUserScoreForEligibilty(score:Int) : Int{
+        return if (score<100){
+            1
+        }
+        else if (score<400){
+            2
+        }
+        else {
+            3
+        }
+    }
+
     fun generateShareLink(postId:String, link:(Uri?) -> Unit){
         val dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
             .setLink(Uri.parse("https://ncsmario.page.link/share/${postId}"))

@@ -56,7 +56,7 @@
           android:gravity="center"
           android:fontFamily="@font/sf_medium"
            android:textColor="@color/better_white"
-          android:text="Sit back and relax!\n\n\nWe are curating relevant internships\nfor you based on your profile."/>
+          android:text="Coming Soon..."/>
       
    </LinearLayout>
 
