@@ -4,8 +4,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.ncs.mario.Domain.HelperClasses.PrefManager
 import com.ncs.mario.Domain.Models.Events.Event
 import com.ncs.mario.Domain.Models.Events.ParticipatedEvent
+import com.ncs.mario.Domain.Utility.ExtensionsUtil
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.load
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
@@ -46,6 +48,19 @@ class EventsAdapter(private var events: List<Event>, private val callback: Callb
             holder.binding.btnEnrollMe.setBackgroundResource(R.drawable.enroll_button)
             holder.binding.claimTicketBtn.gone()
         }
+
+        val userEligibiltyScore = ExtensionsUtil.getUserScoreForEligibilty(PrefManager.getUserProfile()?.points!!)
+        val eventEligibiltyScore = ExtensionsUtil.getEligibilityScore(event.eligibility)
+
+        Log.d("eligibilityCheck", "${event.isEligibile}")
+
+        if (!event.isEligibile){
+            holder.binding.btnEnroll.text = "Not eligible to enroll"
+            holder.binding.btnEnrollMe.setBackgroundResource(R.drawable.selected_enroll_button)
+            holder.binding.btnEnrollMe.isClickable=false
+            holder.binding.btnEnrollMe.isEnabled=false
+        }
+
 
         holder.binding.claimTicketBtn.setOnClickThrottleBounceListener {
             callback.onGetTicketClick(event)

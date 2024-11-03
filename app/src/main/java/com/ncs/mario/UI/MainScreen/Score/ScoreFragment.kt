@@ -16,6 +16,7 @@ import com.ncs.mario.Domain.HelperClasses.PrefManager
 import com.ncs.mario.Domain.Models.Events.ParticipatedEvent
 import com.ncs.mario.Domain.Models.ServerResult
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.gone
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.mario.Domain.Utility.GlobalUtils
 import com.ncs.mario.R
@@ -100,6 +101,11 @@ class ScoreFragment : Fragment() {
         binding.pastEventLayout.gone()
         binding.enrolledEventsLayout.gone()
 
+        binding.marioScoreInfoButton.setOnClickThrottleBounceListener{
+            val bottomSheet=MarioCoinsInfoBottomSheet(points = PrefManager.getMyPoints())
+            bottomSheet.show(parentFragmentManager,"marioCoinsInfoBottomSheet")
+        }
+
         binding.coinTransactionHistory.setOnClickListener {
             findNavController().navigate(R.id.action_fragment_score_to_fragment_coin_transactions)
         }
@@ -136,6 +142,7 @@ class ScoreFragment : Fragment() {
         }
 
         activityViewModel.userPoints.observe(viewLifecycleOwner){
+            PrefManager.setMyPoints(it)
             binding.points.text = it?.toString()
             if (it<100){
                 binding.level.text="Level: Noobie"
@@ -231,8 +238,8 @@ class ScoreFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-
     }
+
     fun getList():List<ParticipatedEvent>{
         return listOf()
     }

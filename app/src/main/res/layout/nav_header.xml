@@ -310,12 +310,20 @@
 
         </LinearLayout>
 
-        <ImageView
+        <androidx.cardview.widget.CardView
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_marginTop="30dp"
             android:layout_gravity="center"
+            app:cardCornerRadius="7dp">
+
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:src="@drawable/logo"/>
+
+        </androidx.cardview.widget.CardView>
+
 
         <TextView
             android:id="@+id/version_code"
