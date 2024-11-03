@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.provider.Settings
 import android.util.Log
 import android.view.View
@@ -104,8 +105,7 @@ class StartScreen : AppCompatActivity() {
 
     private fun runNormally(isPermissionGranted:Boolean){
         if (PrefManager.getToken()==""){
-            startActivity(Intent(this, AuthActivity::class.java))
-            finish()
+            runCircleAnimation(AuthActivity::class.java)
         }
         else{
             observeViewModel()
@@ -163,8 +163,7 @@ class StartScreen : AppCompatActivity() {
             if (!it.isNullOrEmpty()) {
                 if (it=="User not found!"){
                     PrefManager.setShowProfileCompletionAlert(true)
-                    startActivity(Intent(this, SurveyActivity::class.java))
-                    finish()
+                   runCircleAnimation(SurveyActivity::class.java)
                 }
                 else {
                     util.showActionSnackbar(binding.root, it, 200000, "Retry") {
@@ -200,8 +199,7 @@ class StartScreen : AppCompatActivity() {
         }
         else {
             PrefManager.setShowProfileCompletionAlert(true)
-            startActivity(Intent(this, SurveyActivity::class.java))
-            finish()
+            runCircleAnimation(SurveyActivity::class.java)
         }
     }
 
@@ -209,16 +207,33 @@ class StartScreen : AppCompatActivity() {
         if (!kycStatus.isNullOrEmpty()) {
             when (kycStatus) {
                 "ACCEPT" -> {
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
+                    runCircleAnimation(MainActivity::class.java)
                 }
                 "PENDING", "REJECT" -> {
-                    startActivity(Intent(this, WaitActivity::class.java))
-                    finish()
+                    runCircleAnimation(WaitActivity::class.java)
                 }
 
             }
         }
+    }
+    private fun runCircleAnimation(targetActivity: Class<*>) {
+        val animation = AnimationUtils.loadAnimation(this, R.anim.circle_flash)
+        binding.circleView.startAnimation(animation)
+        Handler().postDelayed({
+        },200)
+        animation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation) {
+                binding.circleView.visibility = View.VISIBLE
+            }
+
+            override fun onAnimationEnd(animation: Animation) {
+                startActivity(Intent(this@StartScreen, targetActivity))
+                finish()
+            }
+
+            override fun onAnimationRepeat(animation: Animation) {}
+        })
+
     }
 
 }
