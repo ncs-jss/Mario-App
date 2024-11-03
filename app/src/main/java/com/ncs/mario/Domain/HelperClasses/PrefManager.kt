@@ -213,6 +213,4 @@ object PrefManager {
         return sharedPreferences.getBoolean("eventNotifPref",true)
     }
 
-
-
 }

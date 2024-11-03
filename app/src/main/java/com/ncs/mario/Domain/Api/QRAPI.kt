@@ -1,6 +1,9 @@
 package com.ncs.mario.Domain.Api
 
+import com.google.gson.JsonObject
 import com.ncs.mario.Domain.HelperClasses.PrefManager
+import com.ncs.mario.Domain.Models.Admin.GiftCoinsPostBody
+import com.ncs.mario.Domain.Models.Posts.LikePostBody
 import com.ncs.mario.Domain.Models.QR.QrScannedResponse
 import com.ncs.mario.Domain.Models.ServerResult
 import retrofit2.Response
@@ -8,6 +11,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
+import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface QRAPI {
@@ -23,4 +27,12 @@ interface QRAPI {
     suspend fun getMyRewards(@Header("Authorization") authToken: String= PrefManager.getToken()!!,
                              @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
     ):Response<QrScannedResponse>
+
+
+    @Headers("Content-Type: application/json")
+    @POST("admin/gift-coins")
+    suspend fun giftCoins(@Header("Authorization") authToken: String=PrefManager.getToken()!!,
+                         @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
+                         @Body payload: GiftCoinsPostBody
+    ): Response<JsonObject>
 }

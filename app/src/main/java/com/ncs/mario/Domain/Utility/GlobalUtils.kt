@@ -80,7 +80,7 @@ object GlobalUtils {
 
                 if (!activity.isFinishing && !activity.isDestroyed) {
                     val builder = android.app.AlertDialog.Builder(context)
-                    builder.setIcon(R.drawable.logogradhd)
+                    builder.setIcon(R.drawable.logo)
                     builder.setTitle(title)
                     builder.setMessage(msg)
                     builder.setCancelable(false)
@@ -104,7 +104,7 @@ object GlobalUtils {
 
                 if (!activity.isFinishing && !activity.isDestroyed) {
                     val builder = android.app.AlertDialog.Builder(context)
-                    builder.setIcon(R.drawable.logogradhd)
+                    builder.setIcon(R.drawable.logo)
                     builder.setTitle(title)
                     builder.setMessage(msg)
                     builder.setCancelable(false)
@@ -112,6 +112,39 @@ object GlobalUtils {
                         positive()
                     }
 
+                    try {
+                        val dialog = builder.create()
+                        dialog.show()
+                    } catch (e: WindowManager.BadTokenException) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+        }
+
+        fun twoBtnDialogNonCancellable(
+            title: String,
+            msg: String,
+            positiveBtnText: String,
+            negativeBtnText: String,
+            positive: () -> Unit,
+            negative: () -> Unit
+        ) {
+            if (context is Activity) {
+                val activity = context
+
+                if (!activity.isFinishing && !activity.isDestroyed) {
+                    val builder = AlertDialog.Builder(context)
+                    builder.setIcon(R.drawable.logo)
+                    builder.setTitle(title)
+                    builder.setCancelable(false)
+                    builder.setMessage(msg)
+                    builder.setPositiveButton(positiveBtnText) { dialog, which ->
+                        positive()
+                    }
+                    builder.setNegativeButton(negativeBtnText) { dialog, which ->
+                        negative()
+                    }
                     try {
                         val dialog = builder.create()
                         dialog.show()
@@ -135,7 +168,7 @@ object GlobalUtils {
 
                 if (!activity.isFinishing && !activity.isDestroyed) {
                     val builder = AlertDialog.Builder(context)
-                    builder.setIcon(R.drawable.logogradhd)
+                    builder.setIcon(R.drawable.logo)
                     builder.setTitle(title)
                     builder.setMessage(msg)
                     builder.setPositiveButton(positiveBtnText) { dialog, which ->
@@ -167,7 +200,7 @@ object GlobalUtils {
 
                 if (!activity.isFinishing && !activity.isDestroyed) {
                     val builder = AlertDialog.Builder(context)
-                    builder.setIcon(R.drawable.logogradhd)
+                    builder.setIcon(R.drawable.logo)
                     builder.setTitle(title)
                     builder.setMessage(msg)
                     builder.setPositiveButton(positiveBtnText) { dialog, which ->
