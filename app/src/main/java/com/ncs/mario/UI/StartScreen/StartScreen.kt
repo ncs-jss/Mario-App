@@ -256,6 +256,7 @@ class StartScreen : AppCompatActivity() {
                         observeViewModel()
                     }
                 }
+
             }
         }
     }
@@ -296,14 +297,11 @@ class StartScreen : AppCompatActivity() {
         if (!kycStatus.isNullOrEmpty()) {
             when (kycStatus) {
                 "ACCEPT" -> {
-                    runCircleAnimation(MainActivity::class.java)
                     if (role==1){
-                        startActivity(Intent(this, AdminMainActivity::class.java))
-                        finish()
+                        runCircleAnimation(AdminMainActivity::class.java)
                     }
                     else {
-                        startActivity(Intent(this, MainActivity::class.java))
-                        finish()
+                        runCircleAnimation(MainActivity::class.java)
                     }
                 }
                 "PENDING", "REJECT" -> {
