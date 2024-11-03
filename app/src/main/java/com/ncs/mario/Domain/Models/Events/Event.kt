@@ -12,5 +12,7 @@ data class Event(
     val description: String,
     val registrationLink: String,
     val venue: String,
-    val enrolledCount: Int
+    val enrolledCount: Int,
+    val eligibility:String,
+    val isEligibile:Boolean
 )

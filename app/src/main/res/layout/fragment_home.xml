@@ -201,14 +201,14 @@
                     app:cardCornerRadius="10dp"
                     android:layout_height="45dp"
                     android:layout_gravity="center"
-                    android:id="@+id/facebook"
+                    android:id="@+id/discord"
                     app:cardBackgroundColor="@color/white">
 
                     <ImageView
                         android:layout_width="45dp"
                         android:scaleType="centerCrop"
                         android:layout_height="45dp"
-                        android:src="@drawable/facebook_color_svgrepo_com"
+                        android:src="@drawable/discord_svgrepo_com"
                         />
 
                 </androidx.cardview.widget.CardView>

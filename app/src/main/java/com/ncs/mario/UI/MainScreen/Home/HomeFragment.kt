@@ -264,8 +264,8 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
             openUrl("https://www.instagram.com/hackncs/")
         }
 
-        binding.facebook.setOnClickThrottleBounceListener{
-            openUrl("https://www.facebook.com/nibblecomputersociety")
+        binding.discord.setOnClickThrottleBounceListener{
+            openUrl("https://discord.gg/GBFSm6Ub")
         }
 
         binding.whatsapp.setOnClickThrottleBounceListener{

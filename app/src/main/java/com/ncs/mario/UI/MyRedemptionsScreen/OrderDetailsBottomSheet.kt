@@ -35,7 +35,7 @@ class OrderDetailsBottomSheet:BottomSheetDialogFragment() {
 
     private fun populateOrderDetails(binding: BottomsheetRedemptionBinding) {
         binding.contactWA.setOnClickThrottleBounceListener{
-            openWhatsAppChat("917017305615")
+            openWhatsAppChat("917017305615", message = "My order id: ${order._id} \n\n")
         }
         binding.productName.text = order.name
         binding.points.text = order.cost.toString()
@@ -62,8 +62,8 @@ class OrderDetailsBottomSheet:BottomSheetDialogFragment() {
         }
     }
 
-    fun openWhatsAppChat(phoneNumber: String) {
-        val formattedNumber = "https://wa.me/$phoneNumber"
+    fun openWhatsAppChat(phoneNumber: String, message: String) {
+        val formattedNumber = "https://wa.me/$phoneNumber?text=${Uri.encode(message)}"
 
         try {
             val intent = Intent(Intent.ACTION_VIEW).apply {
@@ -75,6 +75,7 @@ class OrderDetailsBottomSheet:BottomSheetDialogFragment() {
             Toast.makeText(requireContext(), "WhatsApp is not installed", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     fun formatLongToDate(timestamp: Long): String {
         val dateFormat = SimpleDateFormat("dd MMM, yyyy", Locale.getDefault())
