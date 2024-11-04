@@ -191,7 +191,6 @@ class PostAdapter(private val callBack: CallBack) : ListAdapter<ListItem, Recycl
             binding.markdownView.settings.setRenderPriority(WebSettings.RenderPriority.HIGH)
 
             binding.markdownView.addStyleSheet(css)
-            binding.markdownView.addJavascriptInterface(AndroidToJsInterface(), "send")
 
             binding.markdownView.webViewClient = object : WebViewClient() {
                 override fun onPageFinished(view: WebView?, url: String?) {
@@ -215,10 +214,7 @@ class PostAdapter(private val callBack: CallBack) : ListAdapter<ListItem, Recycl
             binding.markdownView.visible()
 
         }
-        inner class AndroidToJsInterface {
-            @JavascriptInterface
-            fun sendCode(codeText: String, language: String?) {}
-        }
+
     }
 
     fun updatePost(updatedPost: Post) {
