@@ -37,6 +37,8 @@ android {
         targetSdk 34
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
+
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -50,6 +52,8 @@ android {
 
         debug {
             debuggable true
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             //Base API URL
@@ -81,8 +85,44 @@ android {
         }
 
         release {
+            debuggable false
 
+
+            //Base API URL
+            buildConfigField("String", "API_BASE_URL", "\"${getProps("API_BASE_URL")}\"")
+
+            //Auth Endpoint
+            buildConfigField("String", "AUTH_ENDPOINT", "\"${getProps("AUTH_ENDPOINT")}\"")
+
+            //Profile Endpoint
+            buildConfigField("String", "PROFILE_ENDPOINT", "\"${getProps("PROFILE_ENDPOINT")}\"")
+
+            //Event Endpoint
+            buildConfigField("String","EVENT_ENDPOINT","\"${getProps("EVENT_ENDPOINT")}\"")
+
+            //QR EndPoint
+            buildConfigField("String","QR_ENDPOINT","\"${getProps("QR_ENDPOINT")}\"")
+
+            //Merch Endpoint
+            buildConfigField("String","MERCH_ENDPOINT","\"${getProps("MERCH_ENDPOINT")}\"")
+
+            //Post Endpoint
+            buildConfigField("String","POST_ENDPOINT","\"${getProps("POST_ENDPOINT")}\"")
+
+            //Banner Endpoint
+            buildConfigField("String","BANNER_ENDPOINT","\"${getProps("BANNER_ENDPOINT")}\"")
+
+            //Reports Endpoint
+            buildConfigField("String","REPORTS_ENDPOINT","\"${getProps("REPORTS_ENDPOINT")}\"")
+
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
+
+
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -90,6 +130,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
     }
 }
 
