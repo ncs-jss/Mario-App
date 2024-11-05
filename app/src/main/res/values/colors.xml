@@ -3,9 +3,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="et_bg">#221F1F</color>
     <color name="edit_text_hint">#A5A1A1</color>
-    <color name="primary">#008080</color>
+    <color name="primary">#00A7DA</color>
     <color name="yellow">#FFDF02</color>
-    <color name="green">#37D553</color>
+    <color name="green">#4DC0ED</color>
     <color name="app_black">#0A0A0A</color>
     <color name="transparent">#00000000</color>
     <color name="shimmerColor">#C2C2C2</color>
@@ -14,14 +14,11 @@
 <!--  ⚠️⚠️  dont consult colors below this-->
 
     <color name="secondary">#FFDF02</color>
-
-
     <color name="darkTheme_bg">#242222</color>
     <color name="dim_primary">#D584DE5D</color>
     <color name="dimmer_primary">#4859953F</color>
     <color name="purple">@color/primary</color>
     <color name="secondaryBlue">@color/border_bg</color>
-
 
     <color name="primary_bg">#1C1C1C</color>
     <color name="secondary_bg">#161616</color>
