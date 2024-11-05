@@ -13,8 +13,8 @@
         android:layout_marginVertical="4dp">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_marginEnd="12dp"
             android:layout_marginStart="20dp"
             app:cardBackgroundColor="@color/baseBlack"

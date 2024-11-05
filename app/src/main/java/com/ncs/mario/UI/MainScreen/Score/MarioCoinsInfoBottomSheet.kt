@@ -43,18 +43,21 @@ class MarioCoinsInfoBottomSheet(val points:Int): BottomSheetDialogFragment() {
 
         if(points<=100){
             binding.noobieView.setBackgroundResource(R.drawable.button_bg)
+            binding.noobieTV.setTextColor(requireContext().getColor(R.color.divider))
             binding.intermediateView.setBackgroundResource(0)
             binding.proView.setBackgroundResource(0)
         }
         else if(points<=400){
             binding.noobieView.setBackgroundResource(0)
             binding.intermediateView.setBackgroundResource(R.drawable.button_bg)
+            binding.intermediateTV.setTextColor(requireContext().getColor(R.color.divider))
             binding.proView.setBackgroundResource(0)
         }
         else{
             binding.noobieView.setBackgroundResource(0)
             binding.intermediateView.setBackgroundResource(0)
             binding.proView.setBackgroundResource(R.drawable.button_bg)
+            binding.proTV.setTextColor(requireContext().getColor(R.color.divider))
         }
     }
 
