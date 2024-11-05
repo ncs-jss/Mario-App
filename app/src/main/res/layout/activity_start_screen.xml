@@ -58,7 +58,7 @@
         android:layout_alignParentEnd="true"
         android:indeterminate="true"
         android:visibility="gone"
-        app:indicatorColor="@color/green"
+        app:indicatorColor="@color/appblue"
         app:indicatorDirectionLinear="leftToRight"
         app:trackColor="@color/item_bg_glow" />
 

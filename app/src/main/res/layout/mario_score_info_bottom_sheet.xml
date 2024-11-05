@@ -209,17 +209,6 @@
                         android:textColor="@color/account"
                         android:textSize="12dp" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/sfregular"
-                        android:gravity="center"
-                        android:layout_marginTop="15dp"
-                        android:visibility="visible"
-                        android:layout_gravity="center"
-                        android:text="Selection Rate"
-                        android:textColor="@color/account"
-                        android:textSize="12dp" />
                 </LinearLayout>
 
                 <View
@@ -256,10 +245,11 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sfbold"
                         android:gravity="center"
+                        android:id="@+id/noobieTV"
                         android:visibility="visible"
                         android:layout_gravity="center"
                         android:text="Less than\n100"
-                        android:textColor="@color/account"
+                        android:textColor="@color/divider_or"
                         android:textSize="10dp" />
 
 
@@ -269,7 +259,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_height="20dp"
                         android:src="@drawable/baseline_check_24"
-                        app:tint="@color/green"/>
+                        app:tint="@color/white"/>
 
                     <ImageView
                         android:layout_width="20dp"
@@ -287,17 +277,7 @@
                         android:src="@drawable/baseline_close_24"
                         app:tint="@color/redx"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/sf_semibold"
-                        android:gravity="center"
-                        android:layout_marginTop="10dp"
-                        android:visibility="visible"
-                        android:layout_gravity="center"
-                        android:text="0 %"
-                        android:textColor="@color/account"
-                        android:textSize="12dp" />
+
                 </LinearLayout>
 
 
@@ -335,10 +315,11 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sfbold"
                         android:gravity="center"
+                        android:id="@+id/intermediateTV"
                         android:visibility="visible"
                         android:layout_gravity="center"
                         android:text="Less than\n400"
-                        android:textColor="@color/account"
+                        android:textColor="@color/divider_or"
                         android:textSize="10dp" />
 
 
@@ -348,7 +329,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_height="20dp"
                         android:src="@drawable/baseline_check_24"
-                        app:tint="@color/green"/>
+                        app:tint="@color/white"/>
 
                     <ImageView
                         android:layout_width="20dp"
@@ -356,7 +337,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_height="20dp"
                         android:src="@drawable/baseline_check_24"
-                        app:tint="@color/green"/>
+                        app:tint="@color/white"/>
 
                     <ImageView
                         android:layout_width="20dp"
@@ -366,17 +347,6 @@
                         android:src="@drawable/baseline_close_24"
                         app:tint="@color/redx"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/sf_semibold"
-                        android:gravity="center"
-                        android:layout_marginTop="10dp"
-                        android:visibility="visible"
-                        android:layout_gravity="center"
-                        android:text="50 %"
-                        android:textColor="@color/account"
-                        android:textSize="12dp" />
                 </LinearLayout>
 
 
@@ -391,6 +361,7 @@
                     android:layout_weight="3"
                     android:id="@+id/proView"
                     android:paddingBottom="15dp"
+                    android:background="@drawable/bg"
                     android:layout_marginEnd="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_height="wrap_content"
@@ -415,10 +386,11 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sfbold"
                         android:gravity="center"
+                        android:id="@+id/proTV"
                         android:visibility="visible"
                         android:layout_gravity="center"
                         android:text="More than\n400"
-                        android:textColor="@color/account"
+                        android:textColor="@color/divider_or"
                         android:textSize="10dp" />
 
 
@@ -428,7 +400,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_height="20dp"
                         android:src="@drawable/baseline_check_24"
-                        app:tint="@color/green"/>
+                        app:tint="@color/white"/>
 
                     <ImageView
                         android:layout_width="20dp"
@@ -436,7 +408,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_height="20dp"
                         android:src="@drawable/baseline_check_24"
-                        app:tint="@color/green"/>
+                        app:tint="@color/white"/>
 
                     <ImageView
                         android:layout_width="20dp"
@@ -444,19 +416,9 @@
                         android:layout_marginTop="10dp"
                         android:layout_height="20dp"
                         android:src="@drawable/baseline_check_24"
-                        app:tint="@color/green"/>
+                        app:tint="@color/white"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/sf_semibold"
-                        android:gravity="center"
-                        android:layout_marginTop="10dp"
-                        android:visibility="visible"
-                        android:layout_gravity="center"
-                        android:text="90 %"
-                        android:textColor="@color/account"
-                        android:textSize="12dp" />
+
                 </LinearLayout>
 
 
