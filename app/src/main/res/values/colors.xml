@@ -5,7 +5,8 @@
     <color name="edit_text_hint">#A5A1A1</color>
     <color name="primary">#00A7DA</color>
     <color name="yellow">#FFDF02</color>
-    <color name="green">#4DC0ED</color>
+    <color name="green">#37D553</color>
+    <color name="appblue">#4DC0ED</color>
     <color name="app_black">#0A0A0A</color>
     <color name="transparent">#00000000</color>
     <color name="shimmerColor">#C2C2C2</color>
@@ -132,6 +133,6 @@
     <color name="neutral900">#383434</color>
     <color name="neutral1000">#221f1f</color>
 
-    <color name="bottom_nav_selected_color">@color/green</color>
+    <color name="bottom_nav_selected_color">@color/appblue</color>
     <color name="bottom_nav_unselected_color">@color/baseWhite</color>
 </resources>

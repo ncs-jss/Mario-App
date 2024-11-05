@@ -156,7 +156,7 @@ class ScoreFragment : Fragment() {
                 binding.level.text="Level: Intermediate"
                 binding.noobieIMG.setImageResource(R.drawable.outline_check_circle_outline_24)
                 binding.intermediateIMG.setImageResource(R.drawable.outline_check_circle_outline_24)
-                binding.afterNobbie.setBackgroundColor(getColor(requireContext(),R.color.green))
+                binding.afterNobbie.setBackgroundColor(getColor(requireContext(),R.color.appblue))
                 binding.pro.setImageResource(R.drawable.twotone_circle_24)
                 binding.afterIntermediate.setBackgroundColor(getColor(requireContext(), R.color.neutral200))
             }
@@ -165,8 +165,8 @@ class ScoreFragment : Fragment() {
                 binding.noobieIMG.setImageResource(R.drawable.outline_check_circle_outline_24)
                 binding.intermediateIMG.setImageResource(R.drawable.outline_check_circle_outline_24)
                 binding.pro.setImageResource(R.drawable.outline_check_circle_outline_24)
-                binding.afterNobbie.setBackgroundColor(getColor(requireContext(), R.color.green))
-                binding.afterIntermediate.setBackgroundColor(getColor(requireContext(), R.color.green))
+                binding.afterNobbie.setBackgroundColor(getColor(requireContext(), R.color.appblue))
+                binding.afterIntermediate.setBackgroundColor(getColor(requireContext(), R.color.appblue))
             }
             binding.shimmerLayoutPoints.apply {
                 stopShimmer()
