@@ -34,6 +34,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.ncs.mario.BuildConfig
 import com.ncs.mario.Domain.HelperClasses.PrefManager
 import com.ncs.mario.Domain.HelperClasses.RemoteConfigHelper
+import com.ncs.mario.Domain.Models.ProfileData.UserImpDetails
 import com.ncs.mario.Domain.Models.User
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.animFadein
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.gone
@@ -314,14 +315,14 @@ class StartScreen : AppCompatActivity() {
             try {
                 binding.progress.show()
                 setState("Compiling your user saga...")
-                val userDetailsDeferred = async { viewModel.fetchUserDetails() }
+                val userDetailsDeferred = async { viewModel.getUserImpDetails() }
                 val kycTokenDeferred = async { viewModel.fetchUserKYCHeaderToken() }
 
                 val userDetails = userDetailsDeferred.await()
                 val kycStatus = kycTokenDeferred.await()
 
                 handleUserDetails(userDetails!!)
-                handleKYCStatus(kycStatus, userDetails.profile.role)
+                handleKYCStatus(kycStatus, userDetails.role)
 
             } catch (e: Exception) {
                 binding.progress.gone()
@@ -329,12 +330,12 @@ class StartScreen : AppCompatActivity() {
         }
     }
 
-    private fun handleUserDetails(user: User) {
-        PrefManager.setUserProfile(user.profile)
-        if (user.profile.name.isNotEmpty()) {
-            PrefManager.setUserProfileForCache(user.profile)
-        }
-        if (user.profile.photo.secure_url.isNotEmpty() && user.profile.id_card.secure_url.isNotEmpty()) {
+    private fun handleUserDetails(user: UserImpDetails) {
+//        PrefManager.setUserProfile(user.profile)
+//        if (user.profile.name.isNotEmpty()) {
+////            PrefManager.setUserProfileForCache(user.profile)
+//        }
+        if (user.photo.isNotEmpty()) {
             PrefManager.setShowProfileCompletionAlert(false)
         } else {
             PrefManager.setShowProfileCompletionAlert(true)

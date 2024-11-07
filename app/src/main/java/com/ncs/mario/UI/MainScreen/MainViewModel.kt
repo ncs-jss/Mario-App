@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.ncs.mario.Domain.Api.EventsApi
 import com.ncs.mario.Domain.Api.ProfileApiService
@@ -15,6 +16,7 @@ import com.ncs.mario.Domain.Models.Events.ScanTicketBody
 import com.ncs.mario.Domain.Models.Profile
 import com.ncs.mario.Domain.Models.ServerResponse
 import com.ncs.mario.Domain.Models.ServerResult
+import com.ncs.mario.Domain.Models.SetFCMTokenBody
 import com.ncs.mario.Domain.Models.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -52,13 +54,81 @@ class MainViewModel @Inject constructor(
 
 
     init {
-        fetchUserProfile()
+        fetchUserDetails()
         fetchCriticalInfo()
+        getFCMToken()
+    }
+
+    fun setFCMToken(newFCMToken:String) {
+        _progressState.value=true
+        viewModelScope.launch {
+            try {
+                val response = profileApiService.setFCMToken(payload = SetFCMTokenBody(newFCMToken))
+                if (response.isSuccessful) {
+                    Log.d("signupResult", "FCM Token Set: ${response.body()}")
+                    _progressState.value=false
+                } else {
+                    val errorResponse = response.errorBody()?.string()
+                    val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
+                    Log.d("signupResult", "FCM Token Set Failed: ${loginResponse.message}")
+                    _progressState.value=false
+                }
+            } catch (e: SocketTimeoutException) {
+                _errorMessage.value = "Network timeout. Please try again."
+                _progressState.value = false
+            } catch (e: IOException) {
+                _errorMessage.value = "Network error. Please check your connection."
+                _progressState.value = false
+            } catch (e: Exception) {
+                _errorMessage.value = "Something went wrong. Please try again."
+                _progressState.value = false
+            }
+        }
     }
 
 
-    fun fetchUserProfile(){
+    private fun getFCMToken() {
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                return@addOnCompleteListener
+            }
+            val actualFCM = task.result
+            PrefManager.setFCMToken(actualFCM)
+            setFCMToken(actualFCM)
+        }
+
+    }
+
+    fun fetchUserDetails() {
         _cachedUserProfile.value=PrefManager.getUserProfile()
+        _progressState.value=true
+        viewModelScope.launch {
+            try {
+                val response = profileApiService.getMyDetails()
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        val user = Gson().fromJson(it.toString(), User::class.java)
+                        _cachedUserProfile.value=user.profile
+                        PrefManager.setUserProfile(user.profile)
+                        PrefManager.setUserProfileForCache(user.profile)
+                        _progressState.value = false
+                    }
+                } else {
+                    _errorMessage.value = "Something went wrong. Please try again."
+                    _progressState.value = false
+                }
+            } catch (e: SocketTimeoutException) {
+                _errorMessage.value = "Network timeout. Please try again."
+                _progressState.value = false
+            } catch (e: IOException) {
+                _errorMessage.value = "Network error. Please check your connection."
+                _progressState.value = false
+            } catch (e: Exception) {
+                _errorMessage.value = "Something went wrong. Please try again."
+                _progressState.value = false
+            }
+        }
     }
 
 

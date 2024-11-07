@@ -10,6 +10,7 @@ import com.google.gson.Gson
 import com.ncs.mario.Domain.Api.ProfileApiService
 import com.ncs.mario.Domain.HelperClasses.PrefManager
 import com.ncs.mario.Domain.Models.Profile
+import com.ncs.mario.Domain.Models.ProfileData.UserImpDetails
 import com.ncs.mario.Domain.Models.ServerResponse
 import com.ncs.mario.Domain.Models.SetFCMTokenBody
 import com.ncs.mario.Domain.Models.User
@@ -34,15 +35,12 @@ class StartScreenViewModel @Inject constructor(
     private val _userDetailsResult = MutableLiveData<Boolean>()
     val userDetailsResult: LiveData<Boolean> get() = _userDetailsResult
 
-    private val _userDetails = MutableLiveData<User>(null)
-    val userDetails: LiveData<User> get() = _userDetails
+    private val _userImpDetails = MutableLiveData<UserImpDetails>(null)
+    val userImpDetails: LiveData<UserImpDetails> get() = _userImpDetails
 
     private val _kycStatus = MutableLiveData<String>(null)
     val kycStatus: LiveData<String> get() = _kycStatus
 
-    init {
-        getFCMToken()
-    }
 
     suspend fun fetchUserKYCHeaderToken(): String? {
         return try {
@@ -68,14 +66,13 @@ class StartScreenViewModel @Inject constructor(
         }
     }
 
-    suspend fun fetchUserDetails(): User? {
+    suspend fun getUserImpDetails(): UserImpDetails? {
         return try {
-            val response = profileApiService.getMyDetails()
+            val response = profileApiService.getImportantDetails()
             if (response.isSuccessful) {
                 response.body()?.let {
-                    val user = Gson().fromJson(it.toString(), User::class.java)
-                    _userDetails.value = user
-                    PrefManager.setUserProfile(user.profile)
+                    val user = Gson().fromJson(it.toString(), UserImpDetails::class.java)
+                    _userImpDetails.value = user!!
                     _userDetailsResult.value = true
                     user
                 }
@@ -98,41 +95,11 @@ class StartScreenViewModel @Inject constructor(
 
     private fun handleError(errorResponse: String?) {
         val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
-        _userDetails.value = User(message = "", profile = Profile(), success = false)
+        _userImpDetails.value = UserImpDetails(message = "", photo = "", role = -1,success = false)
         _userDetailsResult.value = false
         _errorMessage.value = loginResponse.message
     }
 
-    fun setFCMToken(newFCMToken:String) {
-        viewModelScope.launch {
-            try {
-                val response = profileApiService.setFCMToken(payload = SetFCMTokenBody(newFCMToken))
-                if (response.isSuccessful) {
-                    Log.d("signupResult", "FCM Token Set: ${response.body()}")
-                } else {
-                    val errorResponse = response.errorBody()?.string()
-                    val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
-                    Log.d("signupResult", "FCM Token Set Failed: ${loginResponse.message}")
-                }
-            } catch (e: Exception) {
-                _userDetailsResult.value = false
-            } finally {
-            }
-        }
-    }
 
-
-    private fun getFCMToken() {
-
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                return@addOnCompleteListener
-            }
-            val actualFCM = task.result
-            PrefManager.setFCMToken(actualFCM)
-            setFCMToken(actualFCM)
-        }
-
-    }
 
 }

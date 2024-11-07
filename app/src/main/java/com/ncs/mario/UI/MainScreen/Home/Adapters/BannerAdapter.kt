@@ -6,14 +6,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ncs.mario.Domain.Models.Banner
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.load
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.mario.R
 import com.ncs.mario.databinding.ItemBannerBinding
 
-class BannerAdapter(private val banners: List<Banner>) : RecyclerView.Adapter<BannerAdapter.BannerViewHolder>() {
+class BannerAdapter(private val banners: List<Banner>, private val callback:BannerAdapter.Callback) : RecyclerView.Adapter<BannerAdapter.BannerViewHolder>() {
 
     inner class BannerViewHolder(private val binding: ItemBannerBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(bannerImg: Banner) {
             binding.bannerImage.load(bannerImg.image,binding.root.context.getDrawable(R.drawable.placeholder_image)!!)
+            binding.root.setOnClickThrottleBounceListener{
+                callback.onBannerClick(bannerImg)
+            }
         }
     }
 
@@ -29,5 +33,9 @@ class BannerAdapter(private val banners: List<Banner>) : RecyclerView.Adapter<Ba
 
     override fun getItemCount(): Int {
         return Int.MAX_VALUE
+    }
+
+    interface Callback{
+        fun onBannerClick(banner: Banner)
     }
 }
