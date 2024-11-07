@@ -4,6 +4,7 @@ import android.app.Application
 import com.google.firebase.FirebaseApp
 import com.ncs.mario.Domain.HelperClasses.PrefManager
 import dagger.hilt.android.HiltAndroidApp
+import timber.log.Timber
 
 @HiltAndroidApp
 class MarioApp : Application() {
@@ -11,5 +12,9 @@ class MarioApp : Application() {
         super.onCreate()
         FirebaseApp.initializeApp(this)
         PrefManager.initialize(this@MarioApp)
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
     }
 }

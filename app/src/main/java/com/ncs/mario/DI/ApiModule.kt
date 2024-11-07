@@ -10,7 +10,6 @@ import com.ncs.mario.Domain.Api.PostApiService
 import com.ncs.mario.Domain.Api.ProfileApiService
 import com.ncs.mario.Domain.Api.QRAPI
 import com.ncs.mario.Domain.Api.ReportApiService
-import com.ncs.mario.Domain.Models.Merch
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,9 +31,14 @@ object ApiModule {
     @Provides
     @Singleton
     fun provideOkHTTPClient(): OkHttpClient {
-        val interceptor = HttpLoggingInterceptor()
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-        return OkHttpClient.Builder().addInterceptor(interceptor)
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor.Level.BODY
+            } else {
+                HttpLoggingInterceptor.Level.NONE
+            }
+        }
+        return OkHttpClient.Builder().addInterceptor(loggingInterceptor)
             .addInterceptor(Interceptor { chain: Interceptor.Chain ->
                 val request: Request = chain.request()
                 chain.proceed(request)

@@ -2,7 +2,6 @@ package com.ncs.mario.UI.SurveyScreen
 
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -76,27 +75,27 @@ class SurveyActivity : AppCompatActivity() {
                 binding.afterSocialDetails.setBackgroundColor(getColor(R.color.edit_text_hint))
             }
             SurveyViewModel.SurveyStep.TECHNICAL_DETAILS -> {
-                binding.personalDetails.circle.setColorFilter(getColor(R.color.green))
-                binding.afterPersonalDetails.setBackgroundColor(getColor(R.color.green))
+                binding.personalDetails.circle.setColorFilter(getColor(R.color.appblue))
+                binding.afterPersonalDetails.setBackgroundColor(getColor(R.color.appblue))
                 binding.technicalDetails.circle.setColorFilter(getColor(R.color.yellow))
                 binding.afterTechnicalDetails.setBackgroundColor(getColor(R.color.edit_text_hint))
                 binding.afterSocialDetails.setBackgroundColor(getColor(R.color.edit_text_hint))
             }
             SurveyViewModel.SurveyStep.SOCIAL_DETAILS -> {
-                binding.personalDetails.circle.setColorFilter(getColor(R.color.green))
-                binding.afterPersonalDetails.setBackgroundColor(getColor(R.color.green))
-                binding.technicalDetails.circle.setColorFilter(getColor(R.color.green))
-                binding.afterTechnicalDetails.setBackgroundColor(getColor(R.color.green))
+                binding.personalDetails.circle.setColorFilter(getColor(R.color.appblue))
+                binding.afterPersonalDetails.setBackgroundColor(getColor(R.color.appblue))
+                binding.technicalDetails.circle.setColorFilter(getColor(R.color.appblue))
+                binding.afterTechnicalDetails.setBackgroundColor(getColor(R.color.appblue))
                 binding.socialDetails.circle.setColorFilter(getColor(R.color.yellow))
                 binding.afterSocialDetails.setBackgroundColor(getColor(R.color.edit_text_hint))
             }
             SurveyViewModel.SurveyStep.KYC_DETAILS -> {
-                binding.personalDetails.circle.setColorFilter(getColor(R.color.green))
-                binding.afterPersonalDetails.setBackgroundColor(getColor(R.color.green))
-                binding.technicalDetails.circle.setColorFilter(getColor(R.color.green))
-                binding.afterTechnicalDetails.setBackgroundColor(getColor(R.color.green))
-                binding.socialDetails.circle.setColorFilter(getColor(R.color.green))
-                binding.afterSocialDetails.setBackgroundColor(getColor(R.color.green))
+                binding.personalDetails.circle.setColorFilter(getColor(R.color.appblue))
+                binding.afterPersonalDetails.setBackgroundColor(getColor(R.color.appblue))
+                binding.technicalDetails.circle.setColorFilter(getColor(R.color.appblue))
+                binding.afterTechnicalDetails.setBackgroundColor(getColor(R.color.appblue))
+                binding.socialDetails.circle.setColorFilter(getColor(R.color.appblue))
+                binding.afterSocialDetails.setBackgroundColor(getColor(R.color.appblue))
                 binding.kycDetails.circle.setColorFilter(getColor(R.color.yellow))
             }
         }

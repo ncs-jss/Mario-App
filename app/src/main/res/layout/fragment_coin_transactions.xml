@@ -42,12 +42,6 @@
                     <include layout="@layout/transaction_item_shimmer_layout"/>
                     <include layout="@layout/transaction_item_shimmer_layout"/>
                     <include layout="@layout/transaction_item_shimmer_layout"/>
-                    <include layout="@layout/transaction_item_shimmer_layout"/>
-                    <include layout="@layout/transaction_item_shimmer_layout"/>
-                    <include layout="@layout/transaction_item_shimmer_layout"/>
-                    <include layout="@layout/transaction_item_shimmer_layout"/>
-                    <include layout="@layout/transaction_item_shimmer_layout"/>
-                    <include layout="@layout/transaction_item_shimmer_layout"/>
 
                 </LinearLayout>
 
@@ -60,6 +54,9 @@
             android:layout_marginTop="20dp"
             android:layout_height="match_parent"
             android:visibility="gone"
+            android:nestedScrollingEnabled="false"
+            android:clipToPadding="false"
+            android:paddingBottom="20dp"
             android:id="@+id/recyclerView"/>
 
         </LinearLayout>

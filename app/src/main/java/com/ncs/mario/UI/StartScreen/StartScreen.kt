@@ -1,36 +1,43 @@
 package com.ncs.mario.UI.StartScreen
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.util.Log
-import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
-import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
+import com.google.firebase.messaging.FirebaseMessaging
 import com.ncs.mario.BuildConfig
 import com.ncs.mario.Domain.HelperClasses.PrefManager
 import com.ncs.mario.Domain.HelperClasses.RemoteConfigHelper
+import com.ncs.mario.Domain.Models.ProfileData.UserImpDetails
 import com.ncs.mario.Domain.Models.User
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.animFadein
+import com.ncs.mario.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.toast
 import com.ncs.mario.Domain.Utility.GlobalUtils
 import com.ncs.mario.R
@@ -57,7 +64,7 @@ class StartScreen : AppCompatActivity() {
     private val viewModel: StartScreenViewModel by viewModels()
 
     private val updateType = AppUpdateType.IMMEDIATE
-    private val APP_UPDATE_REQUEST_CODE=101
+    private val APP_UPDATE_REQUEST_CODE = 101
     private lateinit var appUpdateManager: AppUpdateManager
     private lateinit var remoteConfigHelper: RemoteConfigHelper
 
@@ -66,11 +73,23 @@ class StartScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         remoteConfigHelper = RemoteConfigHelper(this)
-        appUpdateManager= AppUpdateManagerFactory.create(applicationContext)
+        appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
         handleDynamicLink(intent)
         startAnim()
 
-        if (updateType==AppUpdateType.IMMEDIATE){
+        FirebaseMessaging.getInstance().subscribeToTopic("mario-general")
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("FCM", "Subscribed to topic successfully")
+                    setState("All ringers working fine..")
+                } else {
+                    Log.d("FCM", "Failed to subscribe to topic")
+                    setState("Bip bop.. some errors , but carrying on..")
+
+                }
+            }
+
+        if (updateType == AppUpdateType.IMMEDIATE) {
             appUpdateManager.registerListener(installStateUpdatedListener)
             checkforAppUpdates()
             initializeProcesses()
@@ -78,14 +97,27 @@ class StartScreen : AppCompatActivity() {
 
     }
 
-    private fun  checkforAppUpdates(){
-        appUpdateManager.appUpdateInfo.addOnSuccessListener {info->
-            val isUpdateAvailable=info.updateAvailability()== UpdateAvailability.UPDATE_AVAILABLE
-            val isUpdateAllowed=when(updateType){
-                AppUpdateType.IMMEDIATE-> info.isImmediateUpdateAllowed
-                else-> false
+    private fun setState(text: String) {
+        binding.status.text = text
+        binding.status.animFadein(this@StartScreen)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        setState("Starting up the engines...")
+    }
+
+    private fun checkforAppUpdates() {
+
+        setState("Checking for updates...")
+
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
+            val isUpdateAvailable = info.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+            val isUpdateAllowed = when (updateType) {
+                AppUpdateType.IMMEDIATE -> info.isImmediateUpdateAllowed
+                else -> false
             }
-            if (isUpdateAvailable && isUpdateAllowed){
+            if (isUpdateAvailable && isUpdateAllowed) {
                 appUpdateManager.startUpdateFlowForResult(
                     info,
                     updateType,
@@ -96,9 +128,9 @@ class StartScreen : AppCompatActivity() {
         }
     }
 
-    private fun initializeProcesses(){
+    private fun initializeProcesses() {
         remoteConfigHelper.fetchRemoteConfig {
-            if (BuildConfig.VERSION_CODE>=it.toInt()){
+            if (BuildConfig.VERSION_CODE >= it.toInt()) {
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     if (ContextCompat.checkSelfPermission(
@@ -123,12 +155,10 @@ class StartScreen : AppCompatActivity() {
                     } else {
                         requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
                     }
-                }
-                else{
+                } else {
                     runNormally(true)
                 }
-            }
-            else{
+            } else {
                 util.twoBtnDialogNonCancellable("Update Available",
                     "Hooray! A new version on NCS Mario has been released on playstore, please update your app to continue using forward",
                     positiveBtnText = "Update", positive = {
@@ -140,8 +170,8 @@ class StartScreen : AppCompatActivity() {
         }
     }
 
-    private val installStateUpdatedListener = InstallStateUpdatedListener{state->
-        if (state.installStatus() == InstallStatus.DOWNLOADED){
+    private val installStateUpdatedListener = InstallStateUpdatedListener { state ->
+        if (state.installStatus() == InstallStatus.DOWNLOADED) {
             toast("Download Successful")
             lifecycleScope.launch {
                 delay(5.seconds)
@@ -152,32 +182,38 @@ class StartScreen : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode==APP_UPDATE_REQUEST_CODE){
-            if (resultCode!= RESULT_OK){
+        if (requestCode == APP_UPDATE_REQUEST_CODE) {
+            if (resultCode != RESULT_OK) {
                 finish()
                 toast("Something went wrong while updating the app")
+                setState("Bip bop.. something went wrong..")
             }
         }
     }
 
+    val slideOutAnim by lazy { AnimationUtils.loadAnimation(this, R.anim.slide_out_right) }
+    val fadeInAnim by lazy { AnimationUtils.loadAnimation(this, R.anim.fadein) }
+
     private fun startAnim() {
-        val slideOutAnim = AnimationUtils.loadAnimation(this, R.anim.slide_out_right)
-        val fadeInAnim = AnimationUtils.loadAnimation(this, R.anim.fadein)
+
         slideOutAnim.duration = 2000
         fadeInAnim.duration = 2500
         binding.blackCircle.startAnimation(slideOutAnim)
         binding.imageView2.startAnimation(fadeInAnim)
+
         slideOutAnim.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation) {}
+            override fun onAnimationStart(animation: Animation) {
+            }
 
             override fun onAnimationEnd(animation: Animation) {
-
-                binding.blackCircle.visibility = View.GONE
+                binding.blackCircle.gone()
             }
 
             override fun onAnimationRepeat(animation: Animation) {}
         })
-        fadeInAnim.setAnimationListener(object :Animation.AnimationListener{
+
+
+        fadeInAnim.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation) {}
 
             override fun onAnimationEnd(animation: Animation) {
@@ -186,13 +222,15 @@ class StartScreen : AppCompatActivity() {
 
             override fun onAnimationRepeat(animation: Animation) {}
         })
+
+
     }
 
-    private fun runNormally(isPermissionGranted:Boolean){
-        if (PrefManager.getToken()==""){
-            runCircleAnimation(AuthActivity::class.java)
-        }
-        else{
+    private fun runNormally(isPermissionGranted: Boolean) {
+        if (PrefManager.getToken() == "") {
+            startActivity(Intent(this, AuthActivity::class.java))
+            finish()
+        } else {
             bindObservers()
             observeViewModel()
         }
@@ -244,91 +282,95 @@ class StartScreen : AppCompatActivity() {
         Log.d("shareLinkTest", pathSegments.toString())
     }
 
-    private fun bindObservers(){
+    private fun bindObservers() {
         viewModel.errorMessage.observe(this) {
             if (!it.isNullOrEmpty()) {
-                if (it=="User not found!"){
+                if (it == "User not found!") {
                     PrefManager.setShowProfileCompletionAlert(true)
-                   runCircleAnimation(SurveyActivity::class.java)
-                }
-                else {
-                    util.showActionSnackbar(binding.root, it, 200000, "Retry") {
+                    startActivity(Intent(this, SurveyActivity::class.java))
+                    finish()
+                } else {
+                    util.showActionSnackbar(binding.root, it, Snackbar.LENGTH_INDEFINITE, "Retry") {
                         observeViewModel()
                     }
+                    binding.progress.gone()
+                    setState("Yikes! Couldn’t load – let’s retry.")
                 }
-
             }
         }
     }
+
+
+    fun copyToClipboard(context: Context, label: String, text: String) {
+        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText(label, text)
+        clipboard.setPrimaryClip(clip)
+        Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show()
+    }
+
 
     private fun observeViewModel() {
 
         lifecycleScope.launch {
             try {
-                val userDetailsDeferred = async { viewModel.fetchUserDetails() }
+                binding.progress.show()
+                setState("Compiling your user saga...")
+                val userDetailsDeferred = async { viewModel.getUserImpDetails() }
                 val kycTokenDeferred = async { viewModel.fetchUserKYCHeaderToken() }
 
                 val userDetails = userDetailsDeferred.await()
                 val kycStatus = kycTokenDeferred.await()
 
                 handleUserDetails(userDetails!!)
-                handleKYCStatus(kycStatus, userDetails.profile.role)
-            } catch (e: Exception) {
+                handleKYCStatus(kycStatus, userDetails.role)
 
+            } catch (e: Exception) {
+                binding.progress.gone()
             }
         }
     }
 
-    private fun handleUserDetails(user: User) {
-        PrefManager.setUserProfile(user.profile)
-        if (user.profile.name.isNotEmpty()) {
-            PrefManager.setUserProfileForCache(user.profile)
-        }
-        if (user.profile.photo.secure_url.isNotEmpty() && user.profile.id_card.secure_url.isNotEmpty()) {
+    private fun handleUserDetails(user: UserImpDetails) {
+//        PrefManager.setUserProfile(user.profile)
+//        if (user.profile.name.isNotEmpty()) {
+////            PrefManager.setUserProfileForCache(user.profile)
+//        }
+        if (user.photo.isNotEmpty()) {
             PrefManager.setShowProfileCompletionAlert(false)
-        }
-        else {
+        } else {
             PrefManager.setShowProfileCompletionAlert(true)
-            runCircleAnimation(SurveyActivity::class.java)
+            startActivity(Intent(this, SurveyActivity::class.java))
+            finish()
         }
     }
 
-    private fun handleKYCStatus(kycStatus: String?, role:Int) {
+    private fun handleKYCStatus(kycStatus: String?, role: Int) {
         if (!kycStatus.isNullOrEmpty()) {
             when (kycStatus) {
                 "ACCEPT" -> {
-                    if (role==1){
-                        runCircleAnimation(AdminMainActivity::class.java)
-                    }
-                    else {
-                        runCircleAnimation(MainActivity::class.java)
+                    if (role == 1) {
+                        startActivity(Intent(this, AdminMainActivity::class.java))
+                        finish()
+                    } else {
+                        slideOutAnim.cancel()
+                        fadeInAnim.cancel()
+                        binding.progress.gone()
+                        setState("Starting Mario...")
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            startActivity(Intent(this@StartScreen, MainActivity::class.java))
+                            finish()
+                        }, 1000)
+
                     }
                 }
+
                 "PENDING", "REJECT" -> {
-                    runCircleAnimation(WaitActivity::class.java)
+                    startActivity(Intent(this@StartScreen, WaitActivity::class.java))
+                    finish()
                 }
 
             }
         }
-    }
-    private fun runCircleAnimation(targetActivity: Class<*>) {
-        val animation = AnimationUtils.loadAnimation(this, R.anim.circle_flash)
-        binding.circleView.startAnimation(animation)
-        Handler().postDelayed({
-        },200)
-        animation.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation) {
-                binding.circleView.visibility = View.VISIBLE
-            }
-
-            override fun onAnimationEnd(animation: Animation) {
-                startActivity(Intent(this@StartScreen, targetActivity))
-                finish()
-            }
-
-            override fun onAnimationRepeat(animation: Animation) {}
-        })
-
     }
 
 }
