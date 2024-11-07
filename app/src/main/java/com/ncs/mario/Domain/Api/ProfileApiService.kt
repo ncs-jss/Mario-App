@@ -29,6 +29,13 @@ interface ProfileApiService {
                              @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
     ): Response<JsonObject>
 
+
+    @Headers("Content-Type: application/json")
+    @GET("get-imp-details")
+    suspend fun getImportantDetails(@Header("Authorization") authToken: String=PrefManager.getToken()!!,
+                             @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
+    ): Response<JsonObject>
+
     @Headers("Content-Type: application/json")
     @GET("is-approved")
     suspend fun getKYCHeader(@Header("Authorization") authToken: String=PrefManager.getToken()!!,

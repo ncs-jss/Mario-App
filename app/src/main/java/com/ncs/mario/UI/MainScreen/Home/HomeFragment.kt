@@ -65,7 +65,7 @@ import java.util.Date
 import java.util.Locale
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, EventActionBottomSheet.Callback {
+class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, EventActionBottomSheet.Callback, BannerAdapter.Callback {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -296,7 +296,7 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
 
         binding.bannerRecyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = BannerAdapter(list)
+            adapter = BannerAdapter(list, this@HomeFragment)
             scrollToPosition(currentPosition)
             addOnScrollListener(autoScrollListener)
         }
@@ -545,5 +545,11 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
         val formattedTime = timeFormat.format(date)
         return Pair(formattedDate, formattedTime)
     }
+
+    override fun onBannerClick(banner: Banner) {
+        openUrl("https://www.instagram.com/hackncs/")
+    }
+
+
 
 }

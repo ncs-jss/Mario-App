@@ -8,9 +8,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.ncs.mario.Domain.Api.AuthApiService
+import com.ncs.mario.Domain.Api.ProfileApiService
 import com.ncs.mario.Domain.HelperClasses.PrefManager
 import com.ncs.mario.Domain.Models.LoginBody
 import com.ncs.mario.Domain.Models.ServerResponse
+import com.ncs.mario.Domain.Models.User
 import com.ncs.mario.Domain.Models.VerifyOTP
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -19,7 +21,7 @@ import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(val authApiService: AuthApiService) : ViewModel() {
+class LoginViewModel @Inject constructor(val authApiService: AuthApiService, val profileApiService: ProfileApiService) : ViewModel() {
 
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> get() = _errorMessage
@@ -57,11 +59,10 @@ class LoginViewModel @Inject constructor(val authApiService: AuthApiService) : V
                 val response = authApiService.login(LoginBody(email = email, password = password))
                 if (response.isSuccessful) {
                     Log.d("signupResult", "Login Successful: ${response.body()}")
-                    _loginResult.value = true
-                    _errorMessage.value = "Login Successful"
                     response.body()?.get("user_id")?.let { PrefManager.setUserID(it.asString) }
                     PrefManager.setUserSignUpEmail(email)
                     PrefManager.setToken(response.body()!!.get("token").asString)
+                    fetchUserDetails()
                 } else {
                     val errorResponse = response.errorBody()?.string()
                     val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
@@ -83,6 +84,44 @@ class LoginViewModel @Inject constructor(val authApiService: AuthApiService) : V
                 _loginResult.value = false
             } finally {
                 _progressState.postValue(false)
+            }
+        }
+    }
+
+    fun fetchUserDetails() {
+        _progressState.value=true
+        viewModelScope.launch {
+            try {
+                val response = profileApiService.getMyDetails()
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        _loginResult.value = true
+                        _errorMessage.value = "Login Successful"
+                        val user = Gson().fromJson(it.toString(), User::class.java)
+                        PrefManager.setUserProfile(user.profile)
+                        PrefManager.setUserProfileForCache(user.profile)
+                        _progressState.value = false
+                    }
+                } else {
+                    val errorResponse = response.errorBody()?.string()
+                    val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
+                    _errorMessage.value = loginResponse.message
+                    Log.d("signupResult", "Login Failed: ${loginResponse.message}")
+                    _loginResult.value = false
+                    _progressState.value = false
+                }
+            } catch (e: SocketTimeoutException) {
+                _errorMessage.value = "Network timeout. Please try again."
+                _progressState.value = false
+                _loginResult.value = false
+            } catch (e: IOException) {
+                _errorMessage.value = "Network error. Please check your connection."
+                _progressState.value = false
+                _loginResult.value = false
+            } catch (e: Exception) {
+                _errorMessage.value = "Something went wrong. Please try again."
+                _progressState.value = false
+                _loginResult.value = false
             }
         }
     }

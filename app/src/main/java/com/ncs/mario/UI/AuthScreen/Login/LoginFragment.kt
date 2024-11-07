@@ -93,7 +93,14 @@ class LoginFragment : Fragment() {
         })
 
         viewModel.errorMessage.observe(viewLifecycleOwner, Observer { message ->
-            util.showSnackbar(binding.root,message!!,2000)
+            if (message=="User not found!"){
+                PrefManager.setShowProfileCompletionAlert(true)
+                startActivity(Intent(requireContext(), SurveyActivity::class.java))
+                requireActivity().finish()
+            }
+            else{
+                util.showSnackbar(binding.root,message!!,2000)
+            }
         })
     }
 
