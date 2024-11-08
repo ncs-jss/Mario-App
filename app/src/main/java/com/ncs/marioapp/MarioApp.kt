@@ -1,0 +1,20 @@
+package com.ncs.marioapp
+
+import android.app.Application
+import com.google.firebase.FirebaseApp
+import com.ncs.marioapp.Domain.HelperClasses.PrefManager
+import dagger.hilt.android.HiltAndroidApp
+import timber.log.Timber
+
+@HiltAndroidApp
+class MarioApp : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        FirebaseApp.initializeApp(this)
+        PrefManager.initialize(this@MarioApp)
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
+    }
+}
