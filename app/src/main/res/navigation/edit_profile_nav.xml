@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/fragment_personal_details_ep"
         tools:layout="@layout/fragment_personal_details"
-        android:name="com.ncs.mario.UI.SettingsScreen.EditProfile.PersonalDetails.PersonalDetailsFragmentEditProfile"
+        android:name="com.ncs.marioapp.UI.SettingsScreen.EditProfile.PersonalDetails.PersonalDetailsFragmentEditProfile"
         android:label="fragment_personal_details_ep" >
 
 
@@ -23,7 +23,7 @@
     <fragment
         android:id="@+id/fragment_technical_ep"
         tools:layout="@layout/fragment_technical"
-        android:name="com.ncs.mario.UI.SettingsScreen.EditProfile.TechnicalDetails.TechnicalFragmentEditProfile"
+        android:name="com.ncs.marioapp.UI.SettingsScreen.EditProfile.TechnicalDetails.TechnicalFragmentEditProfile"
         android:label="fragment_technical_ep" >
 
         <action
@@ -43,7 +43,7 @@
     <fragment
         android:id="@+id/fragment_social_links_ep"
         tools:layout="@layout/fragment_social_links"
-        android:name="com.ncs.mario.UI.SettingsScreen.EditProfile.SocialDetails.SocialLinksFragmentEditProfile"
+        android:name="com.ncs.marioapp.UI.SettingsScreen.EditProfile.SocialDetails.SocialLinksFragmentEditProfile"
         android:label="fragment_social_links_ep" >
 
 

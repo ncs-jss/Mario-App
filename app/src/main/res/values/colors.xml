@@ -40,7 +40,7 @@
 
     <color name="secondary_bg_lighter">#242424</color>
     <color name="item_bg_glow">#1D2930</color>
-    <color name="better_white">#E3E1E1</color>
+    <color name="better_white">#D7D7D7</color>
     <color name="card_bg">#3F4041</color>
     <color name="starts_in">#DCFFF7</color>
     <color name="prioritymax">#F30056</color>

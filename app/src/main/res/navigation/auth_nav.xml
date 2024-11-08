@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/fragment_login"
         tools:layout="@layout/fragment_login"
-        android:name="com.ncs.mario.UI.AuthScreen.Login.LoginFragment"
+        android:name="com.ncs.marioapp.UI.AuthScreen.Login.LoginFragment"
         android:label="fragment_login" >
         <action
             android:id="@+id/action_fragment_login_to_fragment_sign_up"
@@ -27,7 +27,7 @@
     <fragment
         android:id="@+id/fragment_forgot_password"
         tools:layout="@layout/fragment_forgot_password"
-        android:name="com.ncs.mario.UI.AuthScreen.ForgotPassword.ForgotPasswordFragment"
+        android:name="com.ncs.marioapp.UI.AuthScreen.ForgotPassword.ForgotPasswordFragment"
         android:label="fragment_forgot_password" >
 
         <action
@@ -47,7 +47,7 @@
     <fragment
         android:id="@+id/fragment_o_t_p"
         tools:layout="@layout/fragment_o_t_p"
-        android:name="com.ncs.mario.UI.AuthScreen.ForgotPassword.OTPFragment"
+        android:name="com.ncs.marioapp.UI.AuthScreen.ForgotPassword.OTPFragment"
         android:label="fragment_o_t_p" >
 
         <action
@@ -61,7 +61,7 @@
     <fragment
         android:id="@+id/fragment_set_password"
         tools:layout="@layout/fragment_set_password"
-        android:name="com.ncs.mario.UI.AuthScreen.ForgotPassword.SetPasswordFragment"
+        android:name="com.ncs.marioapp.UI.AuthScreen.ForgotPassword.SetPasswordFragment"
         android:label="fragment_set_password" >
 
         <action
@@ -75,7 +75,7 @@
     <fragment
         android:id="@+id/fragment_sign_up"
         tools:layout="@layout/fragment_sign_up"
-        android:name="com.ncs.mario.UI.AuthScreen.SignUp.SignUpFragment"
+        android:name="com.ncs.marioapp.UI.AuthScreen.SignUp.SignUpFragment"
         android:label="fragment_sign_upsign" >
         <action
             android:id="@+id/action_fragment_sign_up_to_fragment_login"
@@ -92,7 +92,7 @@
     <fragment
         android:id="@+id/fragment_enter_o_t_p"
         tools:layout="@layout/fragment_enter_o_t_p"
-        android:name="com.ncs.mario.UI.AuthScreen.EnterOTP.EnterOTPFragment"
+        android:name="com.ncs.marioapp.UI.AuthScreen.EnterOTP.EnterOTPFragment"
         android:label="fragment_enter_o_t_p" >
 
         <action
@@ -106,7 +106,7 @@
     <fragment
         android:id="@+id/fragment_o_t_p_verified"
         tools:layout="@layout/fragment_o_t_p_verified"
-        android:name="com.ncs.mario.UI.AuthScreen.OTPVerified.OTPVerifiedFragment"
+        android:name="com.ncs.marioapp.UI.AuthScreen.OTPVerified.OTPVerifiedFragment"
         android:label="fragment_o_t_p_verified" >
 
     </fragment>

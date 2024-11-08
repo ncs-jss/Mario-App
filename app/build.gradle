@@ -28,15 +28,15 @@ configurations {
 
 
 android {
-    namespace 'com.ncs.mario'
+    namespace 'com.ncs.marioapp'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.ncs.mario"
+        applicationId "com.ncs.marioapp"
         minSdk 26
         targetSdk 34
-        versionCode 1
-        versionName "1.0"
+        versionCode 5
+        versionName "1.4"
         multiDexEnabled true
 
 
