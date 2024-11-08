@@ -43,8 +43,7 @@
         android:fontFamily="@font/sfregular"
         android:layout_height="wrap_content"
         android:text="Which programming language is your favourite?"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:textSize="18sp"
         android:textColor="@color/better_white"
       />
 

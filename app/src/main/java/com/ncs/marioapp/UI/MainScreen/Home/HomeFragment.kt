@@ -305,6 +305,7 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
         binding.EventsRecyclerView.visible()
         val recyclerView = binding.EventsRecyclerView
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.setItemViewCacheSize(events.size)
         recyclerView.layoutManager = layoutManager
         eventsAdapter= EventsAdapter(events, this)
         recyclerView.adapter = eventsAdapter
