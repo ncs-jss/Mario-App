@@ -14,10 +14,10 @@ class RetrofitQrRepository @Inject constructor(private val qrAPI: QRAPI) : QrRep
             if (response.isSuccessful) {
                 serverResult(ServerResult.Success(response.body()!!))
             } else {
-                serverResult(ServerResult.Failure(Exception(response.message())))
+                serverResult(ServerResult.Failure(response.message()))
             }
         } catch (e: Exception) {
-            serverResult(ServerResult.Failure(e))
+            serverResult(ServerResult.Failure(e.message.toString()))
         }
     }
 
@@ -31,10 +31,10 @@ class RetrofitQrRepository @Inject constructor(private val qrAPI: QRAPI) : QrRep
             if (response.isSuccessful) {
                 serverResult(ServerResult.Success(response.body()!!))
             } else {
-                serverResult(ServerResult.Failure(Exception(response.message())))
+                serverResult(ServerResult.Failure(response.message()))
             }
         } catch (e: Exception) {
-            serverResult(ServerResult.Failure(e))
+            serverResult(ServerResult.Failure(e.message.toString()))
         }
     }
 }

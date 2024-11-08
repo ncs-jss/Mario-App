@@ -16,11 +16,11 @@ class RetrofitProfileRepository @Inject constructor(private val profileApi: Prof
                 ServerResult.Success(response.body()!!)
             }
             else{
-                ServerResult.Failure(Exception(response.message()))
+                ServerResult.Failure(response.message())
             }
         }
         catch (e:Exception){
-            ServerResult.Failure(e)
+            ServerResult.Failure(e.message.toString())
         }
     }
 }

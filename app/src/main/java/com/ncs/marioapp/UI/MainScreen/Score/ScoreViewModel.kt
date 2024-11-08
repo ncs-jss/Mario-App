@@ -53,7 +53,7 @@ class ScoreViewModel @Inject constructor(
                 when (it) {
                     is ServerResult.Failure -> {
                         _progressState.value = false
-                        _getEventsResponse.value = ServerResult.Failure(it.exception)
+                        _getEventsResponse.value = ServerResult.Failure(it.message)
                     }
                     ServerResult.Progress -> {
                         _getEventsResponse.value = ServerResult.Progress

@@ -4,16 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ncs.marioapp.Domain.Models.Banner
-import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.load
+import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.loadImage
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
-import com.ncs.marioapp.R
 import com.ncs.marioapp.databinding.ItemBannerBinding
 
 class BannerAdapter(private val banners: List<Banner>, private val callback:BannerAdapter.Callback) : RecyclerView.Adapter<BannerAdapter.BannerViewHolder>() {
 
     inner class BannerViewHolder(private val binding: ItemBannerBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(bannerImg: Banner) {
-            binding.bannerImage.load(bannerImg.image,binding.root.context.getDrawable(R.drawable.placeholder_image)!!)
+            binding.bannerImage.loadImage(bannerImg.image)
             binding.root.setOnClickThrottleBounceListener{
                 callback.onBannerClick(bannerImg)
             }

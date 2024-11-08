@@ -25,6 +25,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.ncs.marioapp.Domain.Models.Banner
 import com.ncs.marioapp.Domain.Models.Events.AnswerPollBody
 import com.ncs.marioapp.Domain.Models.Events.Event
@@ -50,6 +51,10 @@ import com.ncs.marioapp.UI.MainScreen.MainViewModel
 import com.ncs.marioapp.databinding.FragmentHomeBinding
 import com.ncs.marioapp.databinding.TicketDialogBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.net.HttpURLConnection
@@ -94,7 +99,7 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
             val currentTime = System.currentTimeMillis()
             if (currentTime - lastRefreshTime > 2000) {
                 activityViewModel.fetchCriticalInfo()
-                viewModel.getHomePageItems()
+                loadHomeData()
                 lastRefreshTime = currentTime
             }
         }
@@ -105,10 +110,22 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
         super.onResume()
         startAutoScroll()
         activityBinding.binding.actionbar.titleTv.text="Mario"
-        viewModel.getHomePageItems()
-
+        loadHomeData()
     }
 
+    private fun loadHomeData() {
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(100)
+            viewModel.getHomePageItems()
+        }
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        stopAutoScroll()
+        _binding = null
+    }
 
     private fun setViews(){
         binding.postsShimmerLayout.apply {
@@ -116,7 +133,7 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
             visibility = View.VISIBLE
         }
 
-        binding.recyclerView.gone()
+        binding.recyclerViewPosts.gone()
         setUpPostsRV(mutableListOf())
 
         activityBinding.binding.actionbar.btnHam.setImageResource(R.drawable.ham)
@@ -157,8 +174,8 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
         }
         viewModel.errorMessage.observe(viewLifecycleOwner){
             if (!it.isNull) {
-                util.showActionSnackbar(binding.root, it.toString(), 2000, "Retry", {
-                    viewModel.getHomePageItems()
+                util.showActionSnackbar(binding.root, it.toString(), 4000, "Retry", {
+                    loadHomeData()
                 })
                 viewModel.resetErrorMessage()
             }
@@ -175,7 +192,9 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
         }
         viewModel.getEventsResponse.observe(viewLifecycleOwner){result->
             when(result){
-                is ServerResult.Failure -> {}
+                is ServerResult.Failure -> {
+                    util.showSnackbar(binding.root, result.message, 2000)
+                }
                 ServerResult.Progress -> {}
                 is ServerResult.Success -> {
                     val events=result.data.sortedByDescending { it.createdAt }.distinctBy { it._id }
@@ -204,6 +223,7 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
             for (poll in polls) {
                 posts.add(ListItem.Poll(title = poll.question, poll = poll))
             }
+
             viewModel.posts.observe(viewLifecycleOwner) { postItems ->
                 val _posts: MutableList<ListItem> = mutableListOf()
                 for (post in postItems) {
@@ -221,7 +241,8 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
                     stopShimmer()
                     visibility = View.GONE
                 }
-                binding.recyclerView.visible()
+
+                binding.recyclerViewPosts.visible()
                 if (binding.swiperefresh.isRefreshing){
                     binding.swiperefresh.isRefreshing = false
                 }
@@ -313,8 +334,10 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
 
     private fun setUpPostsRV(posts:List<ListItem>){
         adapter = PostAdapter( this)
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter = adapter
+        binding.recyclerViewPosts.setItemViewCacheSize(4)
+        binding.recyclerViewPosts.itemAnimator = null
+        binding.recyclerViewPosts.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerViewPosts.adapter = adapter
     }
 
     private val autoScrollListener = object : RecyclerView.OnScrollListener() {
@@ -400,28 +423,53 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
         if (!isLiked){
             requireContext().performHapticFeedback()
             viewModel.likePost(LikePostBody(post_id = post._id, action = "LIKE"))
-            viewModel.likeResult.observe(viewLifecycleOwner){ success->
-                if (success){
-                    val updatedPost = post.copy(
-                        likes = post.likes + 1 ,
+            val updatedPost = post.copy(
+                likes = post.likes + 1,
+                liked = true,
+                image = post.image ?: "default_image_url"
+            )
+            adapter.updatePost(updatedPost)
+
+            viewModel.likeResult.observe(viewLifecycleOwner) { success ->
+                // If the post was not successfull, revert.
+                if (!success) {
+                    val update = post.copy(
+                        likes = post.likes,
                         liked = true,
                         image = post.image ?: "default_image_url"
                     )
-                    adapter.updatePost(updatedPost)
-
+                    adapter.updatePost(update)
+                    Snackbar.make(
+                        binding.root,
+                        "Unable to like post, try again.",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
         else {
+
+            val updatedPost = post.copy(
+                likes = post.likes - 1,
+                liked = false,
+                image = post.image ?: "default_image_url"
+            )
+
+            adapter.updatePost(updatedPost)
             viewModel.likePost(LikePostBody(post_id = post._id, action = "UNLIKE"))
             viewModel.unlikeResult.observe(viewLifecycleOwner){ success->
-                if (success){
+                if (!success) {
                     val updatedPost = post.copy(
-                        likes = post.likes - 1 ,
+                        likes = post.likes,
                         liked = false,
                         image = post.image ?: "default_image_url"
                     )
                     adapter.updatePost(updatedPost)
+                    Snackbar.make(
+                        binding.root,
+                        "Unable to dislike, try again.",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 }
             }
         }

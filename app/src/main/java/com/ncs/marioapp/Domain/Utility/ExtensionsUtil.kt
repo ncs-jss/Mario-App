@@ -1,5 +1,7 @@
 package com.ncs.marioapp.Domain.Utility
 
+import android.animation.Animator
+import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.app.Activity
@@ -26,7 +28,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewPropertyAnimator
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.AlphaAnimation
+import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
+import android.view.animation.DecelerateInterpolator
+import android.view.animation.ScaleAnimation
+import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
@@ -524,13 +531,29 @@ object ExtensionsUtil {
         this.startAnimation(animation)
     }
 
-    fun View.animFadein(context: Context, animDuration: Long = 500L) = run {
+    fun View.animFadein(context: Context, animDuration: Long = 200L) = run {
         this.clearAnimation()
         val animation = AnimationUtils.loadAnimation(context, androidx.appcompat.R.anim.abc_fade_in)
             .apply {
                 duration = animDuration
             }
         this.startAnimation(animation)
+    }
+
+    fun ImageView.loadImage(
+        url: String,
+        placeholder: Int = R.drawable.placeholder_image,
+        skipMemoryCache: Boolean = false
+    ) {
+        val options = RequestOptions()
+            .placeholder(placeholder)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .skipMemoryCache(skipMemoryCache)
+
+        Glide.with(this.context)
+            .load(url)
+            .apply(options)
+            .into(this)
     }
 
 
@@ -601,6 +624,105 @@ object ExtensionsUtil {
         this.startAnimation(animation)
 
     }
+
+    fun View.fadeIn(duration: Long = 300, startAlpha: Float = 0f, endAlpha: Float = 1f) {
+        this.visibility = View.VISIBLE
+        val fadeInAnimation = AlphaAnimation(startAlpha, endAlpha).apply {
+            this.duration = duration
+            fillAfter = true
+        }
+        this.startAnimation(fadeInAnimation)
+    }
+
+    fun View.popIn(duration: Long = 300, startScale: Float = 0.7f, endScale: Float = 1f) {
+        this.visibility = View.VISIBLE
+
+        // Scale animation to make the view grow from a smaller scale to its normal size
+        val scaleAnimation = ScaleAnimation(
+            startScale, endScale, // Start and end scale in X
+            startScale, endScale, // Start and end scale in Y
+            AnimationSet.RELATIVE_TO_SELF, 0.5f, // Pivot X
+            AnimationSet.RELATIVE_TO_SELF, 0.5f  // Pivot Y
+        ).apply {
+            interpolator = DecelerateInterpolator()
+        }
+
+        // Fade-in animation for added effect
+        val alphaAnimation = AlphaAnimation(0f, 1f).apply {
+        }
+
+        // Combine both animations
+        val animationSet = AnimationSet(true).apply {
+            addAnimation(scaleAnimation)
+            addAnimation(alphaAnimation)
+        }
+
+        this.startAnimation(animationSet)
+    }
+
+    fun View.pulseEffect(duration: Long = 200, scaleFactor: Float = 1.2f) {
+        val scaleUp = ObjectAnimator.ofFloat(this, "scaleX", 1f, scaleFactor).apply { }
+        val scaleDown = ObjectAnimator.ofFloat(this, "scaleX", scaleFactor, 1f).apply { }
+        val scaleYUp = ObjectAnimator.ofFloat(this, "scaleY", 1f, scaleFactor).apply { }
+        val scaleYDown = ObjectAnimator.ofFloat(this, "scaleY", scaleFactor, 1f).apply { }
+
+        val animatorSet = AnimatorSet().apply {
+            play(scaleUp).with(scaleYUp)
+            play(scaleDown).with(scaleYDown).after(scaleUp)
+        }
+        animatorSet.start()
+    }
+
+    fun ImageView.animateHeartFill(duration: Long = 300) {
+        val scaleUp = ObjectAnimator.ofFloat(this, "scaleX", 1f, 1.3f).apply { }
+        val scaleYUp = ObjectAnimator.ofFloat(this, "scaleY", 1f, 1.3f).apply { }
+        val scaleDown = ObjectAnimator.ofFloat(this, "scaleX", 1.3f, 1f).apply { }
+        val scaleYDown = ObjectAnimator.ofFloat(this, "scaleY", 1.3f, 1f).apply { }
+
+        val animatorSet = AnimatorSet().apply {
+            play(scaleUp).with(scaleYUp)
+            play(scaleDown).with(scaleYDown).after(scaleUp)
+        }
+
+        animatorSet.start()
+    }
+
+    fun View.bubblePopIn(
+        duration: Long = 500,
+        startScale: Float = 0.2f,
+        endScale: Float = 1f,
+        bounceHeight: Float = 50f
+    ) {
+        this.visibility = View.VISIBLE
+
+        val scaleAnimation = ScaleAnimation(
+            startScale, endScale,
+            startScale, endScale,
+            android.view.animation.Animation.RELATIVE_TO_SELF, 0.5f,
+            android.view.animation.Animation.RELATIVE_TO_SELF, 0.5f
+        ).apply {
+            interpolator = DecelerateInterpolator()
+        }
+
+        val alphaAnimation = AlphaAnimation(0f, 1f).apply {
+        }
+
+        val translateAnimation = TranslateAnimation(
+            0f, 0f,
+            -bounceHeight, 0f
+        ).apply {
+            interpolator = DecelerateInterpolator()
+        }
+
+        val animationSet = AnimationSet(true).apply {
+            addAnimation(scaleAnimation)
+            addAnimation(alphaAnimation)
+            addAnimation(translateAnimation)
+        }
+
+        this.startAnimation(animationSet)
+    }
+
 
     fun View.bounce(context: Context, animDuration: Long = 500L) = run {
         this.clearAnimation()
@@ -676,13 +798,62 @@ object ExtensionsUtil {
         })
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
+    fun View.fadeOutAndGone(duration: Long = 300L) {
+        val fadeOutAnimator = ObjectAnimator.ofFloat(this, "alpha", 1f, 0f)
+        fadeOutAnimator.duration = duration
+
+        fadeOutAnimator.addListener(object : android.animation.Animator.AnimatorListener {
+
+            override fun onAnimationStart(animation: Animator) {
+            }
+
+            override fun onAnimationEnd(animation: Animator) {
+                this@fadeOutAndGone.gone()
+            }
+
+            override fun onAnimationCancel(animation: Animator) {
+
+            }
+
+            override fun onAnimationRepeat(animation: Animator) {
+            }
+        })
+
+        fadeOutAnimator.start()
+    }
+
+    fun View.fadeInAndVisible(duration: Long = 100L) {
+        val fadeOutAnimator = ObjectAnimator.ofFloat(this, "alpha", 0f, 1f)
+        fadeOutAnimator.duration = duration
+
+        fadeOutAnimator.addListener(object : android.animation.Animator.AnimatorListener {
+
+            override fun onAnimationStart(animation: Animator) {
+            }
+
+            override fun onAnimationEnd(animation: Animator) {
+                this@fadeInAndVisible.visibility = View.VISIBLE
+
+            }
+
+            override fun onAnimationCancel(animation: Animator) {
+                this@fadeInAndVisible.visibility = View.VISIBLE
+
+            }
+
+            override fun onAnimationRepeat(animation: Animator) {
+            }
+        })
+
+        fadeOutAnimator.start()
+    }
+
     fun View.setOnDoubleClickListener(listener: () -> Unit) {
         val doubleClickInterval = 500 // Adjust this value as needed (in milliseconds)
         var lastClickTime: Long = 0
 
         this.setOnClickListener { view ->
-            view.bounce(context)
             val clickTime = SystemClock.uptimeMillis()
             if (clickTime - lastClickTime < doubleClickInterval) {
                 // Double click detected

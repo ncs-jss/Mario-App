@@ -182,7 +182,7 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.validateScannedQR.observe(this){result ->
             when(result){
                 is ServerResult.Failure ->{
-                    showError(result.exception.message)
+                    showError(result.message)
                 }
                 ServerResult.Progress -> {
                     showLoading()

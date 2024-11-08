@@ -64,7 +64,7 @@ class AdminViewModel @Inject constructor(
             qrRepository.validateScannedQR(couponCode) {
                 when (it) {
                     is ServerResult.Failure -> {
-                        _validateScannedQR.value = ServerResult.Failure(it.exception)
+                        _validateScannedQR.value = ServerResult.Failure(it.message)
                     }
                     ServerResult.Progress -> {
                         _validateScannedQR.value = ServerResult.Progress

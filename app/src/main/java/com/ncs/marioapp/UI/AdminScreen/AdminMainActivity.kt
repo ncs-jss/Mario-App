@@ -81,7 +81,7 @@ class AdminMainActivity : AppCompatActivity() {
             when(result){
                 is ServerResult.Failure ->{
                     binding.progressBar.gone()
-                    showError(result.exception.message)
+                    showError(result.message)
                 }
                 ServerResult.Progress -> {
                     binding.progressBar.visible()

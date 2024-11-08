@@ -17,10 +17,10 @@ class RetrofitEventRepository @Inject constructor(private val eventsApi: EventsA
             if (response.isSuccessful) {
                 serverResult(ServerResult.Success(response.body()!!))
             } else {
-                serverResult(ServerResult.Failure(Exception(response.message())))
+                serverResult(ServerResult.Failure(response.message()))
             }
         } catch (e: Exception) {
-            serverResult(ServerResult.Failure(e))
+            serverResult(ServerResult.Failure(e.message.toString()))
         }
     }
 
@@ -31,10 +31,10 @@ class RetrofitEventRepository @Inject constructor(private val eventsApi: EventsA
             if (response.isSuccessful) {
                 serverResult(ServerResult.Success(response.body()!!))
             } else {
-                serverResult(ServerResult.Failure(Exception(response.message())))
+                serverResult(ServerResult.Failure(response.message()))
             }
         } catch (e: Exception) {
-            serverResult(ServerResult.Failure(e))
+            serverResult(ServerResult.Failure(e.message.toString()))
         }
     }
 }

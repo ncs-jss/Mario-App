@@ -191,7 +191,7 @@ class ScoreFragment : Fragment() {
         viewModel.getEventsResponse.observe(viewLifecycleOwner){ result ->
             when(result){
                 is ServerResult.Failure ->{
-                    util.showSnackbar(binding.root,result.exception.message.toString(),20000)
+                    util.showSnackbar(binding.root, result.message.toString(), 20000)
                 }
                 ServerResult.Progress -> {
 

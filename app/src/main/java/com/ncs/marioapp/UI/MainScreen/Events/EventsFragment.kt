@@ -65,7 +65,6 @@ class EventsFragment : Fragment(), EventsAdapter.Callback, EventActionBottomShee
         activityBinding.binding.actionbar.btnHam.setImageResource(R.drawable.ham)
         activityBinding.binding.actionbar.score.visible()
         activityBinding.binding.actionbar.titleTv.text="Events"
-
         activityBinding.binding.actionbar.btnHam.setOnClickListener {
             if (activityBinding.binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
                 activityBinding.binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -81,14 +80,14 @@ class EventsFragment : Fragment(), EventsAdapter.Callback, EventActionBottomShee
             startShimmer()
             visibility = View.VISIBLE
         }
-        binding.recyclerView.gone()
+        binding.recyclerViewPosts.gone()
 
         binding.swiperefresh.setOnRefreshListener {
             binding.eventsShimmerLayout.apply {
                 startShimmer()
                 visibility = View.VISIBLE
             }
-            binding.recyclerView.gone()
+            binding.recyclerViewPosts.gone()
             activityViewModel.fetchCriticalInfo()
 
             CoroutineScope(Dispatchers.IO).launch {
@@ -157,7 +156,7 @@ class EventsFragment : Fragment(), EventsAdapter.Callback, EventActionBottomShee
                         startShimmer()
                         visibility = View.GONE
                     }
-                    binding.recyclerView.visible()
+                    binding.recyclerViewPosts.visible()
 
                     val events = result.data
                     setEventsRecyclerView(events)
@@ -188,7 +187,7 @@ class EventsFragment : Fragment(), EventsAdapter.Callback, EventActionBottomShee
     }
 
     private fun setEventsRecyclerView(events:List<Event>){
-        val recyclerView = binding.recyclerView
+        val recyclerView = binding.recyclerViewPosts
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
         eventsAdapter= EventsAdapter(events, this)

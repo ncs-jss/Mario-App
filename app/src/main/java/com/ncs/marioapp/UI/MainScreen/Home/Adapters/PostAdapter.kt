@@ -1,33 +1,39 @@
 package com.ncs.marioapp.UI.MainScreen.Home.Adapters
 
 
-import android.content.Intent
+import android.animation.Animator
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.webkit.WebResourceRequest
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.RadioButton
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import br.tiagohm.markdownview.css.InternalStyleSheet
-import br.tiagohm.markdownview.css.styles.Github
-import com.bumptech.glide.Glide
 import com.ncs.marioapp.Domain.Models.Events.Option
 import com.ncs.marioapp.Domain.Models.Events.Poll
 import com.ncs.marioapp.Domain.Models.Posts.Post
+import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.bubblePopIn
+import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.fadeInAndVisible
+import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.fadeOutAndGone
+import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.loadImage
+import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.pulseEffect
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
+import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnDoubleClickListener
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.marioapp.R
 import com.ncs.marioapp.databinding.ItemPostBinding
 import com.ncs.marioapp.databinding.PollItemBinding
 import com.ncs.marioapp.databinding.PollUiBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class PostAdapter(private val callBack: CallBack) : ListAdapter<ListItem, RecyclerView.ViewHolder>(PostDiffCallback()) {
+class PostAdapter(private val callBack: CallBack) :
+    ListAdapter<ListItem, RecyclerView.ViewHolder>(PostDiffCallback()) {
 
     companion object {
         private const val POLL = 0
@@ -44,8 +50,22 @@ class PostAdapter(private val callBack: CallBack) : ListAdapter<ListItem, Recycl
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            POLL -> PollViewHolder(PollUiBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-            EVENT -> PostViewHolder(ItemPostBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            POLL -> PollViewHolder(
+                PollUiBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            )
+
+            EVENT -> PostViewHolder(
+                ItemPostBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            )
+
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
@@ -57,7 +77,8 @@ class PostAdapter(private val callBack: CallBack) : ListAdapter<ListItem, Recycl
         }
     }
 
-    inner class PollViewHolder(private val binding: PollUiBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class PollViewHolder(private val binding: PollUiBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         private var selectedOption = -1
         private var previousSelectedOption = -1
 
@@ -71,8 +92,12 @@ class PostAdapter(private val callBack: CallBack) : ListAdapter<ListItem, Recycl
             poll.options.forEachIndexed { index, option ->
 
 
-                val optionBinding = PollItemBinding.inflate(LayoutInflater.from(binding.root.context), binding.container, false)
-                val userchoice=poll.userChoice
+                val optionBinding = PollItemBinding.inflate(
+                    LayoutInflater.from(binding.root.context),
+                    binding.container,
+                    false
+                )
+                val userchoice = poll.userChoice
                 if (userchoice != null) {
                     val userChoiceIndex = poll.options.indexOfFirst { it.text == userchoice }
                     selectedOption = userChoiceIndex
@@ -115,7 +140,8 @@ class PostAdapter(private val callBack: CallBack) : ListAdapter<ListItem, Recycl
             options.forEachIndexed { index, option ->
                 val optionBinding = binding.container.getChildAt(index) as ViewGroup
                 optionBinding.findViewById<TextView>(R.id.tvScore).text = option.votes.toString()
-                optionBinding.findViewById<SeekBar>(R.id.seekBar).progress = (option.votes.toDouble() / options.sumOf { it.votes } * 100).toInt()
+                optionBinding.findViewById<SeekBar>(R.id.seekBar).progress =
+                    (option.votes.toDouble() / options.sumOf { it.votes } * 100).toInt()
             }
         }
 
@@ -129,15 +155,32 @@ class PostAdapter(private val callBack: CallBack) : ListAdapter<ListItem, Recycl
         }
     }
 
-    inner class PostViewHolder(private val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class PostViewHolder(private val binding: ItemPostBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(post: ListItem.Post) {
-            Glide.with(binding.root.context).load(post.post.image).placeholder(R.drawable.placeholder_image).into(binding.postImage)
 
-            binding.likesCount.text=post.post.likes.toString()
+            binding.likeAnimationView.addAnimatorListener(object : Animator.AnimatorListener {
+                override fun onAnimationStart(animation: Animator) {
+                }
 
-            if (post.post.liked){
+                override fun onAnimationEnd(animation: Animator) {
+                    binding.likeAnimationView.fadeOutAndGone()
+                }
+
+                override fun onAnimationCancel(animation: Animator) {
+                }
+
+                override fun onAnimationRepeat(animation: Animator) {
+                }
+
+            })
+
+            binding.postImage.loadImage(post.post.image)
+            binding.likesCount.text = post.post.likes.toString()
+
+            if (post.post.liked) {
                 binding.likeImage.setImageResource(R.drawable.baseline_favorite_24)
-            }else{
+            } else {
                 binding.likeImage.setImageResource(R.drawable.baseline_favorite_border_24)
             }
 
@@ -146,85 +189,115 @@ class PostAdapter(private val callBack: CallBack) : ListAdapter<ListItem, Recycl
             }
 
             binding.like.setOnClickThrottleBounceListener {
-                if (post.post.liked){
-                    binding.likeImage.setImageResource(R.drawable.baseline_favorite_border_24)
-                }else {
-                    binding.likeImage.setImageResource(R.drawable.baseline_favorite_24)
+                if (post.post.liked) {
+                    binding.likeImage.bubblePopIn()
+                } else {
+                    binding.likeAnimationView.fadeInAndVisible()
+                    binding.likeAnimationView.playAnimation()
+                    binding.likesCount.pulseEffect()
+                    binding.likeImage.bubblePopIn()
                 }
-                callBack.onLikeClick(post.post,post.post.liked)
-            }
-            setUpMarkdown(post.post.caption)
-        }
-
-
-        private fun setUpMarkdown(description: String) {
-            val css: InternalStyleSheet = Github()
-
-            with(css) {
-                addFontFace(
-                    "o2font",
-                    "normal",
-                    "normal",
-                    "normal",
-                    "url('file:///android_res/font/sfregular.ttf')"
-                )
-                addRule("body", "font-family:o2font")
-                addRule("body", "font-size:18px")
-                addRule("body", "line-height:28px")
-                addRule("body", "background-color: #242424")
-                addRule("body", "color: #fff")
-                addRule("body", "padding: 0")
-                addRule("body", "margin: 0")
-                addRule("p", "margin: 0")
-                addRule("div", "margin: 0")
-                addRule("a", "color: #86ff7c")
-                addRule("pre", "border: 1px solid #000;")
-                addRule("pre", "border-radius: 0px;")
-                addRule("pre", "max-height: 400px;")
-                addRule("pre", "overflow:auto")
-                addRule("pre", "white-space: pre-line")
+                callBack.onLikeClick(post.post, post.post.liked)
             }
 
-            binding.markdownView.settings.javaScriptEnabled = true
-            binding.markdownView.settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
-            binding.markdownView.settings.setRenderPriority(WebSettings.RenderPriority.HIGH)
-
-            binding.markdownView.addStyleSheet(css)
-
-            binding.markdownView.webViewClient = object : WebViewClient() {
-                override fun onPageFinished(view: WebView?, url: String?) {
-                    view?.evaluateJavascript("script") {}
+            binding.root.setOnDoubleClickListener {
+                if (post.post.liked) {
+                    binding.likeImage.bubblePopIn()
+                } else {
+                    binding.likeAnimationView.fadeInAndVisible()
+                    binding.likeAnimationView.playAnimation()
+                    binding.likesCount.pulseEffect()
+                    binding.likeImage.bubblePopIn()
                 }
-
-
-                override fun shouldOverrideUrlLoading(
-                    view: WebView?,
-                    request: WebResourceRequest?
-                ): Boolean {
-                    val intent = Intent(Intent.ACTION_VIEW, request?.url)
-                    binding.root.context.startActivity(intent)
-                    return true
-                }
-
+                callBack.onLikeClick(post.post, post.post.liked)
             }
 
-            binding.markdownView.loadMarkdown(description)
 
             binding.markdownView.visible()
+            binding.markdownView.text = post.post.caption
 
         }
 
+
+//        private fun setUpMarkdown(description: String) {
+//            val css: InternalStyleSheet = Github()
+//
+//            with(css) {
+//                addFontFace(
+//                    "o2font",
+//                    "normal",
+//                    "normal",
+//                    "normal",
+//                    "url('file:///android_res/font/sfregular.ttf')"
+//                )
+//                addRule("body", "font-family:o2font")
+//                addRule("body", "font-size:18px")
+//                addRule("body", "line-height:28px")
+//                addRule("body", "background-color: #242424")
+//                addRule("body", "color: #fff")
+//                addRule("body", "padding: 0")
+//                addRule("body", "margin: 0")
+//                addRule("p", "margin: 0")
+//                addRule("div", "margin: 0")
+//                addRule("a", "color: #86ff7c")
+//                addRule("pre", "border: 1px solid #000;")
+//                addRule("pre", "border-radius: 0px;")
+//                addRule("pre", "max-height: 400px;")
+//                addRule("pre", "overflow:auto")
+//                addRule("pre", "white-space: pre-line")
+//            }
+//
+//            binding.markdownView.settings.javaScriptEnabled = true
+//            binding.markdownView.settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
+//            binding.markdownView.settings.setRenderPriority(WebSettings.RenderPriority.HIGH)
+//
+//            binding.markdownView.addStyleSheet(css)
+//
+//            binding.markdownView.webViewClient = object : WebViewClient() {
+//                override fun onPageFinished(view: WebView?, url: String?) {
+//                    view?.evaluateJavascript("script") {}
+//                }
+//
+//
+//                override fun shouldOverrideUrlLoading(
+//                    view: WebView?,
+//                    request: WebResourceRequest?
+//                ): Boolean {
+//                    val intent = Intent(Intent.ACTION_VIEW, request?.url)
+//                    binding.root.context.startActivity(intent)
+//                    return true
+//                }
+//
+//            }
+//
+////            binding.markdownView.loadMarkdown(description)
+//            binding.markdownView.visible()
+//
+//        }
+
     }
+
 
     fun updatePost(updatedPost: Post) {
-        val position = currentList.indexOfFirst { it is ListItem.Post && it.post._id == updatedPost._id }
-        if (position != -1) {
-            val newList = currentList.toMutableList()
-            newList[position] = ListItem.Post(updatedPost)
-            submitList(newList)
+        CoroutineScope(Dispatchers.Default).launch {
+            if (isActive) {
+                Log.d("PostAdapter", "Like job started")
+                val newList = currentList.map {
+                    if (it is ListItem.Post && it.post._id == updatedPost._id) {
+                        ListItem.Post(updatedPost)
+                    } else {
+                        it
+                    }
+                }
+                withContext(Dispatchers.Main) {
+                    submitList(newList)
+                }
+            } else {
+                Log.d("PostAdapter", "Job canceled")
+                return@launch
+            }
         }
     }
-
 
     interface CallBack {
         fun onCheckBoxClick(poll: Poll, selectedOption: String)
