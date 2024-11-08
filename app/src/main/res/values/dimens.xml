@@ -46,4 +46,5 @@
     <dimen name="dialog_height">450dp</dimen>
     <dimen name="dialog_width_wa">300dp</dimen>
     <dimen name="dialog_height_wa">280dp</dimen>
+    <dimen name="global_roundness">8dp</dimen>
 </resources>
