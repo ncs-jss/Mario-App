@@ -19,6 +19,8 @@ import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
 import com.ncs.marioapp.BuildConfig
+import com.ncs.marioapp.R
+import com.ncs.marioapp.databinding.ActivityMainBinding
 import com.ncs.marioapp.Domain.HelperClasses.PrefManager
 import com.ncs.marioapp.Domain.Models.ServerResult
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
@@ -26,11 +28,9 @@ import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.load
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.marioapp.Domain.Utility.GlobalUtils
-import com.ncs.marioapp.R
 import com.ncs.marioapp.UI.AdminScreen.AdminMainActivity
 import com.ncs.marioapp.UI.MyRedemptionsScreen.MyRedemptionsActivity
 import com.ncs.marioapp.UI.SettingsScreen.SettingsActivity
-import com.ncs.marioapp.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 

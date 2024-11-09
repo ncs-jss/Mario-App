@@ -57,7 +57,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             //Base API URL
-            buildConfigField("String", "API_BASE_URL", "\"${getProps("API_BASE_URL")}\"")
+            buildConfigField("String", "API_BASE_URL", "\"${getProps("DEBUG_API_BASE_URL")}\"")
 
             //Auth Endpoint
             buildConfigField("String", "AUTH_ENDPOINT", "\"${getProps("AUTH_ENDPOINT")}\"")
@@ -89,7 +89,7 @@ android {
 
 
             //Base API URL
-            buildConfigField("String", "API_BASE_URL", "\"${getProps("API_BASE_URL")}\"")
+            buildConfigField("String", "API_BASE_URL", "\"${getProps("RELEASE_API_BASE_URL")}\"")
 
             //Auth Endpoint
             buildConfigField("String", "AUTH_ENDPOINT", "\"${getProps("AUTH_ENDPOINT")}\"")

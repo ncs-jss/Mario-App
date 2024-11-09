@@ -34,15 +34,21 @@ class StartScreenViewModel @Inject constructor(
     private val _kycStatus = MutableLiveData<String>(null)
     val kycStatus: LiveData<String> get() = _kycStatus
 
+    private val _banStatus = MutableLiveData<Boolean>(false)
+    val banStatus: LiveData<Boolean> get() = _banStatus
 
     suspend fun fetchUserKYCHeaderToken(): String? {
         return try {
             val response = profileApiService.getKYCHeader()
             if (response.isSuccessful) {
                 response.body()?.get("approvalToken")?.let { PrefManager.setKYCHeaderToken(it.asString) }
+                response.body()?.get("is_banned")?.asBoolean.also {
+                    _banStatus.value = it
+                }
                 response.body()?.get("is_approved")?.asString.also {
                     _kycStatus.value = it
                 }
+
             } else {
                 handleError(response.errorBody()?.string())
                 null
