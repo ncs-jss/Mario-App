@@ -43,6 +43,7 @@ import com.ncs.mario.Domain.Utility.GlobalUtils
 import com.ncs.mario.R
 import com.ncs.mario.UI.AdminScreen.AdminMainActivity
 import com.ncs.mario.UI.AuthScreen.AuthActivity
+import com.ncs.mario.UI.BanScreen.BanActivity
 import com.ncs.mario.UI.MainScreen.MainActivity
 import com.ncs.mario.UI.SurveyScreen.SurveyActivity
 import com.ncs.mario.UI.WaitScreen.WaitActivity
@@ -346,30 +347,39 @@ class StartScreen : AppCompatActivity() {
 
     private fun handleKYCStatus(kycStatus: String?, role: Int) {
         if (!kycStatus.isNullOrEmpty()) {
-            when (kycStatus) {
-                "ACCEPT" -> {
-                    if (role == 1) {
-                        startActivity(Intent(this, AdminMainActivity::class.java))
-                        finish()
-                    } else {
-                        slideOutAnim.cancel()
-                        fadeInAnim.cancel()
-                        binding.progress.gone()
-                        setState("Starting Mario...")
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            startActivity(Intent(this@StartScreen, MainActivity::class.java))
+            viewModel.banStatus.observe(this@StartScreen){
+                if (it){
+                    startActivity(Intent(this@StartScreen, BanActivity::class.java))
+                    finish()
+                }
+                else{
+                    when (kycStatus) {
+                        "ACCEPT" -> {
+                            if (role == 1) {
+                                startActivity(Intent(this, AdminMainActivity::class.java))
+                                finish()
+                            } else {
+                                slideOutAnim.cancel()
+                                fadeInAnim.cancel()
+                                binding.progress.gone()
+                                setState("Starting Mario...")
+                                Handler(Looper.getMainLooper()).postDelayed({
+                                    startActivity(Intent(this@StartScreen, MainActivity::class.java))
+                                    finish()
+                                }, 1000)
+
+                            }
+                        }
+
+                        "PENDING", "REJECT" -> {
+                            startActivity(Intent(this@StartScreen, WaitActivity::class.java))
                             finish()
-                        }, 1000)
+                        }
 
                     }
                 }
-
-                "PENDING", "REJECT" -> {
-                    startActivity(Intent(this@StartScreen, WaitActivity::class.java))
-                    finish()
-                }
-
             }
+
         }
     }
 
