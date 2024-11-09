@@ -1,12 +1,12 @@
-package com.ncs.mario.UI.BanScreen
+package com.ncs.marioapp.UI.BanScreen
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
-import com.ncs.mario.Domain.HelperClasses.PrefManager
-import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
-import com.ncs.mario.UI.StartScreen.StartScreen
-import com.ncs.mario.databinding.ActivityBanBinding
+import com.ncs.marioapp.Domain.HelperClasses.PrefManager
+import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
+import com.ncs.marioapp.UI.StartScreen.StartScreen
+import com.ncs.marioapp.databinding.ActivityBanBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
