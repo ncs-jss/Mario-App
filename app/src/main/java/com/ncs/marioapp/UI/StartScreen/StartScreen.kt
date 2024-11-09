@@ -31,7 +31,6 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.messaging.FirebaseMessaging
-import com.ncs.marioapp.BuildConfig
 import com.ncs.marioapp.Domain.HelperClasses.PrefManager
 import com.ncs.marioapp.Domain.HelperClasses.RemoteConfigHelper
 import com.ncs.marioapp.Domain.Models.ProfileData.UserImpDetails
@@ -39,12 +38,14 @@ import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.animFadein
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.toast
 import com.ncs.marioapp.Domain.Utility.GlobalUtils
-import com.ncs.marioapp.R
 import com.ncs.marioapp.UI.AdminScreen.AdminMainActivity
 import com.ncs.marioapp.UI.AuthScreen.AuthActivity
 import com.ncs.marioapp.UI.MainScreen.MainActivity
 import com.ncs.marioapp.UI.SurveyScreen.SurveyActivity
 import com.ncs.marioapp.UI.WaitScreen.WaitActivity
+import com.ncs.marioapp.BuildConfig
+import com.ncs.marioapp.R
+import com.ncs.marioapp.UI.BanScreen.BanActivity
 import com.ncs.marioapp.databinding.ActivityStartScreenBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.async
@@ -346,30 +347,39 @@ class StartScreen : AppCompatActivity() {
 
     private fun handleKYCStatus(kycStatus: String?, role: Int) {
         if (!kycStatus.isNullOrEmpty()) {
-            when (kycStatus) {
-                "ACCEPT" -> {
-                    if (role == 1) {
-                        startActivity(Intent(this, AdminMainActivity::class.java))
-                        finish()
-                    } else {
-                        slideOutAnim.cancel()
-                        fadeInAnim.cancel()
-                        binding.progress.gone()
-                        setState("Starting Mario...")
-                        Handler(Looper.getMainLooper()).postDelayed({
-                            startActivity(Intent(this@StartScreen, MainActivity::class.java))
+            viewModel.banStatus.observe(this@StartScreen){
+                if (it){
+                    startActivity(Intent(this@StartScreen, BanActivity::class.java))
+                    finish()
+                }
+                else{
+                    when (kycStatus) {
+                        "ACCEPT" -> {
+                            if (role == 1) {
+                                startActivity(Intent(this, AdminMainActivity::class.java))
+                                finish()
+                            } else {
+                                slideOutAnim.cancel()
+                                fadeInAnim.cancel()
+                                binding.progress.gone()
+                                setState("Starting Mario...")
+                                Handler(Looper.getMainLooper()).postDelayed({
+                                    startActivity(Intent(this@StartScreen, MainActivity::class.java))
+                                    finish()
+                                }, 1000)
+
+                            }
+                        }
+
+                        "PENDING", "REJECT" -> {
+                            startActivity(Intent(this@StartScreen, WaitActivity::class.java))
                             finish()
-                        }, 1000)
+                        }
 
                     }
                 }
-
-                "PENDING", "REJECT" -> {
-                    startActivity(Intent(this@StartScreen, WaitActivity::class.java))
-                    finish()
-                }
-
             }
+
         }
     }
 
