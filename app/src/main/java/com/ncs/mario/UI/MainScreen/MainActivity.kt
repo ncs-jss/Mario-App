@@ -5,37 +5,23 @@ import android.graphics.Bitmap
 import android.graphics.Bitmap.createBitmap
 import android.graphics.Color
 import android.os.Bundle
-import android.view.Gravity
-import android.view.Menu
 import android.widget.ImageView
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.FileProvider
 import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.ncs.mario.R
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
-import com.journeyapps.barcodescanner.ScanContract
-import com.journeyapps.barcodescanner.ScanIntentResult
-import com.journeyapps.barcodescanner.ScanOptions
 import com.ncs.mario.BuildConfig
 import com.ncs.mario.Domain.HelperClasses.PrefManager
-import com.ncs.mario.Domain.Models.ServerResult
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.load
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.mario.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.mario.Domain.Utility.GlobalUtils
+import com.ncs.mario.R
 import com.ncs.mario.UI.AdminScreen.AdminMainActivity
 import com.ncs.mario.UI.MyRedemptionsScreen.MyRedemptionsActivity
 import com.ncs.mario.UI.SettingsScreen.SettingsActivity
@@ -90,12 +76,10 @@ class MainActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
         }
         binding.drawerheaderfile.scanButton.setOnClickThrottleBounceListener {
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-            scannerLauncher.launch(
-                ScanOptions().setPrompt("Scan to get Mario Points").setDesiredBarcodeFormats(ScanOptions.QR_CODE)
-            )
+            startActivity(Intent(this@MainActivity, QRScannerActivity::class.java))
+            finish()
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
         }
-//        binding.actionbar.scoreTV.text = PrefManager.getUserProfile()?.points.toString()
 
         binding.drawerheaderfile.settings.setOnClickThrottleBounceListener {
             startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
@@ -188,19 +172,6 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.userCoins.observe(this) { result ->
             updateScoreUI(result)
         }
-        mainViewModel.validateScannedQR.observe(this){result ->
-            when(result){
-                is ServerResult.Failure ->{
-                    showError(result.exception.message)
-                }
-                ServerResult.Progress -> {
-                    showLoading()
-                }
-                is ServerResult.Success ->{
-                    Toast.makeText(this,result.data,Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
     }
 
     private fun showError(message: String?) {
@@ -228,16 +199,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private val scannerLauncher = registerForActivityResult<ScanOptions, ScanIntentResult>(
-        ScanContract()
-    ) { result ->
-
-        if (result.contents == null) {
-            Toast.makeText(this, "Scan Cancelled", Toast.LENGTH_SHORT).show()
-        } else {
-            mainViewModel.validateScannedQR(result.contents)
-        }
-    }
 
     override fun onResume() {
         super.onResume()

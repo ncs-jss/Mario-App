@@ -14,6 +14,7 @@ import com.ncs.mario.Domain.Interfaces.QrRepository
 import com.ncs.mario.Domain.Models.Events.AnswerPollBody
 import com.ncs.mario.Domain.Models.Events.ScanTicketBody
 import com.ncs.mario.Domain.Models.Profile
+import com.ncs.mario.Domain.Models.QR.QrScannedResponse
 import com.ncs.mario.Domain.Models.ServerResponse
 import com.ncs.mario.Domain.Models.ServerResult
 import com.ncs.mario.Domain.Models.SetFCMTokenBody
@@ -31,8 +32,8 @@ class MainViewModel @Inject constructor(
     private val eventsApi: EventsApi
 ) : ViewModel() {
 
-    private val _validateScannedQR = MutableLiveData<ServerResult<String>>()
-    val validateScannedQR: LiveData<ServerResult<String>> = _validateScannedQR
+    private val _validateScannedQR = MutableLiveData<ServerResult<QrScannedResponse>>()
+    val validateScannedQR: LiveData<ServerResult<QrScannedResponse>> = _validateScannedQR
 
     private val _getMyProfileResponse = MutableLiveData<Profile>()
     val getMyProfileResponse: LiveData<Profile> = _getMyProfileResponse
@@ -148,7 +149,7 @@ class MainViewModel @Inject constructor(
                         _validateScannedQR.value = ServerResult.Progress
                     }
                     is ServerResult.Success -> {
-                        _validateScannedQR.value = ServerResult.Success(it.data.message)
+                        _validateScannedQR.value = ServerResult.Success(it.data)
                     }
                 }
             }
