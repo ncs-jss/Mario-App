@@ -29,9 +29,15 @@ class RetrofitQrRepository @Inject constructor(private val qrAPI: QRAPI) : QrRep
         try {
             val response = qrAPI.validateScannedQR(couponCode = couponCode)
             if (response.isSuccessful) {
-                serverResult(ServerResult.Success(response.body()!!))
+                if (response.body()!!.success){
+                    serverResult(ServerResult.Success(response.body()!!))
+                }
+                else{
+                    serverResult(ServerResult.Failure(Exception("Invalid QR!!")))
+                }
             } else {
                 serverResult(ServerResult.Failure(response.message()))
+                serverResult(ServerResult.Failure(Exception("Invalid QR!!")))
             }
         } catch (e: Exception) {
             serverResult(ServerResult.Failure(e.message.toString()))

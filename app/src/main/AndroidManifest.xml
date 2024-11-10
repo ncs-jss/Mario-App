@@ -33,6 +33,9 @@
             android:name=".UI.BanScreen.BanActivity"
             android:exported="false" />
         <activity
+            android:name=".UI.MainScreen.QRScannerActivity"
+            android:exported="false" />
+        <activity
             android:name=".UI.AdminScreen.AdminMainActivity"
             android:exported="false" />
         <activity
