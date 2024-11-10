@@ -24,7 +24,10 @@
         android:theme="@style/Theme.NCSMario"
         tools:targetApi="31">
         <activity
-            android:name="com.ncs.marioapp.UI.BanScreen.UserBannedActivity"
+            android:name=".UI.EventDetailsScreen.EventDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UI.BanScreen.UserBannedActivity"
             android:exported="false" />
         <activity
             android:name=".UI.BanScreen.BanActivity"
