@@ -27,10 +27,10 @@
             android:name=".UI.EventDetailsScreen.EventDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".UI.BanScreen.UserBannedActivity"
+            android:name=".UI.BanScreen.BanActivity"
             android:exported="false" />
         <activity
-            android:name=".UI.BanScreen.BanActivity"
+            android:name=".UI.MainScreen.QRScannerActivity"
             android:exported="false" />
         <activity
             android:name=".UI.AdminScreen.AdminMainActivity"

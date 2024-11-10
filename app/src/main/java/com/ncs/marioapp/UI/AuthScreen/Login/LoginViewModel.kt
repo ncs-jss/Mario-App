@@ -65,7 +65,7 @@ class LoginViewModel @Inject constructor(val authApiService: AuthApiService, val
                 } else {
                     val errorResponse = response.errorBody()?.string()
                     val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
-                    _errorMessage.value = loginResponse.message
+                    _errorMessage.value = "Authentication: "+loginResponse.message
                     Log.d("signupResult", "Login Failed: ${loginResponse.message}")
                     _loginResult.value = false
                 }
