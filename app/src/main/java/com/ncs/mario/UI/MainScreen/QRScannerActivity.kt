@@ -190,7 +190,7 @@ class QRScannerActivity : AppCompatActivity() {
             }
 
             override fun onRevealPercentChangedListener(scratchView: ScratchView, percent: Float) {
-                if (percent > 0.35f) {
+                if (percent > 0.4f) {
                     scratchView.reveal()
 
                 }
