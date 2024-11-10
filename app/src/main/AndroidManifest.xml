@@ -27,9 +27,6 @@
             android:name=".UI.EventDetailsScreen.EventDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".UI.BanScreen.UserBannedActivity"
-            android:exported="false" />
-        <activity
             android:name=".UI.BanScreen.BanActivity"
             android:exported="false" />
         <activity

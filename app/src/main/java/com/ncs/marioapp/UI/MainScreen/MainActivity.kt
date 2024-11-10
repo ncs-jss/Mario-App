@@ -6,7 +6,6 @@ import android.graphics.Bitmap.createBitmap
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -15,9 +14,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
-import com.journeyapps.barcodescanner.ScanContract
-import com.journeyapps.barcodescanner.ScanIntentResult
-import com.journeyapps.barcodescanner.ScanOptions
 import com.ncs.marioapp.BuildConfig
 import com.ncs.marioapp.R
 import com.ncs.marioapp.databinding.ActivityMainBinding
@@ -31,18 +27,6 @@ import com.ncs.marioapp.Domain.Utility.GlobalUtils
 import com.ncs.marioapp.UI.AdminScreen.AdminMainActivity
 import com.ncs.marioapp.UI.MyRedemptionsScreen.MyRedemptionsActivity
 import com.ncs.marioapp.UI.SettingsScreen.SettingsActivity
-import com.ncs.mario.BuildConfig
-import com.ncs.mario.Domain.HelperClasses.PrefManager
-import com.ncs.mario.Domain.Utility.ExtensionsUtil.gone
-import com.ncs.mario.Domain.Utility.ExtensionsUtil.load
-import com.ncs.mario.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
-import com.ncs.mario.Domain.Utility.ExtensionsUtil.visible
-import com.ncs.mario.Domain.Utility.GlobalUtils
-import com.ncs.mario.R
-import com.ncs.mario.UI.AdminScreen.AdminMainActivity
-import com.ncs.mario.UI.MyRedemptionsScreen.MyRedemptionsActivity
-import com.ncs.mario.UI.SettingsScreen.SettingsActivity
-import com.ncs.mario.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -198,7 +182,7 @@ class MainActivity : AppCompatActivity() {
                     showLoading()
                 }
                 is ServerResult.Success ->{
-                    Toast.makeText(this,result.data,Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this@MainActivity,result.data,Toast.LENGTH_SHORT).show()
                 }
             }
         }
