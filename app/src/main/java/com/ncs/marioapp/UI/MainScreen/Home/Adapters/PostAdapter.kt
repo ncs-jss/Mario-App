@@ -17,6 +17,7 @@ import com.ncs.marioapp.Domain.Models.Posts.Post
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.bubblePopIn
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.fadeInAndVisible
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.fadeOutAndGone
+import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.loadImage
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.pulseEffect
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
@@ -175,7 +176,14 @@ class PostAdapter(private val callBack: CallBack) :
 
             })
 
-            binding.postImage.loadImage(post.post.image)
+            if (post.post.image!="") {
+                binding.postImage.visible()
+                binding.postImage.loadImage(post.post.image)
+            }
+            else{
+                binding.postImage.gone()
+            }
+
             binding.likesCount.text = post.post.likes.toString()
 
             if (post.post.liked) {
@@ -190,24 +198,32 @@ class PostAdapter(private val callBack: CallBack) :
 
             binding.like.setOnClickThrottleBounceListener {
                 if (post.post.liked) {
-                    binding.likeImage.bubblePopIn()
+                    if (post.post.image != "") {
+                        binding.likeImage.bubblePopIn()
+                    }
                 } else {
-                    binding.likeAnimationView.fadeInAndVisible()
-                    binding.likeAnimationView.playAnimation()
-                    binding.likesCount.pulseEffect()
-                    binding.likeImage.bubblePopIn()
+                    if (post.post.image != "") {
+                        binding.likeAnimationView.fadeInAndVisible()
+                        binding.likeAnimationView.playAnimation()
+                        binding.likesCount.pulseEffect()
+                        binding.likeImage.bubblePopIn()
+                    }
                 }
                 callBack.onLikeClick(post.post, post.post.liked)
             }
 
             binding.root.setOnDoubleClickListener {
                 if (post.post.liked) {
-                    binding.likeImage.bubblePopIn()
+                    if (post.post.image != "") {
+                        binding.likeImage.bubblePopIn()
+                    }
                 } else {
-                    binding.likeAnimationView.fadeInAndVisible()
-                    binding.likeAnimationView.playAnimation()
-                    binding.likesCount.pulseEffect()
-                    binding.likeImage.bubblePopIn()
+                    if (post.post.image != "") {
+                        binding.likeAnimationView.fadeInAndVisible()
+                        binding.likeAnimationView.playAnimation()
+                        binding.likesCount.pulseEffect()
+                        binding.likeImage.bubblePopIn()
+                    }
                 }
                 callBack.onLikeClick(post.post, post.post.liked)
             }

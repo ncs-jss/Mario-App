@@ -6,7 +6,6 @@ import android.graphics.Bitmap.createBitmap
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -15,9 +14,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
-import com.journeyapps.barcodescanner.ScanContract
-import com.journeyapps.barcodescanner.ScanIntentResult
-import com.journeyapps.barcodescanner.ScanOptions
 import com.ncs.marioapp.BuildConfig
 import com.ncs.marioapp.R
 import com.ncs.marioapp.databinding.ActivityMainBinding
@@ -81,12 +77,10 @@ class MainActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
         }
         binding.drawerheaderfile.scanButton.setOnClickThrottleBounceListener {
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-            scannerLauncher.launch(
-                ScanOptions().setPrompt("Scan to get Mario Points").setDesiredBarcodeFormats(ScanOptions.QR_CODE)
-            )
+            startActivity(Intent(this@MainActivity, QRScannerActivity::class.java))
+            finish()
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
         }
-//        binding.actionbar.scoreTV.text = PrefManager.getUserProfile()?.points.toString()
 
         binding.drawerheaderfile.settings.setOnClickThrottleBounceListener {
             startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
@@ -188,7 +182,7 @@ class MainActivity : AppCompatActivity() {
                     showLoading()
                 }
                 is ServerResult.Success ->{
-                    Toast.makeText(this,result.data,Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this@MainActivity,result.data,Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -219,16 +213,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private val scannerLauncher = registerForActivityResult<ScanOptions, ScanIntentResult>(
-        ScanContract()
-    ) { result ->
-
-        if (result.contents == null) {
-            Toast.makeText(this, "Scan Cancelled", Toast.LENGTH_SHORT).show()
-        } else {
-            mainViewModel.validateScannedQR(result.contents)
-        }
-    }
 
     override fun onResume() {
         super.onResume()
