@@ -11,7 +11,14 @@
         android:label="fragment_event_details"
         tools:layout="@layout/fragment_event_details" >
 
+        <action
+            android:id="@+id/action_fragment_event_details_to_eventQuestionnaireFragment"
+            app:destination="@id/eventQuestionnaireFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/eventQuestionnaireFragment"
+        android:name="com.ncs.marioapp.UI.EventDetailsScreen.EventQuestionnaireFragment"
+        android:label="EventQuestionnaireFragment" />
 
 
 </navigation>
