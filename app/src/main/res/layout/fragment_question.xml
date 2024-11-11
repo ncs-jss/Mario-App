@@ -33,7 +33,7 @@
 
     <EditText
         android:id="@+id/answer"
-        android:minLines="8"
+        android:minLines="20"
         android:hint="Enter your answer here..."
         android:gravity="top"
         android:maxLines="25"
