@@ -209,64 +209,64 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun enrollUser(eventId: String) {
-        viewModelScope.launch {
-            _progressState.value = true
-            _normalErrorMessage.value = "Enrolling you to the event"
-            try {
-                val response = eventsApi.enrollUser(payload = EnrollUser(eventId))
-                if (response.isSuccessful) {
-                    val inputStream: InputStream = response.body()!!.byteStream()
-                    val bitmap: Bitmap = BitmapFactory.decodeStream(inputStream)
-                    _ticketResultBitmap.value = bitmap
-                    _progressState.value = false
-                    _normalErrorMessage.value = "Enrolled you to the event"
-                    _enrollResult.value = true
-                    getMyEvents()
-                } else {
-                    _progressState.value = false
-                    val errorResponse = response.errorBody()?.string()
-                    _normalErrorMessage.value = "Failed to enroll you to the event"
-                }
-            } catch (e: SocketTimeoutException) {
-                _progressState.value = false
-                _normalErrorMessage.value = "Network timeout. Please try again."
-            } catch (e: Exception) {
-                Log.d("checkexc", e.message.toString())
-                Log.d("checkexc", e.toString())
-                Log.d("checkexc", e.localizedMessage.toString())
-                _progressState.value = false
-                _normalErrorMessage.value = "Failed to enroll you..."
-            }
-        }
-    }
+//    fun enrollUser(eventId: String) {
+//        viewModelScope.launch {
+//            _progressState.value = true
+//            _normalErrorMessage.value = "Enrolling you to the event"
+//            try {
+//                val response = eventsApi.enrollUser(payload = EnrollUser(eventId))
+//                if (response.isSuccessful) {
+//                    val inputStream: InputStream = response.body()!!.byteStream()
+//                    val bitmap: Bitmap = BitmapFactory.decodeStream(inputStream)
+//                    _ticketResultBitmap.value = bitmap
+//                    _progressState.value = false
+//                    _normalErrorMessage.value = "Enrolled you to the event"
+//                    _enrollResult.value = true
+//                    getMyEvents()
+//                } else {
+//                    _progressState.value = false
+//                    val errorResponse = response.errorBody()?.string()
+//                    _normalErrorMessage.value = "Failed to enroll you to the event"
+//                }
+//            } catch (e: SocketTimeoutException) {
+//                _progressState.value = false
+//                _normalErrorMessage.value = "Network timeout. Please try again."
+//            } catch (e: Exception) {
+//                Log.d("checkexc", e.message.toString())
+//                Log.d("checkexc", e.toString())
+//                Log.d("checkexc", e.localizedMessage.toString())
+//                _progressState.value = false
+//                _normalErrorMessage.value = "Failed to enroll you..."
+//            }
+//        }
+//    }
 
-    fun unenrollUser(eventId: String) {
-        viewModelScope.launch {
-            _progressState.value = true
-            _normalErrorMessage.value = "Unenrolling you from the event"
-            try {
-                val response = eventsApi.optOutUser(payload = EnrollUser(eventId))
-
-                if (response.isSuccessful) {
-                    _progressState.value = false
-                    _normalErrorMessage.value = "Unenrolled you from the event"
-                    _unenrollResult.value = true
-                    getMyEvents()
-                } else {
-                    val errorResponse = response.errorBody()?.string()
-                    _progressState.value = false
-                    _normalErrorMessage.value = "Failed to unenroll you"
-                }
-            } catch (e: SocketTimeoutException) {
-                _progressState.value = false
-                _normalErrorMessage.value = "Network timeout. Please try again."
-            } catch (e: Exception) {
-                _progressState.value = false
-                _normalErrorMessage.value = "Failed to unenroll you.."
-            }
-        }
-    }
+//    fun unenrollUser(eventId: String) {
+//        viewModelScope.launch {
+//            _progressState.value = true
+//            _normalErrorMessage.value = "Unenrolling you from the event"
+//            try {
+//                val response = eventsApi.optOutUser(payload = EnrollUser(eventId))
+//
+//                if (response.isSuccessful) {
+//                    _progressState.value = false
+//                    _normalErrorMessage.value = "Unenrolled you from the event"
+//                    _unenrollResult.value = true
+//                    getMyEvents()
+//                } else {
+//                    val errorResponse = response.errorBody()?.string()
+//                    _progressState.value = false
+//                    _normalErrorMessage.value = "Failed to unenroll you"
+//                }
+//            } catch (e: SocketTimeoutException) {
+//                _progressState.value = false
+//                _normalErrorMessage.value = "Network timeout. Please try again."
+//            } catch (e: Exception) {
+//                _progressState.value = false
+//                _normalErrorMessage.value = "Failed to unenroll you.."
+//            }
+//        }
+//    }
 
     suspend fun getPolls(): Unit = withContext(Dispatchers.IO) {
         viewModelScope.launch {

@@ -251,6 +251,10 @@ dependencies {
 
     //scratch card
     implementation "com.github.AnupKumarPanwar:ScratchView:1.3"
+
+    //flexbox
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+
 }
 
 

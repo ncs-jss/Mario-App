@@ -8,11 +8,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ncs.marioapp.Domain.Models.Answer
-import com.ncs.marioapp.Domain.Models.Question
+import com.ncs.marioapp.Domain.Models.Events.EventDetails.Question
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.marioapp.UI.EventDetailsScreen.Adapters.OptionsAdapter
 import com.ncs.marioapp.databinding.FragmentQuestionBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class QuestionFragment : Fragment() {
     private lateinit var binding: FragmentQuestionBinding
     private lateinit var question: Question
@@ -58,7 +60,7 @@ class QuestionFragment : Fragment() {
                 onAnswerSubmitted?.invoke(Answer(question.question, answerText))
             }
             else{
-                Toast.makeText(requireContext(), "Please answer the question", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Answer can't be empty", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -75,6 +77,7 @@ class QuestionFragment : Fragment() {
         val optionsAdapter = OptionsAdapter(question.options) { selectedOption ->
             selectedAnswer = selectedOption
         }
+
         binding.recyclerViewOptions.adapter = optionsAdapter
         binding.recyclerViewOptions.layoutManager = LinearLayoutManager(requireContext())
     }

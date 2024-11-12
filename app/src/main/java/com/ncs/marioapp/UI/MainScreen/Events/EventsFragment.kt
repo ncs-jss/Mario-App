@@ -3,6 +3,7 @@ package com.ncs.marioapp.UI.MainScreen.Events
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -23,6 +24,7 @@ import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.isNull
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.marioapp.Domain.Utility.GlobalUtils
 import com.ncs.marioapp.R
+import com.ncs.marioapp.UI.EventDetailsScreen.EventDetailsActivity
 import com.ncs.marioapp.UI.MainScreen.Home.Adapters.EventsAdapter
 import com.ncs.marioapp.UI.MainScreen.Home.EventActionBottomSheet
 import com.ncs.marioapp.UI.MainScreen.Home.HomeViewModel
@@ -277,11 +279,19 @@ class EventsFragment : Fragment(), EventsAdapter.Callback, EventActionBottomShee
     }
 
     override fun onEnroll(event: Event) {
-        viewModel.enrollUser(event._id)
+//        viewModel.enrollUser(event._id)
     }
 
     override fun onUnenroll(event: Event) {
-        viewModel.unenrollUser(event._id)
+//        viewModel.unenrollUser(event._id)
+    }
+
+    override fun onMoreDetails(event: Event) {
+        val intent = Intent(requireContext(), EventDetailsActivity::class.java)
+        intent.putExtra("event_data", event)
+        startActivity(intent)
+        requireActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
+
     }
 
 }

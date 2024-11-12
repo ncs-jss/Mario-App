@@ -34,6 +34,7 @@ import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceLi
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.marioapp.Domain.Utility.GlobalUtils
 import com.ncs.marioapp.R
+import com.ncs.marioapp.UI.EventDetailsScreen.EventDetailsActivity
 import com.ncs.marioapp.UI.MainScreen.Home.Adapters.EventsAdapter
 import com.ncs.marioapp.UI.MainScreen.Home.Adapters.ListItem
 import com.ncs.marioapp.UI.MainScreen.Home.Adapters.PostAdapter
@@ -242,11 +243,11 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
     }
 
     override fun onEnroll(event: Event) {
-        viewModel.enrollUser(event._id)
+//        viewModel.enrollUser(event._id)
     }
 
     override fun onUnenroll(event: Event) {
-        viewModel.unenrollUser(event._id)
+//        viewModel.unenrollUser(event._id)
     }
 
     override fun onCheckBoxClick(poll: Poll, selectedOption:String) {
@@ -399,6 +400,14 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
         val formattedDate = dateFormat.format(date)
         val formattedTime = timeFormat.format(date)
         return Pair(formattedDate, formattedTime)
+    }
+
+    override fun onMoreDetails(event: Event) {
+        val intent = Intent(requireContext(), EventDetailsActivity::class.java)
+        intent.putExtra("event_data", event)
+        startActivity(intent)
+        requireActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
+
     }
 
 }

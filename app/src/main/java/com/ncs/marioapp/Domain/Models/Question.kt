@@ -1,9 +1,9 @@
 package com.ncs.marioapp.Domain.Models
 
 data class Question(
+    val options: List<Any>,
     val question: String,
-    val type:String,
-    val options: List<String> = emptyList()
+    val type: String
 )
 
 data class Answer(

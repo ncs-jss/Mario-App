@@ -4,6 +4,7 @@ import com.google.gson.JsonObject
 import com.ncs.marioapp.Domain.HelperClasses.PrefManager
 import com.ncs.marioapp.Domain.Models.Events.AnswerPollBody
 import com.ncs.marioapp.Domain.Models.Events.EnrollUser
+import com.ncs.marioapp.Domain.Models.Events.EventDetails.EventDetailsRequestBody
 import com.ncs.marioapp.Domain.Models.Events.GetEvents
 import com.ncs.marioapp.Domain.Models.Events.ParticipatedEventResponse
 import com.ncs.marioapp.Domain.Models.Events.ScanTicketBody
@@ -22,6 +23,13 @@ interface EventsApi {
     suspend fun getEvents(@Header("Authorization") authToken: String= PrefManager.getToken()!!,
                           @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
     ): Response<GetEvents>
+
+    @Headers("Content-Type: application/json")
+    @GET("get-event-details/{event_id}")
+    suspend fun getEventsDetails(@Header("Authorization") authToken: String= PrefManager.getToken()!!,
+                                 @Header("ban-kyc-token") banKycToken: String = PrefManager.getKYCHeaderToken()!!,
+                                 @Path("event_id") eventID: String
+    ): Response<JsonObject>
 
     @Headers("Content-Type: application/json")
     @GET("get-my-events")
