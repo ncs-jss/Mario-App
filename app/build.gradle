@@ -82,6 +82,15 @@ android {
 
             //Reports Endpoint
             buildConfigField("String","REPORTS_ENDPOINT","\"${getProps("REPORTS_ENDPOINT")}\"")
+
+            //Cloudinary Cloud Name
+            buildConfigField("String","CLOUDINARY_CLOUD_NAME","\"${getProps("CLOUDINARY_CLOUD_NAME")}\"")
+
+            //Cloudinary API KEY
+            buildConfigField("String","CLOUDINARY_API_KEY","\"${getProps("CLOUDINARY_API_KEY")}\"")
+
+            //Cloudinary API SECRET
+            buildConfigField("String","CLOUDINARY_API_SECRET","\"${getProps("CLOUDINARY_API_SECRET")}\"")
         }
 
         release {
@@ -115,6 +124,16 @@ android {
             //Reports Endpoint
             buildConfigField("String","REPORTS_ENDPOINT","\"${getProps("REPORTS_ENDPOINT")}\"")
 
+            //Cloudinary Cloud Name
+            buildConfigField("String","CLOUDINARY_CLOUD_NAME","\"${getProps("CLOUDINARY_CLOUD_NAME")}\"")
+
+            //Cloudinary API KEY
+            buildConfigField("String","CLOUDINARY_API_KEY","\"${getProps("CLOUDINARY_API_KEY")}\"")
+
+            //Cloudinary API SECRET
+            buildConfigField("String","CLOUDINARY_API_SECRET","\"${getProps("CLOUDINARY_API_SECRET")}\"")
+
+
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -145,6 +164,8 @@ dependencies {
     implementation libs.androidx.activity
     implementation libs.androidx.constraintlayout
     implementation libs.androidx.navigation.fragment
+    implementation libs.firebase.firestore.ktx
+    implementation libs.firebase.firestore
     testImplementation libs.junit
     androidTestImplementation libs.androidx.junit
     androidTestImplementation libs.androidx.espresso.core
@@ -252,9 +273,11 @@ dependencies {
     //scratch card
     implementation "com.github.AnupKumarPanwar:ScratchView:1.3"
 
-    //flexbox
-    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+    //viewpager
+    implementation "androidx.viewpager2:viewpager2:1.1.0"
 
+    //Cloudinary
+    implementation 'com.cloudinary:cloudinary-android:3.0.2'
 }
 
 
