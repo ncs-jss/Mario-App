@@ -148,7 +148,7 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
                 activityBinding.binding.drawerLayout.openDrawer(GravityCompat.START)
             }
         }
-        startAutoScroll()
+
         observeViewModel()
         setUpViews()
     }
@@ -183,6 +183,7 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
         }
         viewModel.banners.observe(viewLifecycleOwner){banners->
             setupBannerRecyclerView(banners.distinctBy { it._id }.sortedByDescending { it.createdAt })
+            startAutoScroll()
         }
         viewModel.progressState.observe(viewLifecycleOwner) {
             if (it) {
