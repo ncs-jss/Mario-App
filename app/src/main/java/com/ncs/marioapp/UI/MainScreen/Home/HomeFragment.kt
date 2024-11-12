@@ -458,7 +458,7 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
                 // If the post was not successfull, revert.
                 if (!success) {
                     val update = post.copy(
-                        likes = post.likes,
+                        likes = (post.likes).coerceAtLeast(0),
                         liked = true,
                         image = post.image ?: "default_image_url"
                     )
@@ -474,7 +474,7 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
         else {
 
             val updatedPost = post.copy(
-                likes = post.likes - 1,
+                likes = (post.likes - 1).coerceAtLeast(0),
                 liked = false,
                 image = post.image ?: "default_image_url"
             )
@@ -484,7 +484,7 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
             viewModel.unlikeResult.observe(viewLifecycleOwner){ success->
                 if (!success) {
                     val updatedPost = post.copy(
-                        likes = post.likes,
+                        likes = post.likes.coerceAtLeast(0),
                         liked = false,
                         image = post.image ?: "default_image_url"
                     )

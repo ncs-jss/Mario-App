@@ -9,13 +9,14 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
+import androidx.core.widget.NestedScrollView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,9 +25,7 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
-import com.ncs.marioapp.Domain.Models.Events.Event
 import com.ncs.marioapp.Domain.Models.Events.EventDetails.EventDetails
 import com.ncs.marioapp.Domain.Models.Events.EventDetails.Mentor
 import com.ncs.marioapp.Domain.Models.ServerResult
@@ -41,7 +40,6 @@ import com.ncs.marioapp.R
 import com.ncs.marioapp.UI.EventDetailsScreen.Adapters.RequirementsAdapter
 import com.ncs.marioapp.UI.EventDetailsScreen.Adapters.TeamAdapter
 import com.ncs.marioapp.UI.EventDetailsScreen.Adapters.TopicsAdapter
-import com.ncs.marioapp.UI.MainScreen.Home.Adapters.EventsAdapter
 import com.ncs.marioapp.UI.MainScreen.MainActivity
 import com.ncs.marioapp.databinding.FragmentEventDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -167,6 +165,8 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback {
         binding.eventDuration.text = eventDetails.duration
         binding.eventType.text = eventDetails.domain[0]
 
+        setupViewListeners(eventDetails.title)
+
         setReadMoreSpan(eventDetails)
 
         setUpRequiremntsRV(eventDetails.requirements)
@@ -256,10 +256,27 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback {
         binding.enrolledCount.text="${getInflatedEnrolledUserCount(event.enrolledCount)} +"
 
         val score=event.points
-        val coins=score/5
+        val coins = (score / 5).coerceAtLeast(0)
         binding.cointCount.text="+${coins}"
         binding.scoreCount.text="+${score}"
 
+    }
+
+    private var lastScrollY = 0
+    private val scrollThreshold = 50
+
+    private fun setupViewListeners(title: String) {
+        binding.scrollview.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
+            if (scrollY > lastScrollY + scrollThreshold) {
+                // User scrolled down
+                binding.eventTitle.text = "Details"
+
+            } else if (scrollY < lastScrollY - scrollThreshold) {
+                // User scrolled up
+                binding.eventTitle.text = title
+            }
+            lastScrollY = scrollY // Update last scroll position
+        })
     }
 
     var isExpanded = false

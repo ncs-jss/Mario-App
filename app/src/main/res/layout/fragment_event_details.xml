@@ -33,7 +33,7 @@
         android:id="@+id/actionbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/baseBlack"
+        android:background="@color/secondary_bg_lighter"
         android:elevation="@dimen/_5dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent"
@@ -44,7 +44,7 @@
         <ImageView
             android:id="@+id/backkk"
             android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginStart="10dp"
             android:paddingTop="@dimen/padding_bottom_offset"
@@ -55,17 +55,16 @@
         <TextView
             android:id="@+id/event_title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_height="match_parent"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="20dp"
             android:layout_weight="1"
             android:ellipsize="end"
-            android:fontFamily="@font/sf_medium"
-            android:gravity="start"
+            android:fontFamily="@font/sf_semibold"
+            android:gravity="center_vertical"
             android:maxLines="1"
             android:text="Event Name"
-            android:textColor="@color/better_white"
+            android:textColor="@color/baseWhite"
             android:textSize="20dp" />
 
         <ImageView
@@ -83,8 +82,18 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"
+            android:elevation="@dimen/_5dp"
+            android:background="@color/black200"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/actionbar" />
 
-    <androidx.core.widget.NestedScrollView
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none"
@@ -103,207 +112,206 @@
             android:orientation="vertical">
 
 
-            <View
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/account" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/secondary_bg_lighter">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp">
-
-                <androidx.cardview.widget.CardView
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:cardCornerRadius="@dimen/global_roundness"
-                    app:cardElevation="2dp"
-                    app:cardPreventCornerOverlap="true"
-                    app:cardUseCompatPadding="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_height="180dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp">
 
-                    <ImageView
-                        android:id="@+id/bannerImage"
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/placeholder_image"
+                        app:cardCornerRadius="@dimen/global_roundness"
+                        app:cardElevation="2dp"
+                        app:cardPreventCornerOverlap="true"
+                        app:cardUseCompatPadding="true"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent">
 
-                </androidx.cardview.widget.CardView>
+                        <ImageView
+                            android:id="@+id/bannerImage"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/placeholder_image"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.cardview.widget.CardView>
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/curve_bg"
-                android:elevation="10dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/sf_semibold"
-                    android:text="Important Details"
-                    android:textColor="@color/account"
-                    android:textSize="14dp" />
-
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/baseline_calendar_today_24"
-                        app:tint="@color/white" />
+                    android:layout_marginTop="8dp"
+                    android:elevation="10dp"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/event_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/sf_light"
-                        android:text="02 Nov, 2024"
-                        android:textColor="@color/white"
-                        android:textSize="17dp" />
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/sf_semibold"
+                        android:text="Important Details"
+                        android:textColor="@color/account"
+                        android:textSize="14dp" />
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:src="@drawable/baseline_calendar_today_24"
+                            app:tint="@color/white" />
+
+                        <TextView
+                            android:id="@+id/event_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/sfregular"
+                            android:text="02 Nov, 2024"
+                            android:textColor="@color/white"
+                            android:textSize="17dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:src="@drawable/baseline_access_time_24"
+                            app:tint="@color/white" />
+
+                        <TextView
+                            android:id="@+id/event_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/sfregular"
+                            android:text="4:00 PM"
+                            android:textColor="@color/white"
+                            android:textSize="17dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:src="@drawable/baseline_location_pin_24"
+                            app:tint="@color/white" />
+
+                        <TextView
+                            android:id="@+id/event_venue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/sfregular"
+                            android:text="Computer Center, AB-1"
+                            android:textColor="@color/white"
+                            android:textSize="17dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:src="@drawable/hour_glass_svgrepo_com"
+                            app:tint="@color/white" />
+
+                        <TextView
+                            android:id="@+id/event_duration"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/sfregular"
+                            android:text="2 Hours"
+                            android:textColor="@color/white"
+                            android:textSize="17dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="16dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:src="@drawable/internships_ic"
+                            app:tint="@color/white" />
+
+                        <TextView
+                            android:id="@+id/event_type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/sfregular"
+                            android:text="Technical"
+                            android:textColor="@color/white"
+                            android:textSize="17dp" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/baseline_access_time_24"
-                        app:tint="@color/white" />
-
-                    <TextView
-                        android:id="@+id/event_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/sf_light"
-                        android:text="4:00 PM"
-                        android:textColor="@color/white"
-                        android:textSize="17dp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/baseline_location_pin_24"
-                        app:tint="@color/white" />
-
-                    <TextView
-                        android:id="@+id/event_venue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/sf_light"
-                        android:text="Computer Center, AB-1"
-                        android:textColor="@color/white"
-                        android:textSize="17dp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/hour_glass_svgrepo_com"
-                        app:tint="@color/white" />
-
-                    <TextView
-                        android:id="@+id/event_duration"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/sf_light"
-                        android:text="2 Hours"
-                        android:textColor="@color/white"
-                        android:textSize="17dp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="16dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/internships_ic"
-                        app:tint="@color/white" />
-
-                    <TextView
-                        android:id="@+id/event_type"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/sf_light"
-                        android:text="Technical"
-                        android:textColor="@color/white"
-                        android:textSize="17dp" />
-
-                </LinearLayout>
 
             </LinearLayout>
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/curve_bg"
+                android:layout_marginTop="10dp"
+                android:background="@color/secondary_bg_lighter"
                 android:elevation="10dp"
                 android:orientation="vertical">
 
@@ -341,10 +349,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/curve_bg"
+                android:layout_marginTop="10dp"
+                android:background="@color/secondary_bg_lighter"
                 android:elevation="10dp"
                 android:orientation="vertical">
 
@@ -374,10 +380,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/curve_bg"
+                android:layout_marginTop="10dp"
+                android:background="@color/secondary_bg_lighter"
                 android:elevation="10dp"
                 android:orientation="vertical">
 
@@ -407,10 +411,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/curve_bg"
+                android:layout_marginTop="10dp"
+                android:background="@color/secondary_bg_lighter"
                 android:elevation="10dp"
                 android:orientation="vertical">
 
@@ -440,10 +442,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/curve_bg"
+                android:layout_marginTop="10dp"
+                android:background="@color/secondary_bg_lighter"
                 android:elevation="10dp"
                 android:orientation="vertical">
 
