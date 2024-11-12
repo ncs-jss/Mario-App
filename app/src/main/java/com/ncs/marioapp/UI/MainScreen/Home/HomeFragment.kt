@@ -20,6 +20,7 @@ import androidx.activity.addCallback
 import androidx.core.content.FileProvider
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -590,7 +591,32 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
     }
 
     override fun onBannerClick(banner: Banner) {
-        openUrl("https://www.instagram.com/hackncs/")
+        if(banner.type =="link"){
+            openUrl(banner.link)
+        }
+        else{
+            viewModel.getStory(banner.storyId)
+            viewModel.story.observe(requireActivity()){
+                if(!it?.storyText.isNull){
+                    openStoryFragment(it!!.storyText)
+                }
+            }
+        }
+    }
+
+    private fun openStoryFragment(text:String){
+        val bindO = requireActivity().findViewById<FragmentContainerView>(R.id.storyFragment)
+
+        requireActivity().supportFragmentManager.beginTransaction()
+            .setCustomAnimations(me.shouheng.utils.R.anim.slide_bottom_to_top,0)
+            .replace(R.id.storyFragment, StoryMainFragment().apply {
+                arguments = Bundle().apply {
+                    putString("storyText", text)
+                }
+            })
+            .addToBackStack(null)
+            .commit()
+        bindO.visible()
     }
 
 
