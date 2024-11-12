@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ncs.marioapp.Domain.Models.Answer
-import com.ncs.marioapp.Domain.Models.Question
+import com.ncs.marioapp.Domain.Models.Events.EventDetails.Question
 import com.ncs.marioapp.databinding.ItemSummaryBinding
 
 class SummaryAdapter(
@@ -14,7 +14,7 @@ class SummaryAdapter(
 
     inner class SummaryViewHolder(private val binding: ItemSummaryBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(answer: Answer, question: Question,position: Int) {
-            binding.tvQuestion.text = "Q${position}: ${question.question}"
+            binding.tvQuestion.text = "Q${position+1}: ${question.question}"
             binding.tvAnswer.text = "A: ${answer.answer}"
         }
     }

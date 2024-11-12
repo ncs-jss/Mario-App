@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.ncs.marioapp.Domain.Api.BannerApiService
 import com.ncs.marioapp.Domain.Api.EventsApi
@@ -25,12 +26,14 @@ import com.ncs.marioapp.Domain.Models.Posts.Post
 import com.ncs.marioapp.Domain.Models.Posts.PostResponse
 import com.ncs.marioapp.Domain.Models.ServerResponse
 import com.ncs.marioapp.Domain.Models.ServerResult
+import com.ncs.marioapp.Domain.Models.Story
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.io.InputStream
@@ -42,7 +45,8 @@ class HomeViewModel @Inject constructor(
     private val bannerApiService: BannerApiService,
     private val eventRepository: EventRepository,
     private val eventsApi: EventsApi,
-    private val postApiService: PostApiService
+    private val postApiService: PostApiService,
+    private val firestore: FirebaseFirestore
 ) : ViewModel() {
     private val _errorMessage = MutableLiveData<String?>(null)
     val errorMessage: LiveData<String?> get() = _errorMessage
@@ -58,6 +62,9 @@ class HomeViewModel @Inject constructor(
 
     private val _banners = MutableLiveData<List<Banner>>()
     val banners: LiveData<List<Banner>> get() = _banners
+
+    val _story = MutableLiveData<Story?>()
+    val story: LiveData<Story?> get() = _story
 
     private val _getEventsResponse = MutableLiveData<ServerResult<List<Event>>>()
     val getEventsResponse: LiveData<ServerResult<List<Event>>> = _getEventsResponse
@@ -130,16 +137,31 @@ class HomeViewModel @Inject constructor(
 
     suspend fun getBanners(): Unit = withContext(Dispatchers.IO) {
         try {
+            _progressState.postValue(true)
+
+            val apiBanners = mutableListOf<Banner>()
             val response = bannerApiService.getBanners()
             if (response.isSuccessful) {
                 val responseBody = response.body()
                 val bannerResponse = Gson().fromJson(responseBody, BannerResponse::class.java)
-                _banners.postValue(bannerResponse.banners)
+                apiBanners.addAll(bannerResponse.banners)
             } else {
                 val errorResponse = response.errorBody()?.string()
                 val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
                 _errorMessage.postValue(loginResponse.message)
             }
+
+            val firestoreBanners = mutableListOf<Banner>()
+            val firestoreResult = firestore.collection("Banners")
+                .get()
+                .await()
+            for (document in firestoreResult) {
+                document.toObject(Banner::class.java)?.let { firestoreBanners.add(it) }
+            }
+
+            val combinedBanners = (apiBanners + firestoreBanners).sortedByDescending { it.createdAt }
+            _banners.postValue(combinedBanners)
+
         } catch (e: SocketTimeoutException) {
             _errorMessage.postValue("Network timeout. Please try again.")
         } catch (e: IOException) {
@@ -148,6 +170,42 @@ class HomeViewModel @Inject constructor(
             _errorMessage.postValue("Something went wrong. Please try again.")
         } finally {
             _progressState.postValue(false)
+        }
+    }
+    fun getStory(storyId: String) {
+        val tag = "STORY_FETCH"
+        viewModelScope.launch {
+            try {
+                Log.d(tag, "Fetching story with ID: $storyId - started.")
+                _progressState.postValue(true)
+
+                // Fetch the story document by ID from Firestore
+                val firestoreResult = firestore.collection("Stories")
+                    .document(storyId)
+                    .get()
+                    .await()
+
+                Log.d(tag, "Firestore result fetched successfully.")
+
+                // Convert Firestore document to Story object and post value
+                firestoreResult.toObject(Story::class.java)?.let {
+                    _story.postValue(it)
+                    Log.d(tag, "Story posted to LiveData: $it")
+                } ?: Log.d(tag, "Story document not found or could not be converted.")
+
+            } catch (e: SocketTimeoutException) {
+                _errorMessage.postValue("Network timeout. Please try again.")
+                Log.e(tag, "Network timeout error: ${e.message}", e)
+            } catch (e: IOException) {
+                _errorMessage.postValue("Network error. Please check your connection.")
+                Log.e(tag, "Network error: ${e.message}", e)
+            } catch (e: Exception) {
+                _errorMessage.postValue("Something went wrong. Please try again.")
+                Log.e(tag, "Unexpected error: ${e.message}", e)
+            } finally {
+                _progressState.postValue(false)
+                Log.d(tag, "Fetching story with ID: $storyId - completed.")
+            }
         }
     }
 
@@ -209,64 +267,64 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun enrollUser(eventId: String) {
-        viewModelScope.launch {
-            _progressState.value = true
-            _normalErrorMessage.value = "Enrolling you to the event"
-            try {
-                val response = eventsApi.enrollUser(payload = EnrollUser(eventId))
-                if (response.isSuccessful) {
-                    val inputStream: InputStream = response.body()!!.byteStream()
-                    val bitmap: Bitmap = BitmapFactory.decodeStream(inputStream)
-                    _ticketResultBitmap.value = bitmap
-                    _progressState.value = false
-                    _normalErrorMessage.value = "Enrolled you to the event"
-                    _enrollResult.value = true
-                    getMyEvents()
-                } else {
-                    _progressState.value = false
-                    val errorResponse = response.errorBody()?.string()
-                    _normalErrorMessage.value = "Failed to enroll you to the event"
-                }
-            } catch (e: SocketTimeoutException) {
-                _progressState.value = false
-                _normalErrorMessage.value = "Network timeout. Please try again."
-            } catch (e: Exception) {
-                Log.d("checkexc", e.message.toString())
-                Log.d("checkexc", e.toString())
-                Log.d("checkexc", e.localizedMessage.toString())
-                _progressState.value = false
-                _normalErrorMessage.value = "Failed to enroll you..."
-            }
-        }
-    }
+//    fun enrollUser(eventId: String) {
+//        viewModelScope.launch {
+//            _progressState.value = true
+//            _normalErrorMessage.value = "Enrolling you to the event"
+//            try {
+//                val response = eventsApi.enrollUser(payload = EnrollUser(eventId))
+//                if (response.isSuccessful) {
+//                    val inputStream: InputStream = response.body()!!.byteStream()
+//                    val bitmap: Bitmap = BitmapFactory.decodeStream(inputStream)
+//                    _ticketResultBitmap.value = bitmap
+//                    _progressState.value = false
+//                    _normalErrorMessage.value = "Enrolled you to the event"
+//                    _enrollResult.value = true
+//                    getMyEvents()
+//                } else {
+//                    _progressState.value = false
+//                    val errorResponse = response.errorBody()?.string()
+//                    _normalErrorMessage.value = "Failed to enroll you to the event"
+//                }
+//            } catch (e: SocketTimeoutException) {
+//                _progressState.value = false
+//                _normalErrorMessage.value = "Network timeout. Please try again."
+//            } catch (e: Exception) {
+//                Log.d("checkexc", e.message.toString())
+//                Log.d("checkexc", e.toString())
+//                Log.d("checkexc", e.localizedMessage.toString())
+//                _progressState.value = false
+//                _normalErrorMessage.value = "Failed to enroll you..."
+//            }
+//        }
+//    }
 
-    fun unenrollUser(eventId: String) {
-        viewModelScope.launch {
-            _progressState.value = true
-            _normalErrorMessage.value = "Unenrolling you from the event"
-            try {
-                val response = eventsApi.optOutUser(payload = EnrollUser(eventId))
-
-                if (response.isSuccessful) {
-                    _progressState.value = false
-                    _normalErrorMessage.value = "Unenrolled you from the event"
-                    _unenrollResult.value = true
-                    getMyEvents()
-                } else {
-                    val errorResponse = response.errorBody()?.string()
-                    _progressState.value = false
-                    _normalErrorMessage.value = "Failed to unenroll you"
-                }
-            } catch (e: SocketTimeoutException) {
-                _progressState.value = false
-                _normalErrorMessage.value = "Network timeout. Please try again."
-            } catch (e: Exception) {
-                _progressState.value = false
-                _normalErrorMessage.value = "Failed to unenroll you.."
-            }
-        }
-    }
+//    fun unenrollUser(eventId: String) {
+//        viewModelScope.launch {
+//            _progressState.value = true
+//            _normalErrorMessage.value = "Unenrolling you from the event"
+//            try {
+//                val response = eventsApi.optOutUser(payload = EnrollUser(eventId))
+//
+//                if (response.isSuccessful) {
+//                    _progressState.value = false
+//                    _normalErrorMessage.value = "Unenrolled you from the event"
+//                    _unenrollResult.value = true
+//                    getMyEvents()
+//                } else {
+//                    val errorResponse = response.errorBody()?.string()
+//                    _progressState.value = false
+//                    _normalErrorMessage.value = "Failed to unenroll you"
+//                }
+//            } catch (e: SocketTimeoutException) {
+//                _progressState.value = false
+//                _normalErrorMessage.value = "Network timeout. Please try again."
+//            } catch (e: Exception) {
+//                _progressState.value = false
+//                _normalErrorMessage.value = "Failed to unenroll you.."
+//            }
+//        }
+//    }
 
     suspend fun getPolls(): Unit = withContext(Dispatchers.IO) {
         viewModelScope.launch {

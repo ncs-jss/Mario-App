@@ -8,6 +8,27 @@
     android:background="@color/baseBlack"
     tools:context=".UI.EventDetailsScreen.EventDetailsFragment">
 
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/bannerShimmerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include layout="@layout/event_details_shimmer_layout" />
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:id="@+id/event_layout"
+        android:visibility="visible"
+        android:layout_height="match_parent"
+        >
+
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/actionbar"
         android:layout_width="match_parent"
@@ -21,7 +42,7 @@
 
 
         <ImageView
-            android:id="@+id/btnBack"
+            android:id="@+id/backkk"
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_gravity="center"
@@ -32,7 +53,7 @@
 
 
         <TextView
-            android:id="@+id/title_tv"
+            android:id="@+id/event_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -157,7 +178,7 @@
                         app:tint="@color/white" />
 
                     <TextView
-                        android:id="@+id/date"
+                        android:id="@+id/event_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -183,7 +204,7 @@
                         app:tint="@color/white" />
 
                     <TextView
-                        android:id="@+id/time"
+                        android:id="@+id/event_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -209,7 +230,7 @@
                         app:tint="@color/white" />
 
                     <TextView
-                        android:id="@+id/venue"
+                        android:id="@+id/event_venue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -235,7 +256,7 @@
                         app:tint="@color/white" />
 
                     <TextView
-                        android:id="@+id/duration"
+                        android:id="@+id/event_duration"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -262,7 +283,7 @@
                         app:tint="@color/white" />
 
                     <TextView
-                        android:id="@+id/type"
+                        android:id="@+id/event_type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -296,6 +317,7 @@
                     android:textColor="@color/account"
                     android:textSize="14dp" />
 
+
                 <TextView
                     android:id="@+id/event_desc"
                     android:layout_width="match_parent"
@@ -308,7 +330,10 @@
                     android:fontFamily="@font/sf_medium"
                     android:text="Technical"
                     android:textColor="@color/white"
-                    android:textSize="17dp" />
+                    android:textSize="17dp"
+                    android:lineSpacingExtra="4dp"
+                    android:clickable="true"
+                    android:focusable="true" />
 
 
             </LinearLayout>
@@ -454,7 +479,7 @@
     <LinearLayout
         android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="70dp"
         android:background="@color/baseBlack"
         android:elevation="10dp"
         android:orientation="vertical"
@@ -571,7 +596,8 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:id="@+id/enroll"
+                    android:id="@+id/eventEnroll"
+                    android:visibility="visible"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
@@ -590,17 +616,153 @@
                         android:textColor="@color/white"
                         android:textSize="16dp" />
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="20dp"
-                        android:rotationY="180"
-                        android:src="@drawable/ic_back_arrow"
-                        app:tint="@color/white" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginStart="15dp"
+                        android:gravity="center"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/sf_light"
+                                android:text="+6"
+                                android:id="@+id/cointCount"
+                                android:textColor="@color/white"
+                                android:textSize="13dp" />
+
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_marginStart="10dp"
+                                android:rotationY="180"
+                                android:src="@drawable/coin"
+                                />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/sf_light"
+                                android:text="+30"
+                                android:id="@+id/scoreCount"
+                                android:textColor="@color/white"
+                                android:textSize="13dp" />
+
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_marginStart="10dp"
+                                android:rotationY="180"
+                                android:src="@drawable/token_ic"
+                                />
+
+                        </LinearLayout>
+
+
+
+                    </LinearLayout>
+
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/alreadyEnrolled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:textAlignment="center"
+                        android:fontFamily="@font/sf_light"
+                        android:text="You are already enrolled\ninto the event !"
+                        android:layout_marginEnd="20dp"
+                        android:textColor="@color/white"
+                        android:textSize="16dp" />
+
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/deadlineView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:textAlignment="center"
+                        android:fontFamily="@font/sf_light"
+                        android:text="Can't Enroll,\nDeadline Passed"
+                        android:layout_marginEnd="20dp"
+                        android:textColor="@color/white"
+                        android:textSize="16dp" />
+
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/notEligible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:textAlignment="center"
+                        android:fontFamily="@font/sf_light"
+                        android:text="You are not eligible\nto enroll into the event"
+                        android:layout_marginEnd="20dp"
+                        android:textColor="@color/white"
+                        android:textSize="16dp" />
+
+
+
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -608,6 +770,9 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

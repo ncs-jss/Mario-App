@@ -20,12 +20,14 @@ import androidx.activity.addCallback
 import androidx.core.content.FileProvider
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.ncs.marioapp.Domain.HelperClasses.PrefManager
 import com.ncs.marioapp.Domain.Models.Banner
 import com.ncs.marioapp.Domain.Models.Events.AnswerPollBody
 import com.ncs.marioapp.Domain.Models.Events.Event
@@ -42,6 +44,7 @@ import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceLi
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.marioapp.Domain.Utility.GlobalUtils
 import com.ncs.marioapp.R
+import com.ncs.marioapp.UI.EventDetailsScreen.EventDetailsActivity
 import com.ncs.marioapp.UI.MainScreen.Home.Adapters.BannerAdapter
 import com.ncs.marioapp.UI.MainScreen.Home.Adapters.EventsAdapter
 import com.ncs.marioapp.UI.MainScreen.Home.Adapters.ListItem
@@ -147,7 +150,7 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
                 activityBinding.binding.drawerLayout.openDrawer(GravityCompat.START)
             }
         }
-        startAutoScroll()
+
         observeViewModel()
         setUpViews()
     }
@@ -182,6 +185,7 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
         }
         viewModel.banners.observe(viewLifecycleOwner){banners->
             setupBannerRecyclerView(banners.distinctBy { it._id }.sortedByDescending { it.createdAt })
+            startAutoScroll()
         }
         viewModel.progressState.observe(viewLifecycleOwner) {
             if (it) {
@@ -198,6 +202,18 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
                 ServerResult.Progress -> {}
                 is ServerResult.Success -> {
                     val events=result.data.sortedByDescending { it.createdAt }.distinctBy { it._id }
+
+                    val eventFromDeeplink=PrefManager.getEventIdByDeeplink()
+                    if (eventFromDeeplink!=null){
+                        PrefManager.setEventIdByDeeplink(null)
+                        val event=events.firstOrNull { it._id==eventFromDeeplink }
+                        val intent = Intent(requireContext(), EventDetailsActivity::class.java)
+                        intent.putExtra("event_data", event)
+                        startActivity(intent)
+                        requireActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
+                    }
+
+
                     val requiredEvents = if (events.size > 3) {
                         events.subList(0, 3)
                     } else {
@@ -404,11 +420,19 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
     }
 
     override fun onEnroll(event: Event) {
-        viewModel.enrollUser(event._id)
+//        viewModel.enrollUser(event._id)
     }
 
     override fun onUnenroll(event: Event) {
-        viewModel.unenrollUser(event._id)
+//        viewModel.unenrollUser(event._id)
+    }
+
+    override fun onMoreDetails(event: Event) {
+        val intent = Intent(requireContext(), EventDetailsActivity::class.java)
+        intent.putExtra("event_data", event)
+        startActivity(intent)
+        requireActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
+
     }
 
     override fun onGetTicketClick(event: Event) {
@@ -590,7 +614,32 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
     }
 
     override fun onBannerClick(banner: Banner) {
-        openUrl("https://www.instagram.com/hackncs/")
+        if(banner.type =="link"){
+            openUrl(banner.link)
+        }
+        else{
+            viewModel.getStory(banner.storyId)
+            viewModel.story.observe(requireActivity()){
+                if(!it?.storyText.isNull){
+                    openStoryFragment(it!!.storyText)
+                }
+            }
+        }
+    }
+
+    private fun openStoryFragment(text:String){
+        val bindO = requireActivity().findViewById<FragmentContainerView>(R.id.storyFragment)
+
+        requireActivity().supportFragmentManager.beginTransaction()
+            .setCustomAnimations(me.shouheng.utils.R.anim.slide_bottom_to_top,0)
+            .replace(R.id.storyFragment, StoryMainFragment().apply {
+                arguments = Bundle().apply {
+                    putString("storyText", text)
+                }
+            })
+            .addToBackStack(null)
+            .commit()
+        bindO.visible()
     }
 
 

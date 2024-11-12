@@ -27,6 +27,15 @@ object PrefManager {
         return sharedPreferences.getInt("coins",0)
     }
 
+    fun setEventIdByDeeplink(eventId:String?){
+        editor.putString("EventIdByDeeplink",eventId)
+        editor.apply()
+    }
+
+    fun getEventIdByDeeplink():String?{
+        return sharedPreferences.getString("EventIdByDeeplink",null)
+    }
+
     fun setKYCHeaderToken(uri:String){
         editor.putString("KYCHeaderToken",uri)
         editor.apply()

@@ -1,21 +1,28 @@
 package com.ncs.marioapp.UI.EventDetailsScreen
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.ncs.marioapp.R
+import com.ncs.marioapp.Domain.Models.Events.Event
+import com.ncs.marioapp.databinding.ActivityEventDetailsBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class EventDetailsActivity : AppCompatActivity() {
+
+    val binding: ActivityEventDetailsBinding by lazy {
+        ActivityEventDetailsBinding.inflate(layoutInflater)
+    }
+
+    private val viewModel: EventDetailsViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_event_details)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        setContentView(binding.root)
+
+        val event = intent.getParcelableExtra<Event>("event_data")
+
+        viewModel.setEvent(event!!)
+
     }
 }

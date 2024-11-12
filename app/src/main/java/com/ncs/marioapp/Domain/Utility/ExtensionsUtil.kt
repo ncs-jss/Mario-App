@@ -108,6 +108,29 @@ object ExtensionsUtil {
             }
     }
 
+    fun generateEventShareLink(eventId:String, link:(Uri?) -> Unit){
+        val dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
+            .setLink(Uri.parse("https://ncsmario.page.link/event/${eventId}"))
+            .setDomainUriPrefix("https://ncsmario.page.link")
+            .setAndroidParameters(
+                DynamicLink.AndroidParameters.Builder("com.ncs.marioapp")
+                    .setMinimumVersion(1)
+                    .build()
+            )
+            .buildDynamicLink()
+        FirebaseDynamicLinks.getInstance().createDynamicLink()
+            .setLongLink(dynamicLink.uri)
+            .buildShortDynamicLink()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val shortLink = task.result?.shortLink
+                    link(shortLink!!)
+                } else {
+                    link(null)
+                }
+            }
+    }
+
     //Logging extensions
 
     fun Any?.printToLog(tag: String = "Debug Log") {

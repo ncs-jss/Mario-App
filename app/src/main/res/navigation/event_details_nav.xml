@@ -18,7 +18,25 @@
     <fragment
         android:id="@+id/eventQuestionnaireFragment"
         android:name="com.ncs.marioapp.UI.EventDetailsScreen.EventQuestionnaireFragment"
-        android:label="EventQuestionnaireFragment" />
+        android:label="EventQuestionnaireFragment" >
 
+        <action
+            android:id="@+id/action_eventQuestionnaireFragment_to_fragment_event_enrolled"
+            app:destination="@id/fragment_event_enrolled" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/fragment_event_enrolled"
+        android:name="com.ncs.marioapp.UI.EventDetailsScreen.EventEnrolledFragment"
+        android:label="fragment_event_enrolled"
+        tools:layout="@layout/fragment_event_enrolled" >
+
+        <action
+            android:id="@+id/action_fragment_event_enrolled_to_fragment_event_details"
+            app:destination="@id/fragment_event_details" />
+
+    </fragment>
 
 </navigation>
