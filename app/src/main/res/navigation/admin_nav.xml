@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/admin_nav.xml"
+    app:startDestination="@id/adminMainFragment">
+
+    <fragment
+        android:id="@+id/adminMainFragment"
+        android:name="com.ncs.marioapp.UI.AdminScreen.AdminMainFragment"
+        android:label="AdminMainFragment" >
+        <action
+            android:id="@+id/action_adminMainFragment_to_storyFragment"
+            app:destination="@id/storyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/storyFragment"
+        android:name="com.ncs.marioapp.UI.AdminScreen.StoryFragment"
+        android:label="fragment_story"
+        tools:layout="@layout/fragment_story" />
+</navigation>

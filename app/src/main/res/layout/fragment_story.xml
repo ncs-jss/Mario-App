@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_black"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".UI.AdminScreen.StoryFragment">
+
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_black">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/baseBlack"
+        android:elevation="@dimen/_5dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:paddingTop="@dimen/padding_bottom_offset"
+            android:src="@drawable/ic_back_arrow"
+            app:tint="@color/baseWhite" />
+
+
+        <TextView
+            android:id="@+id/title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:fontFamily="@font/sf_medium"
+            android:gravity="start"
+            android:maxLines="1"
+            android:text="Create Story"
+            android:textColor="@color/better_white"
+            android:textSize="20dp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <Button
+        android:backgroundTint="@color/secondary"
+        android:id="@+id/buttonPickImage"
+        android:layout_width="match_parent"
+        android:layout_margin="16dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/actionbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:text="Pick Image from Gallery" />
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_margin="16dp"
+        android:background="@drawable/filled_primary_box"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:layout_constraintTop_toBottomOf="@id/buttonPickImage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="Selected Image" />
+    <Button
+        android:backgroundTint="@color/secondary"
+        android:id="@+id/addBanner"
+        android:layout_width="match_parent"
+        android:layout_margin="16dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/imageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:text="Add Banner" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/addBanner"
+        android:background="@drawable/curve_bg"
+        android:textColor="@color/white"
+        android:hint="add Text"
+        android:padding="12dp"
+        android:scrollbars="vertical"
+        android:layout_margin="16dp"
+        android:id="@+id/editTextMarkdown"
+        android:minLines="12"
+        android:maxLines="25"
+        android:gravity="top"
+        />
+    <Button
+        android:backgroundTint="@color/secondary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/editTextMarkdown"
+        android:layout_margin="16dp"
+        android:text="Render Markdown"
+        android:id="@+id/buttonRenderMarkdown" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/buttonRenderMarkdown"
+        android:layout_margin="16dp"
+        android:id="@+id/textViewMarkdown"
+        android:background="@drawable/curve_bg"
+        android:hint="Edited Text here"
+        android:padding="12dp"
+        android:textColor="@color/white"
+        android:gravity="top"
+        />
+    <Button
+        android:id="@+id/uploadButton"
+        android:backgroundTint="@color/secondary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/textViewMarkdown"
+        android:layout_margin="16dp"
+        android:text="Upload Story"
+/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/progress"
+        android:visibility="gone"
+        android:layout_gravity="center"
+
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>
