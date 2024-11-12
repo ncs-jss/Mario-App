@@ -278,6 +278,9 @@ dependencies {
 
     //Cloudinary
     implementation 'com.cloudinary:cloudinary-android:3.0.2'
+
+    //flexbox
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 }
 
 

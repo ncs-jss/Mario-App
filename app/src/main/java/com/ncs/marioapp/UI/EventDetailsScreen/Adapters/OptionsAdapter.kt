@@ -7,23 +7,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ncs.marioapp.databinding.PollItemBinding
 
 class OptionsAdapter(
-    private val options: List<String>,
+    private val options: List<Any>,
     private val onOptionSelected: (String) -> Unit
 ) : RecyclerView.Adapter<OptionsAdapter.OptionViewHolder>() {
 
     private var selectedPosition = -1
 
     inner class OptionViewHolder(private val binding: PollItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(option: String, position: Int) {
-            binding.radioButton.text = option
-            binding.tvOption.text = option
+        fun bind(option: Any, position: Int) {
+            binding.radioButton.text = option.toString()
+            binding.tvOption.text = option.toString()
             binding.radioButton.isChecked = position == selectedPosition
             binding.tvScore.visibility = View.GONE
             binding.seekBar.visibility = View.GONE
 
             binding.radioButton.setOnClickListener {
                 selectedPosition = position
-                onOptionSelected(option)
+                onOptionSelected(option.toString())
                 notifyDataSetChanged()
             }
         }

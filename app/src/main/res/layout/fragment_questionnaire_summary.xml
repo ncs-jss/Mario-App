@@ -3,39 +3,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent">
 
-    <ScrollView
-        android:padding="16dp"
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/linearProgressIndicator"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="5dp"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        app:indicatorColor="@color/appblue"
+        app:indicatorDirectionLinear="leftToRight"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:trackColor="@color/item_bg_glow" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        >
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="24dp"
-            android:orientation="vertical"
-            android:background="@color/baseBlack">
+            android:background="@color/baseBlack"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvSummary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="24sp"
+                android:fontFamily="@font/sfbold"
+                android:paddingBottom="16dp"
                 android:text="Summary"
                 android:textColor="@color/neutral300"
-                android:fontFamily="@font/sfbold"
-                android:paddingBottom="16dp" />
+                android:textSize="24sp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewSummary"
-                android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_weight="1"
                 android:background="@drawable/curve_bg"
                 android:padding="12dp" />
 
@@ -47,10 +60,10 @@
         android:id="@+id/confirm_button_enroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="6dp"
+        android:layout_marginHorizontal="4dp"
 
         android:layout_marginVertical="12dp"
-        android:layout_marginHorizontal="4dp"
+        android:elevation="6dp"
         app:animation_duration="250"
         app:area_margin="0dp"
         app:border_radius="40dp"
@@ -58,7 +71,8 @@
         app:bump_vibration="50"
         app:icon_margin="12dp"
         app:inner_color="@color/white"
-        app:layout_constraintBottom_toTopOf="@id/linearProgressIndicator"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:outer_color="@color/neutral800"
         app:slider_height="60dp"
@@ -66,15 +80,5 @@
         app:text="Enroll to event"
         app:text_size="20sp"
         app:text_style="bold" />
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:visibility="invisible"
-        android:id="@+id/linearProgressIndicator"
-        android:layout_width="match_parent"
-        android:indeterminate="true"
-        android:layout_height="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:indicatorColor="@color/appblue"
-        app:indicatorDirectionLinear="leftToRight"
-        app:trackColor="@color/item_bg_glow"
-        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

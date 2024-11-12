@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:background="@color/baseBlack"
     android:layout_height="match_parent"
     >
     <ScrollView
@@ -25,26 +26,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/sf_semibold"
+        android:fontFamily="@font/sf_medium"
         android:text="Why do you want to join NCS?"
-        android:textColor="@color/neutral200"
+        android:textColor="@color/white"
         android:textSize="18sp" />
 
     <EditText
         android:id="@+id/answer"
-        android:minLines="20"
         android:hint="Enter your answer here..."
         android:gravity="top"
-        android:maxLines="25"
         android:scrollbars="vertical"
+        android:lines="4"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:padding="16dp"
+        android:textSize="16dp"
         android:textColor="@color/white"
         android:background="@drawable/curve_bg"
         android:elevation="10dp"
@@ -81,35 +80,39 @@
     android:gravity="end"
     >
 
-<LinearLayout
-    android:id="@+id/continue_btn"
-    android:layout_marginStart="160dp"
-    android:layout_gravity="end"
-    android:layout_width="wrap_content"
-    android:layout_height="40dp"
-    android:paddingHorizontal="24dp"
-    android:background="@drawable/button_bg"
-    android:gravity="center"
-    android:orientation="horizontal">
-
-    <TextView
+    <LinearLayout
+        android:id="@+id/continueBtn"
+        android:visibility="visible"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:fontFamily="@font/sf_semibold"
-        android:text="Continue"
-        android:textColor="@color/white"
-        android:textSize="16dp" />
-
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="10dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
-        android:rotationY="180"
-        android:src="@drawable/ic_back_arrow"
-        app:tint="@color/white" />
-</LinearLayout>
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/button_bg"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/sf_semibold"
+            android:text="Continue"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/white"
+            android:textSize="16dp" />
+
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="20dp"
+            android:rotationY="180"
+            android:src="@drawable/ic_back_arrow"
+            app:tint="@color/white" />
+
+    </LinearLayout>
+
 
 </LinearLayout>
     <com.google.android.material.progressindicator.LinearProgressIndicator
