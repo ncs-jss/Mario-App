@@ -12,11 +12,9 @@ import com.google.gson.Gson
 import com.ncs.marioapp.Domain.Api.BannerApiService
 import com.ncs.marioapp.Domain.Api.EventsApi
 import com.ncs.marioapp.Domain.Api.PostApiService
-import com.ncs.marioapp.Domain.Interfaces.EventRepository
 import com.ncs.marioapp.Domain.Models.Banner
 import com.ncs.marioapp.Domain.Models.BannerResponse
 import com.ncs.marioapp.Domain.Models.Events.AnswerPollBody
-import com.ncs.marioapp.Domain.Models.Events.EnrollUser
 import com.ncs.marioapp.Domain.Models.Events.Event
 import com.ncs.marioapp.Domain.Models.Events.ParticipatedEvent
 import com.ncs.marioapp.Domain.Models.Events.Poll
@@ -27,6 +25,7 @@ import com.ncs.marioapp.Domain.Models.Posts.PostResponse
 import com.ncs.marioapp.Domain.Models.ServerResponse
 import com.ncs.marioapp.Domain.Models.ServerResult
 import com.ncs.marioapp.Domain.Models.Story
+import com.ncs.marioapp.Domain.Repository.EventRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async

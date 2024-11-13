@@ -12,10 +12,18 @@
         <action
             android:id="@+id/action_adminMainFragment_to_storyFragment"
             app:destination="@id/storyFragment" />
+        <action
+            android:id="@+id/action_adminMainFragment_to_recordCreationFragment"
+            app:destination="@id/recordCreationFragment" />
     </fragment>
     <fragment
         android:id="@+id/storyFragment"
         android:name="com.ncs.marioapp.UI.AdminScreen.StoryFragment"
         android:label="fragment_story"
         tools:layout="@layout/fragment_story" />
+    <fragment
+        android:id="@+id/recordCreationFragment"
+        android:name="com.ncs.marioapp.UI.AdminScreen.RecordCreation.RecordCreationFragment"
+        android:label="fragment_record_creation"
+        tools:layout="@layout/fragment_record_creation" />
 </navigation>

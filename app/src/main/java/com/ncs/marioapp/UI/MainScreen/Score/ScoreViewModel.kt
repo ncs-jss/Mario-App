@@ -8,13 +8,13 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.ncs.marioapp.Domain.Api.MerchApi
 import com.ncs.marioapp.Domain.Api.ProfileApiService
-import com.ncs.marioapp.Domain.Interfaces.EventRepository
 import com.ncs.marioapp.Domain.Models.Events.ParticipatedEventResponse
 import com.ncs.marioapp.Domain.Models.MyOrderResponse
 import com.ncs.marioapp.Domain.Models.Score.Transaction
 import com.ncs.marioapp.Domain.Models.Score.TransactionsResponse
 import com.ncs.marioapp.Domain.Models.ServerResponse
 import com.ncs.marioapp.Domain.Models.ServerResult
+import com.ncs.marioapp.Domain.Repository.EventRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.IOException

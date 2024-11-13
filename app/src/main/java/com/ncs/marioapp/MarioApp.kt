@@ -2,7 +2,6 @@ package com.ncs.marioapp
 
 import android.app.Application
 import android.os.StrictMode
-import com.cloudinary.Cloudinary
 import com.cloudinary.android.MediaManager
 import com.google.firebase.FirebaseApp
 import com.ncs.marioapp.Domain.HelperClasses.PrefManager
@@ -25,7 +24,7 @@ class MarioApp : Application() {
         MediaManager.init(this, config)
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
-            enableStrictMode()
+//            enableStrictMode()
         }
     }
 

@@ -3,12 +3,11 @@ package com.ncs.marioapp.UI.AdminScreen
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.viewModels
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.journeyapps.barcodescanner.ScanContract
@@ -24,7 +23,6 @@ import com.ncs.marioapp.R
 import com.ncs.marioapp.UI.MainScreen.MainActivity
 import com.ncs.marioapp.databinding.FragmentAdminMainBinding
 import dagger.hilt.android.AndroidEntryPoint
-import me.shouheng.utils.app.ActivityUtils.overridePendingTransition
 
 @AndroidEntryPoint
 class AdminMainFragment : Fragment() {
@@ -70,10 +68,17 @@ class AdminMainFragment : Fragment() {
             findNavController().navigate(R.id.action_adminMainFragment_to_storyFragment)
         }
         binding.btnBackToMario.setOnClickThrottleBounceListener {
+            requireActivity().overridePendingTransition(
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+            )
             startActivity(Intent(requireActivity(), MainActivity::class.java))
-
+            this.requireActivity().finish()
         }
 
+        binding.btnCreateRound.setOnClickThrottleBounceListener {
+            findNavController().navigate(R.id.action_adminMainFragment_to_recordCreationFragment)
+        }
 
     }
 

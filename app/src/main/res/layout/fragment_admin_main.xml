@@ -3,107 +3,391 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:background="@color/baseBlack"
     android:layout_height="match_parent"
+    android:background="@color/baseBlack"
+    android:orientation="vertical"
     tools:context=".UI.AdminScreen.AdminMainActivity">
 
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ScrollView
+        android:id="@+id/scrollView3"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:fontFamily="@font/sf_medium"
-            android:textColor="@color/white"
-            android:textSize="25dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="20dp"
-            android:layout_height="wrap_content"
-            android:text="Hey Admin 👋"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:fontFamily="@font/sfregular"
-            android:textColor="@color/account"
-            android:textSize="14sp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="5dp"
-            android:layout_height="wrap_content"
-            android:text="with great power comes the great responsibility..."/>
-
+        android:clipToPadding="false"
+        android:paddingBottom="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/progress_bar">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:paddingTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:id="@+id/btnMarkAttendance"
-            android:visibility="visible"
-            android:layout_marginTop="20dp"
-            android:gravity="center|center_vertical"
-            android:background="@drawable/hollow_button_bg"
-            android:weightSum="10"
             android:orientation="vertical">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/sf_medium"
+                android:text="Hey Admin 👋"
+                android:textColor="@color/white"
+                android:textSize="25dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/sfregular"
+                android:text="with great power comes the great responsibility..."
+                android:textColor="@color/account"
+                android:textSize="14sp" />
+
+
             <LinearLayout
+                android:id="@+id/btnMarkAttendance"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingStart="15dp"
-                android:minHeight="50dp"
-                android:gravity="center"
-                android:paddingEnd="15dp"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/hollow_button_bg"
+                android:gravity="center|center_vertical"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:visibility="visible"
+                android:weightSum="10">
 
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/baseline_qr_code_scanner_24"
-                    app:tint="@color/white" />
-
-                <TextView
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="10"
-                    android:layout_marginStart="20dp"
-                    android:gravity="center|start"
-                    android:fontFamily="@font/sf_semibold"
-                    android:text="Mark Attendance"
-                    android:textColor="@color/white"
-                    android:textSize="20dp" />
+                    android:gravity="center"
+                    android:minHeight="50dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp">
 
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/baseline_qr_code_scanner_24"
+                        app:tint="@color/white" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="20dp"
+                        android:layout_weight="10"
+                        android:fontFamily="@font/sf_semibold"
+                        android:gravity="center|start"
+                        android:text="Mark Attendance"
+                        android:textColor="@color/white"
+                        android:textSize="20dp" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/coinTransactionHistory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/enroll_button"
+                    android:gravity="center">
+
+
+                    <TextView
+                        android:id="@+id/btnEnroll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/sf_semibold"
+                        android:text="Scan Ticket QR Code"
+                        android:textColor="@color/white"
+                        android:textSize="16dp" />
+
+
+                </LinearLayout>
 
 
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/coinTransactionHistory"
+                android:id="@+id/btnAuthorizeQR"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/enroll_button"
-                android:gravity="center">
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/hollow_button_bg"
+                android:gravity="center|center_vertical"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:visibility="visible"
+                android:weightSum="10">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:minHeight="50dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp">
 
 
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/baseline_lock_24"
+                        app:tint="@color/white" />
 
-                <TextView
-                    android:id="@+id/btnEnroll"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="20dp"
+                        android:layout_weight="10"
+                        android:fontFamily="@font/sf_semibold"
+                        android:gravity="center|start"
+                        android:text="Authorize Sticker QR"
+                        android:textColor="@color/white"
+                        android:textSize="20dp" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/sf_semibold"
-                    android:text="Scan Ticket QR Code"
-                    android:textColor="@color/white"
-                    android:textSize="16dp" />
+                    android:background="@drawable/enroll_button"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/sf_semibold"
+                        android:text="Set Sticker QR"
+                        android:textColor="@color/white"
+                        android:textSize="16dp" />
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnGiftCoins"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/hollow_button_bg"
+                android:gravity="center|center_vertical"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:visibility="visible"
+                android:weightSum="10">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:minHeight="50dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp">
+
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/baseline_card_giftcard_24"
+                        app:tint="@color/white" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="20dp"
+                        android:layout_weight="10"
+                        android:fontFamily="@font/sf_semibold"
+                        android:gravity="center|start"
+                        android:text="Gift Mario Coins"
+                        android:textColor="@color/white"
+                        android:textSize="20dp" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/enroll_button"
+                    android:gravity="center">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/sf_semibold"
+                        android:text="Scan Profile QR"
+                        android:textColor="@color/white"
+                        android:textSize="16dp" />
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnCreateStory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/hollow_button_bg"
+                android:gravity="center|center_vertical"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:visibility="visible"
+                android:weightSum="10">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:minHeight="50dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp">
+
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/baseline_bookmark_24"
+                        app:tint="@color/white" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="20dp"
+                        android:layout_weight="10"
+                        android:fontFamily="@font/sf_semibold"
+                        android:gravity="center|start"
+                        android:text="Add Story"
+                        android:textColor="@color/white"
+                        android:textSize="20dp" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/enroll_button"
+                    android:gravity="center">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/sf_semibold"
+                        android:text="Upload Story"
+                        android:textColor="@color/white"
+                        android:textSize="16dp" />
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnCreateRound"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/hollow_button_bg"
+                android:gravity="center|center_vertical"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:visibility="visible"
+                android:weightSum="10">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:minHeight="50dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp">
+
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/baseline_file_present_24"
+                        app:tint="@color/white" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="20dp"
+                        android:layout_weight="10"
+                        android:fontFamily="@font/sf_semibold"
+                        android:gravity="center|start"
+                        android:text="Create Round"
+                        android:textColor="@color/white"
+                        android:textSize="20dp" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/enroll_button"
+                    android:gravity="center">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/sf_semibold"
+                        android:text="Setup Round"
+                        android:textColor="@color/white"
+                        android:textSize="16dp" />
+
+
+                </LinearLayout>
 
 
             </LinearLayout>
@@ -111,231 +395,19 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:paddingTop="10dp"
-            android:layout_marginBottom="12dp"
-            android:id="@+id/btnAuthorizeQR"
-            android:visibility="visible"
-            android:gravity="center|center_vertical"
-            android:background="@drawable/hollow_button_bg"
-            android:weightSum="10"
-            android:orientation="vertical">
+    </ScrollView>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingStart="15dp"
-                android:minHeight="50dp"
-                android:gravity="center"
-                android:paddingEnd="15dp"
-                android:orientation="horizontal">
-
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/baseline_lock_24"
-                    app:tint="@color/white" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="10"
-                    android:layout_marginStart="20dp"
-                    android:gravity="center|start"
-                    android:fontFamily="@font/sf_semibold"
-                    android:text="Authorize Sticker QR"
-                    android:textColor="@color/white"
-                    android:textSize="20dp" />
-
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/enroll_button"
-                android:gravity="center">
-
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/sf_semibold"
-                    android:text="Set Sticker QR"
-                    android:textColor="@color/white"
-                    android:textSize="16dp" />
-
-
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:paddingTop="10dp"
-            android:layout_marginBottom="12dp"
-            android:id="@+id/btnGiftCoins"
-            android:visibility="visible"
-            android:gravity="center|center_vertical"
-            android:background="@drawable/hollow_button_bg"
-            android:weightSum="10"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingStart="15dp"
-                android:minHeight="50dp"
-                android:gravity="center"
-                android:paddingEnd="15dp"
-                android:orientation="horizontal">
-
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/baseline_card_giftcard_24"
-                    app:tint="@color/white" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="10"
-                    android:layout_marginStart="20dp"
-                    android:gravity="center|start"
-                    android:fontFamily="@font/sf_semibold"
-                    android:text="Gift Mario Coins"
-                    android:textColor="@color/white"
-                    android:textSize="20dp" />
-
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/enroll_button"
-                android:gravity="center">
-
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/sf_semibold"
-                    android:text="Scan Profile QR"
-                    android:textColor="@color/white"
-                    android:textSize="16dp" />
-
-
-            </LinearLayout>
-
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:paddingTop="10dp"
-            android:layout_marginBottom="12dp"
-            android:id="@+id/btnCreateStory"
-            android:visibility="visible"
-            android:gravity="center|center_vertical"
-            android:background="@drawable/hollow_button_bg"
-            android:weightSum="10"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingStart="15dp"
-                android:minHeight="50dp"
-                android:gravity="center"
-                android:paddingEnd="15dp"
-                android:orientation="horizontal">
-
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/baseline_bookmark_24"
-                    app:tint="@color/white" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="10"
-                    android:layout_marginStart="20dp"
-                    android:gravity="center|start"
-                    android:fontFamily="@font/sf_semibold"
-                    android:text="Add Story"
-                    android:textColor="@color/white"
-                    android:textSize="20dp" />
-
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/enroll_button"
-                android:gravity="center">
-
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/sf_semibold"
-                    android:text="Upload Story"
-                    android:textColor="@color/white"
-                    android:textSize="16dp" />
-
-
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/btnBackToMario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_bg"
-        android:gravity="center|center_vertical"
-        android:orientation="vertical"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="12dp"
+        android:background="@drawable/button_bg"
+        android:gravity="center|center_vertical"
+        android:orientation="vertical"
         android:visibility="visible"
         android:weightSum="10"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -373,30 +445,30 @@
         </LinearLayout>
 
 
-
     </LinearLayout>
 
-
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#900B0A0A"
         android:id="@+id/progress_bar"
-        >
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#900B0A0A"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ProgressBar
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleX="0.15"
-            android:scaleY="0.15"
             android:indeterminateTint="@color/redx"
-            />
+            android:scaleX="0.15"
+            android:scaleY="0.15" />
     </LinearLayout>
-    <FrameLayout
 
+    <FrameLayout
         android:id="@+id/fragment_container_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
