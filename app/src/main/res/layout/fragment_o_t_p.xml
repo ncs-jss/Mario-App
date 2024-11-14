@@ -67,7 +67,7 @@
             android:id="@+id/otp_et_1"
             android:textSize="30dp"
             android:inputType="numberDecimal"
-            android:textColor="@color/primary"/>
+            android:textColor="#02B6ED"/>
         <EditText
             android:layout_width="50dp"
             android:layout_height="50dp"
