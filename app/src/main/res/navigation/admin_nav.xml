@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_adminMainFragment_to_recordCreationFragment"
             app:destination="@id/recordCreationFragment" />
+        <action
+            android:id="@+id/action_adminMainFragment_to_fragment_questionnaire_creation"
+            app:destination="@id/fragment_questionnaire_creation" />
     </fragment>
     <fragment
         android:id="@+id/storyFragment"
@@ -26,4 +29,10 @@
         android:name="com.ncs.marioapp.UI.AdminScreen.RecordCreation.RecordCreationFragment"
         android:label="fragment_record_creation"
         tools:layout="@layout/fragment_record_creation" />
+
+    <fragment
+        android:id="@+id/fragment_questionnaire_creation"
+        android:name="com.ncs.marioapp.UI.AdminScreen.QuestionnaireCreation.QuestionnaireCreationFragment"
+        android:label="fragment_questionnaire_creation"
+        tools:layout="@layout/fragment_questionnaire_creation" />
 </navigation>
