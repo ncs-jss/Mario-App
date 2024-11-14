@@ -281,7 +281,7 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback {
 
     }
 
-    private fun setupRoundsRV(rounds: List<Round>) {
+    private fun setupRoundsRV(rounds:List<Round>) {
         val recyclerView = binding.roundsRecyclerView
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
@@ -294,6 +294,7 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback {
 
             Log.d("EventDetails", "${round.startTime}-${round.endTime}")
         }
+
         val adapter = RoundAdapter(rounds)
         recyclerView.adapter = adapter
     }

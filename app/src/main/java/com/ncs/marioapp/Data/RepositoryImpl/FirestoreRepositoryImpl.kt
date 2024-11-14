@@ -3,7 +3,7 @@ package com.ncs.marioapp.Data.RepositoryImpl
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ncs.marioapp.Domain.Models.Admin.Round
-import com.ncs.marioapp.Domain.Models.Events.EventDetails.Questionnaire
+import com.ncs.marioapp.Domain.Models.Admin.Questionnaire
 import com.ncs.marioapp.Domain.Models.ServerResult
 import com.ncs.marioapp.Domain.Repository.FirestoreRepository
 import kotlinx.coroutines.tasks.await
@@ -45,7 +45,6 @@ class FirestoreRepositoryImpl @Inject constructor(val firestore: FirebaseFiresto
             callback.invoke(ServerResult.Failure(e.message.toString()))
         }
 
-
     }
 
     override suspend fun getRounds(eventID: String, callback: (ServerResult<List<Round>>) -> Unit) {
@@ -69,6 +68,8 @@ class FirestoreRepositoryImpl @Inject constructor(val firestore: FirebaseFiresto
             callback.invoke(ServerResult.Failure(e.message.toString()))
         }
     }
+
+
 
 
 }

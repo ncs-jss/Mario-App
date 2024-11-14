@@ -7,7 +7,7 @@ data class FormItem(
     val title: String,
     val type: FormType,
     var value: String = "",
-    var options: List<String> = listOf("False", "True")
+    var options: List<String> = mutableListOf("False", "True")
 )
 
 @Parcelize
