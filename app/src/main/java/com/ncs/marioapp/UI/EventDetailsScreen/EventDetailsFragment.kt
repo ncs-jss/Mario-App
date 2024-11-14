@@ -26,10 +26,12 @@ import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.firebase.Timestamp
+import com.ncs.marioapp.Domain.HelperClasses.PrefManager
 import com.ncs.marioapp.Domain.HelperClasses.Utils.formatToFullDateWithTime
 import com.ncs.marioapp.Domain.Models.Admin.Round
 import com.ncs.marioapp.Domain.Models.Events.EventDetails.EventDetails
 import com.ncs.marioapp.Domain.Models.Events.EventDetails.Mentor
+import com.ncs.marioapp.Domain.Models.Events.EventDetails.Submission
 import com.ncs.marioapp.Domain.Models.ServerResult
 import com.ncs.marioapp.Domain.Utility.Codes
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil
@@ -53,7 +55,7 @@ import java.util.Locale
 import java.util.Random
 
 @AndroidEntryPoint
-class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback {
+class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback, RoundAdapter.RoundAdapterCallback {
 
     private var _binding : FragmentEventDetailsBinding? =null
     private val binding get() = _binding!!
@@ -61,6 +63,7 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback {
     private val util: GlobalUtils.EasyElements by lazy {
         GlobalUtils.EasyElements(requireActivity())
     }
+    lateinit var adapter: RoundAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -83,6 +86,7 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback {
         if (viewModel.eventDetails.value.isNull) {
 
             Log.d("EventDetails", "onViewCreated: ${viewModel.getEvent()!!._id}")
+            viewModel.getAllSubmissionsForRounds(eventID = viewModel.getEvent()!!._id, userId = PrefManager.getUserID()!!)
             viewModel.getEventDetails(viewModel.getEvent()!!._id)
             viewModel.getAllRoundsForEvent(viewModel.getEvent()!!._id)
         }
@@ -130,13 +134,22 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback {
 
     private fun observeViewModel(){
 
-        viewModel.roundsListLiveData.observe(viewLifecycleOwner) { result ->
-            when (result) {
+        viewModel.getSubmissionsForEvent.observe(viewLifecycleOwner){ res ->
+            when (res) {
                 is ServerResult.Failure -> {}
                 ServerResult.Progress -> {}
                 is ServerResult.Success -> {
-                    Log.d("EventDetails", "onViewCreated: ${result.data}")
-                    setupRoundsRV(result.data)
+                    viewModel.roundsListLiveData.observe(viewLifecycleOwner) { result ->
+                        when (result) {
+                            is ServerResult.Failure -> {}
+                            ServerResult.Progress -> {}
+                            is ServerResult.Success -> {
+                                Log.d("EventDetails", "onViewCreated: ${result.data}")
+                                setupRoundsRV(result.data, res.data)
+
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -281,7 +294,7 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback {
 
     }
 
-    private fun setupRoundsRV(rounds:List<Round>) {
+    private fun setupRoundsRV(rounds:List<Round>, userSubmission:List<Submission>) {
         val recyclerView = binding.roundsRecyclerView
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
@@ -295,7 +308,7 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback {
             Log.d("EventDetails", "${round.startTime}-${round.endTime}")
         }
 
-        val adapter = RoundAdapter(rounds)
+        adapter = RoundAdapter(rounds, this, userSubmission)
         recyclerView.adapter = adapter
     }
 
@@ -436,6 +449,16 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback {
     private fun openUrl(url: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         startActivity(intent)
+    }
+
+    override fun onFormButtonClick(round: Round) {
+        val questionnaireID = round.questionnaireID
+        val bundle = Bundle().apply {
+            putString("questionnaireID", questionnaireID)
+        }
+        viewModel.setRoundId(round.roundID)
+        viewModel.setQuestionnaireId(round.questionnaireID)
+        findNavController().navigate(R.id.action_fragment_event_details_to_fragment_round_questionnaire, bundle)
     }
 
 }

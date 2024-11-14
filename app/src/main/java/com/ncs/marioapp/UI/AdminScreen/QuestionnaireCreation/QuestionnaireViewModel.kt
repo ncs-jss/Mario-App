@@ -4,8 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ncs.marioapp.Domain.Models.Admin.Questionnaire
-import com.ncs.marioapp.Domain.Models.Admin.Round
+import com.ncs.marioapp.Domain.Models.Admin.RoundQuestionnaire
 import com.ncs.marioapp.Domain.Models.ServerResult
 import com.ncs.marioapp.Domain.Repository.EventRepository
 import com.ncs.marioapp.Domain.Repository.FirestoreRepository
@@ -22,7 +21,7 @@ class QuestionnaireViewModel @Inject constructor(
     private val _postQuestionnaireResponse = MutableLiveData<ServerResult<String>>()
     val postQuestionnaireResponse: LiveData<ServerResult<String>> = _postQuestionnaireResponse
 
-    suspend fun postQuestionnaire(questionnaire: Questionnaire) {
+    suspend fun postQuestionnaire(questionnaire: RoundQuestionnaire) {
         viewModelScope.launch {
 
             firestoreRepository.postQuestionnaire(questionnaire) {

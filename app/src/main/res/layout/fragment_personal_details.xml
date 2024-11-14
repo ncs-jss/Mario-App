@@ -79,33 +79,6 @@
             android:textColor="@color/better_white"
             android:textColorHint="@color/edit_text_hint"
             android:textSize="14dp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:fontFamily="@font/sfbold"
-            android:layout_marginTop="20dp"
-            android:text="Your Institution"
-            android:layout_marginBottom="10dp"
-            android:textColor="@color/edit_text_hint"
-            android:textSize="12dp" />
-        <TextView
-            android:id="@+id/Admitted_to_et"
-            android:hint="JSSATEN | JSS UNIVERSITY"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:lines="1"
-            android:gravity="center|start"
-            android:background="@drawable/edit_text_bg"
-            android:fontFamily="@font/sf_medium"
-            android:inputType="textAutoComplete"
-            android:paddingStart="15dp"
-            android:textColor="@color/better_white"
-            android:textColorHint="@color/edit_text_hint"
-            android:textSize="14dp" />
-
 
         <TextView
             android:layout_width="wrap_content"
@@ -156,6 +129,33 @@
             android:background="@drawable/edit_text_bg"
             android:fontFamily="@font/sf_medium"
             android:hint="Year"
+            android:inputType="textAutoComplete"
+            android:paddingStart="15dp"
+            android:textColor="@color/better_white"
+            android:textColorHint="@color/edit_text_hint"
+            android:textSize="14dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/sfbold"
+            android:layout_marginTop="20dp"
+            android:text="Admitted to"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/edit_text_hint"
+            android:textSize="12dp" />
+        <TextView
+            android:id="@+id/collegeOrUniversity"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:lines="1"
+            android:gravity="center|start"
+            android:background="@drawable/edit_text_bg"
+            android:fontFamily="@font/sf_medium"
+            android:hint="College or University"
             android:inputType="textAutoComplete"
             android:paddingStart="15dp"
             android:textColor="@color/better_white"
