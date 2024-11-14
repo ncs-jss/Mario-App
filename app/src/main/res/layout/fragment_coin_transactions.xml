@@ -58,6 +58,19 @@
             android:clipToPadding="false"
             android:paddingBottom="20dp"
             android:id="@+id/recyclerView"/>
+            <TextView
+                android:id="@+id/transactionTv"
+                android:visibility="gone"
+                android:layout_marginTop="200dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="No transactions recorded for your account."
+                android:gravity="center"
+                android:textSize="20sp"
+                android:padding="16dp"
+                android:textColor="@color/better_white"
+                android:fontFamily="@font/sf_medium"
+                />
 
         </LinearLayout>
 

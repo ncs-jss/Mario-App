@@ -3,6 +3,7 @@ package com.ncs.marioapp.Data.RepositoryImpl
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ncs.marioapp.Domain.Models.Admin.Round
+import com.ncs.marioapp.Domain.Models.Events.EventDetails.Questionnaire
 import com.ncs.marioapp.Domain.Models.ServerResult
 import com.ncs.marioapp.Domain.Repository.FirestoreRepository
 import kotlinx.coroutines.tasks.await
@@ -23,6 +24,24 @@ class FirestoreRepositoryImpl @Inject constructor(val firestore: FirebaseFiresto
 
         } catch (e: Exception) {
             Log.d("FirestoreRepository", "postRound: ${e.message}")
+            callback.invoke(ServerResult.Failure(e.message.toString()))
+        }
+
+
+    }
+
+    override suspend fun postQuestionnaire(questionnaire: Questionnaire, callback: (ServerResult<Boolean>) -> Unit) {
+        try {
+            callback.invoke(ServerResult.Progress)
+            firestore.collection("Questionnaire")
+                .document(questionnaire.queID)
+                .set(questionnaire)
+                .await()
+
+            callback.invoke(ServerResult.Success(true))
+
+        } catch (e: Exception) {
+            Log.d("FirestoreRepository", "postQuestionnaire: ${e.message}")
             callback.invoke(ServerResult.Failure(e.message.toString()))
         }
 

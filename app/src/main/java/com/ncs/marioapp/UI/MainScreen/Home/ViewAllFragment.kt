@@ -165,8 +165,12 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
                             is ListItem.Post -> it.post.createdAt
                         }
                     }
-
-                    adapter.submitList(combinedList)
+                    if (combinedList.isEmpty()){
+                        binding.postTv.visible()
+                    }else{
+                        binding.recyclerView.visible()
+                        adapter.submitList(combinedList)
+                    }
                 }
             }
 
@@ -208,11 +212,16 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
     }
 
     private fun setEventsRecyclerView(events:List<Event>){
-        val recyclerView = binding.recyclerView
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        recyclerView.layoutManager = layoutManager
-        eventsAdapter= EventsAdapter(events, this)
-        recyclerView.adapter = eventsAdapter
+        if(events.isEmpty()){
+            binding.eventTv.visible()
+        }else {
+            binding.recyclerView.visible()
+            val recyclerView = binding.recyclerView
+            val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            recyclerView.layoutManager = layoutManager
+            eventsAdapter = EventsAdapter(events, this)
+            recyclerView.adapter = eventsAdapter
+        }
     }
 
     private fun setUpPostsRV(posts:MutableList<ListItem>){

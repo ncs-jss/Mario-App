@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/baseBlack"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".UI.AdminScreen.RecordCreation.RecordCreationFragment">
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/primary_base"
+        android:elevation="@dimen/_5dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="28dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:paddingTop="@dimen/padding_bottom_offset"
+            android:src="@drawable/ic_back_arrow"
+            app:tint="@color/baseWhite" />
+
+
+        <TextView
+            android:id="@+id/title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:fontFamily="@font/sf_medium"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="Create Questionnaire"
+            android:textColor="@color/better_white"
+            android:textSize="20dp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:visibility="visible"
+        android:id="@+id/questionsView"
+        android:orientation="vertical">
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/requirementsRV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:padding="10dp"
+            android:visibility="visible"
+            android:background="@color/secondary_base"
+            android:scrollbars="vertical"
+            android:paddingTop="20dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/actionbar" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/baseline_add_24"
+                app:tint="@color/white"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Question"
+                android:fontFamily="@font/sf_semibold"
+                android:textColor="@color/white"
+                android:textSize="15dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent"
+        android:indeterminateTint="@color/redx"
+        android:scaleX="0.15"
+        android:scaleY="0.15" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

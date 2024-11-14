@@ -28,6 +28,19 @@ data class Round(
     var seriesNumber: Int = -1
 ) : Parcelable
 
+data class Questionnaire(
+    val queID:String,
+    val queTitle:String,
+    val questions:List<QuestionItem>
+)
+
+data class QuestionItem(
+    val qID:String,
+    val questionText:String,
+    val type:String,
+    val options:List<String> = emptyList()
+)
+
 enum class FormType {
     EDIT_TEXT,
     DROPDOWN,
