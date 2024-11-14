@@ -175,7 +175,7 @@
             android:backgroundTint="@color/button_bg"
             android:fontFamily="@font/sf_medium"
             android:textAllCaps="false"
-            android:text="Submit Idea" />
+            android:text="Submit" />
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>

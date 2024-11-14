@@ -686,6 +686,26 @@ object ExtensionsUtil {
         this.startAnimation(animationSet)
     }
 
+
+    fun TextView.startBlinking() {
+        val fadeOut = ObjectAnimator.ofFloat(this, "alpha", 1f, 0.5f)
+        fadeOut.duration = 800
+
+        val fadeIn = ObjectAnimator.ofFloat(this, "alpha", 0.5f, 1f)
+        fadeIn.duration = 800
+
+        // Set the blink to repeat infinitely
+        fadeOut.repeatCount = ObjectAnimator.INFINITE
+        fadeIn.repeatCount = ObjectAnimator.INFINITE
+
+        // Reverse the order of animation
+        fadeOut.repeatMode = ObjectAnimator.REVERSE
+        fadeIn.repeatMode = ObjectAnimator.REVERSE
+
+        fadeOut.start()
+        fadeIn.start()
+    }
+
     fun View.pulseEffect(duration: Long = 200, scaleFactor: Float = 1.2f) {
         val scaleUp = ObjectAnimator.ofFloat(this, "scaleX", 1f, scaleFactor).apply { }
         val scaleDown = ObjectAnimator.ofFloat(this, "scaleX", scaleFactor, 1f).apply { }

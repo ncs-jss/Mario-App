@@ -26,8 +26,8 @@ import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.firebase.Timestamp
-import com.ncs.marioapp.Domain.HelperClasses.Tester
 import com.ncs.marioapp.Domain.HelperClasses.Utils.formatToFullDateWithTime
+import com.ncs.marioapp.Domain.Models.Admin.Round
 import com.ncs.marioapp.Domain.Models.Events.EventDetails.EventDetails
 import com.ncs.marioapp.Domain.Models.Events.EventDetails.Mentor
 import com.ncs.marioapp.Domain.Models.ServerResult
@@ -81,7 +81,10 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (viewModel.eventDetails.value.isNull) {
+
+            Log.d("EventDetails", "onViewCreated: ${viewModel.getEvent()!!._id}")
             viewModel.getEventDetails(viewModel.getEvent()!!._id)
+            viewModel.getAllRoundsForEvent(viewModel.getEvent()!!._id)
         }
         observeViewModel()
         setUpViews()
@@ -126,6 +129,18 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback {
     }
 
     private fun observeViewModel(){
+
+        viewModel.roundsListLiveData.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is ServerResult.Failure -> {}
+                ServerResult.Progress -> {}
+                is ServerResult.Success -> {
+                    Log.d("EventDetails", "onViewCreated: ${result.data}")
+                    setupRoundsRV(result.data)
+                }
+            }
+        }
+
         viewModel.errorMessage.observe(viewLifecycleOwner){
             if (!it.isNull) {
                 util.showActionSnackbar(binding.root, it.toString(), 4000, "Retry") {
@@ -168,8 +183,6 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback {
         binding.eventVenue.text = eventDetails.venue
         binding.eventDuration.text = eventDetails.duration
         binding.eventType.text = eventDetails.domain[0]
-
-        setupRoundsRV()
 
         setupViewListeners(eventDetails.title)
 
@@ -268,12 +281,11 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback {
 
     }
 
-    private fun setupRoundsRV() {
+    private fun setupRoundsRV(rounds: List<Round>) {
         val recyclerView = binding.roundsRecyclerView
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
 
-        val rounds = Tester.getRounds()
         rounds.forEach { round ->
             round.startTime =
                 round.timeLine[Codes.Event.startCollege].toString().formatToFullDateWithTime()
