@@ -9,6 +9,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.Spinner
 import android.widget.TextView
@@ -21,9 +22,9 @@ import java.util.Calendar
 
 class FormAdapter(
     private val context: Context,
-    private val items: MutableList<FormItem>,
+    val items: MutableList<FormItem>,
     private val onButtonClick: (item: FormItem, items: List<FormItem>) -> Unit,
-    private val onRadioButtonClick: (position: Int) -> Unit,
+    private val onRadioButtonClick: (position: Int) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -118,24 +119,21 @@ class FormAdapter(
     inner class EditTextViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val title: TextView = view.findViewById(R.id.title)
         private val editText: EditText = view.findViewById(R.id.edit_text)
+
         fun bind(item: FormItem) {
-
-            editText.setOnFocusChangeListener { _, hasFocus ->
-                if (!hasFocus) {
-                    item.value = editText.text.toString()
-                }
-            }
-
             title.text = item.title
             editText.setText(item.value)
+
             editText.setOnFocusChangeListener { _, hasFocus ->
                 if (!hasFocus) {
                     item.value = editText.text.toString()
                     updateList(item)
                 }
             }
+
         }
     }
+
 
     inner class RadioButtonViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val title: TextView = view.findViewById(R.id.title)
@@ -147,6 +145,7 @@ class FormAdapter(
             radioButton.setOnClickListener {
                 onRadioButtonClick(bindingAdapterPosition)
             }
+
         }
     }
 

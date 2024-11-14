@@ -28,6 +28,7 @@ import com.google.android.flexbox.JustifyContent
 import com.google.firebase.Timestamp
 import com.ncs.marioapp.Domain.HelperClasses.Tester
 import com.ncs.marioapp.Domain.HelperClasses.Utils.formatToFullDateWithTime
+import com.ncs.marioapp.Domain.Models.Admin.Round
 import com.ncs.marioapp.Domain.Models.Events.EventDetails.EventDetails
 import com.ncs.marioapp.Domain.Models.Events.EventDetails.Mentor
 import com.ncs.marioapp.Domain.Models.ServerResult
@@ -268,12 +269,11 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback {
 
     }
 
-    private fun setupRoundsRV() {
+    private fun setupRoundsRV(rounds:List<Round>) {
         val recyclerView = binding.roundsRecyclerView
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
 
-        val rounds = Tester.getRounds()
         rounds.forEach { round ->
             round.startTime =
                 round.timeLine[Codes.Event.startCollege].toString().formatToFullDateWithTime()
@@ -282,6 +282,7 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback {
 
             Log.d("EventDetails", "${round.startTime}-${round.endTime}")
         }
+
         val adapter = RoundAdapter(rounds)
         recyclerView.adapter = adapter
     }

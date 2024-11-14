@@ -57,6 +57,30 @@
         android:id="@+id/questionsView"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
+            android:text="Questionnaire Title" />
+
+        <EditText
+            android:id="@+id/edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:minHeight="40dp"
+            android:lines="2"
+            android:textSize="@dimen/form_size"
+            android:paddingStart="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:paddingEnd="10dp"
+            android:inputType="textMultiLine"
+            android:background="@drawable/hollow_button_bg"
+            android:hint="Enter text" />
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/requirementsRV"
@@ -78,6 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:id="@+id/addQuestion"
             android:layout_marginTop="30dp"
             android:layout_gravity="center"
             android:orientation="horizontal">
@@ -97,6 +122,32 @@
                 android:textSize="15dp"/>
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:id="@+id/btnCreateQuestionnaire"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="40dp"
+            android:gravity="center"
+            android:background="@drawable/button_bg"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Create Questionnaire"
+                android:fontFamily="@font/sf_semibold"
+                android:textSize="16dp"
+                android:textColor="@color/white"
+                />
+
+
+        </LinearLayout>
+
 
     </LinearLayout>
 

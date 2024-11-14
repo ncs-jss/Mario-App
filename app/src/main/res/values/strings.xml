@@ -5,4 +5,8 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="default_channel_id">NCSMario_Channel_0001</string>
+    <string-array name="ques_array">
+        <item>Text Input</item>
+        <item>Option Selection</item>
+    </string-array>
 </resources>

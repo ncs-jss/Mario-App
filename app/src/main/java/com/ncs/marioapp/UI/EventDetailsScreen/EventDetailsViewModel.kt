@@ -128,6 +128,8 @@ class EventDetailsViewModel @Inject constructor(
         }
     }
 
+
+
     fun getNumberOfQuestions():Int {
         return _eventDetails.value!!.questionnaire.questions.size
     }

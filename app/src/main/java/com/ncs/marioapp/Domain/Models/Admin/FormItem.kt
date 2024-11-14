@@ -4,7 +4,7 @@ data class FormItem(
     val title: String,
     val type: FormType,
     var value: String = "",
-    var options: List<String> = listOf("False", "True")
+    var options: List<String> = mutableListOf("False", "True")
 )
 
 data class Round(
@@ -19,7 +19,8 @@ data class Round(
     val isLive: Boolean,
     val submissionButtonText: String,
     var startTime: String? = null,
-    var endTime: String? = null
+    var endTime: String? = null,
+
 )
 
 data class Questionnaire(
