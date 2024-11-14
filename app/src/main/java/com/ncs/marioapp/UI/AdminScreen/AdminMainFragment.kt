@@ -80,6 +80,10 @@ class AdminMainFragment : Fragment() {
             findNavController().navigate(R.id.action_adminMainFragment_to_recordCreationFragment)
         }
 
+        binding.btnCreateQuestionnaire.setOnClickThrottleBounceListener {
+            findNavController().navigate(R.id.action_adminMainFragment_to_fragment_questionnaire_creation)
+        }
+
     }
 
 
