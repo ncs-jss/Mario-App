@@ -62,6 +62,7 @@ class EditProfileActivity : AppCompatActivity() {
             setLinkedIn(currentUserProfile.socials.LinkedIn)
             setGithub(currentUserProfile.socials.GitHub)
             setBehance(currentUserProfile.socials.Behance)
+            setAdmittedTo(if(currentUserProfile.admitted_to=="") "COLLEGE" else currentUserProfile.admitted_to)
             setSelectedDomains(currentUserProfile.domain, currentUserProfile.other_domain)
         }
     }
