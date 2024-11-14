@@ -206,7 +206,7 @@ class ForgotPasswordViewModel @Inject constructor(val authApiService: AuthApiSer
         val passwordValue = password.value?.trim()
         val confirmPasswordValue = confirmPassword.value?.trim()
 
-        if (passwordValue.isNullOrEmpty() || passwordValue.length < 6) {
+        if (passwordValue.isNullOrEmpty() || passwordValue.length < 6 || passwordValue.length > 72) {
             _errorMessageSetPassFragment.value = "Password must be at least 6 characters long."
             return
         }

@@ -56,7 +56,7 @@ class SignUpViewModel @Inject constructor(val authApiService: AuthApiService) : 
             return
         }
 
-        if (passwordValue.isNullOrEmpty() || passwordValue.length < 6) {
+        if (passwordValue.isNullOrEmpty() || passwordValue.length < 6 || passwordValue.length > 72) {
             _errorMessage.value = "Password must be at least 6 characters long."
             return
         }
