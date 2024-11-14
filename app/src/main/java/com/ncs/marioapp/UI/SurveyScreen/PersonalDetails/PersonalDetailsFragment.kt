@@ -60,6 +60,7 @@ class PersonalDetailsFragment : Fragment(), BottomSheet.SendText {
                 val userSurvey= PrefManager.getUserProfileForCache()!!
                 userSurvey.name=surveyViewModel.name.value!!
                 userSurvey.admission_number=surveyViewModel.admission_num.value!!
+                userSurvey.admitted_to=surveyViewModel.admitted_to.value!!
                 userSurvey.branch=surveyViewModel.branch.value!!
                 userSurvey.year=when(surveyViewModel.year.value!!){
                     "I Year"->1
@@ -112,6 +113,11 @@ class PersonalDetailsFragment : Fragment(), BottomSheet.SendText {
                 binding.yearEt.text = it
             }
         })
+        surveyViewModel.admitted_to.observe(viewLifecycleOwner, Observer {
+            if (!it.isNull) {
+                binding.AdmittedToEt.text = it
+            }
+        })
     }
 
 
@@ -136,10 +142,21 @@ class PersonalDetailsFragment : Fragment(), BottomSheet.SendText {
                 BottomSheet(list, "Select Year", this,index)
             priorityBottomSheet.show(requireFragmentManager(), "Select Year")
         }
+        binding.AdmittedToEt.setOnClickThrottleBounceListener {
+            val list= listOf("JSSATEN","UNIVERSITY")
+            var index:Int=-1
+            if (binding.AdmittedToEt.text!="JSSATEN | JSS UNIVERSITY"){
+                index=list.indexOf(binding.AdmittedToEt.text.toString())
+            }
+            val priorityBottomSheet =
+                BottomSheet(list, "Select Institute", this,index)
+            priorityBottomSheet.show(requireFragmentManager(), "Select Institute")
+        }
         binding.btnNext.setOnClickThrottleBounceListener {
             surveyViewModel.name.value = binding.nameEt.text.toString()
             surveyViewModel.admission_num.value = binding.admissionNumEt.text.toString()
             surveyViewModel.branch.value = binding.branchEt.text.toString()
+            surveyViewModel.admitted_to.value = binding.AdmittedToEt.text.toString()
             surveyViewModel.year.value = binding.yearEt.text.toString()
             surveyViewModel.validateInputsOnPersonalDetailsPage()
         }
@@ -163,6 +180,10 @@ class PersonalDetailsFragment : Fragment(), BottomSheet.SendText {
         if (type=="Select Year"){
             binding.yearEt.text = text
         }
+        if (type=="Select Institute"){
+            binding.AdmittedToEt.text = text
+        }
+
     }
 
 }
