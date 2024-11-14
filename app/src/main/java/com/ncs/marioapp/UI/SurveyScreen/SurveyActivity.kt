@@ -54,6 +54,7 @@ class SurveyActivity : AppCompatActivity() {
                 4->"IV Year"
                 else->"0"
             })
+            setAdmittedTo(currentUserProfile.admitted_to)
             setLinkedIn(currentUserProfile.socials.LinkedIn)
             setGithub(currentUserProfile.socials.GitHub)
             setBehance(currentUserProfile.socials.Behance)

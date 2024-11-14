@@ -67,6 +67,7 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
 
     val name = MutableLiveData<String>(null)
     val admission_num = MutableLiveData<String>(null)
+    val admitted_to = MutableLiveData<String>(null)
     val branch = MutableLiveData<String>(null)
     val year = MutableLiveData<String>(null)
 
@@ -113,6 +114,9 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
 
     fun setBranch(_branch: String) {
         branch.value = _branch
+    }
+    fun setAdmittedTo(_admitted_to:String){
+        admitted_to.value = _admitted_to
     }
 
     fun setYear(_year: String) {
@@ -207,6 +211,7 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
         val nameValue=name.value?.trim()
         val admission_numValue=admission_num.value?.trim()
         val branch_value=branch.value?.trim()
+        val admitted_to_value=admitted_to.value?.trim()
         val year_value=year.value?.trim()
         if (nameValue.isNullOrEmpty()) {
             _errorMessagePersonalDetails.value = "Name can't be empty"
@@ -215,6 +220,10 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
 
         if (admission_numValue.isNullOrEmpty()) {
             _errorMessagePersonalDetails.value = "Admission Number can't be empty"
+            return
+        }
+        if (admitted_to_value.isNullOrEmpty()|| admitted_to_value=="JSSATEN | JSS UNIVERSITY") {
+            _errorMessagePersonalDetails.value = "Select Institute"
             return
         }
 
@@ -323,11 +332,17 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                     domains.remove("Others")
                     domains.add("Other")
                 }
+                var institute = ""
+                when(admitted_to.value){
+                    "JSSATEN"->institute="COLLEGE"
+                    "UNIVERSITY"->institute="UNIVERSITY"
+                }
                 val payload=CreateProfileBody(
                     FCM_token = "fcmtoken",
                     admission_number = admission_num.value!!.trim(),
                     branch = branch.value!!.trim(),
                     domain = domains,
+                    admitted_to = institute ,
                     other_domain = othersText!!,
                     name = name.value!!.trim(),
                     socials = mapOf(
@@ -337,6 +352,7 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                     ),
                     year = userYear
                 )
+                Log.d("signupResult", "Profile Create Payload: $payload")
                 val response = profileApiService.createUserProfile(payload = payload)
                 if (response.isSuccessful) {
                     Log.d("signupResult", "Profile Create: ${response.body()}")
@@ -373,15 +389,22 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                     "III Year"->userYear=3
                     "IV Year"->userYear=4
                 }
+                var institute = ""
+                when(admitted_to.value){
+                    "JSSATEN"->institute="COLLEGE"
+                    "UNIVERSITY"->institute="UNIVERSITY"
+                }
                 val domains=selectedDomains.value!!.toMutableList()
                 if (domains.contains("Others")){
                     domains.remove("Others")
                     domains.add("Other")
                 }
+
                 val payload=UpdateProfileBody(
                     branch = branch.value!!.trim(),
                     domain = domains,
                     other_domain = othersText!!,
+                    admitted_to = institute,
                     name = name.value!!.trim(),
                     socials = mapOf(
                         "GitHub" to github.value!!.trim(),

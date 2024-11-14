@@ -63,6 +63,7 @@ class PersonalDetailsFragmentEditProfile : Fragment(), BottomSheet.SendText {
                 userSurvey.admissionNum=surveyViewModel.admission_num.value!!
                 userSurvey.branch=surveyViewModel.branch.value!!
                 userSurvey.year=surveyViewModel.year.value!!
+                userSurvey.admitted_to=surveyViewModel.admitted_to.value!!
                 PrefManager.setUserSurvey(userSurvey)
                 Log.d("usercheck","${PrefManager.getUserSurvey()}")
                 findNavController().navigate(R.id.action_fragment_personal_details_ep_to_fragment_technical_ep)
@@ -103,6 +104,11 @@ class PersonalDetailsFragmentEditProfile : Fragment(), BottomSheet.SendText {
                 binding.branchEt.text = it
             }
         })
+        surveyViewModel.admitted_to.observe(viewLifecycleOwner, Observer {
+            if (!it.isNull) {
+                binding.AdmittedToEt.text = it
+            }
+        })
         surveyViewModel.year.observe(viewLifecycleOwner, Observer {
             if (!it.isNull) {
                 binding.yearEt.text = it
@@ -136,6 +142,7 @@ class PersonalDetailsFragmentEditProfile : Fragment(), BottomSheet.SendText {
             surveyViewModel.name.value = binding.nameEt.text.toString()
             surveyViewModel.admission_num.value = binding.admissionNumEt.text.toString()
             surveyViewModel.branch.value = binding.branchEt.text.toString()
+            surveyViewModel.admitted_to.value = binding.AdmittedToEt.text.toString()
             surveyViewModel.year.value = binding.yearEt.text.toString()
             surveyViewModel.validateInputsOnPersonalDetailsPage()
         }
@@ -154,6 +161,9 @@ class PersonalDetailsFragmentEditProfile : Fragment(), BottomSheet.SendText {
         }
         if (type=="Select Year"){
             binding.yearEt.text = text
+        }
+        if (type=="Select Institute"){
+            binding.AdmittedToEt.text = text
         }
     }
 

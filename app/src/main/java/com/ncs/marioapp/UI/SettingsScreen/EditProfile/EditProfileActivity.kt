@@ -57,6 +57,7 @@ class EditProfileActivity : AppCompatActivity() {
             setName(currentUserProfile.name)
             setAdmissionNum(currentUserProfile.admission_number)
             setBranch(currentUserProfile.branch)
+            setAdmittedTo(currentUserProfile.admitted_to)
             setYear(currentUserProfile.year.toString())
             setLinkedIn(currentUserProfile.socials.LinkedIn)
             setGithub(currentUserProfile.socials.GitHub)

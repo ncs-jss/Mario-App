@@ -12,6 +12,7 @@ import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.res.Resources
+import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
@@ -27,6 +28,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewPropertyAnimator
+import android.view.Window
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AlphaAnimation
 import android.view.animation.AnimationSet
@@ -150,10 +152,11 @@ object ExtensionsUtil {
         lottieAnimationView.playAnimation()
         textView.text = message
 
-        val dialog = AlertDialog.Builder(context)
-            .setView(view)
-            .setCancelable(false)
-            .create()
+        val dialog = Dialog(context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(view)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setCancelable(false)
 
         dialog.show()
         return dialog
