@@ -7,6 +7,7 @@ data class CreateProfileBody(
     val domain: List<String>,
     val other_domain:String,
     val name: String,
+    val admitted_to:String,
     val socials: Map<String, String>,
     val year: Int,
     val admitted_to:String

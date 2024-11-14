@@ -53,6 +53,7 @@ class EditProfileViewModel @Inject constructor(val profileApiService: ProfileApi
 
     val name = MutableLiveData<String>(null)
     val admission_num = MutableLiveData<String>(null)
+    val admitted_to = MutableLiveData<String>(null)
     val branch = MutableLiveData<String>(null)
     val year = MutableLiveData<String>(null)
 
@@ -94,6 +95,9 @@ class EditProfileViewModel @Inject constructor(val profileApiService: ProfileApi
 
     fun setBranch(_branch: String) {
         branch.value = _branch
+    }
+    fun setAdmittedTo(_admitted_to: String) {
+        admitted_to.value = _admitted_to
     }
 
     fun setYear(_year: String) {
@@ -188,6 +192,7 @@ class EditProfileViewModel @Inject constructor(val profileApiService: ProfileApi
         val nameValue=name.value?.trim()
         val admission_numValue=admission_num.value?.trim()
         val branch_value=branch.value?.trim()
+        val admitted_to_value = admitted_to.value?.trim()
         val year_value=year.value?.trim()
         if (nameValue.isNullOrEmpty()) {
             _errorMessagePersonalDetails.value = "Name can't be empty"
@@ -201,6 +206,10 @@ class EditProfileViewModel @Inject constructor(val profileApiService: ProfileApi
 
         if (branch_value.isNullOrEmpty() || branch_value=="Branch"){
             _errorMessagePersonalDetails.value = "Select your branch"
+            return
+        }
+        if (admitted_to_value.isNullOrEmpty() || admitted_to_value=="JSSATEN | JSS UNIVERSITY"){
+            _errorMessagePersonalDetails.value = "Select your admitted to"
             return
         }
 
@@ -262,10 +271,16 @@ class EditProfileViewModel @Inject constructor(val profileApiService: ProfileApi
                     domains.remove("Others")
                     domains.add("Other")
                 }
+                var institute = ""
+                when(admitted_to.value?.trim()){
+                    "JSSATEN"->institute="COLLEGE"
+                    "UNIVERSITY"->institute="UNIVERSITY"
+                }
                 val payload= UpdateProfileBody(
                     branch = branch.value!!.trim(),
                     domain = domains,
                     other_domain = othersText!!,
+                    admitted_to = institute,
                     name = name.value!!.trim(),
                     socials = mapOf(
                         "GitHub" to github.value!!.trim(),
@@ -274,11 +289,12 @@ class EditProfileViewModel @Inject constructor(val profileApiService: ProfileApi
                     ),
                     year = userYear
                 )
-
+                Log.d("signupResult", "Profile Update: ${payload}")
                 val response = profileApiService.updateUserProfile(payload = payload)
                 if (response.isSuccessful) {
                     val userProfile=PrefManager.getUserProfile()
                     userProfile!!.branch=branch.value!!.trim()
+                    userProfile.admitted_to=admitted_to.value!!.trim()
                     userProfile.domain=domains
                     userProfile.other_domain=othersText!!
                     userProfile.name=name.value!!.trim()

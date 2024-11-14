@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -53,7 +54,7 @@ class SocialLinksFragmentEditProfile : Fragment() {
     private fun observeData(){
         surveyViewModel.errorMessageSocialDetails.observe(viewLifecycleOwner, Observer { message ->
             if (message != null) {
-                util.showSnackbar(binding.root,message!!,2000)
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
                 surveyViewModel.resetErrorMessageSocialDetails()
             }
         })
