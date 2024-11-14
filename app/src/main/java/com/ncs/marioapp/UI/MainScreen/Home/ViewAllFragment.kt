@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.ncs.marioapp.Domain.Models.Events.AnswerPollBody
 import com.ncs.marioapp.Domain.Models.Events.Event
 import com.ncs.marioapp.Domain.Models.Events.ParticipatedEvent
@@ -226,6 +227,7 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
 
     private fun setUpPostsRV(posts:MutableList<ListItem>){
         adapter = PostAdapter(this)
+        binding.recyclerView.itemAnimator = null
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
     }
@@ -267,33 +269,57 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
         if (!isLiked){
             requireContext().performHapticFeedback()
             viewModel.likePost(LikePostBody(post_id = post._id, action = "LIKE"))
-            viewModel.likeResult.observe(viewLifecycleOwner){ success->
-                if (success){
-                    val updatedPost = post.copy(
-                        likes = post.likes + 1 ,
+            val updatedPost = post.copy(
+                likes = post.likes + 1,
+                liked = true,
+                image = post.image ?: "default_image_url"
+            )
+            adapter.updatePost(updatedPost)
+
+            viewModel.likeResult.observe(viewLifecycleOwner) { success ->
+                // If the post was not successfull, revert.
+                if (!success) {
+                    val update = post.copy(
+                        likes = (post.likes).coerceAtLeast(0),
                         liked = true,
                         image = post.image ?: "default_image_url"
                     )
-                    adapter.updatePost(updatedPost)
-
+                    adapter.updatePost(update)
+                    Snackbar.make(
+                        binding.root,
+                        "Unable to like post, try again.",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
         else {
+
+            val updatedPost = post.copy(
+                likes = (post.likes - 1).coerceAtLeast(0),
+                liked = false,
+                image = post.image ?: "default_image_url"
+            )
+
+            adapter.updatePost(updatedPost)
             viewModel.likePost(LikePostBody(post_id = post._id, action = "UNLIKE"))
             viewModel.unlikeResult.observe(viewLifecycleOwner){ success->
-                if (success){
+                if (!success) {
                     val updatedPost = post.copy(
-                        likes = post.likes - 1 ,
+                        likes = post.likes.coerceAtLeast(0),
                         liked = false,
                         image = post.image ?: "default_image_url"
                     )
                     adapter.updatePost(updatedPost)
+                    Snackbar.make(
+                        binding.root,
+                        "Unable to dislike, try again.",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
     }
-
     override fun onShareClick(post: Post) {
         if (post.image.isNullOrEmpty()) {
             util.showSnackbar(binding.root, "Something went wrong, try again later", 2000)

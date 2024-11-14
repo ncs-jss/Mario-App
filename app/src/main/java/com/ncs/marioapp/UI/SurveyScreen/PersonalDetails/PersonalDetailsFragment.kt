@@ -60,7 +60,6 @@ class PersonalDetailsFragment : Fragment(), BottomSheet.SendText {
                 val userSurvey= PrefManager.getUserProfileForCache()!!
                 userSurvey.name=surveyViewModel.name.value!!
                 userSurvey.admission_number=surveyViewModel.admission_num.value!!
-                userSurvey.admitted_to=surveyViewModel.admitted_to.value!!
                 userSurvey.branch=surveyViewModel.branch.value!!
                 userSurvey.year=when(surveyViewModel.year.value!!){
                     "I Year"->1
@@ -69,6 +68,7 @@ class PersonalDetailsFragment : Fragment(), BottomSheet.SendText {
                     "IV Year"->4
                     else->0
                 }
+                userSurvey.admitted_to=surveyViewModel.admittedTo.value!!
                 PrefManager.setUserProfileForCache(userSurvey)
                 findNavController().navigate(R.id.action_fragment_personal_details_to_fragment_technical)
                 surveyViewModel.resetPersonalDetailsPageResult()
@@ -88,6 +88,13 @@ class PersonalDetailsFragment : Fragment(), BottomSheet.SendText {
             editText.isFocusableInTouchMode = false
             editText.setOnClickListener {
                 util.showSnackbar(binding.root,"Can't edit admission number now",2000)
+            }
+            val editText1=binding.collegeOrUniversity
+            editText1.isEnabled = false
+            editText1.isFocusable = false
+            editText1.isFocusableInTouchMode = false
+            editText1.setOnClickListener {
+                util.showSnackbar(binding.root,"Can't edit your college now",2000)
             }
         }
     }
@@ -113,9 +120,9 @@ class PersonalDetailsFragment : Fragment(), BottomSheet.SendText {
                 binding.yearEt.text = it
             }
         })
-        surveyViewModel.admitted_to.observe(viewLifecycleOwner, Observer {
+        surveyViewModel.admittedTo.observe(viewLifecycleOwner, Observer {
             if (!it.isNull) {
-                binding.AdmittedToEt.text = it
+                binding.collegeOrUniversity.text = it
             }
         })
     }
@@ -142,22 +149,22 @@ class PersonalDetailsFragment : Fragment(), BottomSheet.SendText {
                 BottomSheet(list, "Select Year", this,index)
             priorityBottomSheet.show(requireFragmentManager(), "Select Year")
         }
-        binding.AdmittedToEt.setOnClickThrottleBounceListener {
-            val list= listOf("JSSATEN","UNIVERSITY")
+        binding.collegeOrUniversity.setOnClickThrottleBounceListener {
+            val list= listOf("COLLEGE","UNIVERSITY")
             var index:Int=-1
-            if (binding.AdmittedToEt.text!="JSSATEN | JSS UNIVERSITY"){
-                index=list.indexOf(binding.AdmittedToEt.text.toString())
+            if (binding.collegeOrUniversity.text!="Admitted to"){
+                index=list.indexOf(binding.collegeOrUniversity.text.toString())
             }
             val priorityBottomSheet =
-                BottomSheet(list, "Select Institute", this,index)
-            priorityBottomSheet.show(requireFragmentManager(), "Select Institute")
+                BottomSheet(list, "Admitted to", this,index)
+            priorityBottomSheet.show(requireFragmentManager(), "Admitted to")
         }
         binding.btnNext.setOnClickThrottleBounceListener {
             surveyViewModel.name.value = binding.nameEt.text.toString()
             surveyViewModel.admission_num.value = binding.admissionNumEt.text.toString()
             surveyViewModel.branch.value = binding.branchEt.text.toString()
-            surveyViewModel.admitted_to.value = binding.AdmittedToEt.text.toString()
             surveyViewModel.year.value = binding.yearEt.text.toString()
+            surveyViewModel.admittedTo.value = binding.collegeOrUniversity.text.toString()
             surveyViewModel.validateInputsOnPersonalDetailsPage()
         }
     }
@@ -180,10 +187,9 @@ class PersonalDetailsFragment : Fragment(), BottomSheet.SendText {
         if (type=="Select Year"){
             binding.yearEt.text = text
         }
-        if (type=="Select Institute"){
-            binding.AdmittedToEt.text = text
+        if (type=="Admitted to"){
+            binding.collegeOrUniversity.text = text
         }
-
     }
 
 }

@@ -10,11 +10,13 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.ncs.marioapp.Domain.Api.EventsApi
 import com.ncs.marioapp.Domain.Models.Admin.Round
+import com.ncs.marioapp.Domain.Models.Admin.RoundQuestionnaire
 import com.ncs.marioapp.Domain.Models.Answer
 import com.ncs.marioapp.Domain.Models.Events.EnrollUser
 import com.ncs.marioapp.Domain.Models.Events.Event
 import com.ncs.marioapp.Domain.Models.Events.EventDetails.EventDetails
 import com.ncs.marioapp.Domain.Models.Events.EventDetails.EventDetailsResponse
+import com.ncs.marioapp.Domain.Models.Events.EventDetails.Submission
 import com.ncs.marioapp.Domain.Models.Events.ParticipatedEvent
 import com.ncs.marioapp.Domain.Models.ServerResponse
 import com.ncs.marioapp.Domain.Models.ServerResult
@@ -45,8 +47,20 @@ class EventDetailsViewModel @Inject constructor(
     private val _errorMessage = MutableLiveData<String?>(null)
     val errorMessage: LiveData<String?> get() = _errorMessage
 
+    private val _questionnaireId = MutableLiveData<String?>(null)
+    val questionnaireId: LiveData<String?> get() = _questionnaireId
+
+    private val _roundId = MutableLiveData<String?>(null)
+    val roundId: LiveData<String?> get() = _roundId
+
     private val _eventDetails = MutableLiveData<EventDetails>(null)
     val eventDetails: LiveData<EventDetails> = _eventDetails
+
+    private val _getQuestionnaireForRound = MutableLiveData<ServerResult<RoundQuestionnaire>>()
+    val getQuestionnaireForRound: LiveData<ServerResult<RoundQuestionnaire>> = _getQuestionnaireForRound
+
+    private val _getSubmissionsForEvent = MutableLiveData<ServerResult<List<Submission>>>()
+    val getSubmissionsForEvent: LiveData<ServerResult<List<Submission>>> = _getSubmissionsForEvent
 
     private val _currentQuestionIndex = MutableLiveData(0)
     val currentQuestionIndex: LiveData<Int> get() = _currentQuestionIndex
@@ -63,12 +77,39 @@ class EventDetailsViewModel @Inject constructor(
     private val _enrollResult = MutableLiveData<Boolean>()
     val enrollResult: LiveData<Boolean> = _enrollResult
 
+    private val _postSubmissionResult = MutableLiveData<ServerResult<Boolean>>()
+    val postSubmissionResult: LiveData<ServerResult<Boolean>> = _postSubmissionResult
+
     private val _getMyEventsResponse = MutableLiveData<ServerResult<List<ParticipatedEvent>>>()
     val getMyEventsResponse: LiveData<ServerResult<List<ParticipatedEvent>>> = _getMyEventsResponse
 
     private val _roundsListLiveData = MutableLiveData<ServerResult<List<Round>>>(null)
     val roundsListLiveData: LiveData<ServerResult<List<Round>>> get() = _roundsListLiveData
 
+
+    fun setQuestionnaireId(id: String) {
+        _questionnaireId.value = id
+    }
+
+    fun setRoundId(id: String) {
+        _roundId.value = id
+    }
+
+    fun resetRoundId() {
+        _roundId.value = null
+    }
+
+    fun resetQuestionnaireId() {
+        _questionnaireId.value = null
+    }
+
+    fun getQuestionnaireId(): String? {
+        return _questionnaireId.value
+    }
+
+    fun getRoundId(): String? {
+        return _roundId.value
+    }
 
     fun resetErrorMessage() {
         _errorMessage.value = null
@@ -93,6 +134,79 @@ class EventDetailsViewModel @Inject constructor(
 
     fun setEventDetails(details: EventDetails) {
         _eventDetails.value = details
+    }
+
+    fun getAllSubmissionsForRounds(eventID: String, userId:String) {
+        viewModelScope.launch {
+            firestoreRepository.getSubmissions(eventId =eventID, userId = userId ) { it ->
+                when (it) {
+                    is ServerResult.Failure -> {
+                        _normalErrorMessage.value = "Failed to load submissions.."
+                        _progressState.value = false
+                        _getSubmissionsForEvent.value = ServerResult.Failure(it.message)
+                    }
+
+                    ServerResult.Progress -> {
+                        _progressState.value = true
+                        _getSubmissionsForEvent.value = ServerResult.Progress
+                    }
+
+                    is ServerResult.Success -> {
+                        _progressState.value = false
+                        _getSubmissionsForEvent.value = ServerResult.Success(it.data)
+                    }
+                }
+            }
+        }
+    }
+
+
+    fun getAllQuestionnairesById(questionnaireID: String) {
+        viewModelScope.launch {
+            firestoreRepository.getQuestionnaire(questionnaireID) { it ->
+                when (it) {
+                    is ServerResult.Failure -> {
+                        _normalErrorMessage.value = "Failed to load rounds.."
+                        _progressState.value = false
+                        _getQuestionnaireForRound.value = ServerResult.Failure(it.message)
+                    }
+
+                    ServerResult.Progress -> {
+                        _progressState.value = true
+                        _getQuestionnaireForRound.value = ServerResult.Progress
+                    }
+
+                    is ServerResult.Success -> {
+                        _progressState.value = false
+                        _getQuestionnaireForRound.value = ServerResult.Success(it.data)
+                    }
+                }
+            }
+        }
+    }
+
+    fun postSubmission(submission: Submission) {
+        viewModelScope.launch {
+            firestoreRepository.postSubmission(submission) { it ->
+                when (it) {
+                    is ServerResult.Failure -> {
+                        _normalErrorMessage.value = "Failed to submit"
+                        _progressState.value = false
+                        _postSubmissionResult.value=ServerResult.Failure(false.toString())
+                    }
+
+                    ServerResult.Progress -> {
+                        _progressState.value = true
+                        _postSubmissionResult.value=ServerResult.Progress
+                    }
+
+                    is ServerResult.Success -> {
+                        _progressState.value = false
+                        _postSubmissionResult.value=ServerResult.Success(true)
+                    }
+                }
+            }
+        }
     }
 
     fun getAllRoundsForEvent(eventID: String) {
@@ -156,6 +270,8 @@ class EventDetailsViewModel @Inject constructor(
             }
         }
     }
+
+
 
     fun getNumberOfQuestions():Int {
         return _eventDetails.value!!.questionnaire.questions.size

@@ -7,7 +7,7 @@ data class FormItem(
     val title: String,
     val type: FormType,
     var value: String = "",
-    var options: List<String> = listOf("False", "True")
+    var options: List<String> = mutableListOf("False", "True")
 )
 
 @Parcelize
@@ -28,7 +28,7 @@ data class Round(
     var seriesNumber: Int = -1
 ) : Parcelable
 
-data class Questionnaire(
+data class RoundQuestionnaire(
     val queID:String,
     val queTitle:String,
     val questions:List<QuestionItem>

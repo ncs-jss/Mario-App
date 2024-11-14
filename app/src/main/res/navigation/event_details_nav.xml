@@ -14,6 +14,10 @@
         <action
             android:id="@+id/action_fragment_event_details_to_eventQuestionnaireFragment"
             app:destination="@id/eventQuestionnaireFragment" />
+
+        <action
+            android:id="@+id/action_fragment_event_details_to_fragment_round_questionnaire"
+            app:destination="@id/fragment_round_questionnaire" />
     </fragment>
     <fragment
         android:id="@+id/eventQuestionnaireFragment"
@@ -35,6 +39,19 @@
 
         <action
             android:id="@+id/action_fragment_event_enrolled_to_fragment_event_details"
+            app:destination="@id/fragment_event_details" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_round_questionnaire"
+        android:name="com.ncs.marioapp.UI.EventDetailsScreen.RoundQuestionnaire.RoundQuestionnaireFragment"
+        android:label="fragment_round_questionnaire"
+        tools:layout="@layout/fragment_round_questionnaire" >
+
+
+        <action
+            android:id="@+id/action_fragment_round_questionnaire_to_fragment_event_details"
             app:destination="@id/fragment_event_details" />
 
     </fragment>
