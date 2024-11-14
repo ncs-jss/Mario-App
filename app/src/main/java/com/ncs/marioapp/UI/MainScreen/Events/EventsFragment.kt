@@ -82,6 +82,7 @@ class EventsFragment : Fragment(), EventsAdapter.Callback, EventActionBottomShee
             startShimmer()
             visibility = View.VISIBLE
         }
+        binding.eventTv.gone()
         binding.recyclerViewPosts.gone()
 
         binding.swiperefresh.setOnRefreshListener {
@@ -89,6 +90,7 @@ class EventsFragment : Fragment(), EventsAdapter.Callback, EventActionBottomShee
                 startShimmer()
                 visibility = View.VISIBLE
             }
+            binding.eventTv.gone()
             binding.recyclerViewPosts.gone()
             activityViewModel.fetchCriticalInfo()
 
@@ -158,16 +160,21 @@ class EventsFragment : Fragment(), EventsAdapter.Callback, EventActionBottomShee
                         startShimmer()
                         visibility = View.GONE
                     }
-                    binding.recyclerViewPosts.visible()
+                    if(result.data.isEmpty()){
+                        binding.eventTv.visible()
+                    }
+                    else{
+                        binding.recyclerViewPosts.visible()
 
-                    val events = result.data
-                    setEventsRecyclerView(events)
-                    viewModel.getMyEventsResponse.observe(viewLifecycleOwner) { result ->
-                        when (result) {
-                            is ServerResult.Failure -> {}
-                            ServerResult.Progress -> {}
-                            is ServerResult.Success -> {
-                                addUserEvents(result.data)
+                        val events = result.data
+                        setEventsRecyclerView(events)
+                        viewModel.getMyEventsResponse.observe(viewLifecycleOwner) { resultmy ->
+                            when (resultmy) {
+                                is ServerResult.Failure -> {}
+                                ServerResult.Progress -> {}
+                                is ServerResult.Success -> {
+                                    addUserEvents(resultmy.data)
+                                }
                             }
                         }
                     }

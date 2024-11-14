@@ -50,6 +50,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp" />
+            <TextView
+                android:id="@+id/bannerTv"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Get Ready! Fresh Banners Are Coming Your Way!"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:layout_marginVertical="40dp"
+                android:padding="16dp"
+                android:textColor="@color/better_white"
+                android:fontFamily="@font/sf_medium"
+                />
 
 
             <LinearLayout
@@ -117,6 +130,19 @@
                 android:overScrollMode="never"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp" />
+                <TextView
+                    android:id="@+id/eventTv"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Exciting New Events Are Just Around the Corner – Stay Tuned!"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:layout_marginVertical="40dp"
+                    android:padding="16dp"
+                    android:textColor="@color/better_white"
+                    android:fontFamily="@font/sf_medium"
+                    />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -181,6 +207,19 @@
                 android:layout_height="match_parent"
                 android:visibility="gone"
                 android:id="@+id/recyclerViewPosts" />
+            <TextView
+                android:id="@+id/postTv"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="New Posts and Polls Dropping Soon – Don’t Miss Out!"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:layout_marginVertical="40dp"
+                android:padding="16dp"
+                android:textColor="@color/better_white"
+                android:fontFamily="@font/sf_medium"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
