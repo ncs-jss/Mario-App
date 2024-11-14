@@ -1,9 +1,9 @@
-package com.ncs.marioapp.Domain.Repository
+package com.ncs.marioapp.Data.RepositoryImpl
 
 import com.ncs.marioapp.Domain.Api.QRAPI
-import com.ncs.marioapp.Domain.Interfaces.QrRepository
 import com.ncs.marioapp.Domain.Models.QR.QrScannedResponse
 import com.ncs.marioapp.Domain.Models.ServerResult
+import com.ncs.marioapp.Domain.Repository.QrRepository
 import javax.inject.Inject
 
 class RetrofitQrRepository @Inject constructor(private val qrAPI: QRAPI) : QrRepository {

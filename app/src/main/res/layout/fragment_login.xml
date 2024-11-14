@@ -16,8 +16,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Log In"
-        android:fontFamily="@font/sfbold"
+        android:text="Welcome back 👋🏻"
+        android:fontFamily="@font/sf_medium"
         android:textColor="@color/better_white"
         android:layout_marginTop="40dp"
         android:gravity="center"

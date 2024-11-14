@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:background="@color/baseBlack"
+    android:orientation="vertical"
     tools:context=".UI.EventDetailsScreen.EventDetailsFragment">
 
     <com.facebook.shimmer.ShimmerFrameLayout
@@ -22,71 +22,75 @@
     </com.facebook.shimmer.ShimmerFrameLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
         android:id="@+id/event_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:visibility="visible"
-        android:layout_height="match_parent"
-        >
-
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/actionbar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/secondary_bg_lighter"
-        android:elevation="@dimen/_5dp"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
 
-        <ImageView
-            android:id="@+id/backkk"
-            android:layout_width="28dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:paddingTop="@dimen/padding_bottom_offset"
-            android:src="@drawable/ic_back_arrow"
-            app:tint="@color/baseWhite" />
-
-
-        <TextView
-            android:id="@+id/event_title"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:fontFamily="@font/sf_semibold"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:text="Event Name"
-            android:textColor="@color/baseWhite"
-            android:textSize="20dp" />
-
-        <ImageView
-            android:id="@+id/btnShare"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_gravity="center"
-            android:layout_marginEnd="10dp"
-            android:src="@drawable/share"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/actionbar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/secondary_bg_lighter"
+            android:elevation="10dp"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/baseWhite" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <ImageView
+                android:id="@+id/backkk"
+                android:layout_width="28dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:paddingTop="@dimen/padding_bottom_offset"
+                android:src="@drawable/ic_back_arrow"
+                app:tint="@color/baseWhite" />
+
+
+            <TextView
+                android:id="@+id/event_title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:fontFamily="@font/sf_semibold"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="Event Name"
+                android:textColor="@color/baseWhite"
+                android:textSize="20dp" />
+
+            <ImageView
+                android:id="@+id/btnShare"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/share"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/baseWhite" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <View
+            android:id="@+id/view"
             android:layout_width="wrap_content"
             android:layout_height="2dp"
-            android:elevation="@dimen/_5dp"
             android:background="@color/black200"
+            android:elevation="@dimen/_5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/actionbar" />
@@ -94,68 +98,223 @@
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="50dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/actionbar"
-        app:layout_constraintStart_toStartOf="parent">
-
-
-        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="50dp"
-            android:orientation="vertical">
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="50dp"
+            android:orientation="vertical"
+            android:scrollbars="none"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/actionbar">
 
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="@color/secondary_bg_lighter">
+                android:elevation="5dp"
+                android:paddingBottom="50dp">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:cardCornerRadius="@dimen/global_roundness"
-                        app:cardElevation="2dp"
-                        app:cardPreventCornerOverlap="true"
-                        app:cardUseCompatPadding="true"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <ImageView
-                            android:id="@+id/bannerImage"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/placeholder_image"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.cardview.widget.CardView>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:background="@color/secondary_bg_lighter"
+                    android:orientation="vertical">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:cardCornerRadius="@dimen/global_roundness"
+                            app:cardElevation="2dp"
+                            app:cardPreventCornerOverlap="true"
+                            app:cardUseCompatPadding="true"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:id="@+id/bannerImage"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/placeholder_image"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </androidx.cardview.widget.CardView>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:elevation="10dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/sf_semibold"
+                            android:text="Important Details"
+                            android:textColor="@color/account"
+                            android:textSize="14dp" />
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:src="@drawable/baseline_calendar_today_24"
+                                app:tint="@color/white" />
+
+                            <TextView
+                                android:id="@+id/event_date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/sfregular"
+                                tools:text="02 Nov, 2024"
+                                android:textColor="@color/white"
+                                android:textSize="17dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:src="@drawable/baseline_access_time_24"
+                                app:tint="@color/white" />
+
+                            <TextView
+                                android:id="@+id/event_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/sfregular"
+                                tools:text="4:00 PM"
+                                android:textColor="@color/white"
+                                android:textSize="17dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:src="@drawable/baseline_location_pin_24"
+                                app:tint="@color/white" />
+
+                            <TextView
+                                android:id="@+id/event_venue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/sfregular"
+                                tools:text="Computer Center, AB-1"
+                                android:textColor="@color/white"
+                                android:textSize="17dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:src="@drawable/hour_glass_svgrepo_com"
+                                app:tint="@color/white" />
+
+                            <TextView
+                                android:id="@+id/event_duration"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/sfregular"
+                                tools:text="2 Hours"
+                                android:textColor="@color/white"
+                                android:textSize="17dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="16dp"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:src="@drawable/internships_ic"
+                                app:tint="@color/white" />
+
+                            <TextView
+                                android:id="@+id/event_type"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/sfregular"
+                                tools:text="Technical"
+                                android:textColor="@color/white"
+                                android:textSize="17dp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/secondary_bg_lighter"
                     android:elevation="10dp"
                     android:orientation="vertical">
 
@@ -163,616 +322,497 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="10dp"
                         android:fontFamily="@font/sf_semibold"
-                        android:text="Important Details"
+                        android:text="About Event"
                         android:textColor="@color/account"
                         android:textSize="14dp" />
 
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:src="@drawable/baseline_calendar_today_24"
-                            app:tint="@color/white" />
-
-                        <TextView
-                            android:id="@+id/event_date"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/sfregular"
-                            android:text="02 Nov, 2024"
-                            android:textColor="@color/white"
-                            android:textSize="17dp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/event_desc"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="10dp"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:src="@drawable/baseline_access_time_24"
-                            app:tint="@color/white" />
-
-                        <TextView
-                            android:id="@+id/event_time"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/sfregular"
-                            android:text="4:00 PM"
-                            android:textColor="@color/white"
-                            android:textSize="17dp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:src="@drawable/baseline_location_pin_24"
-                            app:tint="@color/white" />
-
-                        <TextView
-                            android:id="@+id/event_venue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/sfregular"
-                            android:text="Computer Center, AB-1"
-                            android:textColor="@color/white"
-                            android:textSize="17dp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:src="@drawable/hour_glass_svgrepo_com"
-                            app:tint="@color/white" />
-
-                        <TextView
-                            android:id="@+id/event_duration"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/sfregular"
-                            android:text="2 Hours"
-                            android:textColor="@color/white"
-                            android:textSize="17dp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="16dp"
                         android:layout_marginBottom="16dp"
-                        android:orientation="horizontal">
+                        android:clickable="true"
+                        android:ellipsize="end"
+                        android:focusable="true"
+                        android:fontFamily="@font/sfregular"
+                        android:lineSpacingExtra="4dp"
+                        android:text="Loading event details.."
+                        android:textColor="@color/white"
+                        android:textSize="17dp" />
 
-                        <ImageView
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:src="@drawable/internships_ic"
-                            app:tint="@color/white" />
-
-                        <TextView
-                            android:id="@+id/event_type"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/sfregular"
-                            android:text="Technical"
-                            android:textColor="@color/white"
-                            android:textSize="17dp" />
-
-                    </LinearLayout>
 
                 </LinearLayout>
 
 
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@color/secondary_bg_lighter"
-                android:elevation="10dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/sf_semibold"
-                    android:text="About Event"
-                    android:textColor="@color/account"
-                    android:textSize="14dp" />
-
-
-                <TextView
-                    android:id="@+id/event_desc"
+                <LinearLayout
+                    android:id="@+id/timelineParent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/sf_medium"
-                    android:text="Technical"
-                    android:textColor="@color/white"
-                    android:textSize="17dp"
-                    android:lineSpacingExtra="4dp"
-                    android:clickable="true"
-                    android:focusable="true" />
+                    android:background="@color/secondary_bg_lighter"
+                    android:elevation="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/sf_semibold"
+                        android:text="Stages &amp; Timeline"
+                        android:textColor="@color/account"
+                        android:textSize="14dp" />
 
 
-            </LinearLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/roundsRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="20dp"
+                        android:nestedScrollingEnabled="false"
+                        android:overScrollMode="never"
+                        tools:itemCount="2"
+                        tools:listitem="@layout/item_round"
+                        android:layout_marginBottom="20dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@color/secondary_bg_lighter"
-                android:elevation="10dp"
-                android:orientation="vertical">
+                </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/sf_semibold"
-                    android:text="Requirements"
-                    android:textColor="@color/account"
-                    android:textSize="14dp" />
-
-                <androidx.recyclerview.widget.RecyclerView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_height="match_parent"
-                    tools:listitem="@layout/requirements_rv_item_view"
-                    android:id="@+id/requirementsRV"/>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@color/secondary_bg_lighter"
-                android:elevation="10dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
                     android:layout_marginTop="10dp"
-                    android:fontFamily="@font/sf_semibold"
-                    android:text="Topics"
-                    android:textColor="@color/account"
-                    android:textSize="14dp" />
+                    android:background="@color/secondary_bg_lighter"
+                    android:elevation="10dp"
+                    android:orientation="vertical">
 
-                <androidx.recyclerview.widget.RecyclerView
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/sf_semibold"
+                        android:text="Requirements"
+                        android:textColor="@color/account"
+                        android:textSize="14dp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/requirementsRV"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="20dp"
+                        android:nestedScrollingEnabled="false"
+                        android:overScrollMode="never"
+                        android:layout_marginBottom="20dp"
+                        tools:itemCount="3"
+                        tools:listitem="@layout/requirements_rv_item_view" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_height="match_parent"
-                    tools:listitem="@layout/topics_rv_item"
-                    android:id="@+id/topics_rv"/>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@color/secondary_bg_lighter"
-                android:elevation="10dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
                     android:layout_marginTop="10dp"
-                    android:fontFamily="@font/sf_semibold"
-                    android:text="Speakers &amp; Mentors"
-                    android:textColor="@color/account"
-                    android:textSize="14dp" />
+                    android:background="@color/secondary_bg_lighter"
+                    android:elevation="10dp"
+                    android:orientation="vertical">
 
-                <androidx.recyclerview.widget.RecyclerView
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/sf_semibold"
+                        android:text="Topics"
+                        android:textColor="@color/account"
+                        android:textSize="14dp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/topics_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:nestedScrollingEnabled="false"
+                        android:overScrollMode="never"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="20dp"
+                        tools:itemCount="4"
+                        tools:listitem="@layout/topics_rv_item" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_height="match_parent"
-                    tools:listitem="@layout/speaker_rv_item"
-                    android:id="@+id/speakers_rv"/>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@color/secondary_bg_lighter"
-                android:elevation="10dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
                     android:layout_marginTop="10dp"
-                    android:fontFamily="@font/sf_semibold"
-                    android:text="Point of contact"
-                    android:textColor="@color/account"
-                    android:textSize="14dp" />
+                    android:background="@color/secondary_bg_lighter"
+                    android:elevation="10dp"
+                    android:orientation="vertical">
 
-                <androidx.recyclerview.widget.RecyclerView
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/sf_semibold"
+                        android:text="Speakers &amp; Mentors"
+                        android:textColor="@color/account"
+                        android:textSize="14dp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/speakers_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:nestedScrollingEnabled="false"
+                        android:overScrollMode="never"
+                        android:layout_marginBottom="20dp"
+                        tools:itemCount="3"
+                        tools:listitem="@layout/speaker_rv_item" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_height="match_parent"
-                    tools:listitem="@layout/speaker_rv_item"
-                    android:id="@+id/point_of_contact_rv"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/secondary_bg_lighter"
+                    android:elevation="10dp"
+                    android:orientation="vertical">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/sf_semibold"
+                        android:text="Point of contact"
+                        android:textColor="@color/account"
+                        android:textSize="14dp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/point_of_contact_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:overScrollMode="never"
+                        android:nestedScrollingEnabled="false"
+                        android:layout_marginBottom="20dp"
+                        tools:itemCount="3"
+                        tools:listitem="@layout/speaker_rv_item" />
+
+
+                </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
-    </androidx.core.widget.NestedScrollView>
-
-
-
-    <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="@color/baseBlack"
-        android:elevation="10dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/account" />
 
         <LinearLayout
+            android:id="@+id/linearLayout4"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center|start"
-            android:orientation="horizontal"
-            android:weightSum="10">
+            android:layout_height="70dp"
+            android:background="@color/baseBlack"
+            android:elevation="10dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/account" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="15dp"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/enrolledCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/sfbold"
-                    android:text="10+"
-                    android:textColor="@color/white"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/sf_light"
-                    android:text="enrolled"
-                    android:textColor="@color/white"
-                    android:textSize="14dp" />
-
-            </LinearLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:orientation="horizontal">
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    app:cardCornerRadius="25dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:id="@+id/profile_pic1"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/profile_pic_placeholder" />
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginStart="10dp"
-                    app:cardCornerRadius="25dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:id="@+id/profile_pic2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/profile_pic_placeholder" />
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginStart="20dp"
-                    app:cardCornerRadius="25dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:id="@+id/profile_pic3"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/profile_pic_placeholder" />
-
-                </androidx.cardview.widget.CardView>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="10"
-                android:gravity="center|end"
-                android:orientation="horizontal">
+                android:background="#313131"
+                android:gravity="center|start"
+                android:orientation="horizontal"
+                android:weightSum="10">
 
                 <LinearLayout
-                    android:id="@+id/eventEnroll"
-                    android:visibility="visible"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/button_bg"
+                    android:layout_marginStart="15dp"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/enrolledCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/sfbold"
+                        android:text="10+"
+                        android:textColor="@color/white"
+                        android:textSize="15dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:fontFamily="@font/sf_semibold"
-                        android:text="Enroll Now"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/sf_light"
+                        android:text="enrolled"
                         android:textColor="@color/white"
-                        android:textSize="16dp" />
+                        android:textSize="14dp" />
+
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:orientation="horizontal">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        app:cardCornerRadius="25dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/profile_pic1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/profile_pic_placeholder" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="10dp"
+                        app:cardCornerRadius="25dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/profile_pic2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/profile_pic_placeholder" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="20dp"
+                        app:cardCornerRadius="25dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/profile_pic3"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/profile_pic_placeholder" />
+
+                    </androidx.cardview.widget.CardView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="10"
+                    android:gravity="center|end"
+                    android:orientation="horizontal">
 
                     <LinearLayout
+                        android:id="@+id/eventEnroll"
                         android:layout_width="wrap_content"
-                        android:layout_marginEnd="15dp"
-                        android:layout_marginStart="15dp"
-                        android:gravity="center"
                         android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/button_bg"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:visibility="visible">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/sf_light"
-                                android:text="+6"
-                                android:id="@+id/cointCount"
-                                android:textColor="@color/white"
-                                android:textSize="13dp" />
-
-                            <ImageView
-                                android:layout_width="15dp"
-                                android:layout_height="15dp"
-                                android:layout_marginStart="10dp"
-                                android:rotationY="180"
-                                android:src="@drawable/coin"
-                                />
-
-                        </LinearLayout>
+                            android:layout_marginStart="20dp"
+                            android:fontFamily="@font/sf_semibold"
+                            android:text="Enroll Now"
+                            android:textColor="@color/white"
+                            android:textSize="16dp" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginEnd="15dp"
                             android:gravity="center"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
 
-                            <TextView
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+
+                                <TextView
+                                    android:id="@+id/cointCount"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/sfregular"
+                                    tools:text="+6"
+                                    android:textColor="@color/white"
+                                    android:textSize="13dp" />
+
+                                <ImageView
+                                    android:layout_width="15dp"
+                                    android:layout_height="15dp"
+                                    android:layout_marginStart="10dp"
+                                    android:rotationY="180"
+                                    android:src="@drawable/coin" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/sf_light"
-                                android:text="+30"
-                                android:id="@+id/scoreCount"
-                                android:textColor="@color/white"
-                                android:textSize="13dp" />
+                                android:gravity="center"
+                                android:orientation="horizontal">
 
-                            <ImageView
-                                android:layout_width="15dp"
-                                android:layout_height="15dp"
-                                android:layout_marginStart="10dp"
-                                android:rotationY="180"
-                                android:src="@drawable/token_ic"
-                                />
+                                <TextView
+                                    android:id="@+id/scoreCount"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/sfregular"
+                                    tools:text="+30"
+                                    android:textColor="@color/white"
+                                    android:textSize="13dp" />
+
+                                <ImageView
+                                    android:layout_width="15dp"
+                                    android:layout_height="15dp"
+                                    android:layout_marginStart="10dp"
+                                    android:rotationY="180"
+                                    android:src="@drawable/token_ic" />
+
+                            </LinearLayout>
+
 
                         </LinearLayout>
-
 
 
                     </LinearLayout>
 
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/alreadyEnrolled"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center"
-                    android:visibility="gone"
-                    android:orientation="horizontal">
-
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/alreadyEnrolled"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:textAlignment="center"
-                        android:fontFamily="@font/sf_light"
-                        android:text="You are already enrolled\ninto the event !"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
                         android:layout_marginEnd="20dp"
-                        android:textColor="@color/white"
-                        android:textSize="16dp" />
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:fontFamily="@font/sf_light"
+                            android:text="You are already enrolled\ninto the event !"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="16dp" />
 
 
+                    </LinearLayout>
 
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/deadlineView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center"
-                    android:visibility="gone"
-                    android:orientation="horizontal">
-
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/deadlineView"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:textAlignment="center"
-                        android:fontFamily="@font/sf_light"
-                        android:text="Can't Enroll,\nDeadline Passed"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
                         android:layout_marginEnd="20dp"
-                        android:textColor="@color/white"
-                        android:textSize="16dp" />
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:fontFamily="@font/sf_light"
+                            android:text="Can't Enroll,\nDeadline Passed"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="16dp" />
 
 
+                    </LinearLayout>
 
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/notEligible"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center"
-                    android:visibility="gone"
-                    android:orientation="horizontal">
-
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/notEligible"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:textAlignment="center"
-                        android:fontFamily="@font/sf_light"
-                        android:text="You are not eligible\nto enroll into the event"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
                         android:layout_marginEnd="20dp"
-                        android:textColor="@color/white"
-                        android:textSize="16dp" />
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:fontFamily="@font/sf_light"
+                            android:text="You are not eligible\nto enroll into the event"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="16dp" />
 
 
-
+                    </LinearLayout>
 
                 </LinearLayout>
 
             </LinearLayout>
 
-
         </LinearLayout>
 
-    </LinearLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

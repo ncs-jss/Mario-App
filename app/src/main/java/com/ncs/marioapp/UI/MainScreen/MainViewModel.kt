@@ -10,7 +10,6 @@ import com.google.gson.Gson
 import com.ncs.marioapp.Domain.Api.EventsApi
 import com.ncs.marioapp.Domain.Api.ProfileApiService
 import com.ncs.marioapp.Domain.HelperClasses.PrefManager
-import com.ncs.marioapp.Domain.Interfaces.QrRepository
 import com.ncs.marioapp.Domain.Models.Events.ScanTicketBody
 import com.ncs.marioapp.Domain.Models.Profile
 import com.ncs.marioapp.Domain.Models.QR.QrScannedResponse
@@ -18,6 +17,7 @@ import com.ncs.marioapp.Domain.Models.ServerResponse
 import com.ncs.marioapp.Domain.Models.ServerResult
 import com.ncs.marioapp.Domain.Models.SetFCMTokenBody
 import com.ncs.marioapp.Domain.Models.User
+import com.ncs.marioapp.Domain.Repository.QrRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.IOException

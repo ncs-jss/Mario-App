@@ -1,10 +1,10 @@
-package com.ncs.marioapp.Domain.Repository
+package com.ncs.marioapp.Data.RepositoryImpl
 
 import com.ncs.marioapp.Domain.Api.EventsApi
-import com.ncs.marioapp.Domain.Interfaces.EventRepository
 import com.ncs.marioapp.Domain.Models.Events.GetEvents
 import com.ncs.marioapp.Domain.Models.Events.ParticipatedEventResponse
 import com.ncs.marioapp.Domain.Models.ServerResult
+import com.ncs.marioapp.Domain.Repository.EventRepository
 import javax.inject.Inject
 
 class RetrofitEventRepository @Inject constructor(private val eventsApi: EventsApi) :

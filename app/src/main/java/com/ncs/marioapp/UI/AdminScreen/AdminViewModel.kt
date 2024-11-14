@@ -1,33 +1,26 @@
 package com.ncs.marioapp.UI.AdminScreen
 
-import android.app.Application
-import android.content.ContentResolver
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cloudinary.Cloudinary
 import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
 import com.google.firebase.firestore.FirebaseFirestore
-import com.ncs.marioapp.BuildConfig
 import com.ncs.marioapp.Domain.Api.EventsApi
 import com.ncs.marioapp.Domain.Api.ProfileApiService
 import com.ncs.marioapp.Domain.Api.QRAPI
-import com.ncs.marioapp.Domain.Interfaces.QrRepository
 import com.ncs.marioapp.Domain.Models.Admin.GiftCoinsPostBody
 import com.ncs.marioapp.Domain.Models.Banner
 import com.ncs.marioapp.Domain.Models.Events.ScanTicketBody
 import com.ncs.marioapp.Domain.Models.ServerResult
 import com.ncs.marioapp.Domain.Models.Story
-import dagger.hilt.android.internal.Contexts.getApplication
+import com.ncs.marioapp.Domain.Repository.QrRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 

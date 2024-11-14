@@ -21,6 +21,6 @@
         android:id="@+id/req_text"
         android:layout_marginStart="15dp"
         android:textSize="16dp"
-        android:fontFamily="@font/sfregular" />
+        android:fontFamily="@font/sf_medium" />
 
 </LinearLayout>

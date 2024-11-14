@@ -1,9 +1,9 @@
-package com.ncs.marioapp.Domain.Repository
+package com.ncs.marioapp.Data.RepositoryImpl
 
 import com.ncs.marioapp.Domain.Api.ProfileApiService
-import com.ncs.marioapp.Domain.Interfaces.ProfileRepository
 import com.ncs.marioapp.Domain.Models.ProfileData.getMyProfile
 import com.ncs.marioapp.Domain.Models.ServerResult
+import com.ncs.marioapp.Domain.Repository.ProfileRepository
 import javax.inject.Inject
 
 class RetrofitProfileRepository @Inject constructor(private val profileApi: ProfileApiService):

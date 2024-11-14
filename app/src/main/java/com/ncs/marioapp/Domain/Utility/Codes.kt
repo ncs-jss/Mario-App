@@ -3,6 +3,13 @@ package com.ncs.marioapp.Domain.Utility
 object Codes {
 
 
+    object Event {
+        const val startCollege = "startCollege"
+        const val endCollege = "endCollege"
+        const val startUni = "startUniversity"
+        const val endUni = "endUniversity"
+    }
+
     object STRINGS {
 
         const val TIME_ZONE_INDIA = "Asia/Kolkata"

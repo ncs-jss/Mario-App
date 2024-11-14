@@ -1,4 +1,4 @@
-package com.ncs.marioapp.Domain.Interfaces
+package com.ncs.marioapp.Domain.Repository
 
 import com.ncs.marioapp.Domain.Models.QR.QrScannedResponse
 import com.ncs.marioapp.Domain.Models.ServerResult

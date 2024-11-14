@@ -26,9 +26,12 @@ import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.firebase.Timestamp
+import com.ncs.marioapp.Domain.HelperClasses.Tester
+import com.ncs.marioapp.Domain.HelperClasses.Utils.formatToFullDateWithTime
 import com.ncs.marioapp.Domain.Models.Events.EventDetails.EventDetails
 import com.ncs.marioapp.Domain.Models.Events.EventDetails.Mentor
 import com.ncs.marioapp.Domain.Models.ServerResult
+import com.ncs.marioapp.Domain.Utility.Codes
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.isNull
@@ -38,6 +41,7 @@ import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.marioapp.Domain.Utility.GlobalUtils
 import com.ncs.marioapp.R
 import com.ncs.marioapp.UI.EventDetailsScreen.Adapters.RequirementsAdapter
+import com.ncs.marioapp.UI.EventDetailsScreen.Adapters.RoundAdapter
 import com.ncs.marioapp.UI.EventDetailsScreen.Adapters.TeamAdapter
 import com.ncs.marioapp.UI.EventDetailsScreen.Adapters.TopicsAdapter
 import com.ncs.marioapp.UI.MainScreen.MainActivity
@@ -165,6 +169,8 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback {
         binding.eventDuration.text = eventDetails.duration
         binding.eventType.text = eventDetails.domain[0]
 
+        setupRoundsRV()
+
         setupViewListeners(eventDetails.title)
 
         setReadMoreSpan(eventDetails)
@@ -262,20 +268,37 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback {
 
     }
 
+    private fun setupRoundsRV() {
+        val recyclerView = binding.roundsRecyclerView
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager = layoutManager
+
+        val rounds = Tester.getRounds()
+        rounds.forEach { round ->
+            round.startTime =
+                round.timeLine[Codes.Event.startCollege].toString().formatToFullDateWithTime()
+            round.endTime =
+                round.timeLine[Codes.Event.endCollege].toString().formatToFullDateWithTime()
+
+            Log.d("EventDetails", "${round.startTime}-${round.endTime}")
+        }
+        val adapter = RoundAdapter(rounds)
+        recyclerView.adapter = adapter
+    }
+
+
     private var lastScrollY = 0
     private val scrollThreshold = 50
 
     private fun setupViewListeners(title: String) {
         binding.scrollview.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
             if (scrollY > lastScrollY + scrollThreshold) {
-                // User scrolled down
                 binding.eventTitle.text = "Details"
 
             } else if (scrollY < lastScrollY - scrollThreshold) {
-                // User scrolled up
                 binding.eventTitle.text = title
             }
-            lastScrollY = scrollY // Update last scroll position
+            lastScrollY = scrollY
         })
     }
 
