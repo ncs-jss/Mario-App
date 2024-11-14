@@ -12,6 +12,19 @@
         app:layout_constraintBottom_toTopOf="@id/linearProgressIndicator"/>
 
     <ImageButton
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="20dp"
+        android:layout_height="32dp"
+        android:padding="2dp"
+        android:layout_width="36dp"
+        android:src="@drawable/ic_back_arrow"
+        android:id="@+id/btnBack"
+        android:background="@color/transparent"
+        android:scaleType="fitXY"
+        app:layout_constraintTop_toTopOf="@+id/barcode_scanner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="@color/white" />
+    <ImageButton
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="20dp"
         android:layout_height="32dp"
@@ -21,7 +34,6 @@
         android:id="@+id/btnGallery"
         android:background="@color/transparent"
         android:scaleType="fitXY"
-        android:text="Select from Gallery"
         app:layout_constraintBottom_toBottomOf="@+id/barcode_scanner"
         app:layout_constraintEnd_toEndOf="parent" />
     <com.google.android.material.progressindicator.LinearProgressIndicator

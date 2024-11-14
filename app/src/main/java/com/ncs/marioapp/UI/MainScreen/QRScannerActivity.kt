@@ -84,6 +84,10 @@ class QRScannerActivity : AppCompatActivity() {
             finish()
 
         }
+        binding.btnBack.setOnClickThrottleBounceListener {
+            onBackPressed()
+        }
+
         setContentView(binding.root)
 
         mainViewModel.validateScannedQR.observe(this){result ->
