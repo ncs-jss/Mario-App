@@ -85,6 +85,13 @@ class PersonalDetailsFragmentEditProfile : Fragment(), BottomSheet.SendText {
             editText.setOnClickListener {
                 util.showSnackbar(binding.root,"Can't edit admission number now",2000)
             }
+            val editText1=binding.collegeOrUniversity
+            editText1.isEnabled = false
+            editText1.isFocusable = false
+            editText1.isFocusableInTouchMode = false
+            editText1.setOnClickListener {
+                util.showSnackbar(binding.root,"Can't edit your college now",2000)
+            }
         }
     }
 
@@ -106,7 +113,7 @@ class PersonalDetailsFragmentEditProfile : Fragment(), BottomSheet.SendText {
         })
         surveyViewModel.admitted_to.observe(viewLifecycleOwner, Observer {
             if (!it.isNull) {
-                binding.AdmittedToEt.text = it
+                binding.collegeOrUniversity.text = it
             }
         })
         surveyViewModel.year.observe(viewLifecycleOwner, Observer {
@@ -142,7 +149,7 @@ class PersonalDetailsFragmentEditProfile : Fragment(), BottomSheet.SendText {
             surveyViewModel.name.value = binding.nameEt.text.toString()
             surveyViewModel.admission_num.value = binding.admissionNumEt.text.toString()
             surveyViewModel.branch.value = binding.branchEt.text.toString()
-            surveyViewModel.admitted_to.value = binding.AdmittedToEt.text.toString()
+            surveyViewModel.admitted_to.value = binding.collegeOrUniversity.text.toString()
             surveyViewModel.year.value = binding.yearEt.text.toString()
             surveyViewModel.validateInputsOnPersonalDetailsPage()
         }
@@ -162,8 +169,8 @@ class PersonalDetailsFragmentEditProfile : Fragment(), BottomSheet.SendText {
         if (type=="Select Year"){
             binding.yearEt.text = text
         }
-        if (type=="Select Institute"){
-            binding.AdmittedToEt.text = text
+        if (type=="Admitted to"){
+            binding.collegeOrUniversity.text = text
         }
     }
 
