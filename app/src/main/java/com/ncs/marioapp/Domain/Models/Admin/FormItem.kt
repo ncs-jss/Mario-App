@@ -28,7 +28,7 @@ data class Round(
     var seriesNumber: Int = -1
 ) : Parcelable
 
-data class Questionnaire(
+data class RoundQuestionnaire(
     val queID:String,
     val queTitle:String,
     val questions:List<QuestionItem>

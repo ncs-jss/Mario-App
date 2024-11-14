@@ -7,7 +7,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,11 +21,8 @@ import com.ncs.marioapp.Domain.HelperClasses.Utils
 import com.ncs.marioapp.Domain.Models.Admin.FormItem
 import com.ncs.marioapp.Domain.Models.Admin.FormType
 import com.ncs.marioapp.Domain.Models.Admin.QuestionItem
-import com.ncs.marioapp.Domain.Models.Admin.Questionnaire
-import com.ncs.marioapp.Domain.Models.Admin.Round
-import com.ncs.marioapp.Domain.Models.Events.Event
+import com.ncs.marioapp.Domain.Models.Admin.RoundQuestionnaire
 import com.ncs.marioapp.Domain.Models.ServerResult
-import com.ncs.marioapp.Domain.Utility.ExtensionsUtil
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.toast
@@ -34,14 +30,11 @@ import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.marioapp.R
 import com.ncs.marioapp.UI.AdminScreen.AdminMainActivity
 import com.ncs.marioapp.UI.AdminScreen.RecordCreation.DragSwipeCallback
-import com.ncs.marioapp.UI.AdminScreen.RecordCreation.FormAdapter
 import com.ncs.marioapp.UI.AdminScreen.RecordCreation.FormValidationUseCase
 import com.ncs.marioapp.UI.AdminScreen.RecordCreation.QuestionnaireAdapter
 import com.ncs.marioapp.databinding.CreateQuestionDialogBinding
 import com.ncs.marioapp.databinding.FragmentQuestionnaireCreationBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -102,7 +95,7 @@ class QuestionnaireCreationFragment : Fragment() {
                         options = question.options
                     ))
                 }
-                val questionnaire=Questionnaire(
+                val questionnaire=RoundQuestionnaire(
                     queID = Utils.generateRandomId(),
                     queTitle = quesTite,
                     questions = questions
