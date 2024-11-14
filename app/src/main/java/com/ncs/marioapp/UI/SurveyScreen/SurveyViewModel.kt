@@ -116,9 +116,6 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
     fun setBranch(_branch: String) {
         branch.value = _branch
     }
-    fun setAdmittedTo(_admitted_to:String){
-        admitted_to.value = _admitted_to
-    }
 
     fun setAdmittedTo(_admittedTo: String) {
         admittedTo.value = _admittedTo
@@ -217,7 +214,6 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
         val nameValue=name.value?.trim()
         val admission_numValue=admission_num.value?.trim()
         val branch_value=branch.value?.trim()
-        val admitted_to_value=admitted_to.value?.trim()
         val year_value=year.value?.trim()
         val admitted_to_value=admittedTo.value?.trim()
         if (nameValue.isNullOrEmpty()) {
@@ -354,7 +350,6 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                     admission_number = admission_num.value!!.trim(),
                     branch = branch.value!!.trim(),
                     domain = domains,
-                    admitted_to = institute ,
                     other_domain = othersText!!,
                     name = name.value!!.trim(),
                     socials = mapOf(

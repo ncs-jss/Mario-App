@@ -6,7 +6,6 @@ data class Profile(
     var domain: List<String> = emptyList(),
     val id_card: IdCard = IdCard(),
     var name: String="",
-    var admitted_to: String="",
     val photo: Photo = Photo(),
     val points: Int = 0,
     val role: Int = 0,
