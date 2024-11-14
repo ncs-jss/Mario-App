@@ -257,10 +257,13 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
                     stopShimmer()
                     visibility = View.GONE
                 }
-
-                binding.recyclerViewPosts.visible()
-                if (binding.swiperefresh.isRefreshing){
-                    binding.swiperefresh.isRefreshing = false
+                if(combinedList.isEmpty()){
+                    binding.postTv.visible()
+                }else{
+                    binding.recyclerViewPosts.visible()
+                    if (binding.swiperefresh.isRefreshing){
+                        binding.swiperefresh.isRefreshing = false
+                    }
                 }
             }
         }
@@ -319,17 +322,22 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
             stopShimmer()
             visibility = View.GONE
         }
-        binding.bannerRecyclerView.visible()
-
-        if (binding.bannerRecyclerView.onFlingListener == null) {
-            LinearSnapHelper().attachToRecyclerView(binding.bannerRecyclerView)
+        if (list.isEmpty()){
+            binding.bannerTv.visible()
         }
+        else{
+            binding.bannerRecyclerView.visible()
 
-        binding.bannerRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = BannerAdapter(list, this@HomeFragment)
-            scrollToPosition(currentPosition)
-            addOnScrollListener(autoScrollListener)
+            if (binding.bannerRecyclerView.onFlingListener == null) {
+                LinearSnapHelper().attachToRecyclerView(binding.bannerRecyclerView)
+            }
+
+            binding.bannerRecyclerView.apply {
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                adapter = BannerAdapter(list, this@HomeFragment)
+                scrollToPosition(currentPosition)
+                addOnScrollListener(autoScrollListener)
+            }
         }
     }
 
@@ -339,13 +347,18 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
             stopShimmer()
             visibility = View.GONE
         }
-        binding.EventsRecyclerView.visible()
-        val recyclerView = binding.EventsRecyclerView
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.setItemViewCacheSize(events.size)
-        recyclerView.layoutManager = layoutManager
-        eventsAdapter= EventsAdapter(events, this)
-        recyclerView.adapter = eventsAdapter
+        if (events.isEmpty()){
+            binding.eventTv.visible()
+        }
+        else{
+            binding.EventsRecyclerView.visible()
+            val recyclerView = binding.EventsRecyclerView
+            val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            recyclerView.setItemViewCacheSize(events.size)
+            recyclerView.layoutManager = layoutManager
+            eventsAdapter= EventsAdapter(events, this)
+            recyclerView.adapter = eventsAdapter
+        }
     }
 
     private fun setUpPostsRV(posts:List<ListItem>){

@@ -99,8 +99,13 @@ class StoreFragment : Fragment() {
                         stopShimmer()
                         visibility = View.GONE
                     }
-                    binding.recyclerViewItems.visible()
-                    adapter.submitList(it.merchandise)
+                    if (it.merchandise.isNullOrEmpty()){
+                        binding.merchTv.visible()
+                    }
+                    else{
+                        binding.recyclerViewItems.visible()
+                        adapter.submitList(it.merchandise)
+                    }
                     if (binding.swiperefresh.isRefreshing){
                         binding.swiperefresh.isRefreshing = false
                     }

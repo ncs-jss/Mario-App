@@ -20,6 +20,18 @@
         android:layout_height="match_parent"
         android:visibility="gone"
         android:id="@+id/recyclerViewPosts" />
+        <TextView
+            android:id="@+id/eventTv"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Exciting New Events Are Just Around the Corner – Stay Tuned!"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:padding="16dp"
+            android:textColor="@color/better_white"
+            android:fontFamily="@font/sf_medium"
+            />
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:layout_width="match_parent"

@@ -111,8 +111,15 @@ class CoinTransactionsFragment : Fragment(), TransactionAdapter.Callback {
                 binding.swiperefresh.isRefreshing = false
             }
             if (!it.isNull) {
+                binding.transactionsShimmerLayout.apply {
+                    stopShimmer()
+                    visibility = View.GONE
+                }
                 if (it.isNotEmpty()) {
                     setUpCoinsStatementRV(it)
+                }
+                else{
+                    binding.transactionTv.visible()
                 }
             }
         }
@@ -120,10 +127,7 @@ class CoinTransactionsFragment : Fragment(), TransactionAdapter.Callback {
     }
 
     private fun setUpCoinsStatementRV(list: List<Transaction>) {
-        binding.transactionsShimmerLayout.apply {
-            stopShimmer()
-            visibility = View.GONE
-        }
+
         binding.recyclerView.visible()
         val recyclerView = binding.recyclerView
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
