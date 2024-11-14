@@ -136,4 +136,6 @@
     <color name="bottom_nav_selected_color">@color/appblue</color>
     <color name="bottom_nav_unselected_color">@color/baseWhite</color>
     <color name="secondary_base">#131313</color>
+    <color name="better_white_80">#EDEDED</color>
+    <color name="button_bg">#017EDE</color>
 </resources>

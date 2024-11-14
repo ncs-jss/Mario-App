@@ -195,7 +195,7 @@
                                 android:layout_marginStart="10dp"
                                 android:ellipsize="end"
                                 android:fontFamily="@font/sfregular"
-                                android:text="02 Nov, 2024"
+                                tools:text="02 Nov, 2024"
                                 android:textColor="@color/white"
                                 android:textSize="17dp" />
 
@@ -221,7 +221,7 @@
                                 android:layout_marginStart="10dp"
                                 android:ellipsize="end"
                                 android:fontFamily="@font/sfregular"
-                                android:text="4:00 PM"
+                                tools:text="4:00 PM"
                                 android:textColor="@color/white"
                                 android:textSize="17dp" />
 
@@ -247,7 +247,7 @@
                                 android:layout_marginStart="10dp"
                                 android:ellipsize="end"
                                 android:fontFamily="@font/sfregular"
-                                android:text="Computer Center, AB-1"
+                                tools:text="Computer Center, AB-1"
                                 android:textColor="@color/white"
                                 android:textSize="17dp" />
 
@@ -273,7 +273,7 @@
                                 android:layout_marginStart="10dp"
                                 android:ellipsize="end"
                                 android:fontFamily="@font/sfregular"
-                                android:text="2 Hours"
+                                tools:text="2 Hours"
                                 android:textColor="@color/white"
                                 android:textSize="17dp" />
 
@@ -300,7 +300,7 @@
                                 android:layout_marginStart="10dp"
                                 android:ellipsize="end"
                                 android:fontFamily="@font/sfregular"
-                                android:text="Technical"
+                                tools:text="Technical"
                                 android:textColor="@color/white"
                                 android:textSize="17dp" />
 
@@ -308,9 +308,7 @@
 
                     </LinearLayout>
 
-
                 </LinearLayout>
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -342,12 +340,48 @@
                         android:clickable="true"
                         android:ellipsize="end"
                         android:focusable="true"
-                        android:fontFamily="@font/sf_medium"
+                        android:fontFamily="@font/sfregular"
                         android:lineSpacingExtra="4dp"
-                        android:text="Technical"
+                        android:text="Loading event details.."
                         android:textColor="@color/white"
                         android:textSize="17dp" />
 
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/timelineParent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/secondary_bg_lighter"
+                    android:elevation="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/sf_semibold"
+                        android:text="Stages &amp; Timeline"
+                        android:textColor="@color/account"
+                        android:textSize="14dp" />
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/roundsRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="20dp"
+                        android:nestedScrollingEnabled="false"
+                        android:overScrollMode="never"
+                        tools:itemCount="2"
+                        tools:listitem="@layout/item_round"
+                        android:layout_marginBottom="20dp" />
 
                 </LinearLayout>
 
@@ -379,6 +413,7 @@
                         android:nestedScrollingEnabled="false"
                         android:overScrollMode="never"
                         android:layout_marginBottom="20dp"
+                        tools:itemCount="3"
                         tools:listitem="@layout/requirements_rv_item_view" />
 
 
@@ -412,6 +447,7 @@
                         android:overScrollMode="never"
                         android:layout_marginEnd="20dp"
                         android:layout_marginBottom="20dp"
+                        tools:itemCount="4"
                         tools:listitem="@layout/topics_rv_item" />
 
 
@@ -445,6 +481,7 @@
                         android:nestedScrollingEnabled="false"
                         android:overScrollMode="never"
                         android:layout_marginBottom="20dp"
+                        tools:itemCount="3"
                         tools:listitem="@layout/speaker_rv_item" />
 
 
@@ -478,6 +515,7 @@
                         android:overScrollMode="never"
                         android:nestedScrollingEnabled="false"
                         android:layout_marginBottom="20dp"
+                        tools:itemCount="3"
                         tools:listitem="@layout/speaker_rv_item" />
 
 
@@ -649,8 +687,8 @@
                                     android:id="@+id/cointCount"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/sf_light"
-                                    android:text="+6"
+                                    android:fontFamily="@font/sfregular"
+                                    tools:text="+6"
                                     android:textColor="@color/white"
                                     android:textSize="13dp" />
 
@@ -673,8 +711,8 @@
                                     android:id="@+id/scoreCount"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/sf_light"
-                                    android:text="+30"
+                                    android:fontFamily="@font/sfregular"
+                                    tools:text="+30"
                                     android:textColor="@color/white"
                                     android:textSize="13dp" />
 
@@ -769,7 +807,6 @@
                     </LinearLayout>
 
                 </LinearLayout>
-
 
             </LinearLayout>
 

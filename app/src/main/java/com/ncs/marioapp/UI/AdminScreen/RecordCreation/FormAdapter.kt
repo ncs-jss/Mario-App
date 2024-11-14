@@ -13,6 +13,7 @@ import android.widget.RadioButton
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.ncs.marioapp.Domain.HelperClasses.Utils
 import com.ncs.marioapp.Domain.Models.Admin.FormItem
 import com.ncs.marioapp.Domain.Models.Admin.FormType
 import com.ncs.marioapp.R
@@ -215,7 +216,8 @@ class FormAdapter(
                 val datePickerDialog = DatePickerDialog(
                     context,
                     { _, year, month, dayOfMonth ->
-                        val date = "$dayOfMonth/${month + 1}/$year"
+                        val date =
+                            Utils.convertToTimestamp("$dayOfMonth/${month + 1}/$year").toString()
                         item.value = date
                         updateList(item)
                         dateText.text = date

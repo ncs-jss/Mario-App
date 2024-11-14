@@ -59,10 +59,11 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <Button
-        android:backgroundTint="@color/secondary"
+        android:backgroundTint="@color/better_white"
         android:id="@+id/buttonPickImage"
         android:layout_width="match_parent"
         android:layout_margin="16dp"
+        android:textAllCaps="false"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/actionbar"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,7 +73,7 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_margin="16dp"
-        android:background="@drawable/filled_primary_box"
+        android:background="@drawable/stroke_bg"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         app:layout_constraintTop_toBottomOf="@id/buttonPickImage"
@@ -80,10 +81,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:contentDescription="Selected Image" />
     <Button
-        android:backgroundTint="@color/secondary"
+        android:backgroundTint="@color/better_white"
         android:id="@+id/addBanner"
         android:layout_width="match_parent"
         android:layout_margin="16dp"
+        android:textAllCaps="false"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/imageView"
         app:layout_constraintStart_toStartOf="parent"
@@ -106,14 +108,17 @@
         android:maxLines="25"
         android:gravity="top"
         />
+
     <Button
-        android:backgroundTint="@color/secondary"
+        android:id="@+id/buttonRenderMarkdown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/editTextMarkdown"
         android:layout_margin="16dp"
+        android:backgroundTint="@color/better_white"
         android:text="Render Markdown"
-        android:id="@+id/buttonRenderMarkdown" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextMarkdown" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -128,7 +133,7 @@
         />
     <Button
         android:id="@+id/uploadButton"
-        android:backgroundTint="@color/secondary"
+        android:backgroundTint="@color/appblue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/textViewMarkdown"

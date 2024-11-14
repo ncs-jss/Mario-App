@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    >
+
+    <!-- Timeline Indicator -->
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/linearLayoutCompat2"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:id="@+id/timeline_indicator_above"
+            android:layout_width="1dp"
+            android:layout_height="16dp"
+            android:visibility="visible"
+            android:background="@color/better_white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/circle"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:background="@drawable/baseline_circle_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/timeline_indicator_below"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:background="@color/better_white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <!-- Date Badge -->
+    <TextView
+        android:id="@+id/date_badge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/stroke_bg"
+        android:fontFamily="@font/sf_semibold"
+        android:paddingStart="15dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="10dp"
+        android:text="24  |  Oct 24"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/linearLayoutCompat"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Round Status (Live) -->
+    <TextView
+        android:id="@+id/round_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/stroke_bg"
+        android:paddingStart="10dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="5dp"
+        android:text="Live"
+        android:textColor="@color/red"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/date_badge"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/date_badge" />
+
+    <!-- Round Title -->
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/linearLayoutCompat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/stroke_bg"
+        android:orientation="vertical"
+        android:layout_marginStart="30dp"
+        android:padding="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/linearLayoutCompat2"
+        app:layout_constraintTop_toBottomOf="@+id/date_badge">
+
+        <TextView
+            android:id="@+id/round_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sf_semibold"
+            tools:text="Round 1: Executive Summary Submission"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/round_status"
+            app:layout_constraintTop_toBottomOf="@id/round_status" />
+
+        <!-- Round Description -->
+        <TextView
+            android:id="@+id/round_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/sf_medium"
+            android:inputType="textMultiLine"
+            tools:text="Teams need to submit a solution this is a proper description bro......"
+            android:textColor="@color/better_white_80"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/round_title"
+            app:layout_constraintTop_toBottomOf="@id/round_title" />
+
+        <!-- Start and End Time -->
+        <TextView
+            android:id="@+id/start_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Start: 22 Oct 24, 05:00 PM IST"
+            android:textColor="@color/better_white"
+            android:textSize="14sp"
+            android:fontFamily="@font/sf_medium"
+            app:layout_constraintStart_toStartOf="@id/round_description"
+            app:layout_constraintTop_toBottomOf="@id/round_description" />
+
+        <TextView
+            android:id="@+id/end_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            tools:text="End: 25 Nov 24, 06:00 AM IST"
+            android:textColor="@color/better_white"
+            android:fontFamily="@font/sf_medium"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/start_time"
+            app:layout_constraintTop_toBottomOf="@id/start_time" />
+
+
+        <TextView
+            android:id="@+id/venue_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            tools:text="Venue: Online"
+            android:textColor="@color/better_white"
+            android:fontFamily="@font/sf_medium"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/start_time"
+            app:layout_constraintTop_toBottomOf="@id/start_time" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/form_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/stroke_bg"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/button_bg"
+            android:fontFamily="@font/sf_medium"
+            android:textAllCaps="false"
+            android:text="Submit Idea" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

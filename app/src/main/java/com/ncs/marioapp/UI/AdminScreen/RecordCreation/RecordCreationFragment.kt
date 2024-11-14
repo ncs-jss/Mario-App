@@ -179,25 +179,23 @@ class RecordCreationFragment : Fragment() {
     }
 
     private fun createRound(items: List<FormItem>): Round {
-
-
         val eventID = items[1].value
         val roundTitle = items[2].value
         val description = items[3].value
         val venue = items[4].value
         val currentlyLive = items[6].value.toBoolean()
         val requireSubmission = items[7].value.toBoolean()
-        val startCollege = items[9].value
-        val endCollege = items[10].value
-        val startUniversity = items[11].value
-        val endUniversity = items[11].value
+        val startCollege = items[9].value.toLong()
+        val endCollege = items[10].value.toLong()
+        val startUniversity = items[11].value.toLong()
+        val endUniversity = items[11].value.toLong()
         val roundID = Utils.generateRandomId()
 
         val timeLine = mapOf(
-            "startCollege" to Utils.convertToFirestoreTimestamp(startCollege)!!,
-            "endCollege" to Utils.convertToFirestoreTimestamp(endCollege)!!,
-            "startUniversity" to Utils.convertToFirestoreTimestamp(startUniversity)!!,
-            "endUniversity" to Utils.convertToFirestoreTimestamp(endUniversity)!!
+            "startCollege" to startCollege,
+            "endCollege" to endCollege,
+            "startUniversity" to startUniversity,
+            "endUniversity" to endUniversity
         )
 
         return Round(
@@ -209,7 +207,8 @@ class RecordCreationFragment : Fragment() {
             requireSubmission = requireSubmission,
             timeLine = timeLine,
             roundID = roundID,
-            questionnaireID = ""
+            questionnaireID = "",
+            submissionButtonText = "Submit"
         )
 
     }
