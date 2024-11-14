@@ -115,8 +115,9 @@ class RecordCreationFragment : Fragment() {
 
             FormItem("Event ID", FormType.DROPDOWN, options = eventTitles),
             FormItem("Round Title", FormType.EDIT_TEXT),
+            FormItem("Round Series Number", FormType.EDIT_TEXT),
             FormItem("Description", FormType.EDIT_TEXT),
-            FormItem("Venue", FormType.DROPDOWN, options = listOf("Online", "Offline")),
+            FormItem("Venue", FormType.EDIT_TEXT),
 
             FormItem("State", FormType.SEPARATOR),
 
@@ -131,7 +132,10 @@ class RecordCreationFragment : Fragment() {
             FormItem("End Time -> University", FormType.DATE_PICKER),
             FormItem("Same as College", FormType.RADIO),
 
+            FormItem("Questionnaire", FormType.SEPARATOR),
 
+            FormItem("Questionnaire ID", FormType.EDIT_TEXT),
+            FormItem("Submission Button Text", FormType.EDIT_TEXT),
             FormItem("Submit Form", FormType.BUTTON),
         )
 
@@ -144,7 +148,7 @@ class RecordCreationFragment : Fragment() {
                 return@FormAdapter
             } else {
                 Snackbar.make(binding.root, "Saving round...", Snackbar.LENGTH_SHORT).show()
-                val round = createRound(items)
+                val round = createRound(items, events)
 
                 lifecycleScope.launch {
                     viewModel.postRound(round)
@@ -178,17 +182,24 @@ class RecordCreationFragment : Fragment() {
         binding.requirementsRV.visible()
     }
 
-    private fun createRound(items: List<FormItem>): Round {
-        val eventID = items[1].value
-        val roundTitle = items[2].value
-        val description = items[3].value
-        val venue = items[4].value
-        val currentlyLive = items[6].value.toBoolean()
-        val requireSubmission = items[7].value.toBoolean()
-        val startCollege = items[9].value.toLong()
-        val endCollege = items[10].value.toLong()
-        val startUniversity = items[11].value.toLong()
-        val endUniversity = items[11].value.toLong()
+    private fun createRound(items: List<FormItem>, events: List<Event>): Round {
+
+        val itemMap = items.associateBy { it.title }
+
+        val eventID = events.find { it.title == itemMap["Event ID"]?.value }?._id!!
+        val roundTitle = itemMap["Round Title"]?.value.orEmpty()
+        val description = itemMap["Description"]?.value.orEmpty()
+        val venue = itemMap["Venue"]?.value.orEmpty()
+        val currentlyLive = itemMap["Currently Live?"]?.value.toBoolean()
+        val requireSubmission = itemMap["Require Submission?"]?.value.toBoolean()
+        val startCollege = itemMap["Start Time -> College"]?.value?.toLongOrNull() ?: 0L
+        val endCollege = itemMap["End Time -> College"]?.value?.toLongOrNull() ?: 0L
+        val startUniversity = itemMap["Start Time -> University"]?.value?.toLongOrNull() ?: 0L
+        val endUniversity = itemMap["End Time -> University"]?.value?.toLongOrNull() ?: 0L
+        val sameAsCollege = itemMap["Same as College"]?.value.toBoolean()
+        val questionnaireID = itemMap["Questionnaire ID"]?.value.orEmpty()
+        val submitButtonText = itemMap["Submission Button Text"]?.value.orEmpty()
+        val seriesNumber = itemMap["Round Series Number"]?.value.orEmpty().toInt()
         val roundID = Utils.generateRandomId()
 
         val timeLine = mapOf(
@@ -203,12 +214,14 @@ class RecordCreationFragment : Fragment() {
             roundTitle = roundTitle,
             description = description,
             venue = venue,
-            isLive = currentlyLive,
+            live = currentlyLive,
             requireSubmission = requireSubmission,
             timeLine = timeLine,
             roundID = roundID,
-            questionnaireID = "",
-            submissionButtonText = "Submit"
+            questionnaireID = questionnaireID,
+            submissionButtonText = submitButtonText,
+            seriesNumber = seriesNumber,
+            sameAsCollege = sameAsCollege
         )
 
     }

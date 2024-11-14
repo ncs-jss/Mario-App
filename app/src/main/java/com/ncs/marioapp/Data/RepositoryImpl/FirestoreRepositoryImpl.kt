@@ -29,5 +29,27 @@ class FirestoreRepositoryImpl @Inject constructor(val firestore: FirebaseFiresto
 
     }
 
+    override suspend fun getRounds(eventID: String, callback: (ServerResult<List<Round>>) -> Unit) {
+        try {
+            callback.invoke(ServerResult.Progress)
+
+            val querySnapshot = firestore.collection("Rounds")
+                .whereEqualTo("eventID", eventID)
+                .get()
+                .await()
+
+            val rounds = querySnapshot.documents.mapNotNull { document ->
+                document.toObject(Round::class.java)
+            }
+
+            Log.d("FirestoreRepository", "roundList: ${rounds}")
+            callback.invoke(ServerResult.Success(rounds))
+
+        } catch (e: Exception) {
+            Log.d("FirestoreRepository", "getRounds: ${e.message}")
+            callback.invoke(ServerResult.Failure(e.message.toString()))
+        }
+    }
+
 
 }

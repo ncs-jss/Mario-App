@@ -18,9 +18,10 @@ object Tester {
                     "endCollege" to 1699000000
                 ),
                 venue = "Online",
-                isLive = true,
+                live = true,
                 submissionButtonText = "Submit Idea",
-
+                sameAsCollege = true,
+                seriesNumber = 1
                 ),
 
             Round(
@@ -28,15 +29,17 @@ object Tester {
                 eventID = "event123",
                 roundTitle = "Round 2: Prototype Presentation",
                 questionnaireID = "questionnaire124",
-                requireSubmission = true,
+                requireSubmission = false,
                 roundID = "round2",
                 timeLine = mapOf(
                     "startCollege" to 1699000000,
                     "endCollege" to 1699150000
                 ),
                 venue = "Online",
-                isLive = false,
+                live = false,
                 submissionButtonText = "Present Prototype",
+                sameAsCollege = true,
+                seriesNumber = 2
             ),
 
             Round(
@@ -51,8 +54,10 @@ object Tester {
                     "endCollege" to 1699000000
                 ),
                 venue = "On-site",
-                isLive = false,
+                live = false,
                 submissionButtonText = "Submit Final",
+                sameAsCollege = true,
+                seriesNumber = 3
             )
         )
     }
