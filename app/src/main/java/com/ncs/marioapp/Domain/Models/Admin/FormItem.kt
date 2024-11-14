@@ -24,9 +24,6 @@ data class Round(
     val submissionButtonText: String = "",
     var startTime: String? = null,
     var endTime: String? = null,
-
-)
-    var endTime: String? = null,
     var sameAsCollege: Boolean = false,
     var seriesNumber: Int = -1
 ) : Parcelable
