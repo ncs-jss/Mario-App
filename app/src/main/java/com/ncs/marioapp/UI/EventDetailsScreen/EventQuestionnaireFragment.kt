@@ -5,21 +5,27 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.ncs.marioapp.Domain.Models.Answer
 import com.ncs.marioapp.Domain.Models.Question
+import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
+import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.isNull
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
+import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.marioapp.Domain.Utility.GlobalUtils
 import com.ncs.marioapp.UI.EventDetailsScreen.Adapters.QuestionPagerAdapter
 import com.ncs.marioapp.databinding.FragmentEventQuestionnaireBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class EventQuestionnaireFragment : Fragment() {
     private  var _binding: FragmentEventQuestionnaireBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: QuestionPagerAdapter
     private val answers = mutableListOf<Answer>()
-
+    private val viewModel: EventDetailsViewModel by activityViewModels()
     private val util: GlobalUtils.EasyElements by lazy {
         GlobalUtils.EasyElements(requireActivity())
     }
@@ -30,61 +36,92 @@ class EventQuestionnaireFragment : Fragment() {
     ): View? {
 
         _binding = FragmentEventQuestionnaireBinding.inflate(inflater, container, false)
-
-        setupViewPager()
-        val questions = listOf(
-            Question(
-                question = "What is your name?",
-                type = "TEXT-RESPONSE"
-            ),
-            Question(
-                question = "What is your favorite color?",
-                type = "MULTI_CHOICE",
-                options = listOf("Red", "Blue", "Green", "Yellow")
-            ),
-            Question(
-                question = "Describe your ideal vacation.",
-                type = "TEXT-RESPONSE"
-            ),
-            Question(
-                question = "Which programming languages do you know?",
-                type = "MULTI_CHOICE",
-                options = listOf("Kotlin", "Java", "Python", "JavaScript", "C++")
-            ),
-            Question(
-                question = "What is your preferred mode of transport?",
-                type = "MULTI_CHOICE",
-                options = listOf("Car", "Bike", "Public Transit", "Walking")
-            ),
-            Question(
-                question = "What are your hobbies?",
-                type = "TEXT-RESPONSE"
-            ),
-        )
-
-        adapter.setQuestions(questions)
+//        val questions = listOf(
+//            Question(
+//                question = "What is your name?",
+//                type = "TEXT-RESPONSE"
+//            ),
+//            Question(
+//                question = "What is your favorite color?",
+//                type = "MULTI_CHOICE",
+//                options = listOf("Red", "Blue", "Green", "Yellow")
+//            ),
+//            Question(
+//                question = "Describe your ideal vacation.",
+//                type = "TEXT-RESPONSE"
+//            ),
+//            Question(
+//                question = "Which programming languages do you know?",
+//                type = "MULTI_CHOICE",
+//                options = listOf("Kotlin", "Java", "Python", "JavaScript", "C++")
+//            ),
+//            Question(
+//                question = "What is your preferred mode of transport?",
+//                type = "MULTI_CHOICE",
+//                options = listOf("Car", "Bike", "Public Transit", "Walking")
+//            ),
+//            Question(
+//                question = "What are your hobbies?",
+//                type = "TEXT-RESPONSE"
+//            ),
+//        )
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupViewPager()
+        observeViewModel()
+    }
+
+    private fun observeViewModel(){
+        viewModel.errorMessage.observe(viewLifecycleOwner){
+            if (!it.isNull) {
+                util.showActionSnackbar(binding.root, it.toString(), 4000, "Retry") {
+                    viewModel.getEventDetails(viewModel.getEvent()!!._id)
+                }
+                viewModel.resetErrorMessage()
+            }
+        }
+
+        viewModel.progressState.observe(viewLifecycleOwner) {
+
+        }
+
+        viewModel.eventDetails.observe(viewLifecycleOwner){
+            if (!it.isNull){
+                adapter.setQuestions(it.questionnaire.questions)
+                updateProgressBar()
+            }
+        }
     }
 
     private fun setupViewPager() {
 
         adapter = QuestionPagerAdapter(this) { answer ->
             answers.add(answer)
-            updateProgressBar()
             goToNextQuestion()
+            updateProgressBar()
         }
-        binding.viewPager.adapter = adapter
-        binding.btnBack.setOnClickThrottleBounceListener{
-            if (binding.viewPager.currentItem > 0) {
-                binding.viewPager.currentItem = binding.viewPager.currentItem - 1
-            }
 
+        binding.viewPager.adapter = adapter
+
+        binding.btnBack.setOnClickThrottleBounceListener{
+            if (binding.viewPager.currentItem==0){
+                util.twoBtnDialog("Close QnA","Closing the Q & A will loose all the answers.","OK","Cancel",{
+                    findNavController().popBackStack()
+                },{})
+            }
+            if (binding.viewPager.currentItem >= 0) {
+                binding.viewPager.currentItem = binding.viewPager.currentItem - 1
+                updateProgressBar()
+            }
         }
+
         binding.close.setOnClickThrottleBounceListener{
-            util.twoBtnDialog("Close QnA","Closing the QnA will loose all the answers.","Ok","Cancel",{
+            util.twoBtnDialog("Close QnA","Closing the Q & A will loose all the answers.","OK","Cancel",{
                 findNavController().popBackStack()
             },{})
-
         }
 
         binding.viewPager.isUserInputEnabled = false
@@ -105,8 +142,11 @@ class EventQuestionnaireFragment : Fragment() {
     }
 
     private fun updateProgressBar() {
-        binding.progressBar.progress = (binding.viewPager.currentItem + 1) * 100 / adapter.itemCount
+        val totalQuestions = viewModel.getNumberOfQuestions()
+        val progress = (binding.viewPager.currentItem + 1) * 100 / (totalQuestions + 1)
+        binding.progressBar.progress = progress
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

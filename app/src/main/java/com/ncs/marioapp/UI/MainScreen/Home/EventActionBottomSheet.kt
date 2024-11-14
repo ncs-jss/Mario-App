@@ -10,6 +10,7 @@ import com.ncorti.slidetoact.SlideToActView
 import com.ncs.marioapp.Domain.Models.Events.Event
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.load
+import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.marioapp.R
 import com.ncs.marioapp.databinding.EventActionBottomSheetBinding
@@ -38,14 +39,14 @@ class EventActionBottomSheet(val event: Event, val type:String, val callback: Ca
     private fun populateEventDetails(binding: EventActionBottomSheetBinding) {
 
         if (type=="Enroll"){
-            binding.title.text="Enroll"
-            binding.confirmButtonEnroll.visible()
-            binding.confirmButtonUnenroll.gone()
+            binding.title.text="Event"
+//            binding.confirmButtonEnroll.visible()
+//            binding.confirmButtonUnenroll.gone()
         }
         else{
-            binding.title.text="Unenroll"
-            binding.confirmButtonUnenroll.visible()
-            binding.confirmButtonEnroll.gone()
+            binding.title.text="Event"
+//            binding.confirmButtonUnenroll.visible()
+//            binding.confirmButtonEnroll.gone()
         }
 
         binding.eventIc.load(event.image, requireContext().getDrawable(R.drawable.placeholder_image)!!)
@@ -65,19 +66,25 @@ class EventActionBottomSheet(val event: Event, val type:String, val callback: Ca
 
         binding.venue.text=event.venue
 
-        binding.confirmButtonEnroll.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener {
-            override fun onSlideComplete(view: SlideToActView) {
-                callback.onEnroll(event)
-                dismiss()
-            }
+        binding.btnMoreDetails.setOnClickThrottleBounceListener{
+            dismiss()
+            callback.onMoreDetails(event)
         }
 
-        binding.confirmButtonUnenroll.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener {
-            override fun onSlideComplete(view: SlideToActView) {
-                viewModel.unenrollUser(event._id)
-                dismiss()
-            }
-        }
+//        binding.confirmButtonEnroll.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener {
+//            override fun onSlideComplete(view: SlideToActView) {
+//                callback.onEnroll(event)
+//                dismiss()
+//            }
+//        }
+//
+//        binding.confirmButtonUnenroll.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener {
+//            override fun onSlideComplete(view: SlideToActView) {
+//                viewModel.unenrollUser(event._id)
+//                dismiss()
+//            }
+//        }
+
 
     }
 
@@ -93,6 +100,7 @@ class EventActionBottomSheet(val event: Event, val type:String, val callback: Ca
     interface Callback{
         fun onEnroll(event: Event)
         fun onUnenroll(event: Event)
+        fun onMoreDetails(event: Event)
     }
 
 

@@ -35,8 +35,8 @@ android {
         applicationId "com.ncs.marioapp"
         minSdk 26
         targetSdk 34
-        versionCode 5
-        versionName "1.4"
+        versionCode 6
+        versionName "1.5"
         multiDexEnabled true
 
 
@@ -278,6 +278,9 @@ dependencies {
 
     //Cloudinary
     implementation 'com.cloudinary:cloudinary-android:3.0.2'
+
+    //flexbox
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 }
 
 

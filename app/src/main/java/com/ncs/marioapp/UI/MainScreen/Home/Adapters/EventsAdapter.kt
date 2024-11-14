@@ -41,7 +41,7 @@ class EventsAdapter(private var events: List<Event>, private val callback: Callb
 
         if (isEnrolled) {
             holder.binding.btnEnroll.text = "Enrolled!"
-            holder.binding.btnEnrollMe.setBackgroundResource(R.drawable.selected_enroll_button)
+            holder.binding.btnEnrollMe.setBackgroundResource(R.drawable.enroll_button)
             holder.binding.claimTicketBtn.visible()
         } else {
             holder.binding.btnEnroll.text = "Enroll"
@@ -54,12 +54,12 @@ class EventsAdapter(private var events: List<Event>, private val callback: Callb
 
         Log.d("eligibilityCheck", "${event.isEligibile}")
 
-        if (!event.isEligibile){
-            holder.binding.btnEnroll.text = "Not eligible to enroll"
-            holder.binding.btnEnrollMe.setBackgroundResource(R.drawable.selected_enroll_button)
-            holder.binding.btnEnrollMe.isClickable=false
-            holder.binding.btnEnrollMe.isEnabled=false
-        }
+//        if (!event.isEligibile){
+//            holder.binding.btnEnroll.text = "Not eligible to enroll"
+//            holder.binding.btnEnrollMe.setBackgroundResource(R.drawable.selected_enroll_button)
+//            holder.binding.btnEnrollMe.isClickable=false
+//            holder.binding.btnEnrollMe.isEnabled=false
+//        }
 
 
         holder.binding.claimTicketBtn.setOnClickThrottleBounceListener {

@@ -280,6 +280,9 @@ class StartScreen : AppCompatActivity() {
     private fun handleDeepLink(uri: Uri) {
         Log.d("shareLinkTest", uri.toString())
         val pathSegments = uri.pathSegments
+        if (pathSegments[0]=="event"){
+            PrefManager.setEventIdByDeeplink(pathSegments[1])
+        }
         Log.d("shareLinkTest", pathSegments.toString())
     }
 

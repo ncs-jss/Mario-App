@@ -3,7 +3,7 @@ package com.ncs.marioapp.UI.EventDetailsScreen.Adapters
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.ncs.marioapp.Domain.Models.Answer
-import com.ncs.marioapp.Domain.Models.Question
+import com.ncs.marioapp.Domain.Models.Events.EventDetails.Question
 import com.ncs.marioapp.UI.EventDetailsScreen.QuestionFragment
 import com.ncs.marioapp.UI.EventDetailsScreen.QuestionnaireSummaryFragment
 

@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.ncs.marioapp.Domain.HelperClasses.PrefManager
 import com.ncs.marioapp.Domain.Models.Banner
 import com.ncs.marioapp.Domain.Models.Events.AnswerPollBody
 import com.ncs.marioapp.Domain.Models.Events.Event
@@ -43,6 +44,7 @@ import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceLi
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.marioapp.Domain.Utility.GlobalUtils
 import com.ncs.marioapp.R
+import com.ncs.marioapp.UI.EventDetailsScreen.EventDetailsActivity
 import com.ncs.marioapp.UI.MainScreen.Home.Adapters.BannerAdapter
 import com.ncs.marioapp.UI.MainScreen.Home.Adapters.EventsAdapter
 import com.ncs.marioapp.UI.MainScreen.Home.Adapters.ListItem
@@ -200,6 +202,18 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
                 ServerResult.Progress -> {}
                 is ServerResult.Success -> {
                     val events=result.data.sortedByDescending { it.createdAt }.distinctBy { it._id }
+
+                    val eventFromDeeplink=PrefManager.getEventIdByDeeplink()
+                    if (eventFromDeeplink!=null){
+                        PrefManager.setEventIdByDeeplink(null)
+                        val event=events.firstOrNull { it._id==eventFromDeeplink }
+                        val intent = Intent(requireContext(), EventDetailsActivity::class.java)
+                        intent.putExtra("event_data", event)
+                        startActivity(intent)
+                        requireActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
+                    }
+
+
                     val requiredEvents = if (events.size > 3) {
                         events.subList(0, 3)
                     } else {
@@ -406,11 +420,19 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
     }
 
     override fun onEnroll(event: Event) {
-        viewModel.enrollUser(event._id)
+//        viewModel.enrollUser(event._id)
     }
 
     override fun onUnenroll(event: Event) {
-        viewModel.unenrollUser(event._id)
+//        viewModel.unenrollUser(event._id)
+    }
+
+    override fun onMoreDetails(event: Event) {
+        val intent = Intent(requireContext(), EventDetailsActivity::class.java)
+        intent.putExtra("event_data", event)
+        startActivity(intent)
+        requireActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
+
     }
 
     override fun onGetTicketClick(event: Event) {
@@ -436,7 +458,7 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
                 // If the post was not successfull, revert.
                 if (!success) {
                     val update = post.copy(
-                        likes = post.likes,
+                        likes = (post.likes).coerceAtLeast(0),
                         liked = true,
                         image = post.image ?: "default_image_url"
                     )
@@ -452,7 +474,7 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
         else {
 
             val updatedPost = post.copy(
-                likes = post.likes - 1,
+                likes = (post.likes - 1).coerceAtLeast(0),
                 liked = false,
                 image = post.image ?: "default_image_url"
             )
@@ -462,7 +484,7 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
             viewModel.unlikeResult.observe(viewLifecycleOwner){ success->
                 if (!success) {
                     val updatedPost = post.copy(
-                        likes = post.likes,
+                        likes = post.likes.coerceAtLeast(0),
                         liked = false,
                         image = post.image ?: "default_image_url"
                     )
