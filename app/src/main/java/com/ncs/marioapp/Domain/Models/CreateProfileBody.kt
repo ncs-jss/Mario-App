@@ -8,5 +8,6 @@ data class CreateProfileBody(
     val other_domain:String,
     val name: String,
     val socials: Map<String, String>,
-    val year: Int
+    val year: Int,
+    val admitted_to:String
 )

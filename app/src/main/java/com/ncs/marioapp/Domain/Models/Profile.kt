@@ -11,5 +11,6 @@ data class Profile(
     val role: Int = 0,
     val socials: Socials = Socials(),
     var year: Int = 0,
-    var other_domain:String = ""
+    var other_domain:String = "",
+    var admitted_to:String = "",
 )

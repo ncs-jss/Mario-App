@@ -12,7 +12,7 @@ data class EventDetails(
     val image: String,
     val mentors: List<Mentor>,
     val points: Int,
-    val questionnaire: Questionnaire,
+    val questionnaire: EventQuestionnaire,
     val requirements: List<String>,
     val time: Long,
     val title: String,

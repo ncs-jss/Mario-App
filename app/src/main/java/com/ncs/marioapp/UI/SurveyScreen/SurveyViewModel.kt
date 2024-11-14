@@ -69,6 +69,7 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
     val admission_num = MutableLiveData<String>(null)
     val branch = MutableLiveData<String>(null)
     val year = MutableLiveData<String>(null)
+    val admittedTo = MutableLiveData<String>(null)
 
     val selectedDomains = MutableLiveData<List<String>>(emptyList())
     private var othersText: String? = null
@@ -114,6 +115,11 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
     fun setBranch(_branch: String) {
         branch.value = _branch
     }
+
+    fun setAdmittedTo(_admittedTo: String) {
+        admittedTo.value = _admittedTo
+    }
+
 
     fun setYear(_year: String) {
         if (_year!="0") {
@@ -208,6 +214,7 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
         val admission_numValue=admission_num.value?.trim()
         val branch_value=branch.value?.trim()
         val year_value=year.value?.trim()
+        val admitted_to_value=admittedTo.value?.trim()
         if (nameValue.isNullOrEmpty()) {
             _errorMessagePersonalDetails.value = "Name can't be empty"
             return
@@ -225,6 +232,11 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
 
         if (year_value.isNullOrEmpty() || year_value=="Year"){
             _errorMessagePersonalDetails.value = "Select your year"
+            return
+        }
+
+        if (admitted_to_value.isNullOrEmpty() || admitted_to_value=="Admitted To"){
+            _errorMessagePersonalDetails.value = "Select your college or university"
             return
         }
 
@@ -335,7 +347,8 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                         "LinkedIn" to linkedIn.value!!.trim(),
                         "Behance" to behance.value!!.trim(),
                     ),
-                    year = userYear
+                    year = userYear,
+                    admitted_to = admittedTo.value!!.trim()
                 )
                 val response = profileApiService.createUserProfile(payload = payload)
                 if (response.isSuccessful) {
@@ -388,7 +401,7 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                         "LinkedIn" to linkedIn.value!!.trim(),
                         "Behance" to behance.value!!.trim(),
                     ),
-                    year = userYear
+                    year = userYear,
                 )
                 val response = profileApiService.updateUserProfile(payload = payload)
                 if (response.isSuccessful) {
