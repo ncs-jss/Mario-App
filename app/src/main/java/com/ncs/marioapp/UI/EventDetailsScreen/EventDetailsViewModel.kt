@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.ncs.marioapp.Domain.Api.EventsApi
+import com.ncs.marioapp.Domain.Models.Admin.Round
 import com.ncs.marioapp.Domain.Models.Answer
 import com.ncs.marioapp.Domain.Models.Events.EnrollUser
 import com.ncs.marioapp.Domain.Models.Events.Event
@@ -18,6 +19,7 @@ import com.ncs.marioapp.Domain.Models.Events.ParticipatedEvent
 import com.ncs.marioapp.Domain.Models.ServerResponse
 import com.ncs.marioapp.Domain.Models.ServerResult
 import com.ncs.marioapp.Domain.Repository.EventRepository
+import com.ncs.marioapp.Domain.Repository.FirestoreRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,6 +33,7 @@ import javax.inject.Inject
 class EventDetailsViewModel @Inject constructor(
     private val eventsApi: EventsApi,
     private val eventRepository: EventRepository,
+    private val firestoreRepository: FirestoreRepository
     ) : ViewModel() {
 
     private val _event = MutableLiveData<Event?>(null)
@@ -63,6 +66,10 @@ class EventDetailsViewModel @Inject constructor(
     private val _getMyEventsResponse = MutableLiveData<ServerResult<List<ParticipatedEvent>>>()
     val getMyEventsResponse: LiveData<ServerResult<List<ParticipatedEvent>>> = _getMyEventsResponse
 
+    private val _roundsListLiveData = MutableLiveData<ServerResult<List<Round>>>(null)
+    val roundsListLiveData: LiveData<ServerResult<List<Round>>> get() = _roundsListLiveData
+
+
     fun resetErrorMessage() {
         _errorMessage.value = null
         _normalErrorMessage.value = null
@@ -86,6 +93,28 @@ class EventDetailsViewModel @Inject constructor(
 
     fun setEventDetails(details: EventDetails) {
         _eventDetails.value = details
+    }
+
+    fun getAllRoundsForEvent(eventID: String) {
+        viewModelScope.launch {
+            firestoreRepository.getRounds(eventID) { it ->
+                when (it) {
+                    is ServerResult.Failure -> {
+                        _normalErrorMessage.value = "Failed to load rounds.."
+                        _roundsListLiveData.value = ServerResult.Failure(it.message)
+                    }
+
+                    ServerResult.Progress -> {
+                        _progressState.value = true
+                        _roundsListLiveData.value = ServerResult.Progress
+                    }
+
+                    is ServerResult.Success -> {
+                        _roundsListLiveData.value = ServerResult.Success(it.data)
+                    }
+                }
+            }
+        }
     }
 
     fun enrollUser(enrollUser: EnrollUser) {

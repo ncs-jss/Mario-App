@@ -9,6 +9,7 @@ import com.ncs.marioapp.Domain.HelperClasses.Utils.setTextWithColorFromSubstring
 import com.ncs.marioapp.Domain.HelperClasses.Utils.toRoundTimeStamp
 import com.ncs.marioapp.Domain.Models.Admin.Round
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
+import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.startBlinking
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.marioapp.databinding.ItemRoundBinding
 
@@ -42,10 +43,18 @@ class RoundAdapter(private val rounds: List<Round>) :
                     endTime.text = "End: ${round.endTime}"
                 }
 
-                if (round.isLive) {
+                if (round.live) {
                     roundStatus.visible()
+                    roundStatus.startBlinking()
+
                 } else {
                     roundStatus.gone()
+                }
+
+                if (round.requireSubmission) {
+                    formButton.visible()
+                } else {
+                    formButton.gone()
                 }
 
                 roundTitle.text = round.roundTitle

@@ -36,7 +36,6 @@ class RetrofitQrRepository @Inject constructor(private val qrAPI: QRAPI) : QrRep
                     serverResult(ServerResult.Failure("Invalid QR!!"))
                 }
             } else {
-                serverResult(ServerResult.Failure(response.message()))
                 serverResult(ServerResult.Failure("Invalid QR!!"))
             }
         } catch (e: Exception) {

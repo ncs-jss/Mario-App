@@ -149,12 +149,25 @@ class FormAdapter(
         }
     }
 
+    private fun clearFocusViews() {
+        val editTextPositions = items.mapIndexed { index, item ->
+            index.takeIf { item.type == FormType.EDIT_TEXT }
+        }.filterNotNull()
+
+        editTextPositions.forEach {
+            if (it != -1) {
+                notifyItemChanged(it)
+            }
+        }
+    }
+
     inner class ButtonViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val button: Button = view.findViewById(R.id.form_button)
 
         fun bind(item: FormItem) {
             button.text = item.title
             button.setOnClickListener {
+                clearFocusViews()
                 onButtonClick(item, items)
             }
         }
