@@ -87,7 +87,9 @@ class QRScannerActivity : AppCompatActivity() {
         binding.btnBack.setOnClickThrottleBounceListener {
             onBackPressed()
         }
-
+        binding.barcodeScanner.statusView?.let {
+            it.text = "Scan QRs to redeem Mario Points and Coins."
+        }
         setContentView(binding.root)
 
         mainViewModel.validateScannedQR.observe(this){result ->
