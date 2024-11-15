@@ -1,8 +1,5 @@
 package com.ncs.marioapp.UI.StartScreen
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -14,7 +11,6 @@ import android.provider.Settings
 import android.util.Log
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -31,6 +27,7 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.messaging.FirebaseMessaging
+import com.ncs.marioapp.BuildConfig
 import com.ncs.marioapp.Domain.HelperClasses.PrefManager
 import com.ncs.marioapp.Domain.HelperClasses.RemoteConfigHelper
 import com.ncs.marioapp.Domain.Models.ProfileData.UserImpDetails
@@ -38,14 +35,13 @@ import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.animFadein
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.toast
 import com.ncs.marioapp.Domain.Utility.GlobalUtils
+import com.ncs.marioapp.R
 import com.ncs.marioapp.UI.AdminScreen.AdminMainActivity
 import com.ncs.marioapp.UI.AuthScreen.AuthActivity
+import com.ncs.marioapp.UI.BanScreen.BanActivity
 import com.ncs.marioapp.UI.MainScreen.MainActivity
 import com.ncs.marioapp.UI.SurveyScreen.SurveyActivity
 import com.ncs.marioapp.UI.WaitScreen.WaitActivity
-import com.ncs.marioapp.BuildConfig
-import com.ncs.marioapp.R
-import com.ncs.marioapp.UI.BanScreen.BanActivity
 import com.ncs.marioapp.databinding.ActivityStartScreenBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.async
@@ -81,11 +77,10 @@ class StartScreen : AppCompatActivity() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("FCM", "Subscribed to topic successfully")
-                    setState("All ringers working fine..")
+                    setState("Warming up, almost loaded..")
                 } else {
                     Log.d("FCM", "Failed to subscribe to topic")
                     setState("Bip bop.. some errors , but carrying on..")
-
                 }
             }
 
@@ -187,7 +182,7 @@ class StartScreen : AppCompatActivity() {
             if (resultCode != RESULT_OK) {
                 finish()
                 toast("Something went wrong while updating the app")
-                setState("Bip bop.. something went wrong..")
+                setState("Bip bop.. something went wrong, code 1001..")
             }
         }
     }
@@ -305,12 +300,6 @@ class StartScreen : AppCompatActivity() {
     }
 
 
-    fun copyToClipboard(context: Context, label: String, text: String) {
-        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = ClipData.newPlainText(label, text)
-        clipboard.setPrimaryClip(clip)
-        Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show()
-    }
 
 
     private fun observeViewModel() {
@@ -335,10 +324,6 @@ class StartScreen : AppCompatActivity() {
     }
 
     private fun handleUserDetails(user: UserImpDetails) {
-//        PrefManager.setUserProfile(user.profile)
-//        if (user.profile.name.isNotEmpty()) {
-////            PrefManager.setUserProfileForCache(user.profile)
-//        }
         if (user.photo.isNotEmpty()) {
             PrefManager.setShowProfileCompletionAlert(false)
         } else {
@@ -350,6 +335,8 @@ class StartScreen : AppCompatActivity() {
 
     private fun handleKYCStatus(kycStatus: String?, role: Int) {
         if (!kycStatus.isNullOrEmpty()) {
+
+            setState("Starting Mario...")
             viewModel.banStatus.observe(this@StartScreen){
                 if (it){
                     startActivity(Intent(this@StartScreen, BanActivity::class.java))
@@ -365,7 +352,6 @@ class StartScreen : AppCompatActivity() {
                                 slideOutAnim.cancel()
                                 fadeInAnim.cancel()
                                 binding.progress.gone()
-                                setState("Starting Mario...")
                                 Handler(Looper.getMainLooper()).postDelayed({
                                     startActivity(Intent(this@StartScreen, MainActivity::class.java))
                                     finish()

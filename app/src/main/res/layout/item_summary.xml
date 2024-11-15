@@ -3,13 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:paddingBottom="10dp">
 
     <TextView
         android:id="@+id/tvQuestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Question"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:textStyle="bold" />
 
     <TextView
@@ -17,6 +19,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Answer"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginTop="4dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/border_zero_alpha" />
 
 </LinearLayout>

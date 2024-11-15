@@ -98,6 +98,7 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.swiperefresh.setOnRefreshListener {
             val currentTime = System.currentTimeMillis()
             if (currentTime - lastRefreshTime > 2000) {

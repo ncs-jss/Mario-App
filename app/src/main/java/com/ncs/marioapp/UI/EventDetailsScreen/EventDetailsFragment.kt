@@ -19,6 +19,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexDirection
@@ -27,9 +28,12 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.firebase.Timestamp
 import com.ncs.marioapp.Domain.HelperClasses.PrefManager
+import com.ncs.marioapp.Domain.HelperClasses.Utils
 import com.ncs.marioapp.Domain.HelperClasses.Utils.formatToFullDateWithTime
 import com.ncs.marioapp.Domain.Models.Admin.Round
+import com.ncs.marioapp.Domain.Models.Events.Event
 import com.ncs.marioapp.Domain.Models.Events.EventDetails.EventDetails
+import com.ncs.marioapp.Domain.Models.Events.EventDetails.GridDetails
 import com.ncs.marioapp.Domain.Models.Events.EventDetails.Mentor
 import com.ncs.marioapp.Domain.Models.Events.EventDetails.Submission
 import com.ncs.marioapp.Domain.Models.ServerResult
@@ -42,6 +46,8 @@ import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceLi
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.marioapp.Domain.Utility.GlobalUtils
 import com.ncs.marioapp.R
+import com.ncs.marioapp.UI.EventDetailsScreen.Adapters.GridAdapter
+import com.ncs.marioapp.UI.EventDetailsScreen.Adapters.GridSpacingItemDecoration
 import com.ncs.marioapp.UI.EventDetailsScreen.Adapters.RequirementsAdapter
 import com.ncs.marioapp.UI.EventDetailsScreen.Adapters.RoundAdapter
 import com.ncs.marioapp.UI.EventDetailsScreen.Adapters.TeamAdapter
@@ -49,28 +55,37 @@ import com.ncs.marioapp.UI.EventDetailsScreen.Adapters.TopicsAdapter
 import com.ncs.marioapp.UI.MainScreen.MainActivity
 import com.ncs.marioapp.databinding.FragmentEventDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.Random
 
 @AndroidEntryPoint
-class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback, RoundAdapter.RoundAdapterCallback {
+class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback,
+    RoundAdapter.RoundAdapterCallback {
 
-    private var _binding : FragmentEventDetailsBinding? =null
+    private var _binding: FragmentEventDetailsBinding? = null
     private val binding get() = _binding!!
     private val viewModel: EventDetailsViewModel by activityViewModels()
     private val util: GlobalUtils.EasyElements by lazy {
         GlobalUtils.EasyElements(requireActivity())
     }
-    lateinit var adapter: RoundAdapter
+    var adapter: RoundAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentEventDetailsBinding.inflate(inflater, container, false)
-        binding.eventEnroll.setOnClickThrottleBounceListener{
+        binding.eventEnroll.setOnClickThrottleBounceListener {
             findNavController().navigate(R.id.action_fragment_event_details_to_eventQuestionnaireFragment)
         }
         return binding.root
@@ -83,18 +98,11 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback, RoundA
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (viewModel.eventDetails.value.isNull) {
-
-            Log.d("EventDetails", "onViewCreated: ${viewModel.getEvent()!!._id}")
-            viewModel.getAllSubmissionsForRounds(eventID = viewModel.getEvent()!!._id, userId = PrefManager.getUserID()!!)
-            viewModel.getEventDetails(viewModel.getEvent()!!._id)
-            viewModel.getAllRoundsForEvent(viewModel.getEvent()!!._id)
-        }
         observeViewModel()
         setUpViews()
     }
 
-    private fun setUpViews(){
+    private fun setUpViews() {
 
         binding.btnShare.setOnClickThrottleBounceListener {
             util.showSnackbar(binding.root, "Please wait, generating share link", 2000)
@@ -104,7 +112,10 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback, RoundA
                 } else {
                     val shareIntent = Intent(Intent.ACTION_SEND).apply {
                         type = "text/plain"
-                        putExtra(Intent.EXTRA_TEXT, "Hey there! \n\nCheck out this new event from NCS: $link")
+                        putExtra(
+                            Intent.EXTRA_TEXT,
+                            "Hey there! \n\nCheck out this new event from NCS: $link"
+                        )
                     }
                     startActivity(Intent.createChooser(shareIntent, "Share Event via"))
                 }
@@ -118,11 +129,69 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback, RoundA
     }
 
 
+    override fun onResume() {
+        super.onResume()
+        if (viewModel.eventDetails.value.isNull) {
+            setUpEventDetails()
+        }
+    }
+
+    private fun setUpEventDetails() {
+        val currentDateTime = Utils.getTrueTime()
+        if (currentDateTime != null) {
+            viewModel.currentTime = currentDateTime
+            Timber.tag("EventDetails").d("onViewCreated: " + viewModel.getEvent()!!._id)
+            viewModel.getEventDetails(viewModel.getEvent()!!._id)
+
+            /// Load the rounds for the event.
+            viewModel.getAllRoundsForEvent(viewModel.getEvent()!!._id)
+            viewModel.getAllSubmissionsForRounds(
+                eventID = viewModel.getEvent()!!._id,
+                userId = PrefManager.getUserID()!!
+            )
+
+        } else {
+            GlobalUtils.EasyElements(requireContext())
+                .showActionSnackbar(
+                    binding.root,
+                    "Oops, server error, retry mate..",
+                    2000,
+                    "Retry"
+                ) {
+                    setUpEventDetails()
+                }
+        }
+        Timber.tag("TrueTime").d("$currentDateTime")
+    }
+
+
+    private var job: Job? = null
+    private fun startUpdatingTimeTask() {
+        job = CoroutineScope(Dispatchers.IO).launch {
+            while (isActive) {
+                val updatedTime = Utils.getTrueTime()
+                updatedTime?.let {
+                    withContext(Dispatchers.Main) {
+                        adapter?.setUpdatedTime(updatedTime)
+                    }
+                }
+
+                Timber.tag("EventDetails").d("onViewCreated: $updatedTime")
+                delay(10000L)
+            }
+        }
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        job?.cancel()
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         onBackPress()
     }
-
 
 
     private fun onBackPress() {
@@ -132,21 +201,21 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback, RoundA
         }
     }
 
-    private fun observeViewModel(){
+    private fun observeViewModel() {
 
-        viewModel.getSubmissionsForEvent.observe(viewLifecycleOwner){ res ->
-            when (res) {
+        viewModel.roundsListLiveData.observe(viewLifecycleOwner) { eventDetails ->
+            when (eventDetails) {
                 is ServerResult.Failure -> {}
                 ServerResult.Progress -> {}
                 is ServerResult.Success -> {
-                    viewModel.roundsListLiveData.observe(viewLifecycleOwner) { result ->
-                        when (result) {
+                    Timber.tag("EventDetails").d("onViewCreated: " + eventDetails.data)
+
+                    viewModel.getSubmissionsForEvent.observe(viewLifecycleOwner) { submissionDetails ->
+                        when (submissionDetails) {
                             is ServerResult.Failure -> {}
                             ServerResult.Progress -> {}
                             is ServerResult.Success -> {
-                                Log.d("EventDetails", "onViewCreated: ${result.data}")
-                                setupRoundsRV(result.data, res.data)
-
+                                setupRoundsRV(eventDetails.data, submissionDetails.data)
                             }
                         }
                     }
@@ -154,7 +223,7 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback, RoundA
             }
         }
 
-        viewModel.errorMessage.observe(viewLifecycleOwner){
+        viewModel.errorMessage.observe(viewLifecycleOwner) {
             if (!it.isNull) {
                 util.showActionSnackbar(binding.root, it.toString(), 4000, "Retry") {
                     viewModel.getEventDetails(viewModel.getEvent()!!._id)
@@ -171,31 +240,29 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback, RoundA
                 }
                 binding.eventLayout.gone()
             } else {
-                binding.bannerShimmerLayout.apply {
-                    stopShimmer()
-                    visibility = View.GONE
-                }
-                binding.eventLayout.visible()
+                ///
             }
         }
 
-        viewModel.eventDetails.observe(viewLifecycleOwner){
-            if (!it.isNull){
+        viewModel.eventDetails.observe(viewLifecycleOwner) {
+            if (!it.isNull) {
                 setUpEventDetails(it)
             }
         }
+
+
     }
 
-    private fun setUpEventDetails(eventDetails: EventDetails){
-        Log.d("eventDetailsCheck", eventDetails.toString())
+    private fun setUpEventDetails(eventDetails: EventDetails) {
+
+        Timber.tag("eventDetailsCheck").d(eventDetails.toString())
         binding.eventTitle.text = eventDetails.title
-        binding.bannerImage.load(eventDetails.banner, requireContext().getDrawable(R.drawable.placeholder_image)!!)
-        val (formattedDate, formattedTime) = formatTimestamp(eventDetails.time)
-        binding.eventDate.text = formattedDate
-        binding.eventTime.text = formattedTime
-        binding.eventVenue.text = eventDetails.venue
-        binding.eventDuration.text = eventDetails.duration
-        binding.eventType.text = eventDetails.domain[0]
+        binding.bannerImage.load(
+            eventDetails.banner,
+            requireContext().getDrawable(R.drawable.placeholder_image)!!
+        )
+
+        setupImportantDetails(eventDetails)
 
         setupViewListeners(eventDetails.title)
 
@@ -209,7 +276,64 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback, RoundA
 
         setUpMentorsRV(eventDetails.contact, binding.pointOfContactRv, "contact")
 
-        val event=viewModel.getEvent()!!
+        val event = viewModel.getEvent()!!
+        getMyEvents(eventDetails, event)
+
+
+        if (event.enrolled.isEmpty()) {
+            binding.profilePic1.setImageResource(R.drawable.apphd)
+            binding.profilePic2.setImageResource(R.drawable.logo)
+            binding.profilePic3.setImageResource(R.drawable.ncs)
+        } else if (event.enrolled.size == 1) {
+            binding.profilePic1.setImageResource(R.drawable.apphd)
+            binding.profilePic2.setImageResource(R.drawable.logo)
+            binding.profilePic3.load(
+                event.enrolled[0],
+                requireContext().getDrawable(R.drawable.profile_pic_placeholder)!!
+            )
+        } else if (event.enrolled.size == 2) {
+            binding.profilePic1.setImageResource(R.drawable.apphd)
+            binding.profilePic2.load(
+                event.enrolled[1],
+                requireContext().getDrawable(R.drawable.profile_pic_placeholder)!!
+            )
+            binding.profilePic3.load(
+                event.enrolled[0],
+                requireContext().getDrawable(R.drawable.profile_pic_placeholder)!!
+            )
+        } else {
+            binding.profilePic1.load(
+                event.enrolled[2],
+                requireContext().getDrawable(R.drawable.profile_pic_placeholder)!!
+            )
+            binding.profilePic2.load(
+                event.enrolled[1],
+                requireContext().getDrawable(R.drawable.profile_pic_placeholder)!!
+            )
+            binding.profilePic3.load(
+                event.enrolled[0],
+                requireContext().getDrawable(R.drawable.profile_pic_placeholder)!!
+            )
+        }
+
+        binding.enrolledCount.text = "${getInflatedEnrolledUserCount(event.enrolledCount)} +"
+
+        val score = event.points
+        val coins = (score / 5).coerceAtLeast(0)
+        binding.cointCount.text = "+${coins}"
+        binding.scoreCount.text = "+${score}"
+
+
+        binding.bannerShimmerLayout.apply {
+            stopShimmer()
+            visibility = View.GONE
+        }
+        binding.eventLayout.visible()
+
+    }
+
+    private fun getMyEvents(eventDetails: EventDetails, event: Event) {
+
         val deadline = eventDetails.deadline
         val isEventOver: Boolean
 
@@ -218,42 +342,44 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback, RoundA
             isEventOver = currentTime >= deadline
         }
 
-        Log.d("isEventOver", isEventOver.toString())
+        Timber.tag("isEventOver").d(isEventOver.toString())
 
         viewModel.getMyEventsResponse.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is ServerResult.Failure -> {}
                 ServerResult.Progress -> {}
                 is ServerResult.Success -> {
-                    if (result.data.filter { it._id==event._id }.isNullOrEmpty()){
-                        Log.d("isEventOver", "Not Enrolled")
-                        if (isEventOver){
-                            Log.d("isEventOver", "isEventOver is true")
+                    if (result.data.none { it._id == event._id }) {
+
+                        Timber.tag("Event").d("Not Enrolled")
+                        viewModel.isUserEnrolled = 0
+
+                        if (isEventOver) {
+                            Timber.tag("Event").d("isEventOver is true")
                             binding.deadlineView.visible()
                             binding.eventEnroll.gone()
                             binding.alreadyEnrolled.gone()
                             binding.notEligible.gone()
-                        }
-                        else{
-                            Log.d("isEventOver", "isEventOver is false")
-                            if (!event.isEligibile){
-                                Log.d("isEventOver", "isEligibile is false")
+                        } else {
+                            Timber.tag("Event").d("isEventOver is false")
+                            if (!event.isEligibile) {
+                                Timber.tag("Event").d("isEligibile is false")
                                 binding.notEligible.visible()
                                 binding.eventEnroll.gone()
                                 binding.alreadyEnrolled.gone()
                                 binding.deadlineView.gone()
-                            }
-                            else{
-                                Log.d("isEventOver", "isEligibile is true")
+                            } else {
+                                Timber.tag("Event").d("isEligibile is true")
                                 binding.eventEnroll.visible()
                                 binding.notEligible.gone()
                                 binding.alreadyEnrolled.gone()
                                 binding.deadlineView.gone()
                             }
                         }
-                    }
-                    else{
-                        Log.d("isEventOver", "Already Enrolled")
+                    } else {
+                        Timber.tag("isEventOver").d("Already Enrolled")
+                        viewModel.isUserEnrolled = 1
+
                         binding.alreadyEnrolled.visible()
                         binding.deadlineView.gone()
                         binding.eventEnroll.gone()
@@ -263,38 +389,30 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback, RoundA
             }
         }
 
-
-        if (event.enrolled.isEmpty()){
-            binding.profilePic1.setImageResource(R.drawable.apphd)
-            binding.profilePic2.setImageResource(R.drawable.logo)
-            binding.profilePic3.setImageResource(R.drawable.ncs)
-        }
-        else if (event.enrolled.size==1){
-            binding.profilePic1.setImageResource(R.drawable.apphd)
-            binding.profilePic2.setImageResource(R.drawable.logo)
-            binding.profilePic3.load(event.enrolled[0],requireContext().getDrawable(R.drawable.profile_pic_placeholder)!!)
-        }
-        else if (event.enrolled.size==2){
-            binding.profilePic1.setImageResource(R.drawable.apphd)
-            binding.profilePic2.load(event.enrolled[1],requireContext().getDrawable(R.drawable.profile_pic_placeholder)!!)
-            binding.profilePic3.load(event.enrolled[0],requireContext().getDrawable(R.drawable.profile_pic_placeholder)!!)
-        }
-        else{
-            binding.profilePic1.load(event.enrolled[2],requireContext().getDrawable(R.drawable.profile_pic_placeholder)!!)
-            binding.profilePic2.load(event.enrolled[1],requireContext().getDrawable(R.drawable.profile_pic_placeholder)!!)
-            binding.profilePic3.load(event.enrolled[0],requireContext().getDrawable(R.drawable.profile_pic_placeholder)!!)
-        }
-
-        binding.enrolledCount.text="${getInflatedEnrolledUserCount(event.enrolledCount)} +"
-
-        val score=event.points
-        val coins = (score / 5).coerceAtLeast(0)
-        binding.cointCount.text="+${coins}"
-        binding.scoreCount.text="+${score}"
-
     }
 
-    private fun setupRoundsRV(rounds:List<Round>, userSubmission:List<Submission>) {
+    private fun setupImportantDetails(eventDetails: EventDetails) {
+
+        val (formattedDate, formattedTime) = formatTimestamp(eventDetails.time)
+
+        val items = listOf(
+            GridDetails(R.drawable.baseline_calendar_today_24, "Date", formattedDate),
+            GridDetails(R.drawable.baseline_access_time_24, "Time", formattedTime),
+            GridDetails(R.drawable.baseline_location_pin_24, "Venue", eventDetails.venue),
+            GridDetails(R.drawable.hour_glass_svgrepo_com, "Duration", eventDetails.duration),
+            GridDetails(R.drawable.internships, "Event Type", eventDetails.domain[0])
+        )
+
+        val spacing = 10 // Space in pixels (e.g., 16dp converted to pixels)
+        val includeEdge = true
+        val spacingInPixels = (spacing * resources.displayMetrics.density).toInt()
+        val gridLayoutManager = GridLayoutManager(requireContext(), 2)
+        binding.gridRV.layoutManager = gridLayoutManager
+        binding.gridRV.addItemDecoration(GridSpacingItemDecoration(2, spacingInPixels, includeEdge))
+        binding.gridRV.adapter = GridAdapter(items)
+    }
+
+    private fun setupRoundsRV(rounds: List<Round>, userSubmission: List<Submission>) {
         val recyclerView = binding.roundsRecyclerView
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
@@ -308,8 +426,16 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback, RoundA
             Log.d("EventDetails", "${round.startTime}-${round.endTime}")
         }
 
-        adapter = RoundAdapter(rounds, this, userSubmission)
+        adapter = RoundAdapter(
+            rounds,
+            this,
+            userSubmission,
+            viewModel.isUserEnrolled,
+            viewModel.currentTime
+        )
         recyclerView.adapter = adapter
+        startUpdatingTimeTask()
+        adapter!!.setIsUserEnrolled(viewModel.isUserEnrolled)
     }
 
 
@@ -330,8 +456,8 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback, RoundA
 
     var isExpanded = false
 
-    fun getInflatedEnrolledUserCount(count:Int):Int{
-        return if (count==0) Random().nextInt(5)+1 else (0.2 * count).toInt()+count
+    fun getInflatedEnrolledUserCount(count: Int): Int {
+        return if (count == 0) Random().nextInt(5) + 1 else (0.2 * count).toInt() + count
     }
 
     fun setReadMoreSpan(eventDetails: EventDetails) {
@@ -353,7 +479,12 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback, RoundA
                     ds.isUnderlineText = false
                 }
             }
-            spannableString.setSpan(readLessSpan, fullDescription.length + 1, spannableString.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            spannableString.setSpan(
+                readLessSpan,
+                fullDescription.length + 1,
+                spannableString.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
             eventDescTextView.text = spannableString
             eventDescTextView.movementMethod = LinkMovementMethod.getInstance()
         } else {
@@ -376,17 +507,22 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback, RoundA
                     ds.isUnderlineText = false
                 }
             }
-            spannableString.setSpan(readMoreSpan, truncatedText.length + 1, spannableString.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            spannableString.setSpan(
+                readMoreSpan,
+                truncatedText.length + 1,
+                spannableString.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
             eventDescTextView.text = spannableString
             eventDescTextView.movementMethod = LinkMovementMethod.getInstance()
         }
     }
 
-    private fun setUpRequiremntsRV(requirements:List<String>){
+    private fun setUpRequiremntsRV(requirements: List<String>) {
         val recyclerView = binding.requirementsRV
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
-        val adapter= RequirementsAdapter(requirements)
+        val adapter = RequirementsAdapter(requirements)
         recyclerView.adapter = adapter
     }
 
@@ -423,10 +559,9 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback, RoundA
     }
 
     override fun onTeamMemberClicked(mentor: Mentor, type: String) {
-        if (type=="contact"){
+        if (type == "contact") {
             openWhatsAppChat("91${mentor.wa_num}")
-        }
-        else{
+        } else {
             openUrl(mentor.linkedin_url)
         }
     }
@@ -452,13 +587,18 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback, RoundA
     }
 
     override fun onFormButtonClick(round: Round) {
+
         val questionnaireID = round.questionnaireID
         val bundle = Bundle().apply {
             putString("questionnaireID", questionnaireID)
         }
         viewModel.setRoundId(round.roundID)
         viewModel.setQuestionnaireId(round.questionnaireID)
-        findNavController().navigate(R.id.action_fragment_event_details_to_fragment_round_questionnaire, bundle)
+        findNavController().navigate(
+            R.id.action_fragment_event_details_to_fragment_round_questionnaire,
+            bundle
+        )
     }
+
 
 }

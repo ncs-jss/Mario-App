@@ -25,7 +25,8 @@ data class Round(
     var startTime: String? = null,
     var endTime: String? = null,
     var sameAsCollege: Boolean = false,
-    var seriesNumber: Int = -1
+    var seriesNumber: Int = -1,
+    var isOptional: Boolean = false
 ) : Parcelable
 
 data class RoundQuestionnaire(

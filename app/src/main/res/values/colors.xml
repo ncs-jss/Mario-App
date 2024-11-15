@@ -39,6 +39,7 @@
     <color name="s3bg">#FFE871</color>
 
     <color name="secondary_bg_lighter">#242424</color>
+    <color name="secondary_bg_darker">#1A1A1A</color>
     <color name="item_bg_glow">#1D2930</color>
     <color name="better_white">#D7D7D7</color>
     <color name="card_bg">#3F4041</color>
@@ -111,6 +112,7 @@
 
     <color name="baseWhite">#FAFAFA</color>
     <color name="baseBlack">#0B0A0A</color>
+    <color name="baseBlackLighter">#100F0F</color>
     <color name="success100">#bcf1c6</color>
     <color name="success200">#7ae38c</color>
     <color name="success300">#209b36</color>

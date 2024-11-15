@@ -83,9 +83,15 @@ class EventDetailsViewModel @Inject constructor(
     private val _getMyEventsResponse = MutableLiveData<ServerResult<List<ParticipatedEvent>>>()
     val getMyEventsResponse: LiveData<ServerResult<List<ParticipatedEvent>>> = _getMyEventsResponse
 
-    private val _roundsListLiveData = MutableLiveData<ServerResult<List<Round>>>(null)
+    private val _roundsListLiveData = MutableLiveData<ServerResult<List<Round>>>()
     val roundsListLiveData: LiveData<ServerResult<List<Round>>> get() = _roundsListLiveData
 
+    private var _currentISTTime = MutableLiveData<ServerResult<String>>()
+    val currentISTTime: LiveData<ServerResult<String>> get() = _currentISTTime
+
+    var isUserEnrolled = -1
+
+    var currentTime: String? = null
 
     fun setQuestionnaireId(id: String) {
         _questionnaireId.value = id
@@ -135,6 +141,35 @@ class EventDetailsViewModel @Inject constructor(
     fun setEventDetails(details: EventDetails) {
         _eventDetails.value = details
     }
+
+
+    fun getCurrentTime() {
+        viewModelScope.launch {
+            eventRepository.getCurrentTime { currentTimeReponse ->
+                when (currentTimeReponse) {
+                    is ServerResult.Failure -> {
+                        _normalErrorMessage.value = "Failed to load submissions.."
+                        _progressState.value = false
+                        _currentISTTime.value = ServerResult.Failure(currentTimeReponse.message)
+                    }
+
+                    ServerResult.Progress -> {
+                        _progressState.value = true
+                        _currentISTTime.value = ServerResult.Progress
+                    }
+
+                    is ServerResult.Success -> {
+                        _progressState.value = false
+                        _currentISTTime.value =
+                            ServerResult.Success(currentTimeReponse.data.datetime)
+                    }
+
+                }
+            }
+        }
+    }
+
+
 
     fun getAllSubmissionsForRounds(eventID: String, userId:String) {
         viewModelScope.launch {
