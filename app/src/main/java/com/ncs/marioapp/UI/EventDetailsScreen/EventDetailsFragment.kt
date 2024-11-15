@@ -215,7 +215,10 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback,
                             is ServerResult.Failure -> {}
                             ServerResult.Progress -> {}
                             is ServerResult.Success -> {
-                                setupRoundsRV(eventDetails.data, submissionDetails.data)
+                                setupRoundsRV(
+                                    eventDetails.data.sortedBy { it.seriesNumber },
+                                    submissionDetails.data
+                                )
                             }
                         }
                     }
@@ -413,6 +416,12 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback,
     }
 
     private fun setupRoundsRV(rounds: List<Round>, userSubmission: List<Submission>) {
+
+        if (rounds.isEmpty()) {
+            binding.timelineParent.gone()
+            return
+        }
+
         val recyclerView = binding.roundsRecyclerView
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
