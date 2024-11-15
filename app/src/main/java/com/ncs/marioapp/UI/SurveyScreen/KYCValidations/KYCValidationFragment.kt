@@ -35,6 +35,7 @@ import com.ncs.marioapp.Domain.Utility.GlobalUtils
 import com.ncs.marioapp.R
 import com.ncs.marioapp.UI.StartScreen.StartScreen
 import com.ncs.marioapp.UI.SurveyScreen.SurveyViewModel
+import com.ncs.marioapp.UI.WaitScreen.WaitActivity
 import com.ncs.marioapp.databinding.FragmentKYCValidationBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -126,7 +127,7 @@ class KYCValidationFragment : Fragment() {
                 userSurvey.collegeIdImg=surveyViewModel.userCollegeID.value!!
                 PrefManager.setUserSurvey(userSurvey)
                 Log.d("usercheck","${PrefManager.getUserSurvey()}")
-                startActivity(Intent(requireContext(),StartScreen::class.java))
+                startActivity(Intent(requireContext(),WaitActivity::class.java))
                 requireActivity().finish()
             }
         })
