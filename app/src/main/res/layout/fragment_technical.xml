@@ -61,7 +61,8 @@
                 android:id="@+id/checkboxProgramming"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="false" />
+                android:checked="false"
+                android:buttonTint="@color/primary"/>
 
         </LinearLayout>
 
@@ -86,7 +87,8 @@
                 android:id="@+id/checkboxDesign"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="false" />
+                android:checked="false"
+                android:buttonTint="@color/primary"/>
 
         </LinearLayout>
 
@@ -111,7 +113,8 @@
                 android:id="@+id/checkboxDevelopment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="false" />
+                android:checked="false"
+                android:buttonTint="@color/primary"/>
 
         </LinearLayout>
 
@@ -136,7 +139,8 @@
                 android:id="@+id/checkboxAndroid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="false" />
+                android:checked="false"
+                android:buttonTint="@color/primary"/>
 
         </LinearLayout>
 
@@ -161,7 +165,8 @@
                 android:id="@+id/checkboxdevops"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="false" />
+                android:checked="false"
+                android:buttonTint="@color/primary"/>
 
         </LinearLayout>
 
@@ -186,7 +191,8 @@
                 android:id="@+id/checkboxaiml"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="false" />
+                android:checked="false"
+                android:buttonTint="@color/primary"/>
 
         </LinearLayout>
 
@@ -205,13 +211,15 @@
                 android:gravity="start"
                 android:text="Others"
                 android:textColor="@color/better_white"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                />
 
             <CheckBox
                 android:id="@+id/checkboxothers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="false" />
+                android:checked="false"
+                android:buttonTint="@color/primary"/>
 
         </LinearLayout>
 
