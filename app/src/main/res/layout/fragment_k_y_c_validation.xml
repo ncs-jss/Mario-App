@@ -36,6 +36,15 @@
             android:text="*This is crucial as to verify your identity and to maintain \nthe integrity of the platform"
             android:textColor="@color/edit_text_hint"
             android:textSize="12dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/sf_light"
+            android:text="*Do upload the images before clicking on Create Account."
+            android:textColor="@color/edit_text_hint"
+            android:textSize="12dp" />
 
 
         <LinearLayout

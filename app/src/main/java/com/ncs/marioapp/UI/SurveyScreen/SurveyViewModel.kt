@@ -15,6 +15,7 @@ import com.ncs.marioapp.Domain.Api.ProfileApiService
 import com.ncs.marioapp.Domain.HelperClasses.PrefManager
 import com.ncs.marioapp.Domain.Models.CreateProfileBody
 import com.ncs.marioapp.Domain.Models.ImageBody
+import com.ncs.marioapp.Domain.Models.ImageUploadResult
 import com.ncs.marioapp.Domain.Models.ServerResponse
 import com.ncs.marioapp.Domain.Models.UpdateProfileBody
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -57,6 +58,12 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
     private val _errorMessageKYCDetails = MutableLiveData<String?>()
     val errorMessageKYCDetails: LiveData<String?> get() = _errorMessageKYCDetails
 
+//    private val _userImageUploadToken = MutableLiveData<String?>(null)
+//    val userImageUploadToken:LiveData<String?> get() = _userImageUploadToken
+//
+//    private val _userCollegeIdToken = MutableLiveData<String?>(null)
+//    val userCollegeIdToken: LiveData<String?> get() = _userSelfie
+
     private val _userSelfie = MutableLiveData<String>(null)
     val userSelfie: LiveData<String?> get() = _userSelfie
 
@@ -94,7 +101,7 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
     private val _kycDetailsPageResult = MutableLiveData<Boolean>()
     val kycDetailsPageResult: LiveData<Boolean> get() = _kycDetailsPageResult
 
-    private val _profileCreateResult = MutableLiveData<Boolean>()
+    private val _profileCreateResult = MutableLiveData<Boolean>(false)
     val profileCreateResult: LiveData<Boolean> get() = _profileCreateResult
 
     private val _currentStep = MutableLiveData(SurveyStep.PERSONAL_DETAILS)
@@ -280,53 +287,109 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
     fun validateInputsOnSocialDetailsPage() {
         _socialDetailsPageResult.value = true
     }
+    fun validateSelfie(context: Context){
+        _finalProgressState.value=true
+        if (_userSelfie.value.isNullOrEmpty()){
+            _errorMessageKYCDetails.value = "Your selfie is required"
+            return
+        }
+        uploadUserImage(uri = Uri.parse(userSelfie.value!!), context = context)
+    }
+
+    fun validateCollegeID(context: Context){
+        _finalProgressState.value=true
+        if (_userCollegeID.value.isNullOrEmpty()){
+            _errorMessageKYCDetails.value = "Your college ID is required"
+            return
+        }
+        uploadCollegeIDImage(uri = Uri.parse(userCollegeID.value), context = context)
+    }
 
     fun validateInputsOnKYCDetailsPage() {
         Log.d("validateInputsOnKYCDetailsPage","fun called")
         Log.d("validateInputsOnKYCDetailsPage","selfie: ${_userSelfie.value}")
         Log.d("validateInputsOnKYCDetailsPage","collegeid:${_userCollegeID.value}")
 
-        if (_userSelfie.value.isNullOrEmpty()){
-            _errorMessageKYCDetails.value = "Your selfie is required"
+        if (PrefManager.getUserSelfieToken().isNullOrEmpty()){
+            _errorMessageKYCDetails.value = "Upload Your Profile Picture"
             return
         }
-        if (_userCollegeID.value.isNullOrEmpty()){
-            _errorMessageKYCDetails.value = "Your college ID is required"
+        if (PrefManager.getUserCollegeIDToken().isNullOrEmpty()){
+            _errorMessageKYCDetails.value = "Upload your College ID"
             return
         }
-        _finalProgressState.value=true
 
-        requestKYCToPending()
+        requestCreateOrUpdateProfile()
     }
 
-    fun requestKYCToPending(){
+    fun requestCreateOrUpdateProfile(){
+        _kycDetailsPageResult.value = false
         _progressState.postValue(true)
+        _finalProgressState.value=true
         viewModelScope.launch {
             try {
-                val response = profileApiService.requestKYCToPending()
+                val response = profileApiService.getKYCHeader()
                 if (response.isSuccessful) {
-                    if (PrefManager.getUserProfile()!!.name!=""){
+                    val status= response.body()?.get("is_approved")?.asString
+                    if (status=="REJECT"){
                         updateProfile()
                     }
-                    else {
-                        uploadUserProfile()
-                    }
-                }  else {
-                    val errorResponse = response.errorBody()?.string()
-                    val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
-
-                    if (loginResponse.message=="User not found!"){
-                        uploadUserProfile()
-                    }
-
                 }
-            } catch (e: SocketTimeoutException) {} catch (e: IOException) {} catch (e: Exception) {}
-        }
+                else{
+                    uploadUserProfile()
+                }
+
+            }
+            catch (e: SocketTimeoutException) {
+                Log.e("signupResult", "SocketTimeoutException occurred", e)
+            } catch (e: IOException) {
+                Log.e("signupResult", "IOException occurred", e)
+            } catch (e: Exception) {
+                Log.e("signupResult", "Unexpected exception occurred", e)
+            } finally {
+                Log.d("signupResult", "API call completed")
+            }
     }
+    }
+
+//    fun requestKYCToPending() {
+//        _kycDetailsPageResult.value = false
+//        _progressState.postValue(true)
+//        _finalProgressState.value=true
+//        viewModelScope.launch {
+//            try {
+//                val response = profileApiService.requestKYCToPending()
+//                if (response.isSuccessful) {
+//                    if (PrefManager.getUserProfile()?.name.isNullOrEmpty()) {
+//                        Log.d("signupResult", "Updating....")
+//                        updateProfile()
+//                    } else {
+//                        uploadUserProfile()
+//                        Log.d("signupResult", "Creating...")
+//                    }
+//                } else {
+//                    val errorResponse = response.errorBody()?.string()
+//                    val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
+//
+//                    if (loginResponse.message == "User not found!") {
+//                        uploadUserProfile()
+//                        Log.d("signupResult", "Creating...")
+//                    }
+//                }
+//            } catch (e: SocketTimeoutException) {
+//                Log.e("signupResult", "SocketTimeoutException occurred", e)
+//            } catch (e: IOException) {
+//                Log.e("signupResult", "IOException occurred", e)
+//            } catch (e: Exception) {
+//                Log.e("signupResult", "Unexpected exception occurred", e)
+//            } finally {
+//                Log.d("signupResult", "API call completed")
+//            }
+//        }
+//    }
 
     fun uploadUserProfile(){
         viewModelScope.launch {
-            _progressState.postValue(true)
             try {
                 var userYear = 1
                 when(year.value){
@@ -340,45 +403,39 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                     domains.remove("Others")
                     domains.add("Other")
                 }
-                var institute = ""
-                when(admitted_to.value){
-                    "JSSATEN"->institute="COLLEGE"
-                    "UNIVERSITY"->institute="UNIVERSITY"
-                }
-                val payload=CreateProfileBody(
-                    FCM_token = "fcmtoken",
-                    admission_number = admission_num.value!!.trim(),
-                    branch = branch.value!!.trim(),
-                    domain = domains,
-                    other_domain = othersText!!,
-                    name = name.value!!.trim(),
-                    socials = mapOf(
-                        "GitHub" to github.value!!.trim(),
-                        "LinkedIn" to linkedIn.value!!.trim(),
-                        "Behance" to behance.value!!.trim(),
-                    ),
-                    year = userYear,
-                    admitted_to = admittedTo.value!!.trim()
-                )
-                Log.d("signupResult", "Profile Create Payload: $payload")
-                val response = profileApiService.createUserProfile(payload = payload)
-                if (response.isSuccessful) {
-                    Log.d("signupResult", "Profile Create: ${response.body()}")
-                    _errorMessageKYCDetails.value = "Profile Created"
-                    _profileCreateResult.value = true
-                    _progressState.postValue(false)
-                } else {
-                    val errorResponse = response.errorBody()?.string()
-                    val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
-                    Log.d("signupResult", "Profile Create Failed: ${loginResponse.message}")
-                    _errorMessageKYCDetails.value = loginResponse.message
-                    _kycDetailsPageResult.value = false
-                    _profileCreateResult.value = false
-                    _finalProgressState.value=false
-                }
+
+                    val payload=CreateProfileBody(
+                        FCM_token = "fcmtoken",
+                        admission_number = admission_num.value!!.trim(),
+                        branch = branch.value!!.trim(),
+                        domain = domains,
+                        other_domain = othersText!!,
+                        name = name.value!!.trim(),
+                        socials = mapOf(
+                            "GitHub" to github.value!!.trim(),
+                            "LinkedIn" to linkedIn.value!!.trim(),
+                            "Behance" to behance.value!!.trim(),
+                        ),
+                        year = userYear,
+                        admitted_to = admittedTo.value!!.trim(),
+                        photo_token = PrefManager.getUserSelfieToken()!!,
+                        id_card_token = PrefManager.getUserCollegeIDToken()!!
+                    )
+                    val response = profileApiService.createUserProfile(payload = payload)
+                    if (response.isSuccessful) {
+                        _errorMessageKYCDetails.value = "Profile Created"
+                        _kycDetailsPageResult.value = true
+                     } else {
+                        val errorResponse = response.errorBody()?.string()
+                        val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
+                        Log.d("signupResult", "Profile Create Failed: ${loginResponse.message}")
+                        _errorMessageKYCDetails.value = loginResponse.message
+                        _kycDetailsPageResult.value = false
+                        _finalProgressState.value=false
+                    }
+
             } catch (e: Exception) {
                 _kycDetailsPageResult.value = false
-                _profileCreateResult.value = false
                 _finalProgressState.value=false
             } finally {
                 _progressState.postValue(false)
@@ -388,7 +445,6 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
 
     fun updateProfile(){
         viewModelScope.launch {
-            _progressState.postValue(true)
             try {
                 var userYear = 1
                 when(year.value){
@@ -397,11 +453,7 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                     "III Year"->userYear=3
                     "IV Year"->userYear=4
                 }
-                var institute = ""
-                when(admitted_to.value){
-                    "JSSATEN"->institute="COLLEGE"
-                    "UNIVERSITY"->institute="UNIVERSITY"
-                }
+
                 val domains=selectedDomains.value!!.toMutableList()
                 if (domains.contains("Others")){
                     domains.remove("Others")
@@ -412,7 +464,7 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                     branch = branch.value!!.trim(),
                     domain = domains,
                     other_domain = othersText!!,
-                    admitted_to = institute,
+                    admitted_to = admittedTo.value!!.trim(),
                     name = name.value!!.trim(),
                     socials = mapOf(
                         "GitHub" to github.value!!.trim(),
@@ -420,29 +472,52 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                         "Behance" to behance.value!!.trim(),
                     ),
                     year = userYear,
+                    photo_token = PrefManager.getUserSelfieToken()!!,
+                    id_card_token = PrefManager.getUserCollegeIDToken()!!
                 )
                 val response = profileApiService.updateUserProfile(payload = payload)
                 if (response.isSuccessful) {
                     Log.d("signupResult", "Profile Update: ${response.body()}")
-                    _errorMessageKYCDetails.value = "Profile Updated"
-                    _profileCreateResult.value = true
-                    _progressState.postValue(false)
-
+                    _errorMessageKYCDetails.value = "Re-requested"
+                    requestKycStatusChange()
                 } else {
                     val errorResponse = response.errorBody()?.string()
                     val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
                     Log.d("signupResult", "Profile Update Failed: ${loginResponse.message}")
                     _errorMessageKYCDetails.value = loginResponse.message
                     _kycDetailsPageResult.value = false
-                    _profileCreateResult.value = false
                     _finalProgressState.value=false
                 }
             } catch (e: Exception) {
                 _kycDetailsPageResult.value = false
-                _profileCreateResult.value = false
                 _finalProgressState.value=false
             } finally {
-                _progressState.postValue(false)
+                _finalProgressState.value=false
+            }
+        }
+    }
+
+    private fun requestKycStatusChange() {
+        _kycDetailsPageResult.value = false
+        _finalProgressState.value=true
+        viewModelScope.launch {
+            try {
+                val response = profileApiService.requestKYCToPending()
+                if (response.isSuccessful) {
+                    _kycDetailsPageResult.value = true
+                } else {
+                    val errorResponse = response.errorBody()?.string()
+                    _errorMessageKYCDetails.value = "Something went wrong."
+                }
+            }
+            catch (e: SocketTimeoutException) {
+                Log.e("signupResult", "SocketTimeoutException occurred", e)
+            } catch (e: IOException) {
+                Log.e("signupResult", "IOException occurred", e)
+            } catch (e: Exception) {
+                Log.e("signupResult", "Unexpected exception occurred", e)
+            } finally {
+                Log.d("signupResult", "API call completed")
             }
         }
     }
@@ -450,6 +525,7 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
     fun uploadUserImage(uri: Uri, context: Context) {
         viewModelScope.launch {
             _progressState.value=true
+            _finalProgressState.value=true
             try {
                 val bitmap = getBitmapFromUri(uri, context)
                 val base64Image = bitmapToBase64WithMimeType(bitmap)
@@ -457,15 +533,19 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                 val response = profileApiService.uploadUserPicture(payload = ImageBody(base64Image))
                 if (response.isSuccessful) {
                     Log.d("signupResult", "User Image Upload: ${response.body()}")
+                    val responseResult = response.body()
+                    val uploadRes = Gson().fromJson(responseResult, ImageUploadResult::class.java)
+//                    _userImageUploadToken.postValue(uploadRes.photo_token)
+                    uploadRes.photo_token?.let { PrefManager.setUserSelfieToken(it) }
                     _errorMessageKYCDetails.value = "Your selfie was uploaded"
-                    uploadCollegeIDImage(uri = Uri.parse(userCollegeID.value), context = context)
-                    _progressState.postValue(false)
+
+//                    uploadCollegeIDImage(uri = Uri.parse(userCollegeID.value), context = context)
                 } else {
                     val errorResponse = response.errorBody()?.string()
-                    val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
+                    val loginResponse = Gson().fromJson(errorResponse, ImageUploadResult::class.java)
                     Log.d("signupResult", "User Image Upload Failed: ${loginResponse.message}")
                     _errorMessageKYCDetails.value = loginResponse.message
-                    _kycDetailsPageResult.value = false
+                    _kycDetailsPageResult.value = true
                     _finalProgressState.value=false
                 }
             } catch (e: Exception) {
@@ -473,6 +553,7 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                 _finalProgressState.value=false
             } finally {
                 _progressState.value=false
+                _finalProgressState.value=false
             }
         }
     }
@@ -480,6 +561,7 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
     fun uploadCollegeIDImage(uri: Uri, context: Context) {
         viewModelScope.launch {
             _progressState.value=true
+            _finalProgressState.value=true
             try {
                 val bitmap = getBitmapFromUri(uri, context)
                 val base64Image = bitmapToBase64WithMimeType(bitmap)
@@ -487,23 +569,29 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                 val response = profileApiService.addCollegeIDPicture(payload = ImageBody(base64Image))
                 if (response.isSuccessful) {
                     Log.d("signupResult", "CollegeID Image Upload: ${response.body()}")
-                    _errorMessageKYCDetails.value = "Your College ID was uploaded"
-                    _kycDetailsPageResult.value = true
-                    _progressState.postValue(false)
-                    _finalProgressState.value=false
+                    val responseResult = response.body()
+                    val uploadRes = Gson().fromJson(responseResult, ImageUploadResult::class.java)
+//                    _userCollegeIdToken.postValue(uploadRes.photo_token)
+                    uploadRes.id_card_token?.let { PrefManager.setUserCollegeIDToken(it) }
+                    _errorMessageKYCDetails.value = "Your CollegeID was uploaded"
+                    Log.d("signupResult", "CollegeID Image Upload Success")
+//                    _profileCreateResult.postValue(true)
+//                    _kycDetailsPageResult.value = true
                 } else {
                     val errorResponse = response.errorBody()?.string()
                     val loginResponse = Gson().fromJson(errorResponse, ServerResponse::class.java)
                     Log.d("signupResult", "CollegeID Image Upload Failed: ${loginResponse.message}")
+
                     _errorMessageKYCDetails.value = loginResponse.message
                     _kycDetailsPageResult.value = false
-                    _finalProgressState.value=false
                 }
             } catch (e: Exception) {
+                Log.d("signupResult",e.message.toString())
                 _kycDetailsPageResult.value = false
                 _finalProgressState.value=false
             } finally {
                 _progressState.value=false
+                _finalProgressState.value=false
             }
         }
     }

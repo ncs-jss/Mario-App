@@ -45,6 +45,20 @@ object PrefManager {
         return sharedPreferences.getString("KYCHeaderToken","")
     }
 
+    fun setUserSelfieToken(token:String){
+        editor.putString("userSelfieToken",token)
+        editor.apply()
+    }
+    fun getUserSelfieToken():String?{
+        return sharedPreferences.getString("userSelfieToken",null)
+    }
+    fun setUserCollegeIDToken(token:String){
+        editor.putString("userCollegeIDToken",token)
+        editor.apply()
+    }
+    fun getUserCollegeIDToken():String?{
+        return sharedPreferences.getString("userCollegeIDToken",null)
+    }
 
     fun setUserDPCacheData(uri:String){
         editor.putString("userDPCache",uri)
