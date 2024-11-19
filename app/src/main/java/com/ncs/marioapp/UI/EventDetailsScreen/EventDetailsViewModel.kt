@@ -284,7 +284,13 @@ class EventDetailsViewModel @Inject constructor(
                     val errorResponse = response.errorBody()?.string()
                     _normalErrorMessage.value = "Failed to enroll you to the event"
                 }
-            } catch (e: SocketTimeoutException) {
+            }
+            catch (e: IOException) {
+                Log.d("signupResult",e.message.toString())
+                _progressState.value = false
+                _normalErrorMessage.value = "Network error. Please check your connection."
+            }
+            catch (e: SocketTimeoutException) {
                 _progressState.value = false
                 _normalErrorMessage.value = "Network timeout. Please try again."
             } catch (e: Exception) {
@@ -352,7 +358,13 @@ class EventDetailsViewModel @Inject constructor(
                     )
                 }
             }
-        } catch (e: Exception) {
+        }
+        catch (e: IOException) {
+            Log.d("signupResult",e.message.toString())
+            _progressState.value = false
+            _normalErrorMessage.value = "No internet connection."
+        }
+        catch (e: Exception) {
             _errorMessage.postValue("Failed to load my events.")
         }
     }

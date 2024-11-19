@@ -9,5 +9,7 @@ data class CreateProfileBody(
     val name: String,
     val socials: Map<String, String>,
     val year: Int,
-    val admitted_to:String
+    val admitted_to:String,
+    val photo_token:String,
+    val id_card_token:String
 )
