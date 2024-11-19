@@ -27,52 +27,58 @@ class NewChanges : AppCompatActivity() {
 
         setUpViews()
         val desc = """
-           ## O2 New Update : Maximizing Your Project Potential 🚀🌔
-           ### Release Notes 24.6.17 - [17/06/2024] 📝
-
-           ---
-
-           ![img](https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExMzBxcDJ2NmlwNmY5MjNrMDY0eXh1aWpvd3ZqOWdyajl1YWVqZDUzdiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/8vIFoKU8s4m4CBqCao/giphy.gif)
-           ## New features, Minor bug fixes, general UI and performance improvements. ⚙️
-
-
-           ### New Features 🚀
-           - **Organisations:** Organisation can be setup and Projects are now moved under the organisation, independent projects are now deprecated.
-           - **State to list Mapper feature :** Now mappings can be made for Task Status to List Names so to automate shifiting of a task from one list to another if task status is change and viceversa.
-
-           ### Enhancements ✨
-
-           - **Task Drafting Enhancements:** Improvements in saving the tasks as drafts in case of unexpected failures so that the progress is not lost.
+           # Mario is born. ✨
            
-           - **Improvements for moderators:** Now easily keep track of the tasks you are moderating, UI improvements.
            
-           - **Checklists creation:** Moderators can add more checklists after the task has been created.
-           
-           - **Task summary:** Task summary can now be edited after the task has been created.
-           
-           - **Checklist Progress:** Progress of a Task's checklist can be seen directly from task detail page. 
 
-           ### Performance Improvements ⏫
+           **Mario** is here to take your career journey to the next level! This is the **first version** of Mario, designed to offer you a unique and tailored experience for growth and success. Whether you're just starting your career or looking to level up your professional journey, Mario has everything you need to accelerate your path.
 
-           - Improved opening of the screens and reduced load times.
-           - Imrpoved app's navigation smoothness.
+           ### What is Mario?
 
-           ### User Interface Changes ✦
+           Mario is a career companion that brings exclusive access to events, insightful content, and exciting opportunities—all within a fun and motivating platform. Developed by NCS, this app is focused on providing ambitious individuals like you with the tools to succeed. From curated **events** to personalized **career progress tracking**, Mario is here to guide you every step of the way.
 
-           - Revamped UI of user's workspace.
-           - Made general improvements in UX.
-           - Chats UI improved.
+           ### Key Features:
 
-           ### Feedback ✅
+           - **Events**: Stay engaged with a variety of curated events, from career development workshops to industry-specific meetups. These events are designed to connect you with professionals, build valuable skills, and open doors to new opportunities.
+             
+           - **Posts & Story Blogs**: Get inspired by posts, career tips, and success stories from professionals across different industries. Learn about the experiences of those who’ve made it and get actionable insights to boost your career.
 
-           - Feedback is the key to enhancing user experience, it is our appeal to the users for providing any constructive feedback about any issues faced by them. 
-           - Feedback can be shared by shaking the device 3 times if Shake to Report is active or by going to settings to share feedback or bugs.
+           - **Nerd Store Goodies**: Who doesn’t love a bit of fun while you level up? With Mario, you get access to exclusive merchandise in the **Nerd Store**, featuring everything from gadgets to career-related goodies that keep you motivated and connected with the Mario community.
 
+           - **Mario Score Section**: Track your personal progress with the **Mario Score**! This feature helps you visualize your growth in real-time, so you can see where you stand in terms of skill development, networking, and career readiness.
 
+           - **Everything from NCS**: We’ve integrated all of NCS’s fantastic resources into the app to give you everything you need in one place. From career resources to professional tools, Mario connects you to the vast NCS ecosystem, empowering you to make the most of every opportunity.
+
+           ### What's Next?
+
+           This is just the start. **Mario** is continuously evolving, and our **next major update** will be introducing **Internship Options**, giving you access to a range of exclusive internships with top companies. Whether you’re looking for your first professional experience or seeking to deepen your expertise, Mario will help you unlock valuable internship opportunities that will propel your career forward.
+
+           The Mario experience isn’t just about features—it’s about building a **community** of like-minded professionals who are dedicated to their growth. By joining Mario, you’ll become part of a network that motivates and supports each other as we all level up together.
+
+           ### Version Log
+
+           | **Version** | **Release Date**  | **Features & Updates**                                  |
+           |-------------|-------------------|---------------------------------------------------------|
+           | 1.6         | November 2024     | Initial release with **Events**, **Posts & Story Blogs**, **Nerd Store Goodies**, **Mario Score Section**, and **NCS Integration**. |
+           | 1.1         | Coming Soon       | **Internship Options** to unlock exclusive internship opportunities from top companies. |
+
+           ### Why Choose Mario?
+
+           - **Tailored for You**: Mario isn’t a one-size-fits-all platform. It adapts to your needs, helping you grow at your own pace. Whether you want to improve your skills, expand your network, or track your progress, Mario has you covered.
+             
+           - **Exclusive Access**: With Mario’s **Invite-Only Recruitment System**, only the most dedicated individuals are granted access to the platform, ensuring a high-quality, professional network that supports your journey.
+
+           - **Growth-Oriented**: Every feature of Mario is designed with your professional development in mind. From skill-building events to progress tracking, everything is centered around helping you grow and succeed.
+
+           ### Ready to Level Up?
+
+           If you're ready to accelerate your career and be a part of a dedicated community, **download Mario** now and start your journey. Whether you're looking to learn, connect, or unlock new career opportunities, Mario is here to help you succeed.
+
+           **Stay tuned for our next update**—internships are just around the corner!
+
+           **#Mario #LevelUp #CareerGrowth #NCS**
         
-           -- Team Oxygen 💙
-
-           ---
+           -- Team NCS 💙
 
         """.trimIndent()
         setUpTaskDescription(desc)

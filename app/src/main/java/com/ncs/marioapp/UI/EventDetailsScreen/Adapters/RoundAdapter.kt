@@ -6,13 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.Timestamp
-import com.ncs.marioapp.Domain.HelperClasses.PrefManager
+import com.ncs.marioapp.Domain.HelperClasses.Utils
 import com.ncs.marioapp.Domain.HelperClasses.Utils.setTextWithColorFromSubstring
 import com.ncs.marioapp.Domain.HelperClasses.Utils.toRoundTimeStamp
 import com.ncs.marioapp.Domain.Models.Admin.Round
 import com.ncs.marioapp.Domain.Models.Events.EventDetails.Submission
-import com.ncs.marioapp.Domain.Models.Events.ParticipatedEvent
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.startBlinking
@@ -20,9 +18,16 @@ import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.marioapp.R
 import com.ncs.marioapp.databinding.ItemRoundBinding
 
-class RoundAdapter(private val rounds: List<Round>, private val callback: RoundAdapterCallback, private val userSubmission: List<Submission>) :
+class RoundAdapter(
+    private val rounds: List<Round>,
+    private val callback: RoundAdapterCallback,
+    private val userSubmission: List<Submission>,
+    private var isUserEnrolled: Int = -1,
+    private var currentTime: String?
+) :
     RecyclerView.Adapter<RoundAdapter.RoundViewHolder>() {
 
+    private var hasRoundFailure = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoundViewHolder {
         val binding = ItemRoundBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -57,7 +62,7 @@ class RoundAdapter(private val rounds: List<Round>, private val callback: RoundA
                     roundStatus.gone()
                 }
 
-                if (round.requireSubmission) {
+                if (round.requireSubmission && isUserEnrolled != 0) {
                     formButton.visible()
                 } else {
                     formButton.gone()
@@ -85,30 +90,51 @@ class RoundAdapter(private val rounds: List<Round>, private val callback: RoundA
                     formButton.background.setTint(itemView.context.getColor(R.color.account))
                     formButton.isClickable = false
                     formButton.isEnabled = false
-                    formButton.text="Submitted"
+                    formButton.text = "Submitted"
                 } else {
+                    // Not Submitted
 
-                    val userType= PrefManager.getUserProfileForCache()
+                    val deadline = round.endTime
+                    val isRoundOver: Boolean
 
-                    val deadline = if(userType?.admitted_to=="COLLEGE" || userType?.admitted_to=="") round.timeLine["endCollege"] else round.timeLine["endUniversity"]
-                    val isEventOver: Boolean
+                    currentTime?.let { currentTimestamp ->
+                        isRoundOver =
+                            Utils.convertFullFormatTimeToTimestamp(currentTimestamp) >= Utils.convertFullFormatTimeToTimestamp(
+                                deadline!!
+                            )
 
-                    Timestamp.now().let { currentTimestamp ->
-                        val currentTime = currentTimestamp.seconds * 1000
-                        isEventOver = currentTime >= deadline!!
+                        if (isRoundOver) {
+
+                            // Round Deadline over
+                            formButton.background.setTint(itemView.context.getColor(R.color.account))
+                            formButton.isClickable = false
+                            formButton.isEnabled = false
+                            formButton.text = "Deadline Passed"
+
+                            if (!round.isOptional) {
+                                hasRoundFailure = true
+                            }
+
+                        } else {
+
+                            // Round is not over yet
+
+                            if (!hasRoundFailure) {
+                                formButton.background.setTint(itemView.context.getColor(R.color.button_bg))
+                                formButton.isClickable = true
+                                formButton.isEnabled = true
+                                binding.formButton.text = round.submissionButtonText
+                            } else {
+                                formButton.background.setTint(itemView.context.getColor(R.color.account))
+                                formButton.isClickable = false
+                                formButton.isEnabled = false
+                                binding.formButton.text = "Round Locked"
+                            }
+
+                        }
+
                     }
-                    if (isEventOver) {
-                        formButton.background.setTint(itemView.context.getColor(R.color.account))
-                        formButton.isClickable = false
-                        formButton.isEnabled = false
-                        formButton.text="Deadline Passed"
-                    }
-                    else{
-                        formButton.background.setTint(itemView.context.getColor(R.color.button_bg))
-                        formButton.isClickable = true
-                        formButton.isEnabled = true
-                        binding.formButton.text = round.submissionButtonText
-                    }
+
                 }
 
 
@@ -117,6 +143,20 @@ class RoundAdapter(private val rounds: List<Round>, private val callback: RoundA
                 }
             }
         }
+    }
+
+    fun setIsUserEnrolled(isEnrolled: Int) {
+        this.isUserEnrolled = isEnrolled
+        val positions = rounds.filter { it.requireSubmission }.map { item -> rounds.indexOf(item) }
+        positions.forEach {
+            notifyItemChanged(it)
+        }
+    }
+
+    fun setUpdatedTime(time: String) {
+        hasRoundFailure = false
+        this.currentTime = time
+        notifyDataSetChanged()
     }
 
 //    fun userSubmissions(submissions: List<Submission>) {

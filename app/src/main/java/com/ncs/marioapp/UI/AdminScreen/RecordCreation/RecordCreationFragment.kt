@@ -118,6 +118,7 @@ class RecordCreationFragment : Fragment() {
             FormItem("Round Series Number", FormType.EDIT_TEXT),
             FormItem("Description", FormType.EDIT_TEXT),
             FormItem("Venue", FormType.EDIT_TEXT),
+            FormItem("Optional Round?", FormType.DROPDOWN),
 
             FormItem("State", FormType.SEPARATOR),
 
@@ -191,6 +192,7 @@ class RecordCreationFragment : Fragment() {
         val description = itemMap["Description"]?.value.orEmpty()
         val venue = itemMap["Venue"]?.value.orEmpty()
         val currentlyLive = itemMap["Currently Live?"]?.value.toBoolean()
+        val isOptional = itemMap["Optional Round?"]?.value.toBoolean()
         val requireSubmission = itemMap["Require Submission?"]?.value.toBoolean()
         val startCollege = itemMap["Start Time -> College"]?.value?.toLongOrNull() ?: 0L
         val endCollege = itemMap["End Time -> College"]?.value?.toLongOrNull() ?: 0L

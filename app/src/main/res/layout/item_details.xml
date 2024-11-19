@@ -1,0 +1,51 @@
+<!-- item_grid.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@drawable/stroke_bg"
+    android:padding="12dp">
+
+    <!-- Top Section with Image and Title Side by Side -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/item_image"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/baseline_calendar_today_24"
+            android:layout_marginEnd="8dp"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            app:tint="@color/better_white"
+            android:contentDescription="Item image"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Date"
+            android:textSize="16dp"
+            android:fontFamily="@font/sf_medium"
+            android:gravity="bottom"
+            android:textColor="@color/better_white" />
+    </LinearLayout>
+
+    <!-- Description Section Below -->
+    <TextView
+        android:id="@+id/item_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/sf_medium"
+        tools:text="16th Nov, 2024"
+        android:textSize="17dp"
+        android:textColor="#fff" />
+</LinearLayout>

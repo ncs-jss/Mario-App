@@ -4,10 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
     >
-
-    <!-- Timeline Indicator -->
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/linearLayoutCompat2"
@@ -22,7 +19,7 @@
         <View
             android:id="@+id/timeline_indicator_above"
             android:layout_width="1dp"
-            android:layout_height="16dp"
+            android:layout_height="13dp"
             android:visibility="visible"
             android:background="@color/better_white"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -31,8 +28,8 @@
 
         <View
             android:id="@+id/circle"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
             android:background="@drawable/baseline_circle_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -51,7 +48,6 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-    <!-- Date Badge -->
     <TextView
         android:id="@+id/date_badge"
         android:layout_width="wrap_content"
@@ -63,12 +59,11 @@
         android:paddingEnd="15dp"
         android:paddingBottom="10dp"
         android:text="24  |  Oct 24"
-        android:textColor="@color/white"
+        android:textColor="@color/better_white"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/linearLayoutCompat"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Round Status (Live) -->
     <TextView
         android:id="@+id/round_status"
         android:layout_width="wrap_content"
@@ -85,13 +80,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/date_badge" />
 
-    <!-- Round Title -->
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/linearLayoutCompat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="15dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/stroke_bg"
         android:orientation="vertical"
@@ -113,7 +107,6 @@
             app:layout_constraintStart_toStartOf="@id/round_status"
             app:layout_constraintTop_toBottomOf="@id/round_status" />
 
-        <!-- Round Description -->
         <TextView
             android:id="@+id/round_description"
             android:layout_width="match_parent"
@@ -129,7 +122,6 @@
             app:layout_constraintStart_toStartOf="@id/round_title"
             app:layout_constraintTop_toBottomOf="@id/round_title" />
 
-        <!-- Start and End Time -->
         <TextView
             android:id="@+id/start_time"
             android:layout_width="wrap_content"
@@ -172,8 +164,9 @@
             android:layout_height="wrap_content"
             android:background="@drawable/stroke_bg"
             android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
             android:backgroundTint="@color/button_bg"
-            android:fontFamily="@font/sf_medium"
+            android:fontFamily="@font/sf_semibold"
             android:textAllCaps="false"
             android:text="Submit" />
 

@@ -10,6 +10,7 @@ import com.ncs.marioapp.Domain.Api.PostApiService
 import com.ncs.marioapp.Domain.Api.ProfileApiService
 import com.ncs.marioapp.Domain.Api.QRAPI
 import com.ncs.marioapp.Domain.Api.ReportApiService
+import com.ncs.marioapp.Domain.Api.TimeApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -134,6 +135,20 @@ object ApiModule {
             .build()
             .create(ReportApiService::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun getTimeApiService(okkHttpClient: OkHttpClient): TimeApiService {
+        return Retrofit.Builder()
+            .baseUrl("https://worldtimeapi.org/api/")
+            .client(okkHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(TimeApiService::class.java)
+
+    }
+
+
 
 
 }

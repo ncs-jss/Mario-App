@@ -2,5 +2,7 @@
     android:shape="rectangle">
     <solid android:color="@color/secondary_bg_lighter"
         />
-    <corners android:topLeftRadius="15dp" android:topRightRadius="15dp"/>
+    <corners
+        android:topLeftRadius="12dp"
+        android:topRightRadius="12dp" />
 </shape>
