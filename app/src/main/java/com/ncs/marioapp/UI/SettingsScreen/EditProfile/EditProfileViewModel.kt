@@ -12,6 +12,7 @@ import com.ncs.marioapp.Domain.Models.ServerResponse
 import com.ncs.marioapp.Domain.Models.UpdateProfileBody
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -315,6 +316,10 @@ class EditProfileViewModel @Inject constructor(val profileApiService: ProfileApi
                     _errorMessageSocialDetails.value = loginResponse.message
                     _socialDetailsPageResult.value = false
                 }
+            }catch (e: IOException) {
+                Log.d("signupResult",e.message.toString())
+                _socialDetailsPageResult.value = false
+                _errorMessageSocialDetails.value = "Network error. Please check your connection."
             } catch (e: Exception) {
                 _socialDetailsPageResult.value = false
             } finally {

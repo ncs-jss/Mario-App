@@ -167,6 +167,9 @@ class MainViewModel @Inject constructor(
                     _progressState.value = false
                     _errorMessage.value = "Failed to scan ticket"
                 }
+            } catch (e: IOException) {
+                _errorMessage.value = "Network error. Please check your connection."
+                _progressState.value = false
             } catch (e: SocketTimeoutException) {
                 _progressState.value = false
                 _errorMessage.value = "Network timeout. Please try again."
@@ -196,7 +199,8 @@ class MainViewModel @Inject constructor(
             } catch (e: SocketTimeoutException) {
                 _progressState.value=false
             } catch (e: IOException) {
-                _progressState.value=false
+                _errorMessage.value = "Network error. Please check your connection."
+                _progressState.value = false
             } catch (e: Exception) {
                 _progressState.value=false
             }
@@ -223,8 +227,9 @@ class MainViewModel @Inject constructor(
                 }
             } catch (e: SocketTimeoutException) {
                 _progressState.value=false
-            } catch (e: IOException) {
-                _progressState.value=false
+            }  catch (e: IOException) {
+                _errorMessage.value = "Network error. Please check your connection."
+                _progressState.value = false
             } catch (e: Exception) {
                 _progressState.value=false
             }

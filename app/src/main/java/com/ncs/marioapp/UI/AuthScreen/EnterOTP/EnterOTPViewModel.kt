@@ -14,7 +14,9 @@ import com.ncs.marioapp.Domain.Models.ServerResponse
 import com.ncs.marioapp.Domain.Models.VerifyOTP
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.io.IOException
 import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -110,6 +112,10 @@ class EnterOTPViewModel @Inject constructor(val authApiService: AuthApiService) 
                     Log.d("signupResult", "OTP Failed: ${otpValidationResponse.message}")
                     _otpResult.value = false
                 }
+            }catch (e: IOException){
+                Log.d("signupResult",e.message.toString())
+                _errorMessage.value = "Network Connection error."
+                _otpResult.value = false
             } catch (e: SocketTimeoutException) {
                 Log.e("signupResult", "Request timed out: ${e.message}")
                 _errorMessage.value = "Network timeout. Please try again."
@@ -150,6 +156,10 @@ class EnterOTPViewModel @Inject constructor(val authApiService: AuthApiService) 
                     Log.d("signupResult", "OTP Resend failed: $errorResponse")
                     _errorMessage.value = "Failed to resend OTP..."
                 }
+            }catch (e: IOException){
+                Log.d("signupResult",e.message.toString())
+                _errorMessage.value = "Network Connection error."
+                _otpResult.value = false
             } catch (e: SocketTimeoutException) {
                 Log.e("signupResult", "Request timed out: ${e.message}")
                 _errorMessage.value = "Network timeout. Please try again."
