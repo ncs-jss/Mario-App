@@ -258,7 +258,12 @@ class HomeViewModel @Inject constructor(
                     val errorResponse = response.errorBody()?.string()
                     _normalErrorMessage.value = "Failed to get your ticket"
                 }
-            } catch (e: SocketTimeoutException) {
+            }
+            catch (e: IOException) {
+                Log.d("signupResult",e.message.toString())
+                _progressState.value = false
+                _normalErrorMessage.value = "Network error. Please check your connection."
+            }catch (e: SocketTimeoutException) {
                 _normalErrorMessage.value = "Network timeout. Please try again."
             } catch (e: Exception) {
                 _normalErrorMessage.value = "Failed to get ticket.."
@@ -368,6 +373,10 @@ class HomeViewModel @Inject constructor(
                     _progressState.value = false
                     _normalErrorMessage.value = "Failed to submit your response"
                 }
+            }catch (e: IOException) {
+                Log.d("signupResult",e.message.toString())
+                _progressState.value = false
+                _normalErrorMessage.value = "Network error. Please check your connection."
             } catch (e: SocketTimeoutException) {
                 _progressState.value = false
                 _normalErrorMessage.value = "Network timeout. Please try again."
@@ -427,7 +436,11 @@ class HomeViewModel @Inject constructor(
                     }
                     _normalErrorMessage.value = "Failed to like the post"
                 }
-            } catch (e: SocketTimeoutException) {
+            } catch (e: IOException) {
+                Log.d("signupResult",e.message.toString())
+                _progressState.value = false
+                _normalErrorMessage.value = "Network error. Please check your connection."
+            }catch (e: SocketTimeoutException) {
                 _normalErrorMessage.value = "Network timeout. Please try again."
             } catch (e: Exception) {
                 _normalErrorMessage.value = "Something went wrong. Please try again."

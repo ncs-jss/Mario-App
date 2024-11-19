@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,8 +35,6 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
         KYC_DETAILS
     }
 
-    private val _progressState = MutableLiveData<Boolean>(false)
-    val progressState: LiveData<Boolean> get() = _progressState
 
     private val _finalProgressState = MutableLiveData<Boolean>(false)
     val finalProgressState: LiveData<Boolean> get() = _finalProgressState
@@ -324,7 +323,6 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
 
     fun requestCreateOrUpdateProfile(){
         _kycDetailsPageResult.value = false
-        _progressState.postValue(true)
         _finalProgressState.value=true
         viewModelScope.launch {
             try {
@@ -343,7 +341,9 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
             catch (e: SocketTimeoutException) {
                 Log.e("signupResult", "SocketTimeoutException occurred", e)
             } catch (e: IOException) {
-                Log.e("signupResult", "IOException occurred", e)
+                Log.d("signupResult",e.message.toString())
+                _kycDetailsPageResult.value = false
+                _errorMessageKYCDetails.value = "Network error. Please check your connection."
             } catch (e: Exception) {
                 Log.e("signupResult", "Unexpected exception occurred", e)
             } finally {
@@ -431,14 +431,18 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                         Log.d("signupResult", "Profile Create Failed: ${loginResponse.message}")
                         _errorMessageKYCDetails.value = loginResponse.message
                         _kycDetailsPageResult.value = false
-                        _finalProgressState.value=false
                     }
 
-            } catch (e: Exception) {
+            } catch (e: IOException) {
+                Log.d("signupResult",e.message.toString())
                 _kycDetailsPageResult.value = false
-                _finalProgressState.value=false
+                _errorMessageKYCDetails.value = "Network error. Please check your connection."
+            }
+            catch (e: Exception) {
+                _kycDetailsPageResult.value = false
+
             } finally {
-                _progressState.postValue(false)
+                _finalProgressState.postValue(false)
             }
         }
     }
@@ -488,7 +492,12 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                     _kycDetailsPageResult.value = false
                     _finalProgressState.value=false
                 }
-            } catch (e: Exception) {
+            } catch (e: IOException) {
+                Log.d("signupResult",e.message.toString())
+                _kycDetailsPageResult.value = false
+                _errorMessageKYCDetails.value = "Network error. Please check your connection."
+            }
+            catch (e: Exception) {
                 _kycDetailsPageResult.value = false
                 _finalProgressState.value=false
             } finally {
@@ -512,8 +521,11 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
             }
             catch (e: SocketTimeoutException) {
                 Log.e("signupResult", "SocketTimeoutException occurred", e)
-            } catch (e: IOException) {
-                Log.e("signupResult", "IOException occurred", e)
+            }
+            catch (e: IOException) {
+                Log.d("signupResult",e.message.toString())
+                _kycDetailsPageResult.value = false
+                _errorMessageKYCDetails.value = "Network error. Please check your connection."
             } catch (e: Exception) {
                 Log.e("signupResult", "Unexpected exception occurred", e)
             } finally {
@@ -524,7 +536,6 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
 
     fun uploadUserImage(uri: Uri, context: Context) {
         viewModelScope.launch {
-            _progressState.value=true
             _finalProgressState.value=true
             try {
                 val bitmap = getBitmapFromUri(uri, context)
@@ -546,21 +557,24 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                     Log.d("signupResult", "User Image Upload Failed: ${loginResponse.message}")
                     _errorMessageKYCDetails.value = loginResponse.message
                     _kycDetailsPageResult.value = true
-                    _finalProgressState.value=false
                 }
-            } catch (e: Exception) {
+            }
+            catch (e: IOException) {
+                Log.d("signupResult",e.message.toString())
                 _kycDetailsPageResult.value = false
-                _finalProgressState.value=false
-            } finally {
-                _progressState.value=false
-                _finalProgressState.value=false
+                _errorMessageKYCDetails.value = "Network error. Please check your connection."
+            }
+            catch (e: Exception) {
+                _kycDetailsPageResult.value = false
+            }
+            finally {
+                 _finalProgressState.value=false
             }
         }
     }
 
     fun uploadCollegeIDImage(uri: Uri, context: Context) {
         viewModelScope.launch {
-            _progressState.value=true
             _finalProgressState.value=true
             try {
                 val bitmap = getBitmapFromUri(uri, context)
@@ -585,12 +599,15 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                     _errorMessageKYCDetails.value = loginResponse.message
                     _kycDetailsPageResult.value = false
                 }
-            } catch (e: Exception) {
+            }catch (e: IOException) {
                 Log.d("signupResult",e.message.toString())
                 _kycDetailsPageResult.value = false
-                _finalProgressState.value=false
+                _errorMessageKYCDetails.value = "Network error. Please check your connection."
+            }
+            catch (e: Exception) {
+                Log.d("signupResult",e.message.toString())
+                _kycDetailsPageResult.value = false
             } finally {
-                _progressState.value=false
                 _finalProgressState.value=false
             }
         }
