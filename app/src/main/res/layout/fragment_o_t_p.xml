@@ -46,6 +46,16 @@
         android:textColor="@color/better_white"
         android:gravity="center"
         android:textSize="17dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="2dp"
+        android:text="If you can't find the email, check your spam folder."
+        android:fontFamily="@font/sf_light"
+        android:textColor="@color/neutral300"
+        android:gravity="center"
+        android:textSize="17sp"/>
 
 
 

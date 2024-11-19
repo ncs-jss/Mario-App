@@ -25,6 +25,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.ncs.marioapp.Domain.HelperClasses.PrefManager
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.isNull
@@ -46,8 +47,9 @@ class KYCValidationFragment : Fragment() {
     private val surveyViewModel: SurveyViewModel by activityViewModels()
     private val CAMERA_PERMISSION_REQUEST = 100
     private val REQUEST_USER_IMAGE_CAPTURE = 1
+    private val REQUEST_USER_IMAGE_PICK = 2
     private var capturedUserImageUri: Uri? = null
-    private val REQUEST_COLLEGE_ID_IMAGE_CAPTURE = 2
+    private val REQUEST_COLLEGE_ID_IMAGE_CAPTURE = 3
     private var capturedCollegeIDImageUri: Uri? = null
     private val util: GlobalUtils.EasyElements by lazy {
         GlobalUtils.EasyElements(requireActivity())
@@ -80,11 +82,11 @@ class KYCValidationFragment : Fragment() {
 
     private fun observeViewModel(){
 
-        surveyViewModel.profileCreateResult.observe(viewLifecycleOwner, Observer { result ->
-            if (result){
-                surveyViewModel.uploadUserImage(uri = Uri.parse(surveyViewModel.userSelfie.value!!), context = requireContext())
-            }
-        })
+//        surveyViewModel.profileCreateResult.observe(viewLifecycleOwner, Observer { result ->
+//            if (result){
+//
+//            }
+//        })
 
 //        surveyViewModel.progressStateImageUpload.observe(viewLifecycleOwner, Observer { isLoading ->
 //            if (isLoading) {
@@ -206,11 +208,18 @@ class KYCValidationFragment : Fragment() {
         binding.btnNext.setOnClickThrottleBounceListener {
             surveyViewModel.validateInputsOnKYCDetailsPage()
         }
+        binding.userDPLayout.uploadButton.setOnClickThrottleBounceListener {
+            surveyViewModel.validateSelfie(requireContext())
+        }
+
+        binding.collegeIDlayout.uploadButton.setOnClickThrottleBounceListener {
+            surveyViewModel.validateCollegeID(requireContext())
+        }
     }
 
 
     private fun pickUserImage() {
-        val options = arrayOf<CharSequence>("Take Selfie", "Cancel")
+        val options = arrayOf<CharSequence>("Take Selfie", "Open Gallery","Cancel")
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Click your selfie in a well lit environment")
         builder.setItems(options) { dialog, item ->
@@ -227,6 +236,9 @@ class KYCValidationFragment : Fragment() {
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, capturedUserImageUri)
                     startActivityForResult(intent, REQUEST_USER_IMAGE_CAPTURE)
                 }
+                "Open Gallery"->{
+                    openGallery()
+                }
 
                 "Cancel" -> {
                     dialog.dismiss()
@@ -234,6 +246,13 @@ class KYCValidationFragment : Fragment() {
             }
         }
         builder.show()
+    }
+
+    private fun openGallery() {
+        ImagePicker.with(this)
+            .galleryOnly()
+            .start (REQUEST_USER_IMAGE_PICK)
+
     }
 
 
@@ -278,6 +297,12 @@ class KYCValidationFragment : Fragment() {
             when (requestCode) {
                 REQUEST_USER_IMAGE_CAPTURE -> {
                     capturedUserImageUri?.let { uri ->
+                        surveyViewModel.setUserSelfie(uri.toString())
+                        PrefManager.setUserDPCacheData(uri.toString())
+                    }
+                }
+                REQUEST_USER_IMAGE_PICK -> {
+                    data?.data?.let { uri ->
                         surveyViewModel.setUserSelfie(uri.toString())
                         PrefManager.setUserDPCacheData(uri.toString())
                     }

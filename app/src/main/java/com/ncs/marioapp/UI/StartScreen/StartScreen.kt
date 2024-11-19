@@ -63,6 +63,7 @@ class StartScreen : AppCompatActivity() {
     private val APP_UPDATE_REQUEST_CODE = 101
     private lateinit var appUpdateManager: AppUpdateManager
     private lateinit var remoteConfigHelper: RemoteConfigHelper
+    private var isSurveyActivityLaunched = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -327,9 +328,12 @@ class StartScreen : AppCompatActivity() {
         if (user.photo.isNotEmpty()) {
             PrefManager.setShowProfileCompletionAlert(false)
         } else {
-            PrefManager.setShowProfileCompletionAlert(true)
-            startActivity(Intent(this, SurveyActivity::class.java))
-            finish()
+            if (!isSurveyActivityLaunched) {
+                isSurveyActivityLaunched = true
+                PrefManager.setShowProfileCompletionAlert(true)
+                startActivity(Intent(this, SurveyActivity::class.java))
+                finish()
+            }
         }
     }
 

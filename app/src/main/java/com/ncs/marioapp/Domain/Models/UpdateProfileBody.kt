@@ -7,5 +7,7 @@ data class UpdateProfileBody(
     val name: String,
     val admitted_to: String,
     val socials: Map<String, String>,
-    val year: Int
+    val year: Int,
+    val photo_token:String="",
+    val id_card_token:String=""
 )

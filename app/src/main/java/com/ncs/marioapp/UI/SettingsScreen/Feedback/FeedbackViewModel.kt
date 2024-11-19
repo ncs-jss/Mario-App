@@ -1,5 +1,6 @@
 package com.ncs.marioapp.UI.SettingsScreen.Feedback
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +11,7 @@ import com.ncs.marioapp.Domain.Models.Report.ReportBody
 import com.ncs.marioapp.Domain.Models.ServerResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.io.IOException
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 
@@ -43,6 +45,11 @@ class FeedbackViewModel @Inject constructor(
                     _errorMessage.value=loginResponse.message
                     _feedbackResult.value=false
                 }
+            }catch (e: IOException) {
+                Log.d("signupResult",e.message.toString())
+                _progressState.value = false
+                _feedbackResult.value=false
+                _errorMessage.value = "Network error. Please check your connection."
             } catch (e: SocketTimeoutException) {
                 _progressState.value = false
                 _feedbackResult.value=false
