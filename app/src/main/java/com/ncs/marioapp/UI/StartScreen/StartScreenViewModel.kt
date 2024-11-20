@@ -1,5 +1,6 @@
 package com.ncs.marioapp.UI.StartScreen
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -60,6 +61,7 @@ class StartScreenViewModel @Inject constructor(
             _errorMessage.value = "Network error. Please check your connection."
             null
         } catch (e: Exception) {
+            Log.d("checkforworkflow", e.message.toString())
             _errorMessage.value = "Something went wrong. Please try again."
             null
         }
@@ -86,6 +88,7 @@ class StartScreenViewModel @Inject constructor(
             _errorMessage.value = "Network error. Please check your connection."
             null
         } catch (e: Exception) {
+            Log.d("checkforworkflow", e.message.toString())
             _errorMessage.value = "Something went wrong. Please try again."
             null
         }

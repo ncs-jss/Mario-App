@@ -2,15 +2,22 @@ package com.ncs.marioapp.Domain.HelperClasses
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.Uri
+import android.os.Message
+import android.util.Log
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.ncs.marioapp.Domain.Models.Profile
+import com.ncs.marioapp.Domain.Models.UriTypeAdapter
 import com.ncs.marioapp.Domain.Models.UserSurvey
+import com.ncs.marioapp.Domain.Models.WorkerFlow
 
 object PrefManager {
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor : SharedPreferences.Editor
     private val gson = Gson()
+
 
     fun initialize(context: Context) {
         sharedPreferences = context.getSharedPreferences("NCS_MARIO_PREFS", Context.MODE_PRIVATE)
@@ -106,6 +113,15 @@ object PrefManager {
         editor.apply()
     }
 
+    fun setAlertMessage(message:String?){
+        editor.putString("alertMessage", message)
+        editor.apply()
+    }
+
+    fun getAlertMessage():String?{
+        return sharedPreferences.getString("alertMessage",null)
+    }
+
     fun getSignUpStatus(): Boolean {
         return sharedPreferences.getBoolean("SignUpStatus",false)
     }
@@ -185,6 +201,25 @@ object PrefManager {
     fun getToken(): String? {
         return sharedPreferences.getString("token","")
     }
+
+    fun saveWorkerFlow(workerFlow: WorkerFlow) {
+        val gson = Gson()
+        val json = gson.toJson(workerFlow)
+        Log.d("WorkerFlowSave", "Serialized JSON: $json") // Debug to check serialization
+        editor.putString("workerFlow", json)
+        editor.apply()
+    }
+
+    fun getWorkerFlow(): WorkerFlow? {
+        val gson = Gson()
+        val json = sharedPreferences.getString("workerFlow", null)
+        if (json != null) {
+            Log.d("WorkerFlowLoad", "Deserialized JSON: ${gson.fromJson(json, WorkerFlow::class.java)}") // Debug to check deserialization
+            return gson.fromJson(json, WorkerFlow::class.java)
+        }
+        return null
+    }
+
 
     fun clearPrefs(){
         with(sharedPreferences.edit()) {

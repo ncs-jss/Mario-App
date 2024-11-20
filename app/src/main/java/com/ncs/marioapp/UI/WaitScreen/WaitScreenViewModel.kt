@@ -36,11 +36,11 @@ class WaitScreenViewModel @Inject constructor(val profileApiService: ProfileApiS
         }
     }
 
-    init {
-        startKYCStatusCheck()
-    }
+//    init {
+//        startKYCStatusCheck()
+//    }
 
-    private fun startKYCStatusCheck() {
+    fun startKYCStatusCheck() {
         kycRunnable.run()
     }
 

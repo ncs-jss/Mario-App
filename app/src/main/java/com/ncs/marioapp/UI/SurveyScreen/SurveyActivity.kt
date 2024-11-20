@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.ncs.marioapp.Domain.HelperClasses.PrefManager
+import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.isNull
 import com.ncs.marioapp.Domain.Utility.GlobalUtils
 import com.ncs.marioapp.R
 import com.ncs.marioapp.databinding.ActivitySurveyBinding
@@ -29,6 +30,11 @@ class SurveyActivity : AppCompatActivity() {
             PrefManager.setShowProfileCompletionAlert(false)
             util.showSnackbar(binding.root, "Please complete your profile", 2000)
             setInitials()
+        }
+
+        if (!PrefManager.getAlertMessage().isNull){
+            util.showSnackbar(binding.root, PrefManager.getAlertMessage()!!, 2000)
+            PrefManager.setAlertMessage(null)
         }
 
         binding.personalDetails.title.text="Personal Details"
