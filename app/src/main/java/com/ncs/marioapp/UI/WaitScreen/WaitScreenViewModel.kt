@@ -28,6 +28,9 @@ class WaitScreenViewModel @Inject constructor(val profileApiService: ProfileApiS
     private val _kycRequestStatus = MutableLiveData<Boolean>(null)
     val kycRequestStatus: LiveData<Boolean> get() = _kycRequestStatus
 
+    private val _progress = MutableLiveData<Int>(0)
+    val progress: LiveData<Int> get() = _progress
+
     private val handler = Handler(Looper.getMainLooper())
     private val kycRunnable = object : Runnable {
         override fun run() {
