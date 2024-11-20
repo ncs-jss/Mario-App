@@ -16,6 +16,7 @@ import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManager
@@ -30,9 +31,13 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.ncs.marioapp.BuildConfig
 import com.ncs.marioapp.Domain.HelperClasses.PrefManager
 import com.ncs.marioapp.Domain.HelperClasses.RemoteConfigHelper
+import com.ncs.marioapp.Domain.HelperClasses.WorkerUtil.startProfileUploadWorkflow
+import com.ncs.marioapp.Domain.Models.CreateProfileBody
 import com.ncs.marioapp.Domain.Models.ProfileData.UserImpDetails
+import com.ncs.marioapp.Domain.Models.WorkerFlow
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.animFadein
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
+import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.isNull
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.toast
 import com.ncs.marioapp.Domain.Utility.GlobalUtils
 import com.ncs.marioapp.R
@@ -69,6 +74,7 @@ class StartScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        PrefManager.initialize(this)
         remoteConfigHelper = RemoteConfigHelper(this)
         appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
         handleDynamicLink(intent)
@@ -286,9 +292,28 @@ class StartScreen : AppCompatActivity() {
         viewModel.errorMessage.observe(this) {
             if (!it.isNullOrEmpty()) {
                 if (it == "User not found!") {
-                    PrefManager.setShowProfileCompletionAlert(true)
-                    startActivity(Intent(this, SurveyActivity::class.java))
-                    finish()
+                    val workerFlow=PrefManager.getWorkerFlow()
+                    Log.d("workflowcheck",workerFlow.toString())
+                    if (workerFlow==null || workerFlow.userImageUri== "") {
+                        PrefManager.setShowProfileCompletionAlert(true)
+                        startActivity(Intent(this, SurveyActivity::class.java))
+                        finish()
+                    }
+                    else{
+                        PrefManager.saveWorkerFlow(WorkerFlow())
+
+                        startProfileUploadWorkflow(userImageUri = workerFlow.userImageUri!!.toUri(), collegeIdUri = workerFlow.collegeIdUri!!.toUri(), createProfilePayload =  workerFlow.createProfilePayload, isUpdate = workerFlow.isUpdate, context = this){ workerIDs->
+                            if (workerIDs.isNotEmpty()){
+                                val intent=Intent(this, WaitActivity::class.java)
+                                intent.putExtra("opened_from","kycscreen")
+                                intent.putExtra("user_image_worker_id",workerIDs[0])
+                                intent.putExtra("college_image_worker_id",workerIDs[1])
+                                intent.putExtra("profile_worker_id",workerIDs[2])
+                                startActivity(intent)
+                                finish()
+                            }
+                        }
+                    }
                 } else {
                     util.showActionSnackbar(binding.root, it, Snackbar.LENGTH_INDEFINITE, "Retry") {
                         observeViewModel()
@@ -315,8 +340,7 @@ class StartScreen : AppCompatActivity() {
                 val userDetails = userDetailsDeferred.await()
                 val kycStatus = kycTokenDeferred.await()
 
-                handleUserDetails(userDetails!!)
-                handleKYCStatus(kycStatus, userDetails.role)
+                handleKYCStatus(kycStatus, userDetails!!)
 
             } catch (e: Exception) {
                 binding.progress.gone()
@@ -324,32 +348,20 @@ class StartScreen : AppCompatActivity() {
         }
     }
 
-    private fun handleUserDetails(user: UserImpDetails) {
-        if (user.photo.isNotEmpty()) {
-            PrefManager.setShowProfileCompletionAlert(false)
-        } else {
-            if (!isSurveyActivityLaunched) {
-                isSurveyActivityLaunched = true
-                PrefManager.setShowProfileCompletionAlert(true)
-                startActivity(Intent(this, SurveyActivity::class.java))
-                finish()
-            }
-        }
-    }
 
-    private fun handleKYCStatus(kycStatus: String?, role: Int) {
+
+    private fun handleKYCStatus(kycStatus: String?, user: UserImpDetails) {
         if (!kycStatus.isNullOrEmpty()) {
 
             setState("Starting Mario...")
-            viewModel.banStatus.observe(this@StartScreen){
-                if (it){
+            viewModel.banStatus.observe(this@StartScreen) {
+                if (it) {
                     startActivity(Intent(this@StartScreen, BanActivity::class.java))
                     finish()
-                }
-                else{
+                } else {
                     when (kycStatus) {
                         "ACCEPT" -> {
-                            if (role == 1) {
+                            if (user.role == 1) {
                                 startActivity(Intent(this, AdminMainActivity::class.java))
                                 finish()
                             } else {
@@ -357,22 +369,54 @@ class StartScreen : AppCompatActivity() {
                                 fadeInAnim.cancel()
                                 binding.progress.gone()
                                 Handler(Looper.getMainLooper()).postDelayed({
-                                    startActivity(Intent(this@StartScreen, MainActivity::class.java))
+                                    startActivity(
+                                        Intent(
+                                            this@StartScreen,
+                                            MainActivity::class.java
+                                        )
+                                    )
                                     finish()
                                 }, 1000)
 
                             }
                         }
 
-                        "PENDING", "REJECT" -> {
-                            startActivity(Intent(this@StartScreen, WaitActivity::class.java))
+                        "PENDING" -> {
+                            val intent = Intent(this, WaitActivity::class.java)
+                            intent.putExtra("opened_from", "startscreen")
+                            startActivity(intent)
                             finish()
+                        }
+
+                        "REJECT" -> {
+                            val workerFlow=PrefManager.getWorkerFlow()
+                            Log.d("workflowcheck",workerFlow.toString())
+                            if (workerFlow==null || workerFlow.userImageUri== "") {
+                                val intent = Intent(this, WaitActivity::class.java)
+                                intent.putExtra("opened_from", "startscreen")
+                                startActivity(intent)
+                                finish()
+                            }
+                            else{
+                                PrefManager.saveWorkerFlow(WorkerFlow())
+
+                                startProfileUploadWorkflow(userImageUri = workerFlow.userImageUri!!.toUri(), collegeIdUri = workerFlow.collegeIdUri!!.toUri(), createProfilePayload =  workerFlow.createProfilePayload, isUpdate = workerFlow.isUpdate, context = this){ workerIDs->
+                                    if (workerIDs.isNotEmpty()){
+                                        val intent=Intent(this, WaitActivity::class.java)
+                                        intent.putExtra("opened_from","kycscreen")
+                                        intent.putExtra("user_image_worker_id",workerIDs[0])
+                                        intent.putExtra("college_image_worker_id",workerIDs[1])
+                                        intent.putExtra("profile_worker_id",workerIDs[2])
+                                        startActivity(intent)
+                                        finish()
+                                    }
+                                }
+                            }
                         }
 
                     }
                 }
             }
-
         }
     }
 

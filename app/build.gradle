@@ -29,7 +29,7 @@ configurations {
 
 android {
     namespace 'com.ncs.marioapp'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.ncs.marioapp"
@@ -284,6 +284,9 @@ dependencies {
 
     //flexbox
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
+
+    // WorkManager
+    implementation "androidx.work:work-runtime-ktx:2.8.1"
 }
 
 

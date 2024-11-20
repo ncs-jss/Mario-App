@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/edit_text_bg"
     android:gravity="center|start"
+    android:id="@+id/rootView"
     android:orientation="horizontal"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -44,27 +45,12 @@
             android:fontFamily="@font/sfbold"
             android:gravity="center|start"
             android:hint="Retake"
+            android:id="@+id/btnRetake"
             android:inputType="textAutoComplete"
             android:textColor="@color/white"
             android:textColorHint="@color/edit_text_hint"
             android:textSize="16dp" />
     </LinearLayout>
-    <Space
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        />
-<ImageButton
-    android:id="@+id/uploadButton"
-    android:layout_width="64dp"
-    android:layout_height="54dp"
-    android:layout_marginEnd="12dp"
-    android:background="@color/transparent"
-    android:src="@drawable/baseline_cloud_upload_24"
-    android:scaleType="fitCenter"
-    app:tint="@color/primary" />
-
-
 
 
 </LinearLayout>

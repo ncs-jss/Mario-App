@@ -288,7 +288,8 @@ class EditProfileViewModel @Inject constructor(val profileApiService: ProfileApi
                         "LinkedIn" to linkedIn.value!!.trim(),
                         "Behance" to behance.value!!.trim(),
                     ),
-                    year = userYear
+                    year = userYear,
+
                 )
                 Log.d("signupResult", "Profile Update: ${payload}")
                 val response = profileApiService.updateUserProfile(payload = payload)
