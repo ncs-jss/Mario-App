@@ -3,6 +3,7 @@ package com.ncs.marioapp.UI.SurveyScreen.KYCValidations
 import android.Manifest
 import android.app.Activity
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -25,8 +26,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.gson.Gson
 import com.ncs.marioapp.Domain.HelperClasses.PrefManager
+import com.ncs.marioapp.Domain.HelperClasses.ProfileWorker
+import com.ncs.marioapp.Domain.HelperClasses.UploadCollegeIDWorker
+import com.ncs.marioapp.Domain.HelperClasses.UploadUserImageWorker
+import com.ncs.marioapp.Domain.Models.CreateProfileBody
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.isNull
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
@@ -36,6 +45,7 @@ import com.ncs.marioapp.Domain.Utility.GlobalUtils
 import com.ncs.marioapp.R
 import com.ncs.marioapp.UI.StartScreen.StartScreen
 import com.ncs.marioapp.UI.SurveyScreen.SurveyViewModel
+import com.ncs.marioapp.UI.WaitScreen.WaitActivity
 import com.ncs.marioapp.databinding.FragmentKYCValidationBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -151,10 +161,26 @@ class KYCValidationFragment : Fragment() {
                 binding.collegeIDlayout.imgPreview.setBackgroundResource(0)
             }
         }
+
+        surveyViewModel.workerResult.observe(viewLifecycleOwner){
+            if (it){
+                surveyViewModel.listOfWorkIDs.observe(viewLifecycleOwner){workerIDs->
+                    if (!workerIDs.isNullOrEmpty()){
+                        val intent=Intent(requireContext(), WaitActivity::class.java)
+                        intent.putExtra("opened_from","kycscreen")
+                        intent.putExtra("user_image_worker_id",workerIDs[0])
+                        intent.putExtra("college_image_worker_id",workerIDs[1])
+                        intent.putExtra("profile_worker_id",workerIDs[2])
+                        startActivity(intent)
+                        requireActivity().finish()
+                    }
+                }
+            }
+        }
     }
 
     private fun setUpViews(){
-        binding.userDPLayout.root.setOnClickThrottleBounceListener{
+        binding.userDPLayout.btnRetake.setOnClickThrottleBounceListener{
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(
                     requireActivity(),
@@ -166,7 +192,8 @@ class KYCValidationFragment : Fragment() {
                 pickUserImage()
             }
         }
-        binding.collegeIDlayout.root.setOnClickThrottleBounceListener{
+
+        binding.collegeIDlayout.btnRetake.setOnClickThrottleBounceListener{
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(
                     requireActivity(),
@@ -178,6 +205,7 @@ class KYCValidationFragment : Fragment() {
                 pickCollegeIDImage()
             }
         }
+
         binding.userDP.setOnClickThrottleBounceListener{
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(
@@ -206,20 +234,24 @@ class KYCValidationFragment : Fragment() {
             moveToPrevious()
         }
         binding.btnNext.setOnClickThrottleBounceListener {
-            surveyViewModel.validateInputsOnKYCDetailsPage()
-        }
-        binding.userDPLayout.uploadButton.setOnClickThrottleBounceListener {
-            surveyViewModel.validateSelfie(requireContext())
+            surveyViewModel.validateInputsOnKYCDetailsPage(requireContext())
         }
 
-        binding.collegeIDlayout.uploadButton.setOnClickThrottleBounceListener {
-            surveyViewModel.validateCollegeID(requireContext())
-        }
+//        binding.userDPLayout.uploadButton.setOnClickThrottleBounceListener {
+//            surveyViewModel.validateSelfie(requireContext())
+//        }
+//
+//        binding.collegeIDlayout.uploadButton.setOnClickThrottleBounceListener {
+//            surveyViewModel.validateCollegeID(requireContext())
+//        }
     }
 
 
+
+
+
     private fun pickUserImage() {
-        val options = arrayOf<CharSequence>("Take Selfie", "Open Gallery","Cancel")
+        val options = arrayOf<CharSequence>("Take Selfie","Cancel")
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Click your selfie in a well lit environment")
         builder.setItems(options) { dialog, item ->
@@ -235,9 +267,6 @@ class KYCValidationFragment : Fragment() {
 
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, capturedUserImageUri)
                     startActivityForResult(intent, REQUEST_USER_IMAGE_CAPTURE)
-                }
-                "Open Gallery"->{
-                    openGallery()
                 }
 
                 "Cancel" -> {

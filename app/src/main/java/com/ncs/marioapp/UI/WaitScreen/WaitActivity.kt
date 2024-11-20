@@ -4,8 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.ncs.marioapp.Domain.HelperClasses.PrefManager
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
+import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.isNull
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.marioapp.Domain.Utility.GlobalUtils
@@ -14,6 +18,7 @@ import com.ncs.marioapp.UI.StartScreen.StartScreen
 import com.ncs.marioapp.UI.SurveyScreen.SurveyActivity
 import com.ncs.marioapp.databinding.ActivityWaitBinding
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.UUID
 
 @AndroidEntryPoint
 class WaitActivity : AppCompatActivity() {
@@ -26,11 +31,86 @@ class WaitActivity : AppCompatActivity() {
     private val util: GlobalUtils.EasyElements by lazy {
         GlobalUtils.EasyElements(this)
     }
+    var opened_from:String?=null
+    var user_image_worker_id:String?=null
+    var college_image_worker_id:String?=null
+    var profile_worker_id:String?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        opened_from=intent.getStringExtra("opened_from")
+        val workManager = WorkManager.getInstance(applicationContext)
+
+        if (!opened_from.isNull){
+            if (opened_from=="startscreen"){
+                viewModel.startKYCStatusCheck()
+                observeViewModel()
+            }
+            else{
+                user_image_worker_id=intent.getStringExtra("user_image_worker_id")
+                college_image_worker_id=intent.getStringExtra("college_image_worker_id")
+                profile_worker_id=intent.getStringExtra("profile_worker_id")
+
+                binding.waitLayout.visible()
+                binding.waitLayout2.visible()
+                binding.rejectLayout.gone()
+
+                workManager.getWorkInfoByIdLiveData(UUID.fromString(user_image_worker_id)).observe(this, Observer { workInfo ->
+                    if (workInfo != null) {
+                        when (workInfo.state) {
+                            WorkInfo.State.RUNNING -> {}
+                            WorkInfo.State.SUCCEEDED -> {}
+                            WorkInfo.State.FAILED -> {
+                                PrefManager.setAlertMessage("Something went wrong in creating your profile, please try again")
+                                startActivity(Intent(this, SurveyActivity::class.java))
+                                finish()
+                            }
+                            WorkInfo.State.CANCELLED -> {}
+                            WorkInfo.State.ENQUEUED -> {}
+                            WorkInfo.State.BLOCKED -> {}
+                        }
+                    }
+                })
+
+                workManager.getWorkInfoByIdLiveData(UUID.fromString(college_image_worker_id)).observe(this, Observer { workInfo ->
+                    if (workInfo != null) {
+                        when (workInfo.state) {
+                            WorkInfo.State.RUNNING -> {}
+                            WorkInfo.State.SUCCEEDED -> {}
+                            WorkInfo.State.FAILED -> {
+                                PrefManager.setAlertMessage("Something went wrong in creating your profile, please try again")
+                                startActivity(Intent(this, SurveyActivity::class.java))
+                                finish()
+                            }
+                            WorkInfo.State.CANCELLED -> {}
+                            WorkInfo.State.ENQUEUED -> {}
+                            WorkInfo.State.BLOCKED -> {}
+                        }
+                    }
+                })
+
+                workManager.getWorkInfoByIdLiveData(UUID.fromString(profile_worker_id)).observe(this, Observer { workInfo ->
+                    if (workInfo != null) {
+                        when (workInfo.state) {
+                            WorkInfo.State.RUNNING -> {}
+                            WorkInfo.State.SUCCEEDED -> {
+                                viewModel.startKYCStatusCheck()
+                                observeViewModel()
+                            }
+                            WorkInfo.State.FAILED -> {
+                                PrefManager.setAlertMessage("Something went wrong in creating your profile, please try again")
+                                startActivity(Intent(this, SurveyActivity::class.java))
+                                finish()
+                            }
+                            WorkInfo.State.CANCELLED -> {}
+                            WorkInfo.State.ENQUEUED -> {}
+                            WorkInfo.State.BLOCKED -> {}
+                        }
+                    }
+                })
+            }
+        }
         setContentView(binding.root)
-        observeViewModel()
         setUpViews()
     }
 
