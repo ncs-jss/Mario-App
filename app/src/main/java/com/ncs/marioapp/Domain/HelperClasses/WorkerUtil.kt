@@ -32,8 +32,6 @@ object WorkerUtil {
             .setInputData(
                 workDataOf(
                     "isUpdate" to isUpdate,
-                    "photoToken" to PrefManager.getUserSelfieToken(),
-                    "idCardToken" to PrefManager.getUserCollegeIDToken(),
                     "profilePayload" to profilePayloadJson
                 )
             )

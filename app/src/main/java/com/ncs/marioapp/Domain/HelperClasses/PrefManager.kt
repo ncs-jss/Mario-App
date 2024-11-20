@@ -11,6 +11,8 @@ import com.ncs.marioapp.Domain.Models.Profile
 import com.ncs.marioapp.Domain.Models.UriTypeAdapter
 import com.ncs.marioapp.Domain.Models.UserSurvey
 import com.ncs.marioapp.Domain.Models.WorkerFlow
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 object PrefManager {
 
@@ -203,22 +205,28 @@ object PrefManager {
     }
 
     fun saveWorkerFlow(workerFlow: WorkerFlow) {
-        val gson = Gson()
-        val json = gson.toJson(workerFlow)
-        Log.d("WorkerFlowSave", "Serialized JSON: $json") // Debug to check serialization
+        val json = Json.encodeToString(workerFlow)
+        Log.d("WorkerFlowSave", "Serialized JSON: $json")
         editor.putString("workerFlow", json)
         editor.apply()
     }
 
     fun getWorkerFlow(): WorkerFlow? {
-        val gson = Gson()
         val json = sharedPreferences.getString("workerFlow", null)
-        if (json != null) {
-            Log.d("WorkerFlowLoad", "Deserialized JSON: ${gson.fromJson(json, WorkerFlow::class.java)}") // Debug to check deserialization
-            return gson.fromJson(json, WorkerFlow::class.java)
+        return if (json != null) {
+            try {
+                val workerFlow = Json.decodeFromString<WorkerFlow>(json)
+                Log.d("WorkerFlowLoad", "Deserialized Object: $workerFlow")
+                workerFlow
+            } catch (e: Exception) {
+                Log.e("WorkerFlowLoad", "Error deserializing WorkerFlow", e)
+                null
+            }
+        } else {
+            null
         }
-        return null
     }
+
 
 
     fun clearPrefs(){

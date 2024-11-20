@@ -8,6 +8,7 @@ plugins {
     id 'com.google.gms.google-services'
     id 'com.google.firebase.firebase-perf'
     id 'com.google.firebase.crashlytics'
+    id 'org.jetbrains.kotlin.plugin.serialization'
 }
 
 def getProps(String propName) {
@@ -287,6 +288,9 @@ dependencies {
 
     // WorkManager
     implementation "androidx.work:work-runtime-ktx:2.8.1"
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+
 }
 
 

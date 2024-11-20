@@ -296,11 +296,12 @@ class StartScreen : AppCompatActivity() {
                     Log.d("workflowcheck",workerFlow.toString())
                     if (workerFlow==null || workerFlow.userImageUri== "") {
                         PrefManager.setShowProfileCompletionAlert(true)
-                        startActivity(Intent(this, SurveyActivity::class.java))
+                        val intent = Intent(this, SurveyActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
                         finish()
                     }
                     else{
-                        PrefManager.saveWorkerFlow(WorkerFlow())
 
                         startProfileUploadWorkflow(userImageUri = workerFlow.userImageUri!!.toUri(), collegeIdUri = workerFlow.collegeIdUri!!.toUri(), createProfilePayload =  workerFlow.createProfilePayload, isUpdate = workerFlow.isUpdate, context = this){ workerIDs->
                             if (workerIDs.isNotEmpty()){
@@ -310,6 +311,7 @@ class StartScreen : AppCompatActivity() {
                                 intent.putExtra("college_image_worker_id",workerIDs[1])
                                 intent.putExtra("profile_worker_id",workerIDs[2])
                                 startActivity(intent)
+//                                PrefManager.saveWorkerFlow(WorkerFlow())
                                 finish()
                             }
                         }
@@ -352,7 +354,6 @@ class StartScreen : AppCompatActivity() {
 
     private fun handleKYCStatus(kycStatus: String?, user: UserImpDetails) {
         if (!kycStatus.isNullOrEmpty()) {
-
             setState("Starting Mario...")
             viewModel.banStatus.observe(this@StartScreen) {
                 if (it) {
@@ -398,7 +399,6 @@ class StartScreen : AppCompatActivity() {
                                 finish()
                             }
                             else{
-                                PrefManager.saveWorkerFlow(WorkerFlow())
 
                                 startProfileUploadWorkflow(userImageUri = workerFlow.userImageUri!!.toUri(), collegeIdUri = workerFlow.collegeIdUri!!.toUri(), createProfilePayload =  workerFlow.createProfilePayload, isUpdate = workerFlow.isUpdate, context = this){ workerIDs->
                                     if (workerIDs.isNotEmpty()){
@@ -408,6 +408,7 @@ class StartScreen : AppCompatActivity() {
                                         intent.putExtra("college_image_worker_id",workerIDs[1])
                                         intent.putExtra("profile_worker_id",workerIDs[2])
                                         startActivity(intent)
+//                                        PrefManager.saveWorkerFlow(WorkerFlow())
                                         finish()
                                     }
                                 }

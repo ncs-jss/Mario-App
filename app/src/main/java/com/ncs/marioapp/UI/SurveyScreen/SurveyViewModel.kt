@@ -325,6 +325,8 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
             return
         }
 
+
+
         requestCreateOrUpdateProfile(context){
             _listOfWorkIDs.value=it
         }
@@ -338,14 +340,6 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
         context: Context,
         callback: (List<String>)->Unit
     ) {
-        PrefManager.saveWorkerFlow(
-            WorkerFlow(
-                userImageUri = userImageUri.toString(),
-                collegeIdUri = collegeIdUri.toString(),
-                createProfilePayload=createProfilePayload,
-                isUpdate = isUpdate,
-            )
-        )
         startProfileUploadWorkflow(userImageUri, collegeIdUri, createProfilePayload, isUpdate, context){
             callback(it)
         }
@@ -355,6 +349,7 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
     fun requestCreateOrUpdateProfile(context: Context, callback: (List<String>)->Unit) {
         _kycDetailsPageResult.value = false
         _finalProgressState.value = true
+
         viewModelScope.launch {
             try {
                 val response = profileApiService.getKYCHeader()
@@ -392,6 +387,14 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                             id_card_token = ""
                         )
                         _workerResult.value=true
+                        PrefManager.saveWorkerFlow(
+                            WorkerFlow(
+                                userImageUri = userSelfie.value!!,
+                                collegeIdUri = userCollegeID.value!!,
+                                createProfilePayload=payload,
+                                isUpdate = true,
+                            )
+                        )
                         uploadProfileWorkflow(
                             userImageUri = Uri.parse(userSelfie.value!!),
                             collegeIdUri = Uri.parse(userCollegeID.value),
@@ -434,6 +437,14 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                         id_card_token = ""
                     )
                     _workerResult.value=true
+                    PrefManager.saveWorkerFlow(
+                        WorkerFlow(
+                            userImageUri = userSelfie.value!!,
+                            collegeIdUri = userCollegeID.value!!,
+                            createProfilePayload=payload,
+                            isUpdate = false,
+                        )
+                    )
                     uploadProfileWorkflow(
                         userImageUri = Uri.parse(userSelfie.value!!),
                         collegeIdUri = Uri.parse(userCollegeID.value),
@@ -743,3 +754,4 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
     }
 
 }
+

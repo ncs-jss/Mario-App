@@ -8,8 +8,10 @@ import androidx.lifecycle.Observer
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.ncs.marioapp.Domain.HelperClasses.PrefManager
+import com.ncs.marioapp.Domain.Models.WorkerFlow
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.isNull
+import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.runDelayed
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.marioapp.Domain.Utility.GlobalUtils
@@ -58,8 +60,18 @@ class WaitActivity : AppCompatActivity() {
                 workManager.getWorkInfoByIdLiveData(UUID.fromString(user_image_worker_id)).observe(this, Observer { workInfo ->
                     if (workInfo != null) {
                         when (workInfo.state) {
-                            WorkInfo.State.RUNNING -> {}
-                            WorkInfo.State.SUCCEEDED -> {}
+                            WorkInfo.State.RUNNING -> {
+                                binding.progressView.visible()
+                                binding.progressBar.progress=0
+                                binding.progressTV.text="Completed : 0 %"
+                                binding.loadingTV.text="Your profile is being created"
+                            }
+                            WorkInfo.State.SUCCEEDED -> {
+                                binding.progressView.visible()
+                                binding.progressBar.progress=30
+                                binding.progressTV.text="Completed : 30 %"
+                                binding.loadingTV.text="Your profile is being created"
+                            }
                             WorkInfo.State.FAILED -> {
                                 PrefManager.setAlertMessage("Something went wrong in creating your profile, please try again")
                                 startActivity(Intent(this, SurveyActivity::class.java))
@@ -75,8 +87,18 @@ class WaitActivity : AppCompatActivity() {
                 workManager.getWorkInfoByIdLiveData(UUID.fromString(college_image_worker_id)).observe(this, Observer { workInfo ->
                     if (workInfo != null) {
                         when (workInfo.state) {
-                            WorkInfo.State.RUNNING -> {}
-                            WorkInfo.State.SUCCEEDED -> {}
+                            WorkInfo.State.RUNNING -> {
+                                binding.progressView.visible()
+                                binding.progressBar.progress=40
+                                binding.progressTV.text="Completed : 40 %"
+                                binding.loadingTV.text="Your profile is being created"
+                            }
+                            WorkInfo.State.SUCCEEDED -> {
+                                binding.progressView.visible()
+                                binding.progressBar.progress=60
+                                binding.progressTV.text="Completed : 60 %"
+                                binding.loadingTV.text="Your profile is being created"
+                            }
                             WorkInfo.State.FAILED -> {
                                 PrefManager.setAlertMessage("Something went wrong in creating your profile, please try again")
                                 startActivity(Intent(this, SurveyActivity::class.java))
@@ -92,10 +114,25 @@ class WaitActivity : AppCompatActivity() {
                 workManager.getWorkInfoByIdLiveData(UUID.fromString(profile_worker_id)).observe(this, Observer { workInfo ->
                     if (workInfo != null) {
                         when (workInfo.state) {
-                            WorkInfo.State.RUNNING -> {}
+                            WorkInfo.State.RUNNING -> {
+                                binding.progressView.visible()
+                                binding.progressBar.progress=70
+                                binding.progressTV.text="Completed : 70 %"
+                                binding.loadingTV.text="Your profile is being created"
+                            }
                             WorkInfo.State.SUCCEEDED -> {
+                                binding.progressView.visible()
+                                binding.progressBar.progress=100
+                                binding.progressTV.text="Completed : 100 %"
+                                binding.loadingTV.text="You are being verified!"
+
+                                runDelayed(1000){
+                                    binding.progressView.gone()
+                                }
+
                                 viewModel.startKYCStatusCheck()
                                 observeViewModel()
+                                PrefManager.saveWorkerFlow(WorkerFlow())
                             }
                             WorkInfo.State.FAILED -> {
                                 PrefManager.setAlertMessage("Something went wrong in creating your profile, please try again")
