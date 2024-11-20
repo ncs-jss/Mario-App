@@ -50,7 +50,7 @@ class UploadCollegeIDWorker @AssistedInject constructor(
                 Result.success(workDataOf("idCardToken" to photoToken))
             } else {
                 Timber.e("API call failed with response: ${response.errorBody()?.string()}")
-                Result.retry()  // Retry on failure, or you can customize the logic
+                Result.retry()
             }
         } catch (e: Exception) {
             Timber.e(e, "Error during UploadCollegeIDWorker")

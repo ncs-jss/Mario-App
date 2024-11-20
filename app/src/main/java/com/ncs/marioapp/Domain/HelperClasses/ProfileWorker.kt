@@ -21,7 +21,6 @@ class ProfileWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         return try {
-            // Log initial inputs
             val isUpdate = inputData.getBoolean("isUpdate", false)
             val photoToken = inputData.getString("photoToken") ?: run {
                 Log.e("ProfileWorker", "Missing photoToken")
@@ -38,7 +37,6 @@ class ProfileWorker @AssistedInject constructor(
 
             Log.d("ProfileWorker", "Inputs - isUpdate: $isUpdate, photoToken: $photoToken, idCardToken: $idCardToken, payloadJson: $payloadJson")
 
-            // Parse payload
             val payload = try {
                 Gson().fromJson(payloadJson, CreateProfileBody::class.java).apply {
                     this.photo_token = photoToken
@@ -49,7 +47,6 @@ class ProfileWorker @AssistedInject constructor(
                 return Result.failure()
             }
 
-            // Make API call
             val response = if (isUpdate) {
                 Log.d("ProfileWorker", "Updating user profile")
 
@@ -82,7 +79,6 @@ class ProfileWorker @AssistedInject constructor(
                 profileApiService.createUserProfile(payload = payload)
             }
 
-            // Check API response
             if (response.isSuccessful) {
                 Log.d("ProfileWorker", "Profile update/create success: ${response.body()}")
                 Result.success()

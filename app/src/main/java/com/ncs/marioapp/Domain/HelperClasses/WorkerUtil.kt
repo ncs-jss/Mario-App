@@ -19,17 +19,14 @@ object WorkerUtil {
     ) {
         val workManager = WorkManager.getInstance(context)
 
-        // Upload User Image Worker
         val uploadUserImageRequest = OneTimeWorkRequestBuilder<UploadUserImageWorker>()
             .setInputData(workDataOf("imageUri" to userImageUri.toString()))
             .build()
 
-        // Upload College ID Worker
         val uploadCollegeIdRequest = OneTimeWorkRequestBuilder<UploadCollegeIDWorker>()
             .setInputData(workDataOf("imageUri" to collegeIdUri.toString()))
             .build()
 
-        // Profile Worker
         val profilePayloadJson = Gson().toJson(createProfilePayload)
         val profileWorkerRequest = OneTimeWorkRequestBuilder<ProfileWorker>()
             .setInputData(
@@ -44,7 +41,6 @@ object WorkerUtil {
 
         callback(listOf(uploadUserImageRequest.id.toString(), uploadCollegeIdRequest.id.toString(), profileWorkerRequest.id.toString()))
 
-        // Chain Workers
         workManager
             .beginWith(uploadUserImageRequest)
             .then(uploadCollegeIdRequest)
