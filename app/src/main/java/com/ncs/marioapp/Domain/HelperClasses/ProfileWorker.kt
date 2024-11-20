@@ -22,14 +22,8 @@ class ProfileWorker @AssistedInject constructor(
     override suspend fun doWork(): Result {
         return try {
             val isUpdate = inputData.getBoolean("isUpdate", false)
-            val photoToken = inputData.getString("photoToken") ?: run {
-                Log.e("ProfileWorker", "Missing photoToken")
-                return Result.failure()
-            }
-            val idCardToken = inputData.getString("idCardToken") ?: run {
-                Log.e("ProfileWorker", "Missing idCardToken")
-                return Result.failure()
-            }
+            val photoToken = PrefManager.getUserSelfieToken()
+            val idCardToken = PrefManager.getUserCollegeIDToken()
             val payloadJson = inputData.getString("profilePayload") ?: run {
                 Log.e("ProfileWorker", "Missing profilePayload")
                 return Result.failure()
@@ -39,8 +33,8 @@ class ProfileWorker @AssistedInject constructor(
 
             val payload = try {
                 Gson().fromJson(payloadJson, CreateProfileBody::class.java).apply {
-                    this.photo_token = photoToken
-                    this.id_card_token = idCardToken
+                    this.photo_token = photoToken!!
+                    this.id_card_token = idCardToken!!
                 }
             } catch (e: Exception) {
                 Log.e("ProfileWorker", "Error parsing profilePayload JSON: $e")
@@ -52,8 +46,8 @@ class ProfileWorker @AssistedInject constructor(
 
                 val _payload = try {
                     Gson().fromJson(payloadJson, CreateProfileBody::class.java).apply {
-                        this.photo_token = photoToken
-                        this.id_card_token = idCardToken
+                        this.photo_token = photoToken!!
+                        this.id_card_token = idCardToken!!
                     }
                 } catch (e: Exception) {
                     Log.e("ProfileWorker", "Error parsing profilePayload JSON: $e")
