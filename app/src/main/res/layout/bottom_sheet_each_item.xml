@@ -37,7 +37,7 @@
             android:fontFamily="@font/sf_semibold"
             android:text="IV Year"
             android:textColor="@color/better_white"
-            android:textSize="18dp" />
+            android:textSize="16dp" />
     </LinearLayout>
 
 </LinearLayout>
