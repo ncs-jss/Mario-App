@@ -25,7 +25,7 @@ class SurveyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
+       surveyViewModel.setFcmTokenToPref()
         if (PrefManager.getShowProfileCompletionAlert()){
             PrefManager.setShowProfileCompletionAlert(false)
             util.showSnackbar(binding.root, "Please complete your profile", 2000)

@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.ncs.marioapp.Domain.Api.ProfileApiService
 import com.ncs.marioapp.Domain.HelperClasses.PrefManager
@@ -119,6 +120,16 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
 
     fun setName(_name: String) {
         name.value = _name
+    }
+
+    fun setFcmTokenToPref(){
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                return@addOnCompleteListener
+            }
+            val actualFCM = task.result
+            PrefManager.setFCMToken(actualFCM)
+        }
     }
 
     fun setAdmissionNum(_admission_num: String) {
@@ -370,7 +381,7 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                         }
 
                         val payload=CreateProfileBody(
-                            FCM_token = "fcmtoken",
+                            FCM_token = PrefManager.getFCMToken()?:"",
                             admission_number = admission_num.value!!.trim(),
                             branch = branch.value!!.trim(),
                             domain = domains,
@@ -420,7 +431,7 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                     }
 
                     val payload=CreateProfileBody(
-                        FCM_token = "fcmtoken",
+                        FCM_token = PrefManager.getFCMToken()?:"",
                         admission_number = admission_num.value!!.trim(),
                         branch = branch.value!!.trim(),
                         domain = domains,
@@ -487,7 +498,7 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                 }
 
                     val payload=CreateProfileBody(
-                        FCM_token = "fcmtoken",
+                        FCM_token = PrefManager.getFCMToken()?:"",
                         admission_number = admission_num.value!!.trim(),
                         branch = branch.value!!.trim(),
                         domain = domains,
@@ -612,7 +623,7 @@ class SurveyViewModel @Inject constructor(val profileApiService: ProfileApiServi
                     }
 
                     val payload=CreateProfileBody(
-                        FCM_token = "fcmtoken",
+                        FCM_token = PrefManager.getFCMToken()?:"",
                         admission_number = admission_num.value!!.trim(),
                         branch = branch.value!!.trim(),
                         domain = domains,
