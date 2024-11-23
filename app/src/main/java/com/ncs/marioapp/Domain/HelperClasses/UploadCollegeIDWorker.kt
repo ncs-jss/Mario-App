@@ -70,7 +70,7 @@ class UploadCollegeIDWorker @AssistedInject constructor(
 
     private fun bitmapToBase64WithMimeType(bitmap: Bitmap): String {
         val byteArrayOutputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 60, byteArrayOutputStream)
         val byteArray = byteArrayOutputStream.toByteArray()
         val base64Image = Base64.encodeToString(byteArray, Base64.DEFAULT)
         return "data:image/jpeg;base64,$base64Image"
