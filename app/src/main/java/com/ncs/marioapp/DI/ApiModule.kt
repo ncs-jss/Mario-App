@@ -21,6 +21,7 @@ import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -43,7 +44,11 @@ object ApiModule {
             .addInterceptor(Interceptor { chain: Interceptor.Chain ->
                 val request: Request = chain.request()
                 chain.proceed(request)
-            }).build()
+            })
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .build()
     }
 
 
