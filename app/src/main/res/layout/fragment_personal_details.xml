@@ -17,16 +17,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/sf_semibold"
-            android:gravity="center"
-            android:text="Basic Details"
-            android:textColor="@color/better_white"
-            android:textSize="20dp" />
 
         <TextView
             android:layout_width="wrap_content"
