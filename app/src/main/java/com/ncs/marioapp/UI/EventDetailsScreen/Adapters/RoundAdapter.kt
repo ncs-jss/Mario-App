@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.ncs.marioapp.Domain.HelperClasses.PrefManager
 import com.ncs.marioapp.Domain.HelperClasses.Utils
 import com.ncs.marioapp.Domain.HelperClasses.Utils.setTextWithColorFromSubstring
 import com.ncs.marioapp.Domain.HelperClasses.Utils.toRoundTimeStamp
@@ -55,18 +56,50 @@ class RoundAdapter(
                     endTime.text = "End: ${round.endTime}"
                 }
 
-                if (round.live) {
-                    roundStatus.visible()
-                    roundStatus.startBlinking()
-                } else {
-                    roundStatus.gone()
-                }
+//                if (round.live) {
+//                    roundStatus.visible()
+//                    roundStatus.startBlinking()
+//                } else {
+//                    roundStatus.gone()
+//                }
+
+
 
                 if (round.requireSubmission && isUserEnrolled != 0) {
                     formButton.visible()
                 } else {
                     formButton.gone()
                 }
+
+                val userAdmittedTo=PrefManager.getUserProfile()?.admitted_to
+                val roundStartTime = if (userAdmittedTo == "COLLEGE" || userAdmittedTo == "")
+                    round.timeLine["startCollege"] ?: 0L
+                else
+                    round.timeLine["startUniversity"] ?: 0L
+
+                val roundEndTime = if (userAdmittedTo == "COLLEGE" || userAdmittedTo == "")
+                    round.timeLine["endCollege"] ?: 0L
+                else
+                    round.timeLine["endUniversity"] ?: 0L
+
+                val isRoundRunning: Boolean = currentTime?.let { currentTimestampString ->
+                    val currentTimestampMillis = Utils.convertFullFormatTimeToTimestamp(currentTimestampString)
+                    Log.d("RoundAdapter", " Round Name: ${round.roundTitle} $currentTimestampMillis")
+                    currentTimestampMillis in roundStartTime..roundEndTime
+                } ?: false
+
+                Log.d("RoundAdapter", " Round Name: ${round.roundTitle} isRoundRunning: $isRoundRunning currenttime $currentTime")
+
+                if (isRoundRunning) {
+                    binding.formButton.visible()
+                    roundStatus.visible()
+                    roundStatus.startBlinking()
+                }
+                else{
+                    binding.formButton.gone()
+                    roundStatus.gone()
+                }
+
 
                 roundTitle.text = round.roundTitle
                 roundDescription.text = round.description

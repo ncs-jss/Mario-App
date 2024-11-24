@@ -78,6 +78,9 @@ class RoundQuestionnaireFragment : Fragment() {
                     binding.quesView.visible()
                     binding.progressView.gone()
                     Snackbar.make(binding.root, res.message, Snackbar.LENGTH_SHORT).show()
+                    if (res.message=="No document found with the provided queID"){
+                        findNavController().popBackStack()
+                    }
                 }
 
                 ServerResult.Progress -> {

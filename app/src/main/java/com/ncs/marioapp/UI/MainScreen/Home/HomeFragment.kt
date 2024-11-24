@@ -131,6 +131,12 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
         _binding = null
     }
 
+    override fun onStop() {
+        super.onStop()
+        stopAutoScroll()
+    }
+
+
     private fun setViews(){
         binding.postsShimmerLayout.apply {
             startShimmer()

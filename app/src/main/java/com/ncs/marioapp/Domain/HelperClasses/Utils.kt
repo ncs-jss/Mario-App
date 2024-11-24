@@ -22,7 +22,7 @@ object Utils {
 
 
     fun String.toRoundTimeStamp(): String {
-        val inputFormat = SimpleDateFormat("dd MMM yyyy 'at' HH:mm a", Locale.getDefault())
+        val inputFormat = SimpleDateFormat("dd MMM yyyy 'at' hh:mm a", Locale.getDefault())
         val date = inputFormat.parse(this) ?: return ""
         val outputFormat = SimpleDateFormat("dd  |  MMM yy", Locale.getDefault())
         return outputFormat.format(date).uppercase()
@@ -32,10 +32,11 @@ object Utils {
     fun String.formatToFullDateWithTime(): String {
         val timestamp = this.toLongOrNull() ?: return ""
         val date = Date(timestamp)
-        val dateFormat = SimpleDateFormat("dd MMM yyyy 'at' HH:mm a", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("dd MMM yyyy 'at' hh:mm a", Locale.ENGLISH)
         dateFormat.timeZone = TimeZone.getTimeZone("Asia/Kolkata")
         return dateFormat.format(date)
     }
+
 
     fun TextView.setTextWithColorFromSubstring(substring: String, color: Int) {
         val text = this.text.toString()
@@ -87,7 +88,7 @@ object Utils {
 
     fun getTrueTime(): String? {
         val currentTime = getCurrentTimeFromTrueTime()
-        val formatter = SimpleDateFormat("dd MMM yyyy 'at' HH:mm a", Locale.getDefault())
+        val formatter = SimpleDateFormat("dd MMM yyyy 'at' hh:mm a", Locale.getDefault())
         formatter.timeZone = TimeZone.getTimeZone("Asia/Kolkata")
         return currentTime?.let { formatter.format(it) }
     }
