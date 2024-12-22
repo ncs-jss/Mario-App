@@ -57,6 +57,7 @@ class MarioApp() : Application(), Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
+        PrefManager.initialize(this@MarioApp)
 
         CoroutineScope(Dispatchers.IO).launch {
             TrueTime.build()
@@ -64,7 +65,6 @@ class MarioApp() : Application(), Configuration.Provider {
                 .initialize()
 
             FirebaseApp.initializeApp(this@MarioApp)
-            PrefManager.initialize(this@MarioApp)
 
 
             val config = HashMap<String, Any>()

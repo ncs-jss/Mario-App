@@ -167,6 +167,7 @@ class HomeViewModel @Inject constructor(
             _errorMessage.postValue("Network error. Please check your connection.")
         } catch (e: Exception) {
             _errorMessage.postValue("Something went wrong. Please try again.")
+            Log.d("checkingerros", e.message.toString())
         } finally {
             _progressState.postValue(false)
         }

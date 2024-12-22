@@ -26,61 +26,72 @@ class NewChanges : AppCompatActivity() {
         binding = ActivityNewChangesBinding.inflate(layoutInflater)
 
         setUpViews()
+
         val desc = """
-           # Mario is born. ✨
+           # Mario Version 1.7 Update! 🚀
            
            
 
-           **Mario** is here to take your career journey to the next level! This is the **first version** of Mario, designed to offer you a unique and tailored experience for growth and success. Whether you're just starting your career or looking to level up your professional journey, Mario has everything you need to accelerate your path.
+           Mario continues to grow, and version **1.7** is packed with exciting enhancements and features to make your career journey even more seamless and enjoyable. With a focus on improving your experience, we've made significant upgrades to key areas of the app to ensure that Mario continues to be your ultimate career companion.
 
-           ### What is Mario?
+           ### Key Features in Version 1.7:
 
-           Mario is a career companion that brings exclusive access to events, insightful content, and exciting opportunities—all within a fun and motivating platform. Developed by NCS, this app is focused on providing ambitious individuals like you with the tools to succeed. From curated **events** to personalized **career progress tracking**, Mario is here to guide you every step of the way.
-
-           ### Key Features:
-
-           - **Events**: Stay engaged with a variety of curated events, from career development workshops to industry-specific meetups. These events are designed to connect you with professionals, build valuable skills, and open doors to new opportunities.
+           - **Improved Onboarding and Registration**: A brand new and streamlined onboarding process that guides you through setup more intuitively, ensuring a seamless start for new users.
              
-           - **Posts & Story Blogs**: Get inspired by posts, career tips, and success stories from professionals across different industries. Learn about the experiences of those who’ve made it and get actionable insights to boost your career.
+           - **New and Improved Events Pages**: Keep everything structured and accessible with the updated events pages. Find and join events effortlessly with a well-organized and enhanced layout.
+             
+           - **New Banners**: Experience a visually enhanced interface with vibrant and informative banners that keep you updated on important events, posts, and opportunities.
+             
+           - **General Bug Fixes and Improvements**: We've squashed various bugs and implemented performance improvements to give you a faster and smoother experience.
 
-           - **Nerd Store Goodies**: Who doesn’t love a bit of fun while you level up? With Mario, you get access to exclusive merchandise in the **Nerd Store**, featuring everything from gadgets to career-related goodies that keep you motivated and connected with the Mario community.
-
-           - **Mario Score Section**: Track your personal progress with the **Mario Score**! This feature helps you visualize your growth in real-time, so you can see where you stand in terms of skill development, networking, and career readiness.
-
-           - **Everything from NCS**: We’ve integrated all of NCS’s fantastic resources into the app to give you everything you need in one place. From career resources to professional tools, Mario connects you to the vast NCS ecosystem, empowering you to make the most of every opportunity.
-
-           ### What's Next?
-
-           This is just the start. **Mario** is continuously evolving, and our **next major update** will be introducing **Internship Options**, giving you access to a range of exclusive internships with top companies. Whether you’re looking for your first professional experience or seeking to deepen your expertise, Mario will help you unlock valuable internship opportunities that will propel your career forward.
-
-           The Mario experience isn’t just about features—it’s about building a **community** of like-minded professionals who are dedicated to their growth. By joining Mario, you’ll become part of a network that motivates and supports each other as we all level up together.
+           - **Addition of NCS Nerd Store**: Redeem exciting goodies from the **Nerd Store** using your Mario coins! Level up with gadgets, merchandise, and more that keep you motivated and engaged.
+             
+           - **New Score Page**: Track your progress with an all-new score page that now includes a structured transaction history, making it easier to see where you're gaining points and how you’re progressing.
+             
+           - **Enhanced Ticketing Mechanism**: An improved ticketing mechanism ensures that you can access and manage event tickets more efficiently, enhancing your experience for seamless event participation.
+             
+           - **Much More**: Additional tweaks and updates throughout the app to enhance usability, improve navigation, and deliver a more refined overall experience.
 
            ### Version Log
 
-           | **Version** | **Release Date**  | **Features & Updates**                                  |
-           |-------------|-------------------|---------------------------------------------------------|
-           | 1.6         | November 2024     | Initial release with **Events**, **Posts & Story Blogs**, **Nerd Store Goodies**, **Mario Score Section**, and **NCS Integration**. |
-           | 1.1         | Coming Soon       | **Internship Options** to unlock exclusive internship opportunities from top companies. |
+            <table>
+              <tr>
+                <th>Version</th>
+                <th>Release Date</th>
+                <th>Features & Updates</th>
+              </tr>
+              <tr>
+                <td>1.7</td>
+                <td>25 Dec, 24</td>
+                <td>Improved Onboarding and Registration, New and Improved Events Pages, New Banners, General Bug Fixes, NCS Nerd Store, New Score Page, and Improved Ticketing Mechanism.</td>
+              </tr>
+              <tr>
+                <td>1.1</td>
+                <td>09 Nov, 24</td>
+                <td>Initial release with Events, Posts & Story Blogs, Nerd Store Goodies, Mario Score Section, and NCS Integration.</td>
+              </tr>
+            </table>
+
 
            ### Why Choose Mario?
 
-           - **Tailored for You**: Mario isn’t a one-size-fits-all platform. It adapts to your needs, helping you grow at your own pace. Whether you want to improve your skills, expand your network, or track your progress, Mario has you covered.
+           - **Tailored for You**: Mario adapts to your unique journey, providing personalized features that help you grow and track progress effectively.
              
-           - **Exclusive Access**: With Mario’s **Invite-Only Recruitment System**, only the most dedicated individuals are granted access to the platform, ensuring a high-quality, professional network that supports your journey.
-
-           - **Growth-Oriented**: Every feature of Mario is designed with your professional development in mind. From skill-building events to progress tracking, everything is centered around helping you grow and succeed.
-
+           - **Exclusive Access**: Our invite-only system ensures a network of dedicated professionals who are motivated and career-focused, creating a high-quality environment for growth.
+             
+           - **Growth-Oriented Features**: Everything in Mario is designed to promote professional development, from curated events to detailed progress tracking, all aimed at helping you succeed.
+             
            ### Ready to Level Up?
 
-           If you're ready to accelerate your career and be a part of a dedicated community, **download Mario** now and start your journey. Whether you're looking to learn, connect, or unlock new career opportunities, Mario is here to help you succeed.
+           Update now to experience all the new features and improvements in version **1.7**. Continue your journey, track your growth, redeem exciting rewards, and participate in new and structured events—all within Mario.
 
-           **Stay tuned for our next update**—internships are just around the corner!
+           **Stay tuned for future updates** as Mario continues to evolve and bring you even more opportunities for growth!
 
-           **#Mario #LevelUp #CareerGrowth #NCS**
-        
+           **#Mario #Version1_7 #CareerGrowth #NCS #LevelUp**
+
            -- Team NCS 💙
-
         """.trimIndent()
+
         setUpTaskDescription(desc)
 
         setContentView(binding.root)
@@ -147,6 +158,18 @@ class NewChanges : AppCompatActivity() {
             addRule("pre", "max-height: 400px;")
             addRule("pre", "overflow:auto")
             addRule("pre", "white-space: pre-line")
+
+            addRule("table", "width: 100%")
+            addRule("table", "border-collapse: collapse")
+            addRule("th, td", "border: 1px solid #fff")
+            addRule("th, td", "padding: 8px 12px")
+            addRule("th", "background-color: #1a1a1a !important")
+            addRule("th", "color: #86ff7c !important")
+            addRule("tr:nth-child(even)", "background-color: #2a2a2a !important")
+            addRule("tr:nth-child(odd)", "background-color: #1a1a1a !important")
+            addRule("td", "background-color: inherit !important")
+            addRule("td", "color: #fff !important")
+
 
         }
 

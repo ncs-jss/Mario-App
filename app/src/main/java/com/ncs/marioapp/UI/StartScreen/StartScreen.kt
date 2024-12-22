@@ -134,43 +134,62 @@ class StartScreen : AppCompatActivity() {
     private fun initializeProcesses() {
         remoteConfigHelper.fetchRemoteConfig {
             if (BuildConfig.VERSION_CODE >= it.toInt()) {
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    if (ContextCompat.checkSelfPermission(
-                            this,
-                            android.Manifest.permission.POST_NOTIFICATIONS
-                        ) ==
-                        PackageManager.PERMISSION_GRANTED
-                    ) {
-                        runNormally(true)
-                    } else if (shouldShowRequestPermissionRationale(android.Manifest.permission.POST_NOTIFICATIONS)) {
-                        util.twoBtnDialog(
-                            title = "Notification Permission required",
-                            msg = "Notification permission is required for better functioning of the app",
-                            positiveBtnText = "OK",
-                            positive = {
+                remoteConfigHelper.fetchBaseURLFromRemoteConfig(if (BuildConfig.DEBUG) "debug" else "release"){ res->
+                    if (res){
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            if (ContextCompat.checkSelfPermission(
+                                    this,
+                                    android.Manifest.permission.POST_NOTIFICATIONS
+                                ) ==
+                                PackageManager.PERMISSION_GRANTED
+                            ) {
+                                runNormally(true)
+                            } else if (shouldShowRequestPermissionRationale(android.Manifest.permission.POST_NOTIFICATIONS)) {
+                                util.twoBtnDialog(
+                                    title = "Notification Permission required",
+                                    msg = "Notification permission is required for better functioning of the app",
+                                    positiveBtnText = "OK",
+                                    positive = {
+                                        requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+                                    },
+                                    negativeBtnText = "Cancel",
+                                    negative = {
+                                        runNormally(false)
+                                    })
+                            } else {
                                 requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
-                            },
-                            negativeBtnText = "Cancel",
-                            negative = {
-                                runNormally(false)
-                            })
-                    } else {
-                        requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+                            }
+                        } else {
+                            runNormally(true)
+                        }
                     }
-                } else {
-                    runNormally(true)
+                    else{
+                        util.singleBtnDialog(
+                            title = "Something went wrong",
+                            msg = "We are facing some difficulties in setting things up, please check if your internet is working",
+                            btnText = "Retry",
+                            positive = {
+                                initializeProcesses()
+                            }
+                        )
+                    }
                 }
+
             } else {
                 util.twoBtnDialogNonCancellable("Update Available",
                     "Hooray! A new version on NCS Mario has been released on playstore, please update your app to continue using forward",
                     positiveBtnText = "Update", positive = {
-                        //TODO: Open playstore
+                        openUrl("https://play.google.com/store/apps/details?id=com.ncs.marioapp")
                     }, negativeBtnText = "Cancel", negative = {
                         finishAffinity()
                     })
             }
         }
+    }
+
+    private fun openUrl(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(intent)
     }
 
     private val installStateUpdatedListener = InstallStateUpdatedListener { state ->
