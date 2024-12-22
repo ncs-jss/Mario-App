@@ -15,7 +15,7 @@ class RemoteConfigHelper(context: Context) {
         mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remot_config_defaults)
 
         val configSettings = FirebaseRemoteConfigSettings.Builder()
-            .setMinimumFetchIntervalInSeconds(900)
+            .setMinimumFetchIntervalInSeconds(1800)
             .build()
         mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings)
 
@@ -35,7 +35,36 @@ class RemoteConfigHelper(context: Context) {
             }
     }
 
+    fun fetchBaseURLFromRemoteConfig(buildType:String,callback: (Boolean) -> Unit) {
+        mFirebaseRemoteConfig.fetchAndActivate()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val updated = task.result
+                    if (buildType=="debug"){
+                        val baseUrl=mFirebaseRemoteConfig.getString("DEBUG_BASE_URL")
+                        PrefManager.setBaseUrl(baseUrl)
+                        Log.d(TAG, "Fetch Succeeded Debug, $baseUrl")
+                        callback(true)
+                    }
+                    else{
+                        val baseUrl=mFirebaseRemoteConfig.getString("RELEASE_BASE_URL")
+                        PrefManager.setBaseUrl(baseUrl)
+                        Log.d(TAG, "Fetch Succeeded release, $baseUrl")
+                        callback(true)
+                    }
+                } else {
+                    callback(false)
+                    Log.d(TAG, "Fetch failed")
+                }
+            }
+            .addOnFailureListener{
+                callback(false)
+            }
+    }
+
+
     companion object {
         private const val TAG = "RemoteConfigHelper"
     }
+
 }

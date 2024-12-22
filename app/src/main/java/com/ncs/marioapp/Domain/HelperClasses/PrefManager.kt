@@ -184,7 +184,14 @@ object PrefManager {
         return if (json != null) gson.fromJson(json, Profile::class.java) else Profile()
     }
 
+    fun getBaseUrl(): String? {
+        return sharedPreferences.getString("baseurl","")
+    }
 
+    fun setBaseUrl(newUrl:String){
+        editor.putString("baseurl", newUrl)
+        editor.apply()
+    }
 
     fun setFCMToken(fcmtoken: String){
         editor.putString("fcmtoken", fcmtoken)
@@ -226,6 +233,7 @@ object PrefManager {
             null
         }
     }
+
 
 
 

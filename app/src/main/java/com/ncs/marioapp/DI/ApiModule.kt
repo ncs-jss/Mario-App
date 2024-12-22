@@ -1,6 +1,8 @@
 package com.ncs.marioapp.DI
 
 
+import android.content.Context
+import android.content.SharedPreferences
 import com.ncs.marioapp.BuildConfig
 import com.ncs.marioapp.Domain.Api.AuthApiService
 import com.ncs.marioapp.Domain.Api.BannerApiService
@@ -11,9 +13,11 @@ import com.ncs.marioapp.Domain.Api.ProfileApiService
 import com.ncs.marioapp.Domain.Api.QRAPI
 import com.ncs.marioapp.Domain.Api.ReportApiService
 import com.ncs.marioapp.Domain.Api.TimeApiService
+import com.ncs.marioapp.Domain.HelperClasses.PrefManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -27,8 +31,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object ApiModule {
-
-
 
     @Provides
     @Singleton
@@ -45,18 +47,27 @@ object ApiModule {
                 val request: Request = chain.request()
                 chain.proceed(request)
             })
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(45, TimeUnit.SECONDS)
+            .writeTimeout(45, TimeUnit.SECONDS)
+            .readTimeout(45, TimeUnit.SECONDS)
             .build()
     }
 
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
+        return context.getSharedPreferences("NCS_MARIO_PREFS", Context.MODE_PRIVATE)
+    }
+
+    fun getBaseUrlFromSharedPrefs(sharedPreferences: SharedPreferences) : String?{
+        return sharedPreferences.getString("baseurl", "")
+    }
 
     @Provides
     @Singleton
-    fun getAuthApiService(okkHttpClient: OkHttpClient): AuthApiService {
+    fun getAuthApiService(okkHttpClient: OkHttpClient, sharedPreferences: SharedPreferences): AuthApiService {
         return Retrofit.Builder()
-            .baseUrl("${BuildConfig.API_BASE_URL}${BuildConfig.AUTH_ENDPOINT}")
+            .baseUrl("${getBaseUrlFromSharedPrefs(sharedPreferences)}${BuildConfig.AUTH_ENDPOINT}")
             .client(okkHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -65,9 +76,9 @@ object ApiModule {
 
     @Provides
     @Singleton
-    fun getProfileApiService(okkHttpClient: OkHttpClient): ProfileApiService {
+    fun getProfileApiService(okkHttpClient: OkHttpClient, sharedPreferences: SharedPreferences): ProfileApiService {
         return Retrofit.Builder()
-            .baseUrl("${BuildConfig.API_BASE_URL}${BuildConfig.PROFILE_ENDPOINT}")
+            .baseUrl("${getBaseUrlFromSharedPrefs(sharedPreferences)}${BuildConfig.PROFILE_ENDPOINT}")
             .client(okkHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -76,9 +87,9 @@ object ApiModule {
 
     @Provides
     @Singleton
-    fun getEventsApiService(okkHttpClient: OkHttpClient): EventsApi {
+    fun getEventsApiService(okkHttpClient: OkHttpClient, sharedPreferences: SharedPreferences): EventsApi {
         return Retrofit.Builder()
-            .baseUrl("${BuildConfig.API_BASE_URL}${BuildConfig.EVENT_ENDPOINT}")
+            .baseUrl("${getBaseUrlFromSharedPrefs(sharedPreferences)}${BuildConfig.EVENT_ENDPOINT}")
             .client(okkHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -88,9 +99,9 @@ object ApiModule {
 
     @Provides
     @Singleton
-    fun getQRApiService(okkHttpClient: OkHttpClient): QRAPI {
+    fun getQRApiService(okkHttpClient: OkHttpClient, sharedPreferences: SharedPreferences): QRAPI {
         return Retrofit.Builder()
-            .baseUrl("${BuildConfig.API_BASE_URL}${BuildConfig.QR_ENDPOINT}")
+            .baseUrl("${getBaseUrlFromSharedPrefs(sharedPreferences)}${BuildConfig.QR_ENDPOINT}")
             .client(okkHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -99,9 +110,9 @@ object ApiModule {
 
     @Provides
     @Singleton
-    fun getMerchApiService(okkHttpClient: OkHttpClient): MerchApi {
+    fun getMerchApiService(okkHttpClient: OkHttpClient, sharedPreferences: SharedPreferences): MerchApi {
         return Retrofit.Builder()
-            .baseUrl("${BuildConfig.API_BASE_URL}${BuildConfig.MERCH_ENDPOINT}")
+            .baseUrl("${getBaseUrlFromSharedPrefs(sharedPreferences)}${BuildConfig.MERCH_ENDPOINT}")
             .client(okkHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -110,9 +121,9 @@ object ApiModule {
 
     @Provides
     @Singleton
-    fun getBannersApiService(okkHttpClient: OkHttpClient): BannerApiService {
+    fun getBannersApiService(okkHttpClient: OkHttpClient, sharedPreferences: SharedPreferences): BannerApiService {
         return Retrofit.Builder()
-            .baseUrl("${BuildConfig.API_BASE_URL}${BuildConfig.BANNER_ENDPOINT}")
+            .baseUrl("${getBaseUrlFromSharedPrefs(sharedPreferences)}${BuildConfig.BANNER_ENDPOINT}")
             .client(okkHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -121,9 +132,9 @@ object ApiModule {
 
     @Provides
     @Singleton
-    fun getPostsApiService(okkHttpClient: OkHttpClient): PostApiService {
+    fun getPostsApiService(okkHttpClient: OkHttpClient, sharedPreferences: SharedPreferences): PostApiService {
         return Retrofit.Builder()
-            .baseUrl("${BuildConfig.API_BASE_URL}${BuildConfig.POST_ENDPOINT}")
+            .baseUrl("${getBaseUrlFromSharedPrefs(sharedPreferences)}${BuildConfig.POST_ENDPOINT}")
             .client(okkHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -132,9 +143,9 @@ object ApiModule {
 
     @Provides
     @Singleton
-    fun getReportsApiService(okkHttpClient: OkHttpClient): ReportApiService {
+    fun getReportsApiService(okkHttpClient: OkHttpClient, sharedPreferences: SharedPreferences): ReportApiService {
         return Retrofit.Builder()
-            .baseUrl("${BuildConfig.API_BASE_URL}${BuildConfig.REPORTS_ENDPOINT}")
+            .baseUrl("${getBaseUrlFromSharedPrefs(sharedPreferences)}${BuildConfig.REPORTS_ENDPOINT}")
             .client(okkHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
