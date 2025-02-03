@@ -9,15 +9,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.ncs.marioapp.Domain.Api.EventsApi
+import com.ncs.marioapp.Domain.Api.MailApiService
+import com.ncs.marioapp.Domain.HelperClasses.PrefManager
 import com.ncs.marioapp.Domain.Models.Admin.Round
 import com.ncs.marioapp.Domain.Models.Admin.RoundQuestionnaire
 import com.ncs.marioapp.Domain.Models.Answer
+import com.ncs.marioapp.Domain.Models.EventMeetInvite
 import com.ncs.marioapp.Domain.Models.Events.EnrollUser
 import com.ncs.marioapp.Domain.Models.Events.Event
 import com.ncs.marioapp.Domain.Models.Events.EventDetails.EventDetails
 import com.ncs.marioapp.Domain.Models.Events.EventDetails.EventDetailsResponse
 import com.ncs.marioapp.Domain.Models.Events.EventDetails.Submission
 import com.ncs.marioapp.Domain.Models.Events.ParticipatedEvent
+import com.ncs.marioapp.Domain.Models.MeetLinks
 import com.ncs.marioapp.Domain.Models.ServerResponse
 import com.ncs.marioapp.Domain.Models.ServerResult
 import com.ncs.marioapp.Domain.Repository.EventRepository
@@ -26,20 +30,26 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.io.IOException
 import java.io.InputStream
 import java.net.SocketTimeoutException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
 class EventDetailsViewModel @Inject constructor(
     private val eventsApi: EventsApi,
     private val eventRepository: EventRepository,
-    private val firestoreRepository: FirestoreRepository
-    ) : ViewModel() {
+    private val firestoreRepository: FirestoreRepository) : ViewModel() {
 
     private val _event = MutableLiveData<Event?>(null)
     val event: LiveData<Event?> get() = _event
+
+    private val _enrolledCount = MutableLiveData<String?>("10+")
+    val enrolledCount: LiveData<String?> get() = _enrolledCount
 
     private val _progressState = MutableLiveData<Boolean>(false)
     val progressState: LiveData<Boolean> get() = _progressState
@@ -128,6 +138,14 @@ class EventDetailsViewModel @Inject constructor(
 
     fun getEvent(): Event? {
         return _event.value
+    }
+
+    fun setEnrolledCount(enrolledCount:String) {
+        _enrolledCount.value = enrolledCount
+    }
+
+    fun getEnrolledCount(): String? {
+        return _enrolledCount.value
     }
 
     init {
@@ -266,6 +284,41 @@ class EventDetailsViewModel @Inject constructor(
         }
     }
 
+//    fun enrollUser(enrollUser: EnrollUser) {
+//        viewModelScope.launch {
+//            _progressState.value = true
+//            _normalErrorMessage.value = "Enrolling you to the event"
+//            try {
+//                val response = eventsApi.enrollUser(payload = enrollUser)
+//                if (response.isSuccessful) {
+//                    val inputStream: InputStream = response.body()!!.byteStream()
+//                    val bitmap: Bitmap = BitmapFactory.decodeStream(inputStream)
+//                    _ticketResultBitmap.value = bitmap
+//                    _progressState.value = false
+//                    _normalErrorMessage.value = "Enrolled you to the event"
+//                    _enrollResult.value = true
+//                } else {
+//                    _progressState.value = false
+//                    val errorResponse = response.errorBody()?.string()
+//                    _normalErrorMessage.value = "Failed to enroll you to the event"
+//                }
+//            }
+//            catch (e: IOException) {
+//                Log.d("signupResult",e.message.toString())
+//                _progressState.value = false
+//                _normalErrorMessage.value = "Network error. Please check your connection."
+//            }
+//            catch (e: SocketTimeoutException) {
+//                _progressState.value = false
+//                _normalErrorMessage.value = "Network timeout. Please try again."
+//            } catch (e: Exception) {
+//                _progressState.value = false
+//                Log.d("eventviewmodel",e.message.toString())
+//                _normalErrorMessage.value = "Failed to enroll you..."
+//            }
+//        }
+//    }
+
     fun enrollUser(enrollUser: EnrollUser) {
         viewModelScope.launch {
             _progressState.value = true
@@ -273,32 +326,187 @@ class EventDetailsViewModel @Inject constructor(
             try {
                 val response = eventsApi.enrollUser(payload = enrollUser)
                 if (response.isSuccessful) {
-                    val inputStream: InputStream = response.body()!!.byteStream()
-                    val bitmap: Bitmap = BitmapFactory.decodeStream(inputStream)
-                    _ticketResultBitmap.value = bitmap
+                    val responseBody = response.body()
+                    if (responseBody != null) {
+                        val inputStream: InputStream = responseBody.byteStream()
+                        val bitmap: Bitmap? = BitmapFactory.decodeStream(inputStream)
+
+                        if (bitmap != null) {
+                            _ticketResultBitmap.value = bitmap!!
+                            _normalErrorMessage.value = "Enrolled you to the event successfully"
+                        } else {
+                            handleNoBitmapScenario()
+                            _normalErrorMessage.value = "Enrolled you to the event successfully"
+                        }
+                        _enrollResult.value = true
+                    } else {
+                        _normalErrorMessage.value = "Enrollment successful, but response body is empty."
+                    }
                     _progressState.value = false
-                    _normalErrorMessage.value = "Enrolled you to the event"
-                    _enrollResult.value = true
                 } else {
                     _progressState.value = false
                     val errorResponse = response.errorBody()?.string()
-                    _normalErrorMessage.value = "Failed to enroll you to the event"
+                    _normalErrorMessage.value = "Failed to enroll you to the event: $errorResponse"
                 }
-            }
-            catch (e: IOException) {
-                Log.d("signupResult",e.message.toString())
+            } catch (e: IOException) {
+                Log.d("signupResult", e.message.toString())
                 _progressState.value = false
                 _normalErrorMessage.value = "Network error. Please check your connection."
-            }
-            catch (e: SocketTimeoutException) {
+            } catch (e: SocketTimeoutException) {
                 _progressState.value = false
                 _normalErrorMessage.value = "Network timeout. Please try again."
             } catch (e: Exception) {
                 _progressState.value = false
+                Log.d("eventviewmodel", e.message.toString())
                 _normalErrorMessage.value = "Failed to enroll you..."
             }
         }
     }
+
+    private fun handleNoBitmapScenario() {
+        Log.d("enrollUser", "No ticket bitmap found")
+    }
+
+
+    fun checkAndSendTheEmailInvites(enrollUser: EnrollUser){
+        if (event.value?.venue=="Online"){
+            val first= enrollUser.response?.get(0)
+            viewModelScope.launch {
+                firestoreRepository.getAllLinksForAnEvent(eventID = event.value?._id!!) { res ->
+                    when (res) {
+                        is ServerResult.Failure -> {
+                            _enrollResult.value = false
+                        }
+                        ServerResult.Progress -> {
+                        }
+                        is ServerResult.Success -> {
+                            viewModelScope.launch {
+                                val links = res.data
+                                val filtered = links.filter { it.type == first?.answer }
+
+                                val linkToUpdate: MeetLinks? = if (filtered.isEmpty()) {
+                                    links.firstOrNull { it.count < 95 }
+                                } else {
+                                    filtered.filter { it.count < 95 }
+                                        .maxByOrNull { it.count }
+                                }
+
+                                if (linkToUpdate != null) {
+                                    linkToUpdate.count += 1
+                                    firestoreRepository.updateLink(event.value?._id!!, linkToUpdate) { success ->
+                                        if (success) {
+                                            val _enrollUser = EnrollUser(
+                                                event_id = enrollUser.event_id,
+                                                response = enrollUser.response,
+                                                link = linkToUpdate.link
+                                            )
+                                            enrollUser(_enrollUser)
+                                        }
+                                    }
+                                } else {
+                                    Log.d("LinkUpdate", "No links found with count < 95.")
+                                }
+                            }
+
+//                            viewModelScope.launch {
+//                                val links = res.data
+//                                val filtered = links.filter { it.type == first?.answer }
+//
+//                                if (filtered.isEmpty()) {
+//                                    var linkToUpdate: MeetLinks? = null
+//
+//                                    for (link in links) {
+//                                        if (link.count < 95) {
+//                                            linkToUpdate = link
+//                                            break
+//                                        }
+//                                    }
+//
+//                                    if (linkToUpdate != null) {
+//                                        linkToUpdate.count += 1
+//                                        firestoreRepository.updateLink(event.value?._id!!, linkToUpdate){
+//                                            if (it){
+//                                                val _enrollUser=EnrollUser(event_id = enrollUser.event_id, response = enrollUser.response, link = linkToUpdate?.link!!)
+//                                                enrollUser(_enrollUser)
+//                                            }
+//                                        }
+//                                    } else {
+//                                        Log.d("LinkUpdate", "No links found with count < 95.")
+//                                    }
+//                                }
+//                                else {
+//
+//                                    var linkToUpdate: MeetLinks? = null
+//
+//                                    for (link in filtered) {
+//                                        if (link.count < 95) {
+//                                            linkToUpdate = link
+//                                            break
+//                                        }
+//                                    }
+//
+//                                    if (linkToUpdate != null) {
+//                                        linkToUpdate.count += 1
+//                                        firestoreRepository.updateLink(event.value?._id!!, linkToUpdate){
+//                                            if (it){
+//                                                val _enrollUser=EnrollUser(event_id = enrollUser.event_id, response = enrollUser.response, link = linkToUpdate?.link!!)
+//                                                enrollUser(_enrollUser)
+//                                            }
+//                                        }
+//                                    } else {
+//                                        Log.d("LinkUpdate", "No links found with count < 95.")
+//                                    }
+//                                }
+//                            }
+                        }
+                    }
+                }
+
+            }
+
+        }
+        else{
+            enrollUser(enrollUser)
+        }
+    }
+
+//    private suspend fun sendLinkToMail(meetLinks: MeetLinks){
+//        val currentUser=PrefManager.getUserProfile()
+//        val (formattedDate, formattedTime) = formatTimestamp(eventDetails.value?.time!!)
+//
+//        val mail= EventMeetInvite(
+//            mail_type = "EVENT-MEET-INVITE",
+//            email = PrefManager.getUserSignUpEmail()!!,
+//            user_name = currentUser?.name!!.capitalize(),
+//            event_title = eventDetails.value?.title!!,
+//            date_time = "$formattedDate || $formattedTime",
+//            venue = "Google Meet",
+//            link = meetLinks.link
+//        )
+//        val response = mailApiService.sendEventMeetInviteMail(mail)
+//        Timber.tag("MailService").d("Mail  : $mail")
+//        if (response.isSuccessful) {
+//            withContext(Dispatchers.Main) {
+//                Timber.tag("MailService").d("Mail sending to ${mail.email} Successful : ${response.body()}")
+//                _enrollResult.value = true
+//            }
+//        } else {
+//            withContext(Dispatchers.Main) {
+//                Timber.tag("MailService").d("Mail sending to ${mail.email} failed: ${response.body()}")
+//                _enrollResult.value = false
+//            }
+//        }
+//    }
+
+    fun formatTimestamp(timestamp: Long): Pair<String, String> {
+        val date = Date(timestamp)
+        val dateFormat = SimpleDateFormat("dd MMM, yyyy", Locale.getDefault())
+        val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+        val formattedDate = dateFormat.format(date)
+        val formattedTime = timeFormat.format(date)
+        return Pair(formattedDate, formattedTime)
+    }
+
 
     suspend fun getEvents(): Unit = withContext(Dispatchers.IO) {
         eventRepository.getEvents { res ->

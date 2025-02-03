@@ -36,8 +36,8 @@ android {
         applicationId "com.ncs.marioapp"
         minSdk 26
         targetSdk 34
-        versionCode 8
-        versionName "1.7"
+        versionCode 11
+        versionName "2.1"
         multiDexEnabled true
 
 
@@ -96,7 +96,6 @@ android {
 
         release {
             debuggable false
-
 
             //Base API URL
             buildConfigField("String", "API_BASE_URL", "\"${getProps("RELEASE_API_BASE_URL")}\"")

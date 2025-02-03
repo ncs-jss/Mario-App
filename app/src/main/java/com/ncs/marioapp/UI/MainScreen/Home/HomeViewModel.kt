@@ -89,8 +89,8 @@ class HomeViewModel @Inject constructor(
     private val _unenrollResult = MutableLiveData<Boolean>()
     val unenrollResult: LiveData<Boolean> = _unenrollResult
 
-    private val _ticketResultBitmap = MutableLiveData<Bitmap>(null)
-    val ticketResultBitmap: LiveData<Bitmap> = _ticketResultBitmap
+    private val _ticketResultBitmap = MutableLiveData<Bitmap?>(null)
+    val ticketResultBitmap: LiveData<Bitmap?> = _ticketResultBitmap
 
 
     private val loadJob = viewModelScope
@@ -172,7 +172,7 @@ class HomeViewModel @Inject constructor(
             _progressState.postValue(false)
         }
     }
-    fun getStory(storyId: String) {
+    fun getStory(storyId: String, callback: (Story?) -> Unit) {
         val tag = "STORY_FETCH"
         viewModelScope.launch {
             try {
@@ -190,6 +190,7 @@ class HomeViewModel @Inject constructor(
                 // Convert Firestore document to Story object and post value
                 firestoreResult.toObject(Story::class.java)?.let {
                     _story.postValue(it)
+                    callback.invoke(it)
                     Log.d(tag, "Story posted to LiveData: $it")
                 } ?: Log.d(tag, "Story document not found or could not be converted.")
 
@@ -207,6 +208,10 @@ class HomeViewModel @Inject constructor(
                 Log.d(tag, "Fetching story with ID: $storyId - completed.")
             }
         }
+    }
+
+    fun getStoryFromViewModel() :String?{
+        return _story.value?.storyText
     }
 
     suspend fun getEvents(): Unit = withContext(Dispatchers.IO) {

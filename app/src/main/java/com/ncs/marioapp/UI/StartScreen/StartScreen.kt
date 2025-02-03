@@ -335,7 +335,12 @@ class StartScreen : AppCompatActivity() {
                             }
                         }
                     }
-                } else {
+                }
+                else if (it=="Authentication Token not found" || it =="Authentication token not authorized!"){
+                    startActivity(Intent(this, AuthActivity::class.java))
+                    finish()
+                }
+                else {
                     util.showActionSnackbar(binding.root, it, Snackbar.LENGTH_INDEFINITE, "Retry") {
                         observeViewModel()
                     }

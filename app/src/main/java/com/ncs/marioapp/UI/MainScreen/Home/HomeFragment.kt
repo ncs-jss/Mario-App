@@ -114,7 +114,11 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
         super.onResume()
         startAutoScroll()
         activityBinding.binding.actionbar.titleTv.text="Mario"
+        activityBinding.binding.actionbar.root.visible()
+        activityBinding.binding.bottomNavigationView.visible()
+        activityBinding.binding.linearProgressIndicator.visible()
         loadHomeData()
+
     }
 
     private fun loadHomeData() {
@@ -428,13 +432,13 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
         stopAutoScroll()
     }
 
-    override fun onClick(event: Event, isEnrolled: Boolean) {
+    override fun onClick(event: Event, isEnrolled: Boolean, enrolledCount:String) {
         if (isEnrolled){
-            val bottomSheet = EventActionBottomSheet(event,"Unenroll", this)
+            val bottomSheet = EventActionBottomSheet(event,"Unenroll", this, enrolledCount)
             bottomSheet.show(childFragmentManager, bottomSheet.tag)
         }
         else{
-            val bottomSheet = EventActionBottomSheet(event,"Enroll", this)
+            val bottomSheet = EventActionBottomSheet(event,"Enroll", this, enrolledCount)
             bottomSheet.show(childFragmentManager, bottomSheet.tag)
         }
     }
@@ -447,16 +451,22 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
 //        viewModel.unenrollUser(event._id)
     }
 
-    override fun onMoreDetails(event: Event) {
+    override fun onMoreDetails(event: Event, enrolledCount: String) {
         val intent = Intent(requireContext(), EventDetailsActivity::class.java)
         intent.putExtra("event_data", event)
+        intent.putExtra("enrolled_count", enrolledCount)
         startActivity(intent)
         requireActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
-
     }
 
     override fun onGetTicketClick(event: Event) {
-        showTicketDialog(requireContext(), event)
+        if (event.venue=="Online"){
+            val bottomSheet = OnlineEventMeetLinkRequestBottomSheet()
+            bottomSheet.show(childFragmentManager, bottomSheet.tag)
+        }
+        else{
+            showTicketDialog(requireContext(), event)
+        }
     }
 
     override fun onCheckBoxClick(poll: Poll, selectedOption:String) {
@@ -638,28 +648,18 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
             openUrl(banner.link)
         }
         else{
-            viewModel.getStory(banner.storyId)
-            viewModel.story.observe(requireActivity()){
-                if(!it?.storyText.isNull){
-                    openStoryFragment(it!!.storyText)
+            viewModel.getStory(banner.storyId){
+                if (!it.isNull){
+                    openStoryFragment(it?.storyText!!)
                 }
             }
         }
     }
 
     private fun openStoryFragment(text:String){
-        val bindO = requireActivity().findViewById<FragmentContainerView>(R.id.storyFragment)
-
-        requireActivity().supportFragmentManager.beginTransaction()
-            .setCustomAnimations(me.shouheng.utils.R.anim.slide_bottom_to_top,0)
-            .replace(R.id.storyFragment, StoryMainFragment().apply {
-                arguments = Bundle().apply {
-                    putString("storyText", text)
-                }
-            })
-            .addToBackStack(null)
-            .commit()
-        bindO.visible()
+        val bundle=Bundle()
+        bundle.putString("storyText", text)
+        findNavController().navigate(R.id.action_fragment_home_to_fragment_story_main, bundle)
     }
 
 

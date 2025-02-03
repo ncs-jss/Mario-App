@@ -20,7 +20,7 @@ import java.util.Date
 import java.util.Locale
 
 @AndroidEntryPoint
-class EventActionBottomSheet(val event: Event, val type:String, val callback: Callback): BottomSheetDialogFragment() {
+class EventActionBottomSheet(val event: Event, val type:String, val callback: Callback, val enrolledCount:String): BottomSheetDialogFragment() {
     override fun getTheme(): Int {
         return R.style.AppBottomSheetDialogTheme
     }
@@ -68,7 +68,7 @@ class EventActionBottomSheet(val event: Event, val type:String, val callback: Ca
 
         binding.btnMoreDetails.setOnClickThrottleBounceListener{
             dismiss()
-            callback.onMoreDetails(event)
+            callback.onMoreDetails(event, enrolledCount)
         }
 
 //        binding.confirmButtonEnroll.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener {
@@ -100,7 +100,7 @@ class EventActionBottomSheet(val event: Event, val type:String, val callback: Ca
     interface Callback{
         fun onEnroll(event: Event)
         fun onUnenroll(event: Event)
-        fun onMoreDetails(event: Event)
+        fun onMoreDetails(event: Event, enrolledCount: String)
     }
 
 

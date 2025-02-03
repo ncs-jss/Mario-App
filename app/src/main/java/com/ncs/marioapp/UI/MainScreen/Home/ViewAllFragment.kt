@@ -242,16 +242,18 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
         findNavController().navigate(R.id.action_fragment_view_all_to_fragment_home)
     }
 
-    override fun onClick(event: Event, isEnrolled: Boolean) {
+
+    override fun onClick(event: Event, isEnrolled: Boolean, enrolledCount:String) {
         if (isEnrolled){
-            val bottomSheet = EventActionBottomSheet(event,"Unenroll", this)
+            val bottomSheet = EventActionBottomSheet(event,"Unenroll", this, enrolledCount)
             bottomSheet.show(childFragmentManager, bottomSheet.tag)
         }
         else{
-            val bottomSheet = EventActionBottomSheet(event,"Enroll", this)
+            val bottomSheet = EventActionBottomSheet(event,"Enroll", this, enrolledCount)
             bottomSheet.show(childFragmentManager, bottomSheet.tag)
         }
     }
+
 
     override fun onEnroll(event: Event) {
 //        viewModel.enrollUser(event._id)
@@ -377,7 +379,13 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
     }
 
     override fun onGetTicketClick(event: Event) {
-        showTicketDialog(requireContext(), event)
+        if (event.venue=="Online"){
+            val bottomSheet = OnlineEventMeetLinkRequestBottomSheet()
+            bottomSheet.show(childFragmentManager, bottomSheet.tag)
+        }
+        else{
+            showTicketDialog(requireContext(), event)
+        }
     }
 
     fun showTicketDialog(context: Context, event: Event): Dialog {
@@ -437,12 +445,12 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
         return Pair(formattedDate, formattedTime)
     }
 
-    override fun onMoreDetails(event: Event) {
+
+    override fun onMoreDetails(event: Event, enrolledCount: String) {
         val intent = Intent(requireContext(), EventDetailsActivity::class.java)
         intent.putExtra("event_data", event)
+        intent.putExtra("enrolled_count", enrolledCount)
         startActivity(intent)
         requireActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
-
     }
-
 }

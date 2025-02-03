@@ -7,17 +7,10 @@
     android:background="@color/secondary_base"
     android:layout_height="match_parent">
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/linearProgressIndicator"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:indeterminate="true"
-        android:visibility="invisible"
-        app:indicatorColor="@color/appblue"
-        app:indicatorDirectionLinear="leftToRight"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:trackColor="@color/item_bg_glow" />
+        android:layout_height="match_parent"
+        android:id="@+id/normalLayout">
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -60,12 +53,12 @@
         </LinearLayout>
     </ScrollView>
 
+
     <com.ncorti.slidetoact.SlideToActView
         android:id="@+id/confirm_button_enroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="4dp"
-
         android:layout_marginVertical="12dp"
         android:elevation="6dp"
         app:animation_duration="250"
@@ -84,5 +77,32 @@
         app:text="Enroll to event"
         app:text_size="20sp"
         app:text_style="bold" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:id="@+id/progressLayout"
+        android:visibility="gone"
+        android:background="@color/secondary_base">
+
+        <ProgressBar
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:indeterminateTint="@color/primary"
+            android:layout_marginBottom="@dimen/margin_top_30dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/better_white"
+            android:fontFamily="@font/sf_medium"
+            android:textSize="16dp"
+            android:text="Hang on! enrolling you to the event..."/>
+
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

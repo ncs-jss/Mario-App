@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,6 +31,7 @@ import com.google.firebase.Timestamp
 import com.ncs.marioapp.Domain.HelperClasses.PrefManager
 import com.ncs.marioapp.Domain.HelperClasses.Utils
 import com.ncs.marioapp.Domain.HelperClasses.Utils.formatToFullDateWithTime
+import com.ncs.marioapp.Domain.HelperClasses.Utils.getCurrentTimeFromTrueTime
 import com.ncs.marioapp.Domain.Models.Admin.Round
 import com.ncs.marioapp.Domain.Models.Events.Event
 import com.ncs.marioapp.Domain.Models.Events.EventDetails.EventDetails
@@ -42,6 +44,7 @@ import com.ncs.marioapp.Domain.Utility.ExtensionsUtil
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.isNull
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.load
+import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.runDelayed
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.marioapp.Domain.Utility.GlobalUtils
@@ -203,6 +206,8 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback,
 
     private fun observeViewModel() {
 
+
+
         viewModel.roundsListLiveData.observe(viewLifecycleOwner) { eventDetails ->
             when (eventDetails) {
                 is ServerResult.Failure -> {}
@@ -282,6 +287,14 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback,
         val event = viewModel.getEvent()!!
         getMyEvents(eventDetails, event)
 
+        lifecycleScope.launch {
+            withContext(Dispatchers.Main){
+                viewModel.enrolledCount.observe(viewLifecycleOwner){count->
+                    binding.enrolledCount.setText(count.toString())
+                    Log.d("checkCount", count!!)
+                }
+            }
+        }
 
         if (event.enrolled.isEmpty()) {
             binding.profilePic1.setImageResource(R.drawable.apphd)
@@ -319,7 +332,6 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback,
             )
         }
 
-        binding.enrolledCount.text = "${getInflatedEnrolledUserCount(event.enrolledCount)} +"
 
         val score = event.points
         val coins = (score / 5).coerceAtLeast(0)
@@ -338,11 +350,14 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback,
     private fun getMyEvents(eventDetails: EventDetails, event: Event) {
 
         val deadline = eventDetails.deadline
-        val isEventOver: Boolean
+        var isEventOver: Boolean = false
 
-        Timestamp.now().let { currentTimestamp ->
-            val currentTime = currentTimestamp.seconds * 1000
-            isEventOver = currentTime >= deadline
+        getCurrentTimeFromTrueTime()?.let { currentTimestamp ->
+            val currentTimeMillis = currentTimestamp.time
+            isEventOver = currentTimeMillis >= deadline
+        } ?: run {
+            isEventOver = false
+            println("TrueTime is not initialized. Unable to check event status.")
         }
 
         Timber.tag("isEventOver").d(isEventOver.toString())

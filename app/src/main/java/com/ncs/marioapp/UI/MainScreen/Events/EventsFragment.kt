@@ -28,6 +28,7 @@ import com.ncs.marioapp.UI.EventDetailsScreen.EventDetailsActivity
 import com.ncs.marioapp.UI.MainScreen.Home.Adapters.EventsAdapter
 import com.ncs.marioapp.UI.MainScreen.Home.EventActionBottomSheet
 import com.ncs.marioapp.UI.MainScreen.Home.HomeViewModel
+import com.ncs.marioapp.UI.MainScreen.Home.OnlineEventMeetLinkRequestBottomSheet
 import com.ncs.marioapp.UI.MainScreen.MainActivity
 import com.ncs.marioapp.UI.MainScreen.MainViewModel
 import com.ncs.marioapp.databinding.FragmentEventsBinding
@@ -213,19 +214,25 @@ class EventsFragment : Fragment(), EventsAdapter.Callback, EventActionBottomShee
         findNavController().navigate(R.id.action_fragment_events_to_fragment_home)
     }
 
-    override fun onClick(event: Event, isEnrolled: Boolean) {
+    override fun onClick(event: Event, isEnrolled: Boolean, enrolledCount:String) {
         if (isEnrolled){
-            val bottomSheet = EventActionBottomSheet(event,"Unenroll", this)
+            val bottomSheet = EventActionBottomSheet(event,"Unenroll", this, enrolledCount)
             bottomSheet.show(childFragmentManager, bottomSheet.tag)
         }
         else{
-            val bottomSheet = EventActionBottomSheet(event,"Enroll", this)
+            val bottomSheet = EventActionBottomSheet(event,"Enroll", this, enrolledCount)
             bottomSheet.show(childFragmentManager, bottomSheet.tag)
         }
     }
 
     override fun onGetTicketClick(event: Event) {
-        showTicketDialog(requireContext(), event)
+        if (event.venue=="Online"){
+            val bottomSheet = OnlineEventMeetLinkRequestBottomSheet()
+            bottomSheet.show(childFragmentManager, bottomSheet.tag)
+        }
+        else{
+            showTicketDialog(requireContext(), event)
+        }
     }
 
     fun showTicketDialog(context: Context, event: Event): Dialog {
@@ -293,12 +300,13 @@ class EventsFragment : Fragment(), EventsAdapter.Callback, EventActionBottomShee
 //        viewModel.unenrollUser(event._id)
     }
 
-    override fun onMoreDetails(event: Event) {
+
+    override fun onMoreDetails(event: Event, enrolledCount: String) {
         val intent = Intent(requireContext(), EventDetailsActivity::class.java)
         intent.putExtra("event_data", event)
+        intent.putExtra("enrolled_count", enrolledCount)
         startActivity(intent)
         requireActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
-
     }
 
 }

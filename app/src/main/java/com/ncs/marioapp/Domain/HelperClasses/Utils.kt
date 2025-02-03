@@ -77,7 +77,7 @@ object Utils {
         return date?.time ?: 0L
     }
 
-    private fun getCurrentTimeFromTrueTime(): Date? {
+    fun getCurrentTimeFromTrueTime(): Date? {
         return if (TrueTime.isInitialized()) {
             TrueTime.now()
         } else {
