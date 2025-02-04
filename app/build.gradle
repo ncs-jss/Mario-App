@@ -36,8 +36,8 @@ android {
         applicationId "com.ncs.marioapp"
         minSdk 26
         targetSdk 34
-        versionCode 11
-        versionName "2.1"
+        versionCode 14
+        versionName "2.3"
         multiDexEnabled true
 
 

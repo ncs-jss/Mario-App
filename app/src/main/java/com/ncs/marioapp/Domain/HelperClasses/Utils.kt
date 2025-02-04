@@ -6,6 +6,9 @@ import android.text.style.ForegroundColorSpan
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.instacart.library.truetime.TrueTime
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

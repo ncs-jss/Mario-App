@@ -56,9 +56,11 @@ class MarioApp : Application(), Configuration.Provider {
         PrefManager.initialize(this@MarioApp)
 
         CoroutineScope(Dispatchers.IO).launch {
-            TrueTime.build()
-                .withNtpHost("time.google.com")
-                .initialize()
+            try {
+                TrueTime.build().initialize()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
 
             FirebaseApp.initializeApp(this@MarioApp)
 

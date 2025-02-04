@@ -101,6 +101,7 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         observeViewModel()
         setUpViews()
     }
@@ -387,11 +388,57 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback,
                                 binding.alreadyEnrolled.gone()
                                 binding.deadlineView.gone()
                             } else {
-                                Timber.tag("Event").d("isEligibile is true")
-                                binding.eventEnroll.visible()
-                                binding.notEligible.gone()
-                                binding.alreadyEnrolled.gone()
-                                binding.deadlineView.gone()
+//                                Timber.tag("Event").d("isEligibile is true")
+//                                binding.eventEnroll.visible()
+//                                binding.notEligible.gone()
+//                                binding.alreadyEnrolled.gone()
+//                                binding.deadlineView.gone()
+
+                                getCurrentTimeFromTrueTime()?.let { currentTimestamp ->
+                                    val currentTimeMillis = currentTimestamp.time
+
+//                                    val eventTimeStamp = viewModel.getEventStartTimestampValue()
+
+                                    viewModel.eventStartTimeStamp.observe(viewLifecycleOwner){eventTimeStamp->
+                                        if (eventTimeStamp == null) {
+                                            Log.d("eventtttcheck","Event timestamp is null, enrollment is open.")
+                                            binding.eventEnroll.visible()
+                                            binding.notEligible.gone()
+                                            binding.alreadyEnrolled.gone()
+                                            binding.deadlineView.gone()
+                                            binding.eventNotYetStartedView.gone()
+                                        } else {
+                                            val eventTimeMillis = eventTimeStamp.toDate().time
+
+                                            if (currentTimeMillis < eventTimeMillis) {
+                                                Log.d("eventtttcheck","Event hasn't started yet.")
+                                                val timeDiffMillis = eventTimeMillis - currentTimeMillis
+                                                val hoursLeft = timeDiffMillis / (1000 * 60 * 60)
+                                                val minutesLeft = (timeDiffMillis / (1000 * 60)) % 60
+
+                                                binding.startTime.text = "Starts in $hoursLeft hrs $minutesLeft min"
+
+                                                binding.eventNotYetStartedView.visible()
+                                                binding.eventEnroll.gone()
+                                                binding.notEligible.gone()
+                                                binding.alreadyEnrolled.gone()
+                                                binding.deadlineView.gone()
+                                            } else {
+                                                Log.d("eventtttcheck","Event has started or passed, enrollment is open.")
+                                                binding.eventEnroll.visible()
+                                                binding.notEligible.gone()
+                                                binding.alreadyEnrolled.gone()
+                                                binding.deadlineView.gone()
+                                                binding.eventNotYetStartedView.gone()
+                                            }
+                                        }
+                                    }
+
+
+                                } ?: run {
+                                }
+
+
                             }
                         }
                     } else {

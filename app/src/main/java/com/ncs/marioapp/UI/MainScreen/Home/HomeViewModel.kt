@@ -80,11 +80,11 @@ class HomeViewModel @Inject constructor(
     private val _enrollResult = MutableLiveData<Boolean>()
     val enrollResult: LiveData<Boolean> = _enrollResult
 
-    private val _likeResult = MutableLiveData<Boolean>(false)
-    val likeResult: LiveData<Boolean> = _likeResult
+    private val _likeResult = MutableLiveData<Boolean?>(null)
+    val likeResult: LiveData<Boolean?> = _likeResult
 
-    private val _unlikeResult = MutableLiveData<Boolean>(false)
-    val unlikeResult: LiveData<Boolean> = _unlikeResult
+    private val _unlikeResult = MutableLiveData<Boolean?>(null)
+    val unlikeResult: LiveData<Boolean?> = _unlikeResult
 
     private val _unenrollResult = MutableLiveData<Boolean>()
     val unenrollResult: LiveData<Boolean> = _unenrollResult
@@ -93,7 +93,16 @@ class HomeViewModel @Inject constructor(
     val ticketResultBitmap: LiveData<Bitmap?> = _ticketResultBitmap
 
 
+
     private val loadJob = viewModelScope
+
+    fun resetLikeResult() {
+        _likeResult.value = null
+    }
+
+    fun resetUnlikeResult() {
+        _unlikeResult.value = null
+    }
 
     fun getHomePageItems() {
         loadJob.launch {

@@ -91,11 +91,13 @@ class StartScreen : AppCompatActivity() {
                 }
             }
 
-        if (updateType == AppUpdateType.IMMEDIATE) {
-            appUpdateManager.registerListener(installStateUpdatedListener)
-            checkforAppUpdates()
-            initializeProcesses()
-        }
+//        if (updateType == AppUpdateType.IMMEDIATE) {
+//            appUpdateManager.registerListener(installStateUpdatedListener)
+//            checkforAppUpdates()
+//
+//        }
+
+        initializeProcesses()
 
 
     }
@@ -133,6 +135,8 @@ class StartScreen : AppCompatActivity() {
 
     private fun initializeProcesses() {
         remoteConfigHelper.fetchRemoteConfig {
+            Log.d("fetchRemoteConfig", it)
+            Log.d("fetchRemoteConfig", "${BuildConfig.VERSION_CODE}")
             if (BuildConfig.VERSION_CODE >= it.toInt()) {
                 remoteConfigHelper.fetchBaseURLFromRemoteConfig(if (BuildConfig.DEBUG) "debug" else "release"){ res->
                     if (res){

@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.Timestamp
 import com.google.gson.Gson
 import com.ncs.marioapp.Domain.Api.EventsApi
 import com.ncs.marioapp.Domain.Api.MailApiService
@@ -65,6 +66,12 @@ class EventDetailsViewModel @Inject constructor(
 
     private val _eventDetails = MutableLiveData<EventDetails>(null)
     val eventDetails: LiveData<EventDetails> = _eventDetails
+
+    private val _eventStartTimeStamp = MutableLiveData<Timestamp?>()
+    val eventStartTimeStamp: LiveData<Timestamp?> = _eventStartTimeStamp
+
+    private val _eventStartTimeStampFetchResult = MutableLiveData<Boolean>(false)
+    val eventStartTimeStampFetchResult: LiveData<Boolean> = _eventStartTimeStampFetchResult
 
     private val _getQuestionnaireForRound = MutableLiveData<ServerResult<RoundQuestionnaire>>()
     val getQuestionnaireForRound: LiveData<ServerResult<RoundQuestionnaire>> = _getQuestionnaireForRound
@@ -151,6 +158,7 @@ class EventDetailsViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             getMyEvents()
+            getEventStartTimestamp()
         }
     }
 
@@ -365,6 +373,26 @@ class EventDetailsViewModel @Inject constructor(
 
     private fun handleNoBitmapScenario() {
         Log.d("enrollUser", "No ticket bitmap found")
+    }
+
+    fun getEventStartTimestamp(){
+        viewModelScope.launch {
+            firestoreRepository.getEventStartTimeStamp(eventID = event.value?._id!!) {
+                when(it){
+                    is ServerResult.Failure -> {
+                        _eventStartTimeStamp.value=null
+                    }
+                    ServerResult.Progress -> {}
+                    is ServerResult.Success -> {
+                        _eventStartTimeStamp.value=it.data
+                    }
+                }
+            }
+        }
+    }
+
+    fun getEventStartTimestampValue() : Timestamp?{
+        return _eventStartTimeStamp.value
     }
 
 

@@ -1,6 +1,7 @@
 package com.ncs.marioapp.Data.RepositoryImpl
 
 import android.util.Log
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ncs.marioapp.Domain.Models.Admin.QuestionItem
 import com.ncs.marioapp.Domain.Models.Admin.Round
@@ -241,4 +242,32 @@ class FirestoreRepositoryImpl @Inject constructor(val firestore: FirebaseFiresto
             callback.invoke(false)
         }
     }
+
+    override suspend fun getEventStartTimeStamp(eventID: String, callback: (ServerResult<Timestamp>) -> Unit) {
+        try {
+            callback.invoke(ServerResult.Progress)
+
+            val documentSnapshot = firestore.collection("AppConfig")
+                .document("EventTimestamps")
+                .collection(eventID)
+                .document("StartTimeStamps")
+                .get()
+                .await()
+
+            if (documentSnapshot.exists()) {
+                val timestamp = documentSnapshot.getTimestamp("start_timestamp")
+
+                if (timestamp != null) {
+                    callback.invoke(ServerResult.Success(timestamp))
+                } else {
+                    callback.invoke(ServerResult.Failure("Timestamp not found in the document"))
+                }
+            } else {
+                callback.invoke(ServerResult.Failure("Document does not exist"))
+            }
+        } catch (e: Exception) {
+            callback.invoke(ServerResult.Failure(e.message.toString()))
+        }
+    }
+
 }

@@ -2,12 +2,14 @@ package com.ncs.marioapp.UI.MainScreen.Home.Adapters
 
 
 import android.animation.Animator
+import android.graphics.Bitmap
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.SeekBar
 import android.widget.TextView
+import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -193,7 +195,8 @@ class PostAdapter(private val callBack: CallBack) :
             }
 
             binding.share.setOnClickThrottleBounceListener {
-                callBack.onShareClick(post.post)
+                val bitmap = binding.postImage.drawable?.toBitmap()
+                callBack.onShareClick(post.post, bitmap)
             }
 
             binding.like.setOnClickThrottleBounceListener {
@@ -318,7 +321,7 @@ class PostAdapter(private val callBack: CallBack) :
     interface CallBack {
         fun onCheckBoxClick(poll: Poll, selectedOption: String)
         fun onLikeClick(post: Post, isLiked: Boolean)
-        fun onShareClick(post: Post)
+        fun onShareClick(post: Post, bitmap: Bitmap?)
     }
 }
 

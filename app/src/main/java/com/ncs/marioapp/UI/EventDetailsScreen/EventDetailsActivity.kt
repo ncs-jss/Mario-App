@@ -22,11 +22,11 @@ class EventDetailsActivity : AppCompatActivity() {
 
         val event = intent.getParcelableExtra<Event>("event_data")
 
-        val enrolledCount = intent.getStringExtra("enrolled_count")
+        val enrolledCount = intent.getStringExtra("enrolled_count") ?: "10 +"
 
         viewModel.setEvent(event!!)
 
-        viewModel.setEnrolledCount(enrolledCount!!)
+        viewModel.setEnrolledCount(enrolledCount)
 
     }
 }
