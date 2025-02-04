@@ -242,16 +242,18 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
         findNavController().navigate(R.id.action_fragment_view_all_to_fragment_home)
     }
 
-    override fun onClick(event: Event, isEnrolled: Boolean) {
+
+    override fun onClick(event: Event, isEnrolled: Boolean, enrolledCount:String) {
         if (isEnrolled){
-            val bottomSheet = EventActionBottomSheet(event,"Unenroll", this)
+            val bottomSheet = EventActionBottomSheet(event,"Unenroll", this, enrolledCount)
             bottomSheet.show(childFragmentManager, bottomSheet.tag)
         }
         else{
-            val bottomSheet = EventActionBottomSheet(event,"Enroll", this)
+            val bottomSheet = EventActionBottomSheet(event,"Enroll", this, enrolledCount)
             bottomSheet.show(childFragmentManager, bottomSheet.tag)
         }
     }
+
 
     override fun onEnroll(event: Event) {
 //        viewModel.enrollUser(event._id)
@@ -278,7 +280,7 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
 
             viewModel.likeResult.observe(viewLifecycleOwner) { success ->
                 // If the post was not successfull, revert.
-                if (!success) {
+                if (!success.isNull && !success!!) {
                     val update = post.copy(
                         likes = (post.likes).coerceAtLeast(0),
                         liked = true,
@@ -290,6 +292,7 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
                         "Unable to like post, try again.",
                         Snackbar.LENGTH_SHORT
                     ).show()
+                    viewModel.resetLikeResult()
                 }
             }
         }
@@ -304,7 +307,7 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
             adapter.updatePost(updatedPost)
             viewModel.likePost(LikePostBody(post_id = post._id, action = "UNLIKE"))
             viewModel.unlikeResult.observe(viewLifecycleOwner){ success->
-                if (!success) {
+                if (!success.isNull && !success!!) {
                     val updatedPost = post.copy(
                         likes = post.likes.coerceAtLeast(0),
                         liked = false,
@@ -316,11 +319,13 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
                         "Unable to dislike, try again.",
                         Snackbar.LENGTH_SHORT
                     ).show()
+                    viewModel.resetUnlikeResult()
                 }
             }
         }
     }
-    override fun onShareClick(post: Post) {
+    override fun onShareClick(post: Post, bitmap: Bitmap?) {
+        util.showSnackbar(binding.root, "Please wait, generating share link", 2000)
         if (post.image.isNullOrEmpty()) {
             util.showSnackbar(binding.root, "Something went wrong, try again later", 2000)
         }
@@ -329,13 +334,7 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
                 if (link.isNull) {
                     util.showSnackbar(binding.root, "Something went wrong, try again later", 2000)
                 } else {
-                    downloadImage(post.image) { bitmap ->
-                        if (bitmap != null) {
-                            sharePost(bitmap, post, link.toString())
-                        } else {
-                            util.showSnackbar(binding.root, "Failed to load image", 2000)
-                        }
-                    }
+                    sharePost(bitmap, post, link.toString())
                 }
             }
         }
@@ -358,26 +357,49 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
         }.start()
     }
 
-    private fun sharePost(bitmap: Bitmap, post: Post, link:String) {
-        val cachePath = File(requireContext().filesDir, "images")
-        cachePath.mkdirs()
-        val stream = FileOutputStream(File(cachePath, "shared_image.png"))
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-        stream.close()
-        val imagePath = File(cachePath, "shared_image.png")
-        val imageUri = FileProvider.getUriForFile(requireContext(), "${requireContext().packageName}.provider", imagePath)
-        val shareIntent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_STREAM, imageUri)
-            putExtra(Intent.EXTRA_TEXT, "${post.caption}\n\n$link")
-            type = "image/png"
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    private fun sharePost(bitmap: Bitmap?, post: Post, link:String) {
+        if (!bitmap.isNull) {
+            val cachePath = File(requireContext().filesDir, "images")
+            cachePath.mkdirs()
+            val stream = FileOutputStream(File(cachePath, "shared_image.png"))
+            bitmap!!.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            stream.close()
+            val imagePath = File(cachePath, "shared_image.png")
+            val imageUri = FileProvider.getUriForFile(
+                requireContext(),
+                "${requireContext().packageName}.provider",
+                imagePath
+            )
+            val shareIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_STREAM, imageUri)
+                putExtra(Intent.EXTRA_TEXT, "${post.caption}\n\n$link")
+                type = "image/png"
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            requireContext().startActivity(Intent.createChooser(shareIntent, "Share news article"))
         }
-        requireContext().startActivity(Intent.createChooser(shareIntent, "Share news article"))
+        else{
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(
+                    Intent.EXTRA_TEXT,
+                    "Hey there! \n\nCheck out this new post from NCS: ${post.caption}\n\n$link"
+                )
+            }
+            startActivity(Intent.createChooser(shareIntent, "Share Event via"))
+        }
+
     }
 
     override fun onGetTicketClick(event: Event) {
-        showTicketDialog(requireContext(), event)
+        if (event.venue=="Online"){
+            val bottomSheet = OnlineEventMeetLinkRequestBottomSheet()
+            bottomSheet.show(childFragmentManager, bottomSheet.tag)
+        }
+        else{
+            showTicketDialog(requireContext(), event)
+        }
     }
 
     fun showTicketDialog(context: Context, event: Event): Dialog {
@@ -437,12 +459,12 @@ class ViewAllFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack
         return Pair(formattedDate, formattedTime)
     }
 
-    override fun onMoreDetails(event: Event) {
+
+    override fun onMoreDetails(event: Event, enrolledCount: String) {
         val intent = Intent(requireContext(), EventDetailsActivity::class.java)
         intent.putExtra("event_data", event)
+        intent.putExtra("enrolled_count", enrolledCount)
         startActivity(intent)
         requireActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
-
     }
-
 }

@@ -1,5 +1,6 @@
 package com.ncs.marioapp.UI.MainScreen.Score
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.ncs.marioapp.Domain.HelperClasses.PrefManager
+import com.ncs.marioapp.Domain.Models.Events.Event
 import com.ncs.marioapp.Domain.Models.Events.ParticipatedEvent
 import com.ncs.marioapp.Domain.Models.ServerResult
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
@@ -20,13 +22,15 @@ import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceLi
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.marioapp.Domain.Utility.GlobalUtils
 import com.ncs.marioapp.R
+import com.ncs.marioapp.UI.EventDetailsScreen.EventDetailsActivity
+import com.ncs.marioapp.UI.MainScreen.Home.EventActionBottomSheet
 import com.ncs.marioapp.UI.MainScreen.MainActivity
 import com.ncs.marioapp.UI.MainScreen.MainViewModel
 import com.ncs.marioapp.databinding.FragmentScoreBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ScoreFragment : Fragment() {
+class ScoreFragment : Fragment(), PastEventAdapter.Callback, EventActionBottomSheet.Callback {
 
     companion object {
         fun newInstance() = ScoreFragment()
@@ -112,7 +116,7 @@ class ScoreFragment : Fragment() {
 
         activityViewModel.fetchCriticalInfo()
         viewModel.getMyEvents()
-        pastEventAdapter = PastEventAdapter()
+        pastEventAdapter = PastEventAdapter(this)
         binding.pastEventRecyclerView.apply {
             layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
             adapter = pastEventAdapter
@@ -120,7 +124,7 @@ class ScoreFragment : Fragment() {
         }
         pastEventAdapter.submitList(getList())
 
-        enrolledEventAdapter = PastEventAdapter()
+        enrolledEventAdapter = PastEventAdapter(this)
         binding.enrolledEventRecyclerView.apply {
             layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
             adapter = enrolledEventAdapter
@@ -242,5 +246,42 @@ class ScoreFragment : Fragment() {
 
     fun getList():List<ParticipatedEvent>{
         return listOf()
+    }
+
+    override fun onClickListener(event: ParticipatedEvent) {
+        val newEvent= Event(
+             createdAt=event.createdAt,
+            points = event.points!!,
+            enrolled= event.enrolled,
+            time=event.time!!,
+            _id=event._id.toString(),
+            image = event.image,
+            domain = event.domain,
+            title = event.title,
+            description = event.description,
+            registrationLink = "",
+            venue = event.venue!!,
+            enrolledCount = event.enrolledCount,
+            eligibility = "",
+            isEligibile = true
+        )
+
+        val bottomSheet = EventActionBottomSheet(newEvent,"Enroll", this, "10 +")
+        bottomSheet.show(childFragmentManager, bottomSheet.tag)
+    }
+
+    override fun onEnroll(event: Event) {
+
+    }
+
+    override fun onUnenroll(event: Event) {
+    }
+
+    override fun onMoreDetails(event: Event, enrolledCount: String) {
+        val intent = Intent(requireContext(), EventDetailsActivity::class.java)
+        intent.putExtra("event_data", event)
+        intent.putExtra("enrolled_count", enrolledCount)
+        startActivity(intent)
+        requireActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
     }
 }

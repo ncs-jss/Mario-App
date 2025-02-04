@@ -10,11 +10,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.marioapp.R
+import com.ncs.marioapp.UI.MainScreen.MainActivity
 import com.ncs.marioapp.databinding.FragmentStoryMainBinding
 import io.noties.markwon.Markwon
 import io.noties.markwon.editor.MarkwonEditor
@@ -26,7 +29,9 @@ class StoryMainFragment : Fragment() {
     private lateinit var editor: MarkwonEditor
     private lateinit var gestureDetector: GestureDetector
     private val viewModel: HomeViewModel by activityViewModels()
-
+    private val activityBinding: MainActivity by lazy {
+        (requireActivity() as MainActivity)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,6 +57,13 @@ class StoryMainFragment : Fragment() {
             markwon.setMarkdown(binding.storyText, bundle)
         }
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activityBinding.binding.actionbar.root.gone()
+        activityBinding.binding.bottomNavigationView.gone()
+        activityBinding.binding.linearProgressIndicator.gone()
     }
 
     private fun setUpView() {
@@ -89,12 +101,21 @@ class StoryMainFragment : Fragment() {
     }
 
     fun onBackPressed() {
-        viewModel._story.value = null
-        val bindO = requireActivity().findViewById<FragmentContainerView>(R.id.storyFragment)
-        parentFragmentManager.beginTransaction()
-            .remove(this)
-            .commit()
-        bindO.visibility = View.GONE
+        findNavController().navigate(R.id.action_fragment_story_main_to_fragment_home)
+    }
+
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        onBackPress()
+    }
+
+
+
+    private fun onBackPress() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            onBackPressed()
+        }
     }
 
     override fun onDestroyView() {

@@ -80,20 +80,29 @@ class HomeViewModel @Inject constructor(
     private val _enrollResult = MutableLiveData<Boolean>()
     val enrollResult: LiveData<Boolean> = _enrollResult
 
-    private val _likeResult = MutableLiveData<Boolean>(false)
-    val likeResult: LiveData<Boolean> = _likeResult
+    private val _likeResult = MutableLiveData<Boolean?>(null)
+    val likeResult: LiveData<Boolean?> = _likeResult
 
-    private val _unlikeResult = MutableLiveData<Boolean>(false)
-    val unlikeResult: LiveData<Boolean> = _unlikeResult
+    private val _unlikeResult = MutableLiveData<Boolean?>(null)
+    val unlikeResult: LiveData<Boolean?> = _unlikeResult
 
     private val _unenrollResult = MutableLiveData<Boolean>()
     val unenrollResult: LiveData<Boolean> = _unenrollResult
 
-    private val _ticketResultBitmap = MutableLiveData<Bitmap>(null)
-    val ticketResultBitmap: LiveData<Bitmap> = _ticketResultBitmap
+    private val _ticketResultBitmap = MutableLiveData<Bitmap?>(null)
+    val ticketResultBitmap: LiveData<Bitmap?> = _ticketResultBitmap
+
 
 
     private val loadJob = viewModelScope
+
+    fun resetLikeResult() {
+        _likeResult.value = null
+    }
+
+    fun resetUnlikeResult() {
+        _unlikeResult.value = null
+    }
 
     fun getHomePageItems() {
         loadJob.launch {
@@ -172,7 +181,7 @@ class HomeViewModel @Inject constructor(
             _progressState.postValue(false)
         }
     }
-    fun getStory(storyId: String) {
+    fun getStory(storyId: String, callback: (Story?) -> Unit) {
         val tag = "STORY_FETCH"
         viewModelScope.launch {
             try {
@@ -190,6 +199,7 @@ class HomeViewModel @Inject constructor(
                 // Convert Firestore document to Story object and post value
                 firestoreResult.toObject(Story::class.java)?.let {
                     _story.postValue(it)
+                    callback.invoke(it)
                     Log.d(tag, "Story posted to LiveData: $it")
                 } ?: Log.d(tag, "Story document not found or could not be converted.")
 
@@ -207,6 +217,10 @@ class HomeViewModel @Inject constructor(
                 Log.d(tag, "Fetching story with ID: $storyId - completed.")
             }
         }
+    }
+
+    fun getStoryFromViewModel() :String?{
+        return _story.value?.storyText
     }
 
     suspend fun getEvents(): Unit = withContext(Dispatchers.IO) {

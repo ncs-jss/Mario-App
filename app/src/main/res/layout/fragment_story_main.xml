@@ -27,7 +27,7 @@
             android:layout_height="match_parent"
             android:fontFamily="@font/sf_semibold"
             android:gravity="center_vertical"
-            android:text="Story"
+            android:text=""
             android:paddingStart="10dp"
             android:textColor="@color/better_white"
             android:textSize="24sp" />

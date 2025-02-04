@@ -211,13 +211,16 @@ class FeedbackActivity : AppCompatActivity() {
         binding.actionbar.score.gone()
 
         binding.deleteIc.setOnClickThrottleBounceListener {
-            bitmaps.removeLast()
-            if(uris.isNotEmpty()){
-                uris.removeLast()
+            if (bitmaps.isNotEmpty()) {
+                bitmaps.removeAt(bitmaps.size - 1)
+            }
+            if (uris.isNotEmpty()) {
+                uris.removeAt(uris.size - 1)
             }
             imageCount--
             setImages()
         }
+
 
         binding.addImages.setOnClickThrottleBounceListener {
             if (imageCount<3){

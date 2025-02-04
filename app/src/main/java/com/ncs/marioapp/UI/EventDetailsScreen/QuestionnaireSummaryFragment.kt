@@ -59,7 +59,8 @@ class QuestionnaireSummaryFragment : Fragment() {
         binding.confirmButtonEnroll.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener {
             override fun onSlideComplete(view: SlideToActView) {
                 val enrollUser=EnrollUser(event_id = viewModel.getEvent()?._id!!, response = answers)
-                viewModel.enrollUser(enrollUser)
+//                viewModel.enrollUser(enrollUser)
+                viewModel.checkAndSendTheEmailInvites(enrollUser)
             }
         }
     }
@@ -68,9 +69,11 @@ class QuestionnaireSummaryFragment : Fragment() {
 
         viewModel.progressState.observe(viewLifecycleOwner) {
             if (it) {
-                binding.linearProgressIndicator.visible()
+                binding.progressLayout.visible()
+                binding.normalLayout.gone()
             } else {
-                binding.linearProgressIndicator.gone()
+                binding.progressLayout.gone()
+                binding.normalLayout.visible()
             }
         }
 
