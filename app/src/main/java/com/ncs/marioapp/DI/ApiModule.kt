@@ -7,6 +7,7 @@ import com.ncs.marioapp.BuildConfig
 import com.ncs.marioapp.Domain.Api.AuthApiService
 import com.ncs.marioapp.Domain.Api.BannerApiService
 import com.ncs.marioapp.Domain.Api.EventsApi
+import com.ncs.marioapp.Domain.Api.MailApiService
 import com.ncs.marioapp.Domain.Api.MerchApi
 import com.ncs.marioapp.Domain.Api.PostApiService
 import com.ncs.marioapp.Domain.Api.ProfileApiService
@@ -60,7 +61,7 @@ object ApiModule {
     }
 
     fun getBaseUrlFromSharedPrefs(sharedPreferences: SharedPreferences) : String?{
-        return sharedPreferences.getString("baseurl", "")
+        return sharedPreferences.getString("baseurl", "https://mario-backend.onrender.com")
     }
 
     @Provides
@@ -163,7 +164,6 @@ object ApiModule {
             .create(TimeApiService::class.java)
 
     }
-
 
 
 

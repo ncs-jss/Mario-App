@@ -101,10 +101,10 @@ class EventsAdapter(private var events: List<Event>, private val callback: Callb
 
         holder.binding.btnEnrollMe.setOnClickListener{
             if (holder.binding.btnEnroll.text=="Enroll"){
-                callback.onClick(event,false)
+                callback.onClick(event,false, holder.binding.enrolledCount.text.toString())
             }
             else{
-                callback.onClick(event,true)
+                callback.onClick(event,true, holder.binding.enrolledCount.text.toString())
             }
         }
     }
@@ -158,7 +158,7 @@ class EventsAdapter(private var events: List<Event>, private val callback: Callb
     override fun getItemCount() = events.size
 
     interface Callback{
-        fun onClick(event: Event, isEnrolled:Boolean)
+        fun onClick(event: Event, isEnrolled:Boolean, enrolledCount:String)
         fun onGetTicketClick(event: Event)
     }
 }

@@ -1,12 +1,14 @@
 package com.ncs.marioapp.Data.RepositoryImpl
 
 import android.util.Log
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ncs.marioapp.Domain.Models.Admin.QuestionItem
 import com.ncs.marioapp.Domain.Models.Admin.Round
 import com.ncs.marioapp.Domain.Models.Admin.RoundQuestionnaire
 import com.ncs.marioapp.Domain.Models.Answer
 import com.ncs.marioapp.Domain.Models.Events.EventDetails.Submission
+import com.ncs.marioapp.Domain.Models.MeetLinks
 import com.ncs.marioapp.Domain.Models.ServerResult
 import com.ncs.marioapp.Domain.Repository.FirestoreRepository
 import kotlinx.coroutines.tasks.await
@@ -183,5 +185,89 @@ class FirestoreRepositoryImpl @Inject constructor(val firestore: FirebaseFiresto
 
 
 
+    override suspend fun getAllLinksForAnEvent(eventID: String, callback: (ServerResult<List<MeetLinks>>) -> Unit) {
+        try {
+            callback.invoke(ServerResult.Progress)
+
+            val querySnapshot = firestore.collection("AppConfig")
+                .document("MeetLinks")
+                .collection(eventID)
+                .get()
+                .await()
+
+            val allLinks = querySnapshot.documents.mapNotNull { document ->
+                val count = document.getLong("count")?.toInt()
+                val link = document.getString("link")
+                val type = document.getString("type")
+
+                if (count != null && link != null && type != null) {
+                    MeetLinks(count, link, type)
+                } else {
+                    null
+                }
+            }
+
+            callback.invoke(ServerResult.Success(allLinks))
+        } catch (e: Exception) {
+            Log.d("FirestoreRepository", "getAllLinksForAnEvent: ${e.message}")
+            callback.invoke(ServerResult.Failure(e.message.toString()))
+        }
+    }
+
+    override suspend fun updateLink(eventID: String, link: MeetLinks, callback: (Boolean) -> Unit) {
+        try {
+            val linkRef = firestore.collection("AppConfig")
+                .document("MeetLinks")
+                .collection(eventID)
+
+            val querySnapshot = linkRef.whereEqualTo("link", link.link).get().await()
+
+            if (!querySnapshot.isEmpty) {
+                val document = querySnapshot.documents.first()
+                document.reference.update("count", link.count)
+                    .addOnSuccessListener {
+                        Log.d("FirestoreRepository", "Link count updated successfully.")
+                        callback.invoke(true)
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e("FirestoreRepository", "Error updating link count: ${e.message}")
+                        callback.invoke(false)
+                    }
+            } else {
+                Log.d("FirestoreRepository", "Link not found.")
+                callback.invoke(false)
+            }
+        } catch (e: Exception) {
+            Log.e("FirestoreRepository", "Error updating link: ${e.message}")
+            callback.invoke(false)
+        }
+    }
+
+    override suspend fun getEventStartTimeStamp(eventID: String, callback: (ServerResult<Timestamp>) -> Unit) {
+        try {
+            callback.invoke(ServerResult.Progress)
+
+            val documentSnapshot = firestore.collection("AppConfig")
+                .document("EventTimestamps")
+                .collection(eventID)
+                .document("StartTimeStamps")
+                .get()
+                .await()
+
+            if (documentSnapshot.exists()) {
+                val timestamp = documentSnapshot.getTimestamp("start_timestamp")
+
+                if (timestamp != null) {
+                    callback.invoke(ServerResult.Success(timestamp))
+                } else {
+                    callback.invoke(ServerResult.Failure("Timestamp not found in the document"))
+                }
+            } else {
+                callback.invoke(ServerResult.Failure("Document does not exist"))
+            }
+        } catch (e: Exception) {
+            callback.invoke(ServerResult.Failure(e.message.toString()))
+        }
+    }
 
 }

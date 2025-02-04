@@ -21,6 +21,11 @@
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_left"/>
 
+        <action
+            android:id="@+id/action_fragment_home_to_fragment_story_main"
+            app:destination="@id/fragment_story_main"
+            app:enterAnim="@anim/slide_bottom_to_top"
+            app:exitAnim="@anim/slide_top_to_bottom"/>
 
 
     </fragment>
@@ -93,4 +98,18 @@
         android:label="fragment_store"
         tools:layout="@layout/fragment_store" />
 
+    <fragment
+        android:id="@+id/fragment_story_main"
+        android:name="com.ncs.marioapp.UI.MainScreen.Home.StoryMainFragment"
+        android:label="fragment_story_main"
+        tools:layout="@layout/fragment_story_main" >
+
+        <action
+            android:id="@+id/action_fragment_story_main_to_fragment_home"
+            app:destination="@id/fragment_home"
+            app:enterAnim="@anim/slide_top_to_bottom"
+            app:exitAnim="@anim/slide_top_to_bottom"/>
+
+
+    </fragment>
 </navigation>

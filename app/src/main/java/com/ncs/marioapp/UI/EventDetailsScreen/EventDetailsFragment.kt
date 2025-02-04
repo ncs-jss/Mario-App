@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,6 +31,7 @@ import com.google.firebase.Timestamp
 import com.ncs.marioapp.Domain.HelperClasses.PrefManager
 import com.ncs.marioapp.Domain.HelperClasses.Utils
 import com.ncs.marioapp.Domain.HelperClasses.Utils.formatToFullDateWithTime
+import com.ncs.marioapp.Domain.HelperClasses.Utils.getCurrentTimeFromTrueTime
 import com.ncs.marioapp.Domain.Models.Admin.Round
 import com.ncs.marioapp.Domain.Models.Events.Event
 import com.ncs.marioapp.Domain.Models.Events.EventDetails.EventDetails
@@ -42,6 +44,7 @@ import com.ncs.marioapp.Domain.Utility.ExtensionsUtil
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.isNull
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.load
+import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.runDelayed
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.marioapp.Domain.Utility.GlobalUtils
@@ -98,6 +101,7 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         observeViewModel()
         setUpViews()
     }
@@ -203,6 +207,8 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback,
 
     private fun observeViewModel() {
 
+
+
         viewModel.roundsListLiveData.observe(viewLifecycleOwner) { eventDetails ->
             when (eventDetails) {
                 is ServerResult.Failure -> {}
@@ -282,6 +288,14 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback,
         val event = viewModel.getEvent()!!
         getMyEvents(eventDetails, event)
 
+        lifecycleScope.launch {
+            withContext(Dispatchers.Main){
+                viewModel.enrolledCount.observe(viewLifecycleOwner){count->
+                    binding.enrolledCount.setText(count.toString())
+                    Log.d("checkCount", count!!)
+                }
+            }
+        }
 
         if (event.enrolled.isEmpty()) {
             binding.profilePic1.setImageResource(R.drawable.apphd)
@@ -319,7 +333,6 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback,
             )
         }
 
-        binding.enrolledCount.text = "${getInflatedEnrolledUserCount(event.enrolledCount)} +"
 
         val score = event.points
         val coins = (score / 5).coerceAtLeast(0)
@@ -338,11 +351,14 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback,
     private fun getMyEvents(eventDetails: EventDetails, event: Event) {
 
         val deadline = eventDetails.deadline
-        val isEventOver: Boolean
+        var isEventOver: Boolean = false
 
-        Timestamp.now().let { currentTimestamp ->
-            val currentTime = currentTimestamp.seconds * 1000
-            isEventOver = currentTime >= deadline
+        getCurrentTimeFromTrueTime()?.let { currentTimestamp ->
+            val currentTimeMillis = currentTimestamp.time
+            isEventOver = currentTimeMillis >= deadline
+        } ?: run {
+            isEventOver = false
+            println("TrueTime is not initialized. Unable to check event status.")
         }
 
         Timber.tag("isEventOver").d(isEventOver.toString())
@@ -372,11 +388,57 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback,
                                 binding.alreadyEnrolled.gone()
                                 binding.deadlineView.gone()
                             } else {
-                                Timber.tag("Event").d("isEligibile is true")
-                                binding.eventEnroll.visible()
-                                binding.notEligible.gone()
-                                binding.alreadyEnrolled.gone()
-                                binding.deadlineView.gone()
+//                                Timber.tag("Event").d("isEligibile is true")
+//                                binding.eventEnroll.visible()
+//                                binding.notEligible.gone()
+//                                binding.alreadyEnrolled.gone()
+//                                binding.deadlineView.gone()
+
+                                getCurrentTimeFromTrueTime()?.let { currentTimestamp ->
+                                    val currentTimeMillis = currentTimestamp.time
+
+//                                    val eventTimeStamp = viewModel.getEventStartTimestampValue()
+
+                                    viewModel.eventStartTimeStamp.observe(viewLifecycleOwner){eventTimeStamp->
+                                        if (eventTimeStamp == null) {
+                                            Log.d("eventtttcheck","Event timestamp is null, enrollment is open.")
+                                            binding.eventEnroll.visible()
+                                            binding.notEligible.gone()
+                                            binding.alreadyEnrolled.gone()
+                                            binding.deadlineView.gone()
+                                            binding.eventNotYetStartedView.gone()
+                                        } else {
+                                            val eventTimeMillis = eventTimeStamp.toDate().time
+
+                                            if (currentTimeMillis < eventTimeMillis) {
+                                                Log.d("eventtttcheck","Event hasn't started yet.")
+                                                val timeDiffMillis = eventTimeMillis - currentTimeMillis
+                                                val hoursLeft = timeDiffMillis / (1000 * 60 * 60)
+                                                val minutesLeft = (timeDiffMillis / (1000 * 60)) % 60
+
+                                                binding.startTime.text = "Starts in $hoursLeft hrs $minutesLeft min"
+
+                                                binding.eventNotYetStartedView.visible()
+                                                binding.eventEnroll.gone()
+                                                binding.notEligible.gone()
+                                                binding.alreadyEnrolled.gone()
+                                                binding.deadlineView.gone()
+                                            } else {
+                                                Log.d("eventtttcheck","Event has started or passed, enrollment is open.")
+                                                binding.eventEnroll.visible()
+                                                binding.notEligible.gone()
+                                                binding.alreadyEnrolled.gone()
+                                                binding.deadlineView.gone()
+                                                binding.eventNotYetStartedView.gone()
+                                            }
+                                        }
+                                    }
+
+
+                                } ?: run {
+                                }
+
+
                             }
                         }
                     } else {

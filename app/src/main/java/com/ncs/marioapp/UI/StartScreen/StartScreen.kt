@@ -91,11 +91,13 @@ class StartScreen : AppCompatActivity() {
                 }
             }
 
-        if (updateType == AppUpdateType.IMMEDIATE) {
-            appUpdateManager.registerListener(installStateUpdatedListener)
-            checkforAppUpdates()
-            initializeProcesses()
-        }
+//        if (updateType == AppUpdateType.IMMEDIATE) {
+//            appUpdateManager.registerListener(installStateUpdatedListener)
+//            checkforAppUpdates()
+//
+//        }
+
+        initializeProcesses()
 
 
     }
@@ -133,6 +135,8 @@ class StartScreen : AppCompatActivity() {
 
     private fun initializeProcesses() {
         remoteConfigHelper.fetchRemoteConfig {
+            Log.d("fetchRemoteConfig", it)
+            Log.d("fetchRemoteConfig", "${BuildConfig.VERSION_CODE}")
             if (BuildConfig.VERSION_CODE >= it.toInt()) {
                 remoteConfigHelper.fetchBaseURLFromRemoteConfig(if (BuildConfig.DEBUG) "debug" else "release"){ res->
                     if (res){
@@ -335,7 +339,12 @@ class StartScreen : AppCompatActivity() {
                             }
                         }
                     }
-                } else {
+                }
+                else if (it=="Authentication Token not found" || it =="Authentication token not authorized!"){
+                    startActivity(Intent(this, AuthActivity::class.java))
+                    finish()
+                }
+                else {
                     util.showActionSnackbar(binding.root, it, Snackbar.LENGTH_INDEFINITE, "Retry") {
                         observeViewModel()
                     }

@@ -1,5 +1,6 @@
 package com.ncs.marioapp.UI.MainScreen.Score
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -16,9 +17,9 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class PastEventAdapter :ListAdapter<ParticipatedEvent, PastEventAdapter.PastEventViewHolder>(ComparatorDiffUtil()) {
+class PastEventAdapter(private val callback: Callback) :ListAdapter<ParticipatedEvent, PastEventAdapter.PastEventViewHolder>(ComparatorDiffUtil()) {
 
-    class PastEventViewHolder(private val binding: ItemPastEventBinding) :
+    class PastEventViewHolder(private val binding: ItemPastEventBinding, private val callback: Callback) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(event: ParticipatedEvent) {
@@ -27,11 +28,15 @@ class PastEventAdapter :ListAdapter<ParticipatedEvent, PastEventAdapter.PastEven
 
             binding.eventDate.text = formatDateString(event.time)
 
+            Log.d("checkDate", event.time.toString())
+
             binding.points.text = "+ ${event.points.toString()}"
 
             binding.coins.text = "+ ${((event.points!!)/5).toInt().toString()}"
 
-            binding.root.setOnClickThrottleBounceListener{}
+            binding.root.setOnClickThrottleBounceListener{
+                callback.onClickListener(event)
+            }
 
             Glide.with(binding.root.context)
                 .load(event.image)
@@ -45,12 +50,27 @@ class PastEventAdapter :ListAdapter<ParticipatedEvent, PastEventAdapter.PastEven
                 binding.coinsView.gone()
             }
 
+
+
         }
+
+
         fun formatDateString(dateString: String?): String {
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val outputFormat = SimpleDateFormat("dd MMM, yyyy", Locale.getDefault())
+            if (dateString == "TBA") {
+                return "TBA"
+            }
+
             return try {
+                val timestamp = dateString?.toLongOrNull()
+                if (timestamp != null) {
+                    val outputFormat = SimpleDateFormat("dd MMM, yy | hh:mm a", Locale.getDefault())
+                    val date = Date(timestamp)
+                    return outputFormat.format(date)
+                }
+
+                val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                 val date: Date = inputFormat.parse(dateString) ?: return "TBA"
+                val outputFormat = SimpleDateFormat("dd MMM, yyyy", Locale.getDefault())
                 outputFormat.format(date)
             } catch (e: Exception) {
                 "TBA"
@@ -64,7 +84,7 @@ class PastEventAdapter :ListAdapter<ParticipatedEvent, PastEventAdapter.PastEven
             parent,
             false
         )
-        return PastEventViewHolder(binding)
+        return PastEventViewHolder(binding, callback)
     }
 
     override fun onBindViewHolder(holder: PastEventViewHolder, position: Int) {
@@ -80,5 +100,9 @@ class PastEventAdapter :ListAdapter<ParticipatedEvent, PastEventAdapter.PastEven
         override fun areContentsTheSame(oldItem: ParticipatedEvent, newItem: ParticipatedEvent): Boolean {
             return oldItem == newItem
         }
+    }
+
+    interface Callback{
+        fun onClickListener(event: ParticipatedEvent)
     }
 }

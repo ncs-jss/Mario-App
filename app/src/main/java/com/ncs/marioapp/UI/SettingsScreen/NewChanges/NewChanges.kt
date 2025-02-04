@@ -28,13 +28,13 @@ class NewChanges : AppCompatActivity() {
         setUpViews()
 
         val desc = """
-           # Mario Version 1.7 Update! 🚀
+           # Mario Version 2.3 Update! 🚀
            
            
 
-           Mario continues to grow, and version **1.7** is packed with exciting enhancements and features to make your career journey even more seamless and enjoyable. With a focus on improving your experience, we've made significant upgrades to key areas of the app to ensure that Mario continues to be your ultimate career companion.
+           Mario continues to grow, and version **2.3** is packed with exciting enhancements and features to make your career journey even more seamless and enjoyable. With a focus on improving your experience, we've made significant upgrades to key areas of the app to ensure that Mario continues to be your ultimate career companion.
 
-           ### Key Features in Version 1.7:
+           ### Key Features in Version 2.3:
 
            - **Improved Onboarding and Registration**: A brand new and streamlined onboarding process that guides you through setup more intuitively, ensuring a seamless start for new users.
              
@@ -61,9 +61,19 @@ class NewChanges : AppCompatActivity() {
                 <th>Features & Updates</th>
               </tr>
               <tr>
-                <td>1.7</td>
-                <td>25 Dec, 24</td>
+                <td>2.3</td>
+                <td>5 Feb, 25</td>
+                <td>Bug Fixes & Improvements. </td>
+              </tr>
+              <tr>
+                <td>2.2</td>
+                <td>4 Feb, 25</td>
                 <td>Improved Onboarding and Registration, New and Improved Events Pages, New Banners, General Bug Fixes, NCS Nerd Store, New Score Page, and Improved Ticketing Mechanism.</td>
+              </tr>
+              <tr>
+                <td>1.7</td>
+                <td>22 Dec, 24</td>
+                <td>Bug Fixes & Improvements. </td>
               </tr>
               <tr>
                 <td>1.1</td>
@@ -83,11 +93,11 @@ class NewChanges : AppCompatActivity() {
              
            ### Ready to Level Up?
 
-           Update now to experience all the new features and improvements in version **1.7**. Continue your journey, track your growth, redeem exciting rewards, and participate in new and structured events—all within Mario.
+           Update now to experience all the new features and improvements in version **2.3**. Continue your journey, track your growth, redeem exciting rewards, and participate in new and structured events—all within Mario.
 
            **Stay tuned for future updates** as Mario continues to evolve and bring you even more opportunities for growth!
 
-           **#Mario #Version1_7 #CareerGrowth #NCS #LevelUp**
+           **#Mario #CareerGrowth #NCS #LevelUp**
 
            -- Team NCS 💙
         """.trimIndent()

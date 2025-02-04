@@ -78,27 +78,44 @@ class EventEnrolledFragment : Fragment() {
 
         runDelayed(3000){
             binding.text.fadeOutAndGone()
-            binding.ticketView.fadeInAndVisible(500)
         }
 
         val event=viewModel.getEvent()!!
 
-        binding.qr.setImageBitmap(viewModel.ticketResultBitmap.value)
-
-        binding.title.text = event.title
-        if (event.time.isNullOrEmpty()) {
-            binding.time.text = "TBA"
-            binding.date.text = "TBA"
-        } else {
-            val (formattedDate, formattedTime) = formatTimestamp(event.time.toLong())
-            binding.time.text = formattedTime
-            binding.date.text = formattedDate
+        if (event.venue=="Online"){
+            runDelayed(3000) {
+                binding.text.fadeOutAndGone()
+                binding.onlineView.fadeInAndVisible(500)
+            }
         }
-        binding.venue.text = event.venue
+        else {
+            runDelayed(3000) {
+                binding.text.fadeOutAndGone()
+                binding.ticketView.fadeInAndVisible(500)
+            }
+
+            binding.qr.setImageBitmap(viewModel.ticketResultBitmap.value)
+
+            binding.title.text = event.title
+            if (event.time.isNullOrEmpty()) {
+                binding.time.text = "TBA"
+                binding.date.text = "TBA"
+            } else {
+                val (formattedDate, formattedTime) = formatTimestamp(event.time.toLong())
+                binding.time.text = formattedTime
+                binding.date.text = formattedDate
+            }
+            binding.venue.text = event.venue
+        }
 
         binding.backkk.setOnClickThrottleBounceListener{
             findNavController().navigate(R.id.action_fragment_event_enrolled_to_fragment_event_details)
         }
+
+        binding.backkk2.setOnClickThrottleBounceListener{
+            findNavController().navigate(R.id.action_fragment_event_enrolled_to_fragment_event_details)
+        }
+
 
     }
 
