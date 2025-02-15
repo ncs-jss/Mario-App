@@ -25,8 +25,12 @@ class SummaryAdapter(
     }
 
     override fun onBindViewHolder(holder: SummaryViewHolder, position: Int) {
+        if (position >= answers.size || position >= questions.size) {
+            return
+        }
         holder.bind(answers[position], questions[position],position)
     }
 
-    override fun getItemCount(): Int = answers.size
+    override fun getItemCount(): Int = minOf(answers.size, questions.size)
+
 }

@@ -2,6 +2,7 @@ package com.ncs.marioapp.Domain.HelperClasses
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Message
 import android.util.Log
@@ -13,6 +14,11 @@ import com.ncs.marioapp.Domain.Models.UserSurvey
 import com.ncs.marioapp.Domain.Models.WorkerFlow
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import android.graphics.BitmapFactory
+
 
 object PrefManager {
 
@@ -183,6 +189,34 @@ object PrefManager {
         val json = sharedPreferences.getString("profile_cache", null)
         return if (json != null) gson.fromJson(json, Profile::class.java) else Profile()
     }
+
+
+
+    fun setUserProfileImage(context: Context, bitmap: Bitmap) {
+        val file = File(context.filesDir, "profile_image.png")
+
+        try {
+            FileOutputStream(file).use { fos ->
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
+            }
+            editor.putString("profile_image_path", file.absolutePath)
+            editor.apply()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
+    fun getUserProfileImage(context: Context): Bitmap? {
+        val imagePath = sharedPreferences.getString("profile_image_path", null) ?: return null
+
+        val file = File(imagePath)
+        return if (file.exists()) {
+            BitmapFactory.decodeFile(imagePath)
+        } else {
+            null
+        }
+    }
+
 
     fun getBaseUrl(): String? {
         return sharedPreferences.getString("baseurl","")

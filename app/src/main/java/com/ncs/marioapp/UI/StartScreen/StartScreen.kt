@@ -11,6 +11,7 @@ import android.provider.Settings
 import android.util.Log
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -69,6 +70,7 @@ class StartScreen : AppCompatActivity() {
     private lateinit var appUpdateManager: AppUpdateManager
     private lateinit var remoteConfigHelper: RemoteConfigHelper
     private var isSurveyActivityLaunched = false
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,8 +99,31 @@ class StartScreen : AppCompatActivity() {
 //
 //        }
 
-        initializeProcesses()
+        requestPermissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                runNormally(true)
+            } else {
+                util.twoBtnDialog(
+                    title = "Notification Permission required",
+                    msg = "You can always allow permissions from the App's settings.",
+                    positiveBtnText = "Take me there",
+                    positive = {
+                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                            data = Uri.fromParts("package", this@StartScreen.packageName, null)
+                        }
+                        startActivity(intent)
+                    },
+                    negativeBtnText = "Cancel",
+                    negative = {
+                        runNormally(false)
+                    }
+                )
+            }
+        }
 
+        initializeProcesses()
 
     }
 
@@ -262,31 +287,6 @@ class StartScreen : AppCompatActivity() {
         }
     }
 
-
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            runNormally(true)
-        } else {
-            util.twoBtnDialog(
-                title = "Notification Permission required",
-                msg = "You can always allow permissions from the App's settings.",
-                positiveBtnText = "Take me there",
-                positive = {
-                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                        data = Uri.fromParts("package", this@StartScreen.packageName, null)
-                    }
-                    startActivity(intent)
-                },
-                negativeBtnText = "Cancel",
-                negative = {
-                    runNormally(false)
-                }
-            )
-        }
-    }
 
     private fun handleDynamicLink(intent: Intent?) {
         val dynamicLinkTask = FirebaseDynamicLinks.getInstance().getDynamicLink(intent!!)

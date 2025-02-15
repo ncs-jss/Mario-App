@@ -54,6 +54,15 @@
                 android:gravity="center_vertical" />
         </LinearLayout>
 
+<!--        <SeekBar-->
+<!--            android:id="@+id/seekBar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="12dp"-->
+<!--            android:max="100"-->
+<!--            android:progressDrawable="@drawable/progress_track"-->
+<!--            android:progress="30"-->
+<!--            android:thumb="@color/track_tint" />-->
+
         <SeekBar
             android:id="@+id/seekBar"
             android:layout_width="match_parent"
@@ -61,7 +70,8 @@
             android:max="100"
             android:progressDrawable="@drawable/progress_track"
             android:progress="30"
-            android:thumb="@color/track_tint" />
+            android:thumb="@drawable/seekbar_thumb" />
+
 
     </LinearLayout>
 </LinearLayout>

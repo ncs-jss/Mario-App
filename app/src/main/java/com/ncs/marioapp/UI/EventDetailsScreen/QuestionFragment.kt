@@ -41,26 +41,28 @@ class QuestionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.tvQuestion.text = question.question
+        if (::question.isInitialized) {
+            binding.tvQuestion.text = question.question
 
-        if (question.type == "TEXT-RESPONSE") {
-            setupTextResponse()
-        } else if (question.type == "MULTI_CHOICE") {
-            setupMultiChoice()
-        }
-
-        binding.continueBtn.setOnClickThrottleBounceListener {
-            val answerText = if (question.type == "TEXT-RESPONSE") {
-                binding.answer.text.toString()
-            } else {
-                selectedAnswer
+            if (question.type == "TEXT-RESPONSE") {
+                setupTextResponse()
+            } else if (question.type == "MULTI_CHOICE") {
+                setupMultiChoice()
             }
 
-            if (answerText.isNotEmpty()) {
-                onAnswerSubmitted?.invoke(Answer(question.question, answerText))
-            }
-            else{
-                Toast.makeText(requireContext(), "Answer can't be empty", Toast.LENGTH_SHORT).show()
+            binding.continueBtn.setOnClickThrottleBounceListener {
+                val answerText = if (question.type == "TEXT-RESPONSE") {
+                    binding.answer.text.toString()
+                } else {
+                    selectedAnswer
+                }
+
+                if (answerText.isNotEmpty()) {
+                    onAnswerSubmitted?.invoke(Answer(question.question, answerText))
+                } else {
+                    Toast.makeText(requireContext(), "Answer can't be empty", Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
         }
     }

@@ -62,7 +62,17 @@ import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
+import android.graphics.Bitmap
+import android.graphics.Matrix
+import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
+import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.security.MessageDigest
 
 object ExtensionsUtil {
 
@@ -364,6 +374,58 @@ object ExtensionsUtil {
             .error(placeholder)
             .into(this)
     }
+
+
+
+    fun getRotatedBitmap(
+        context: Context,
+        url: String,
+        placeholder: Drawable,
+        callback: (Bitmap?) -> Unit
+    ) {
+        Glide.with(context)
+            .asBitmap()
+            .load(url)
+            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+            .placeholder(placeholder)
+            .error(placeholder)
+            .thumbnail(0.05f)
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        try {
+                            val rotatedBitmap = if (resource.width > resource.height) {
+                                rotateBitmap(resource, 270f)
+                            } else {
+                                resource
+                            }
+                            withContext(Dispatchers.Main) {
+                                callback(rotatedBitmap)
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            withContext(Dispatchers.Main) {
+                                callback(null)
+                            }
+                        }
+                    }
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                }
+            })
+    }
+
+    fun rotateBitmap(bitmap: Bitmap, rotationAngle: Float): Bitmap {
+        return try {
+            val matrix = Matrix().apply { postRotate(rotationAngle) }
+            Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            bitmap
+        }
+    }
+
 
 
     fun isValidContext(context: Context?): Boolean {

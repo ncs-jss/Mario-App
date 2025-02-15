@@ -18,6 +18,7 @@ import com.ncs.marioapp.Domain.Utility.GlobalUtils
 import com.ncs.marioapp.R
 import com.ncs.marioapp.UI.EventDetailsScreen.Adapters.QuestionPagerAdapter
 import com.ncs.marioapp.databinding.FragmentEventEnrolledBinding
+import com.ncs.marioapp.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,8 +29,8 @@ import java.util.Locale
 
 @AndroidEntryPoint
 class EventEnrolledFragment : Fragment() {
-    private  var _binding: FragmentEventEnrolledBinding? = null
-    private val binding get() = _binding!!
+
+    lateinit var binding: FragmentEventEnrolledBinding
     private lateinit var adapter: QuestionPagerAdapter
     private val answers = mutableListOf<Answer>()
     private val viewModel: EventDetailsViewModel by activityViewModels()
@@ -41,7 +42,7 @@ class EventEnrolledFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentEventEnrolledBinding.inflate(inflater, container, false)
+        binding = FragmentEventEnrolledBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -141,10 +142,6 @@ class EventEnrolledFragment : Fragment() {
     }
 
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 
 
 }
