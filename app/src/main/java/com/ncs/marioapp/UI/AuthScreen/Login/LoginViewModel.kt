@@ -98,6 +98,7 @@ class LoginViewModel @Inject constructor(val authApiService: AuthApiService, val
                         _errorMessage.value = "Login Successful"
                         val user = Gson().fromJson(it.toString(), User::class.java)
                         PrefManager.setUserProfile(user.profile)
+
                         PrefManager.setUserProfileForCache(user.profile)
                         _progressState.value = false
                     }

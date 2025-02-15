@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
@@ -151,6 +152,28 @@ class EventQuestionnaireFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        onBackPress()
+    }
+
+
+    private fun onBackPress() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            if (binding.viewPager.currentItem==0){
+                util.twoBtnDialog("Close Q & A","Closing the Q & A will loose all the answers.","OK","Cancel",{
+                    findNavController().popBackStack()
+                },{})
+            }
+            if (binding.viewPager.currentItem >= 0) {
+                binding.viewPager.currentItem = binding.viewPager.currentItem - 1
+                updateProgressBar()
+            }
+        }
+    }
+
 
 
 }

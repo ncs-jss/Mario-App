@@ -1,5 +1,6 @@
 package com.ncs.marioapp.UI.MainScreen
 
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -18,6 +19,7 @@ import com.ncs.marioapp.Domain.Models.ServerResult
 import com.ncs.marioapp.Domain.Models.SetFCMTokenBody
 import com.ncs.marioapp.Domain.Models.User
 import com.ncs.marioapp.Domain.Repository.QrRepository
+import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.isNull
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -52,11 +54,22 @@ class MainViewModel @Inject constructor(
     private val _progressState = MutableLiveData<Boolean>(false)
     val progressState: LiveData<Boolean> get() = _progressState
 
+    private val _userBitmap = MutableLiveData<Bitmap?>()
+    val userBitmap: LiveData<Bitmap?> get() = _userBitmap
+
 
     init {
         fetchUserDetails()
         fetchCriticalInfo()
         getFCMToken()
+    }
+
+    fun setUserProfileBitmap(bitmap: Bitmap){
+        _userBitmap.postValue(bitmap)
+    }
+
+    fun getUserProfileBitmap():Bitmap?{
+        return _userBitmap.value
     }
 
     fun setFCMToken(newFCMToken:String) {
@@ -112,6 +125,7 @@ class MainViewModel @Inject constructor(
                         _cachedUserProfile.value=user.profile
                         PrefManager.setUserProfile(user.profile)
                         PrefManager.setUserProfileForCache(user.profile)
+
                         _progressState.value = false
                     }
                 } else {
