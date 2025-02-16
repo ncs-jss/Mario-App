@@ -17,7 +17,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
@@ -27,6 +31,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
+import com.anupkumarpanwar.scratchview.ScratchView
+import com.anupkumarpanwar.scratchview.ScratchView.IRevealListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.review.ReviewManager
 import com.google.android.play.core.review.ReviewManagerFactory
@@ -45,6 +52,8 @@ import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.isNull
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.performHapticFeedback
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
+import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.showProgressDialog
+import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.toast
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.visible
 import com.ncs.marioapp.Domain.Utility.GlobalUtils
 import com.ncs.marioapp.R
@@ -71,7 +80,7 @@ import java.util.Date
 import java.util.Locale
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, EventActionBottomSheet.Callback, BannerAdapter.Callback {
+class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, EventActionBottomSheet.Callback, BannerAdapter.Callback, ClaimCouponBottomSheet.Callback {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -90,6 +99,7 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
     }
     private var lastRefreshTime = 0L
     private var backPressedTime: Long = 0
+    lateinit var loadingdialog: Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -192,9 +202,36 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
 
         observeViewModel()
         setUpViews()
+
     }
 
     private fun observeViewModel(){
+
+        activityViewModel.validateScannedQR.observe(requireActivity()){result ->
+            if (!result.isNull) {
+                when (result) {
+                    is ServerResult.Failure -> {
+                        activityBinding.binding.linearProgressIndicator.gone()
+                        showError(result.message)
+                        setUpLoader(false, "")
+                    }
+
+                    ServerResult.Progress -> {
+                        activityBinding.binding.linearProgressIndicator.visible()
+                        setUpLoader(true, "Please wait, validating the coupon!")
+                    }
+
+                    is ServerResult.Success -> {
+                        activityBinding.binding.linearProgressIndicator.gone()
+                        toast("Scratch this card to claim your coins!")
+                        setUpLoader(false, "")
+                        result.data?.points?.let { showScratchCardPopup(it) }
+                    }
+
+                    null -> {}
+                }
+            }
+        }
 
         viewModel.enrollResult.observe(viewLifecycleOwner){
             if (it){
@@ -307,6 +344,16 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
             }
         }
 
+        val couponFromDeeplink=PrefManager.getCouponIdByDeeplink()
+        if (couponFromDeeplink!=null){
+            PrefManager.setCouponIdByDeeplink(null)
+            Log.d("couponCheck", couponFromDeeplink)
+            val bottomSheet = ClaimCouponBottomSheet(couponFromDeeplink, this)
+            bottomSheet.show(childFragmentManager, bottomSheet.tag)
+        }
+
+
+
     }
 
     private fun addUserEvents(events:List<ParticipatedEvent>){
@@ -349,6 +396,69 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
             openUrl("https://github.com/ncs-jss")
         }
 
+    }
+
+    private fun showScratchCardPopup(point: Int) {
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.scratch_card_popup)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val parent = dialog.findViewById<ConstraintLayout>(R.id.screenparent)
+        val scratchView = dialog.findViewById<ScratchView>(R.id.scratchView)
+        val bg = dialog.findViewById<LottieAnimationView>(R.id.bganim)
+        val anim = dialog.findViewById<LottieAnimationView>(R.id.success_anim)
+        val coins = dialog.findViewById<TextView>(R.id.coins)
+        val coinAnim = dialog.findViewById<LottieAnimationView>(R.id.coin_anim)
+        val points = dialog.findViewById<TextView>(R.id.points)
+        parent.isEnabled = false
+        parent.isClickable = false
+        parent.setOnClickThrottleBounceListener {
+            dialog.dismiss()
+            activityViewModel.fetchCriticalInfo()
+            activityViewModel.resetValidateScannedQR()
+        }
+        coins.text = "${point / 5}"
+        points.text = "$point"
+        scratchView.setStrokeWidth(10)
+        scratchView.setRevealListener(object : IRevealListener {
+            override fun onRevealed(scratchView: ScratchView) {
+                anim.visibility = View.VISIBLE
+                coinAnim.playAnimation()
+                bg.playAnimation()
+                anim.playAnimation()
+                parent.isEnabled = true
+                parent.isClickable = true
+                activityViewModel.resetValidateScannedQR()
+                activityViewModel.fetchCriticalInfo()
+            }
+
+            override fun onRevealPercentChangedListener(scratchView: ScratchView, percent: Float) {
+                if (percent > 0.35f) {
+                    scratchView.reveal()
+
+                }
+            }
+        })
+
+        dialog.show()
+    }
+    private fun showError(message: String?) {
+        util.showSnackbar(binding.root, "OOPS! The coupon is already claimed now", 2000)
+    }
+
+    private fun setUpLoader(show: Boolean, message: String) {
+        if (show) {
+            if (this::loadingdialog.isInitialized && loadingdialog.isShowing) {
+                loadingdialog.dismiss()
+            }
+            loadingdialog = showProgressDialog(requireContext(), message)
+            loadingdialog.show()
+        } else {
+            if (this::loadingdialog.isInitialized && loadingdialog.isShowing) {
+                loadingdialog.dismiss()
+            }
+        }
     }
 
     private fun openUrl(url: String) {
@@ -703,6 +813,9 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
         findNavController().navigate(R.id.action_fragment_home_to_fragment_story_main, bundle)
     }
 
+    override fun onClaimCLick(couponCode: String) {
+        activityViewModel.validateScannedQR(couponCode)
+    }
 
 
 }

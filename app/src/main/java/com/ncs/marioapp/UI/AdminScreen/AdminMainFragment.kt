@@ -84,6 +84,10 @@ class AdminMainFragment : Fragment() {
             findNavController().navigate(R.id.action_adminMainFragment_to_fragment_questionnaire_creation)
         }
 
+        binding.btnCreateBonusLink.setOnClickThrottleBounceListener {
+            findNavController().navigate(R.id.action_adminMainFragment_to_fragment_create_bonus_link)
+        }
+
     }
 
 

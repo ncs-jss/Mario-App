@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/baseBlack"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".UI.AdminScreen.RecordCreation.RecordCreationFragment">
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/primary_base"
+        android:elevation="@dimen/_5dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="28dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:paddingTop="@dimen/padding_bottom_offset"
+            android:src="@drawable/ic_back_arrow"
+            app:tint="@color/baseWhite" />
+
+
+        <TextView
+            android:id="@+id/title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:fontFamily="@font/sf_medium"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="Create Bonus Link"
+            android:textColor="@color/better_white"
+            android:textSize="20dp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:visibility="visible"
+        android:id="@+id/questionsView"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
+            android:text="Add Coupon Code" />
+
+        <EditText
+            android:id="@+id/coupon_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:minHeight="60dp"
+            android:lines="2"
+            android:textSize="@dimen/form_size"
+            android:paddingStart="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:paddingEnd="10dp"
+            android:inputType="textMultiLine"
+            android:background="@drawable/hollow_button_bg"
+            android:hint="Enter coupon code here..." />
+
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:visibility="gone"
+            android:id="@+id/progress_bar"
+            android:indeterminateTint="@color/primary"
+            android:layout_marginTop="@dimen/margin_top_30dp"
+            android:layout_marginBottom="@dimen/margin_top_30dp"/>
+
+
+        <TextView
+            android:id="@+id/link"
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:text="Add Coupon Code" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:id="@+id/btnCreateBonusLink"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="40dp"
+            android:gravity="center"
+            android:background="@drawable/button_bg"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Generate Link"
+                android:fontFamily="@font/sf_semibold"
+                android:textSize="16dp"
+                android:textColor="@color/white"
+                />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

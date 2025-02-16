@@ -201,6 +201,8 @@ class MainActivity : AppCompatActivity() {
                 is ServerResult.Success ->{
 //                    Toast.makeText(this@MainActivity,result.data,Toast.LENGTH_SHORT).show()
                 }
+
+                null -> {}
             }
         }
     }

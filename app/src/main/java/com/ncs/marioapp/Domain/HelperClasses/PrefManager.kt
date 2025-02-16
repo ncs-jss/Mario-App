@@ -51,6 +51,15 @@ object PrefManager {
         return sharedPreferences.getString("EventIdByDeeplink",null)
     }
 
+    fun setCouponIdByDeeplink(eventId:String?){
+        editor.putString("CouponIdByDeeplink",eventId)
+        editor.apply()
+    }
+
+    fun getCouponIdByDeeplink():String?{
+        return sharedPreferences.getString("CouponIdByDeeplink",null)
+    }
+
     fun setKYCHeaderToken(uri:String){
         editor.putString("KYCHeaderToken",uri)
         editor.apply()
