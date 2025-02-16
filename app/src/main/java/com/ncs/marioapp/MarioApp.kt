@@ -19,6 +19,7 @@ import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import com.ncs.marioapp.Domain.Api.ProfileApiService
 import com.ncs.marioapp.Domain.HelperClasses.ProfileWorker
+import com.ncs.marioapp.Domain.HelperClasses.ReviewPreferenceManager
 import com.ncs.marioapp.Domain.HelperClasses.UploadCollegeIDWorker
 import com.ncs.marioapp.Domain.HelperClasses.UploadUserImageWorker
 import javax.inject.Inject

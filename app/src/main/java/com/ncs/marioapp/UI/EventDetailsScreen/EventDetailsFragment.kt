@@ -127,9 +127,9 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback,
         }
 
         binding.backkk.setOnClickThrottleBounceListener {
-            startActivity(Intent(requireContext(), MainActivity::class.java))
-            requireActivity().finish()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
+
     }
 
 
@@ -192,18 +192,18 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback,
         job?.cancel()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        onBackPress()
-    }
-
-
-    private fun onBackPress() {
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            startActivity(Intent(requireContext(), MainActivity::class.java))
-            requireActivity().finish()
-        }
-    }
+//    override fun onActivityCreated(savedInstanceState: Bundle?) {
+//        super.onActivityCreated(savedInstanceState)
+//        onBackPress()
+//    }
+//
+//
+//    private fun onBackPress() {
+//        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+//            startActivity(Intent(requireContext(), MainActivity::class.java))
+//            requireActivity().finish()
+//        }
+//    }
 
     private fun observeViewModel() {
 
@@ -416,7 +416,7 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback,
                                                 val hoursLeft = timeDiffMillis / (1000 * 60 * 60)
                                                 val minutesLeft = (timeDiffMillis / (1000 * 60)) % 60
 
-                                                binding.startTime.text = "Starts in $hoursLeft hrs $minutesLeft min"
+                                                binding.startTime.text = "$hoursLeft hrs $minutesLeft min"
 
                                                 binding.eventNotYetStartedView.visible()
                                                 binding.eventEnroll.gone()

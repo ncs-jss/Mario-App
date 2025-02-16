@@ -47,6 +47,7 @@ import com.ncs.marioapp.UI.AuthScreen.AuthActivity
 import com.ncs.marioapp.UI.BanScreen.BanActivity
 import com.ncs.marioapp.UI.MainScreen.MainActivity
 import com.ncs.marioapp.UI.SurveyScreen.SurveyActivity
+import com.ncs.marioapp.UI.UpdateScreen.UpdateActivity
 import com.ncs.marioapp.UI.WaitScreen.WaitActivity
 import com.ncs.marioapp.databinding.ActivityStartScreenBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -205,13 +206,15 @@ class StartScreen : AppCompatActivity() {
                 }
 
             } else {
-                util.twoBtnDialogNonCancellable("Update Available",
-                    "Hooray! A new version on NCS Mario has been released on playstore, please update your app to continue using forward",
-                    positiveBtnText = "Update", positive = {
-                        openUrl("https://play.google.com/store/apps/details?id=com.ncs.marioapp")
-                    }, negativeBtnText = "Cancel", negative = {
-                        finishAffinity()
-                    })
+//                util.twoBtnDialogNonCancellable("Update Available",
+//                    "Hooray! A new version on NCS Mario has been released on playstore, please update your app to continue using forward",
+//                    positiveBtnText = "Update", positive = {
+//                        openUrl("https://play.google.com/store/apps/details?id=com.ncs.marioapp")
+//                    }, negativeBtnText = "Cancel", negative = {
+//                        finishAffinity()
+//                    })
+                startActivity(Intent(this, UpdateActivity::class.java))
+                finish()
             }
         }
     }

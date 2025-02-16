@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.ncs.marioapp.Domain.HelperClasses.ReviewPreferenceManager
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.visible
@@ -93,6 +94,8 @@ class SignUpFragment : Fragment() {
         viewModel.signupResult.observe(viewLifecycleOwner, Observer { isSuccess ->
             if (isSuccess) {
                 findNavController().navigate(R.id.action_fragment_sign_up_to_fragment_enter_o_t_p)
+                val reviewPrefManager = ReviewPreferenceManager(requireContext())
+                reviewPrefManager.setInstallDateIfNotSet()
             }
         })
     }
