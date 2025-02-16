@@ -311,6 +311,9 @@ class StartScreen : AppCompatActivity() {
         if (pathSegments[0]=="event"){
             PrefManager.setEventIdByDeeplink(pathSegments[1])
         }
+        else if (pathSegments[0]=="coupon"){
+            PrefManager.setCouponIdByDeeplink(pathSegments[1])
+        }
         Log.d("shareLinkTest", pathSegments.toString())
     }
 

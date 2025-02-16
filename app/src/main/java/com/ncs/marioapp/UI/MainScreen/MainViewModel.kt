@@ -33,8 +33,8 @@ class MainViewModel @Inject constructor(
     private val eventsApi: EventsApi
 ) : ViewModel() {
 
-    private val _validateScannedQR = MutableLiveData<ServerResult<QrScannedResponse>>()
-    val validateScannedQR: LiveData<ServerResult<QrScannedResponse>> = _validateScannedQR
+    private val _validateScannedQR = MutableLiveData<ServerResult<QrScannedResponse>?>(null)
+    val validateScannedQR: LiveData<ServerResult<QrScannedResponse>?> = _validateScannedQR
 
     private val _getMyProfileResponse = MutableLiveData<Profile>()
     val getMyProfileResponse: LiveData<Profile> = _getMyProfileResponse
@@ -62,6 +62,10 @@ class MainViewModel @Inject constructor(
         fetchUserDetails()
         fetchCriticalInfo()
         getFCMToken()
+    }
+
+    fun resetValidateScannedQR(){
+        _validateScannedQR.value=null
     }
 
     fun setUserProfileBitmap(bitmap: Bitmap){

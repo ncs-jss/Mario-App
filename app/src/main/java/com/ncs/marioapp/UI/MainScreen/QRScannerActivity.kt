@@ -108,6 +108,8 @@ class QRScannerActivity : AppCompatActivity() {
                     result.data.points?.let { showScratchCardPopup(it,result.data.message) }
 
                 }
+
+                null -> {}
             }
         }
 
