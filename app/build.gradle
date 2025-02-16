@@ -36,8 +36,8 @@ android {
         applicationId "com.ncs.marioapp"
         minSdk 26
         targetSdk 34
-        versionCode 14
-        versionName "2.3"
+        versionCode 15
+        versionName "2.5"
         multiDexEnabled true
 
 
@@ -289,6 +289,10 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:2.8.1"
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+
+    implementation 'com.google.android.play:review:2.0.2'
+
+    implementation 'com.google.android.play:review-ktx:2.0.2'
 
 }
 

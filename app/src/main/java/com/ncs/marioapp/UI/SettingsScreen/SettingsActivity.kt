@@ -13,6 +13,7 @@ import com.ncs.marioapp.Domain.Utility.GlobalUtils
 import com.ncs.marioapp.R
 import com.ncs.marioapp.UI.SettingsScreen.EditProfile.EditProfileActivity
 import com.ncs.marioapp.UI.SettingsScreen.Feedback.FeedbackActivity
+import com.ncs.marioapp.UI.SettingsScreen.NCSApps.NCSAppsActivity
 import com.ncs.marioapp.UI.SettingsScreen.NewChanges.NewChanges
 import com.ncs.marioapp.UI.SettingsScreen.Notifications.NotificationsPrefActivity
 import com.ncs.marioapp.UI.StartScreen.StartScreen
@@ -50,6 +51,7 @@ class SettingsActivity : AppCompatActivity(), settingAdater.onSettingClick {
             settingOption("App Notifications", R.drawable.baseline_notifications_active_24, ""),
 
             settingTitle("what's new"),
+            settingOption("NCS on PlayStore", R.drawable.ncs_white,""),
             settingOption("What's New", R.drawable.baseline_info_24, BuildConfig.VERSION_NAME),
 
             settingTitle("Report & Feedback"),
@@ -96,6 +98,11 @@ class SettingsActivity : AppCompatActivity(), settingAdater.onSettingClick {
         } else if (Codes.STRINGS.clickedSetting == "What's New") {
 
             startActivity(Intent(this, NewChanges::class.java))
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
+
+        } else if (Codes.STRINGS.clickedSetting == "NCS on PlayStore") {
+
+            startActivity(Intent(this, NCSAppsActivity::class.java))
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left)
 
         } else if (Codes.STRINGS.clickedSetting == "Log Out") {

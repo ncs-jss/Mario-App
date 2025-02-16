@@ -52,14 +52,14 @@ class EventsAdapter(private var events: List<Event>, private val callback: Callb
         val userEligibiltyScore = ExtensionsUtil.getUserScoreForEligibilty(PrefManager.getUserProfile()?.points!!)
         val eventEligibiltyScore = ExtensionsUtil.getEligibilityScore(event.eligibility)
 
-        Log.d("eligibilityCheck", "${event.isEligibile}")
+        Log.d("eligibilityCheck", "event: ${event.title} ${event.isEligibile}")
 
-//        if (!event.isEligibile){
-//            holder.binding.btnEnroll.text = "Not eligible to enroll"
-//            holder.binding.btnEnrollMe.setBackgroundResource(R.drawable.selected_enroll_button)
-//            holder.binding.btnEnrollMe.isClickable=false
-//            holder.binding.btnEnrollMe.isEnabled=false
-//        }
+        if (!event.isEligibile){
+            holder.binding.btnEnroll.text = "Not eligible to enroll"
+            holder.binding.btnEnrollMe.setBackgroundResource(R.drawable.selected_enroll_button)
+            holder.binding.btnEnrollMe.isClickable=false
+            holder.binding.btnEnrollMe.isEnabled=false
+        }
 
 
         holder.binding.claimTicketBtn.setOnClickThrottleBounceListener {

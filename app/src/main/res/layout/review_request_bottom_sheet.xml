@@ -1,0 +1,272 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:minHeight="200dp"
+    android:background="@drawable/bottom_sheet_bg"
+    >
+
+
+    <View
+        android:layout_width="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_height="2dp"
+        android:background="@color/white"
+        />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:weightSum="10"
+        >
+
+        <ImageButton
+            android:id="@+id/close_btn"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@null"
+            android:visibility="visible"
+            android:src="@drawable/baseline_keyboard_arrow_down_24"
+            app:tint="@color/white" />
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="9"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/sf_semibold"
+                android:gravity="center"
+                android:id="@+id/title"
+                android:visibility="visible"
+                android:layout_gravity="center"
+                android:text="Write us a review"
+                android:textColor="@color/better_white"
+                android:textSize="18dp" />
+
+        </RelativeLayout>
+
+
+        <ImageButton
+            android:id="@+id/done_btn"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@null"
+            android:visibility="invisible"
+            android:src="@drawable/baseline_keyboard_arrow_down_24"
+            app:tint="@color/dim_primary" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/card_bg"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="8dp"
+        >
+        <androidx.cardview.widget.CardView
+
+            android:layout_margin="8dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginEnd="12dp"
+            app:cardBackgroundColor="@color/secondary_bg_lighter"
+            android:layout_marginStart="2dp"
+            app:cardCornerRadius="8dp">
+            <ImageView
+                android:id="@+id/event_ic"
+                android:layout_width="80dp"
+                android:layout_weight="1"
+                android:layout_height="80dp"
+                android:src="@drawable/logo"
+                android:scaleType="centerCrop"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="Item Icon"
+                android:clipToOutline="true"
+                />
+
+        </androidx.cardview.widget.CardView>
+        <LinearLayout
+            android:layout_marginTop="8dp"
+            android:padding="6dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+
+            >
+            <TextView
+                android:id="@+id/event_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="Mario : Everything NCS"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:fontFamily="@font/sfbold"
+                android:textSize="18sp"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center|start"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginEnd="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:text="Rated"
+                        android:textStyle="bold"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/sfregular"
+                        android:textSize="12sp"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:text="4.5 "
+                        android:textStyle="bold"
+                        android:layout_marginStart="1dp"
+                        android:layout_marginTop="-7dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/sfbold"
+                        android:textSize="18sp"
+                        />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="@dimen/margin_top_30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/baseline_star_24"
+                    app:tint="@color/green"/>
+
+                <ImageView
+                    android:layout_width="@dimen/margin_top_30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/baseline_star_24"
+                    app:tint="@color/green"/>
+
+                <ImageView
+                    android:layout_width="@dimen/margin_top_30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/baseline_star_24"
+                    app:tint="@color/green"/>
+
+                <ImageView
+                    android:layout_width="@dimen/margin_top_30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/baseline_star_24"
+                    app:tint="@color/green"/>
+
+                <ImageView
+                    android:layout_width="@dimen/margin_top_30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/baseline_star_half_24"
+                    app:tint="@color/green"/>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+    <View
+        android:layout_marginHorizontal="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/card_bg"
+
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Provide us with your valuable feedback by submitting a review on Google Play Store."
+        android:id="@+id/event_desc"
+        android:maxLines="2"
+        android:lines="2"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:ellipsize="end"
+        android:textColor="@color/neutral400"
+        android:textSize="14sp"
+        android:fontFamily="@font/sf_medium"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/button_bg"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp"
+        android:id="@+id/btnReview"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Write a review"
+            android:fontFamily="@font/sf_semibold"
+            android:textColor="@color/white"
+            android:textSize="17dp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/hollow_button_bg"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:id="@+id/btnAskMeLater"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="20dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ask me later"
+            android:fontFamily="@font/sf_semibold"
+            android:textColor="@color/white"
+            android:textSize="17dp"
+            />
+    </LinearLayout>
+</LinearLayout>
