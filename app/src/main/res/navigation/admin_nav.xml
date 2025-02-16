@@ -18,6 +18,11 @@
         <action
             android:id="@+id/action_adminMainFragment_to_fragment_questionnaire_creation"
             app:destination="@id/fragment_questionnaire_creation" />
+
+        <action
+            android:id="@+id/action_adminMainFragment_to_fragment_create_bonus_link"
+            app:destination="@id/fragment_create_bonus_link" />
+
     </fragment>
     <fragment
         android:id="@+id/storyFragment"
@@ -35,4 +40,10 @@
         android:name="com.ncs.marioapp.UI.AdminScreen.QuestionnaireCreation.QuestionnaireCreationFragment"
         android:label="fragment_questionnaire_creation"
         tools:layout="@layout/fragment_questionnaire_creation" />
+
+    <fragment
+        android:id="@+id/fragment_create_bonus_link"
+        android:name="com.ncs.marioapp.UI.AdminScreen.CreateBonusLinkFragment"
+        android:label="fragment_create_bonus_link"
+        tools:layout="@layout/fragment_create_bonus_link" />
 </navigation>
