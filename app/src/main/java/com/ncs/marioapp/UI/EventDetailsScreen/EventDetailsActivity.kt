@@ -29,4 +29,8 @@ class EventDetailsActivity : AppCompatActivity() {
         viewModel.setEnrolledCount(enrolledCount)
 
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+    }
 }

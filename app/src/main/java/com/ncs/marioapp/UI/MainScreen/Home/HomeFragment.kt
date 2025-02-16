@@ -1,5 +1,6 @@
 package com.ncs.marioapp.UI.MainScreen.Home
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -27,7 +28,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.play.core.review.ReviewManager
+import com.google.android.play.core.review.ReviewManagerFactory
 import com.ncs.marioapp.Domain.HelperClasses.PrefManager
+import com.ncs.marioapp.Domain.HelperClasses.ReviewPreferenceManager
 import com.ncs.marioapp.Domain.Models.Banner
 import com.ncs.marioapp.Domain.Models.Events.AnswerPollBody
 import com.ncs.marioapp.Domain.Models.Events.Event
@@ -108,7 +112,31 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
             }
         }
         setViews()
+
+        val reviewPrefManager = ReviewPreferenceManager(requireContext())
+
+        if (reviewPrefManager.shouldShowReviewDialog()) {
+            Log.d("ReviewReq","Requesting Review now...")
+            val bottomSheet = ReviewRequestBottomSheet()
+            bottomSheet.show(childFragmentManager, bottomSheet.tag)
+        }
+
     }
+
+    fun requestReview(activity: Activity) {
+        val manager: ReviewManager = ReviewManagerFactory.create(activity)
+        val request = manager.requestReviewFlow()
+
+        request.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val reviewInfo = task.result
+                val flow = manager.launchReviewFlow(activity, reviewInfo)
+                flow.addOnCompleteListener {
+                }
+            }
+        }
+    }
+
 
     override fun onResume() {
         super.onResume()

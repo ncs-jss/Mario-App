@@ -14,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.ncs.marioapp.Domain.HelperClasses.PrefManager
+import com.ncs.marioapp.Domain.HelperClasses.ReviewPreferenceManager
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.visible
@@ -76,6 +77,8 @@ class LoginFragment : Fragment() {
                 PrefManager.setLoginStatus(true)
                 startActivity(Intent(requireContext(), StartScreen::class.java))
                 requireActivity().finish()
+                val reviewPrefManager = ReviewPreferenceManager(requireContext())
+                reviewPrefManager.setInstallDateIfNotSet()
             }
         })
 

@@ -156,7 +156,7 @@ class ScoreFragment : Fragment(), PastEventAdapter.Callback, EventActionBottomSh
                 binding.afterNobbie.setBackgroundColor(getColor(requireContext(),R.color.neutral200))
                 binding.afterIntermediate.setBackgroundColor(getColor(requireContext(), R.color.neutral200))
             }
-            else if(it!!>100 && it<400){
+            else if(it!!>=100 && it<400){
                 binding.level.text="Level: Intermediate"
                 binding.noobieIMG.setImageResource(R.drawable.outline_check_circle_outline_24)
                 binding.intermediateIMG.setImageResource(R.drawable.outline_check_circle_outline_24)
@@ -164,7 +164,7 @@ class ScoreFragment : Fragment(), PastEventAdapter.Callback, EventActionBottomSh
                 binding.pro.setImageResource(R.drawable.twotone_circle_24)
                 binding.afterIntermediate.setBackgroundColor(getColor(requireContext(), R.color.neutral200))
             }
-            else if(it>400){
+            else if(it>=400){
                 binding.level.text="Level: Pro"
                 binding.noobieIMG.setImageResource(R.drawable.outline_check_circle_outline_24)
                 binding.intermediateIMG.setImageResource(R.drawable.outline_check_circle_outline_24)
