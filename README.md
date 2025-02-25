@@ -8,6 +8,11 @@
 
 Mario is your gateway to Nibble, the place where dedication meets opportunity. Designed for members and aspiring recruits, Mario tracks your participation, scores your engagement, and brings you closer to exclusive perks and invite-only recruitment. Level up through active involvement, attend events, and grow your score to unlock special rewards and experiences within the Nibble community.
 
+<a href="https://play.google.com/store/apps/details?id=com.ncs.marioapp">
+    <img src="https://static.vecteezy.com/system/resources/previews/012/871/364/non_2x/google-play-store-download-button-in-white-colors-download-on-the-google-play-store-free-png.png" width="200">
+</a>
+
+
 ![Group 6611](https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/mario_banner_ps2.png?raw=true)
 ---
 <br>
