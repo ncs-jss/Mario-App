@@ -6,6 +6,7 @@
 ![Kotlin](https://img.shields.io/badge/Language-Kotlin-orange.svg) 
 ![Reactive](https://img.shields.io/badge/Reactive-coroutines-blue.svg)
 
+
 Mario is your gateway to Nibble, the place where dedication meets opportunity. Designed for members and aspiring recruits, Mario tracks your participation, scores your engagement, and brings you closer to exclusive perks and invite-only recruitment. Level up through active involvement, attend events, and grow your score to unlock special rewards and experiences within the Nibble community.
 
 <a href="https://play.google.com/store/apps/details?id=com.ncs.marioapp">
@@ -174,6 +175,32 @@ The goal of these conventions is to reduce the effort needed to read and underst
 * [Retrofit](http://www.vogella.com/tutorials/Retrofit/article.html)
 * [Room](http://www.vogella.com/tutorials/AndroidSQLite/article.html)
 
+## Contributors
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/mohitsingh35">
+        <img src="https://avatars.githubusercontent.com/u/130476288?v=4" width="100px;" alt="Mohit Singh"/><br>
+        <b>Mohit Singh</b>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/sankalpsaxena04">
+        <img src="https://avatars.githubusercontent.com/u/125281380?v=4" width="100px;" alt="Sankalp Saxena"/><br>
+        <b>Sankalp Saxena</b>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/arpitmx">
+        <img src="https://avatars.githubusercontent.com/u/59350776?v=4" width="100px;" alt="Armax | Alok"/><br>
+        <b>Armax | Alok</b>
+      </a>
+    </td>
+  </tr>
+</table>
+
+
 
 ## License <a name="license"></a>
 ```
@@ -191,7 +218,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
-                    
+
+
+
                       
                       
   
