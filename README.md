@@ -37,6 +37,7 @@ Mario is your gateway to Nibble, the place where dedication meets opportunity. D
     * [ktlint](#ktlint)
     * [Resource Naming Conventions](#resource_naming_conventions)
 * [Recommended Reading](#recommended_reading)
+* [Contributors](#contributors)
 * [License](#license)
 
 
@@ -183,7 +184,7 @@ The goal of these conventions is to reduce the effort needed to read and underst
 * [Retrofit](http://www.vogella.com/tutorials/Retrofit/article.html)
 * [Room](http://www.vogella.com/tutorials/AndroidSQLite/article.html)
 
-## Contributors
+## Contributors <a name="contributors"></a>
 
 <table>
   <tr>
