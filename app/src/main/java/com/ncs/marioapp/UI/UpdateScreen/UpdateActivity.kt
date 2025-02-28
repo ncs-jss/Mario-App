@@ -18,7 +18,8 @@ import com.ncs.marioapp.databinding.ActivityUpdateBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class UpdateActivity : AppCompatActivity() {
+class
+UpdateActivity : AppCompatActivity() {
 
     val binding: ActivityUpdateBinding by lazy {
         ActivityUpdateBinding.inflate(layoutInflater)
