@@ -18,10 +18,10 @@ Mario is your gateway to Nibble, the place where dedication meets opportunity. D
 ---
 
 <p float="center">
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/1.png?raw=true" width="249" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/2.png?raw=true" width="249" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/3.png?raw=true" width="249" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/4.png?raw=true" width="249" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/1.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/2.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/3.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/4.png?raw=true" width="200" />
 </p>
 
 <br>
