@@ -29,6 +29,16 @@ Mario is your gateway to Nibble, the place where dedication meets opportunity. D
 # Table of Contents
 * [Technologies](#technologies)
 * [Sections](#sections)
+   * [Home Page](#home)
+   * [Bonus Rewards](#bonus)
+   * [Events Page](#events)
+   * [Score Page](#score)
+   * [Nerd Store](#store)
+   * [Transactions](#transactions)
+   * [My Redemptions](#redemptions)
+   * [Settings](#settings)
+   * [Event Details](#eventDetails)
+   * [Event Register](#eventRegister)
 * [Setup](#Installation)
 * [Module/Package structure](#module_structure)
 * [Testing](#testing)
@@ -75,6 +85,239 @@ Mario is your gateway to Nibble, the place where dedication meets opportunity. D
 
 
 # Sections <a name="sections"></a> 
+
+### 1. Home Page <a name="home"></a> 
+
+The Home Page of the Mario app serves as a dynamic hub, delivering the latest updates, events, and social interactions from NCS. It seamlessly integrates banners, event announcements, and engaging posts from NCS social channels, ensuring users stay informed and connected. Posts include rich media content such as images with captions and interactive user polls, fostering engagement within the community.  
+
+## **Highlights:**  
+1. **Banners & Announcements** – Key updates and promotions.  
+2. **Events** – Upcoming and ongoing NCS events.  
+3. **Social Channel Posts** – Aggregated content from NCS social media.  
+4. **Image Posts with Captions** – Visual updates from the community.  
+5. **Interactive Polls** – Engaging polls for user participation.
+   
+<br>
+
+<p float="left">
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/home1.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/home3.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/home4.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/home5.png?raw=true" width="200" />
+
+</p>
+
+
+---
+
+### 2. Bonus Rewards <a name="bonus"></a> 
+
+Users can unlock **limited bonus rewards** in the Mario app by either **scanning a QR code** or **clicking a special reward link**. These rewards grant **Mario Coins** and **Mario Score**, which can be used to redeem exclusive NCS merchandise from the **Nerd Store**.  
+
+## **How It Works:**  
+1. **Scan QR Code or Click Link** – Instantly access a surprise reward.  
+2. **Scratch Card Feature** – Reveal your bonus Mario Coins and Score.  
+3. **Use Rewards** – Redeem NCS merch using collected Mario Coins.
+   
+<br>
+
+<p float="left">
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/gift1.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/gift2.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/gift3.png?raw=true" width="200" />
+
+</p>
+
+
+---
+
+
+### 3. Events Page <a name="events"></a> 
+
+The Events Page in the Mario app provides a centralized space to explore all upcoming and past events. Users can easily browse event details, access their entry tickets, and join online events seamlessly. Whether attending in person or virtually, the page ensures a smooth experience with quick access to essential event information.  
+
+## **Highlights:**  
+1. **All Events & Past Events** – View upcoming and previous events in a structured format.  
+2. **View More Option** – Load additional events for better discovery.  
+3. **Entry Ticket QR Code** – Easily access QR-based entry tickets for in-person events.  
+4. **Online Event Links** – Quick access to virtual event participation.
+   
+<br>
+
+<p float="left">
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/events1.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/events3.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/events2.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/events4.png?raw=true" width="200" />
+
+</p>
+
+
+---
+
+### 4. Score Page <a name="score"></a> 
+
+The Score Page in the Mario app provides a detailed overview of a user's progress, achievements, and event participation. It displays the user's **Mario Score**, **Mario Coins**, and **current level** based on their total score. Users can also track their attended and past events, along with the rewards earned from each event in terms of score and coins.  
+
+## **Highlights:**  
+1. **Mario Score & Coins** – Track total accumulated points and coins.  
+2. **User Level** –  
+   - **Noobie** – Score less than 100  
+   - **Intermediate** – Score between 100 and 399  
+   - **Pro** – Score 400 and above  
+3. **Event Participation** – View attended and past events.  
+4. **Event Rewards** – Check the score and coins earned from each event.  
+   
+<br>
+
+<p float="left">
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/score1.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/score2.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/score3.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/score4.png?raw=true" width="200" />
+
+</p>
+
+
+---
+
+### 5. Nerd Store <a name="store"></a> 
+
+The Nerd Store in the Mario app is the ultimate destination for users to redeem **NCS merchandise** using their hard-earned **Mario Coins**. From exclusive apparel to collectibles, users can browse and claim exciting rewards directly from the store.  
+
+## **Highlights:**  
+1. **Exclusive NCS Merchandise** – Explore a variety of items available for redemption.  
+2. **Mario Coin Redemption** – Use Mario Coins to claim merch instead of cash.  
+3. **Seamless Redemption Process** – Easily redeem items and track your orders.
+   
+<br>
+
+<p float="left">
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/store1.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/store2.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/store3.png?raw=true" width="200" />
+
+</p>
+
+
+---
+
+### 6. Transactions <a name="transactions"></a> 
+
+The Transactions Page in the Mario app provides a **detailed log** of all **Mario Coin** activities, allowing users to track where their coins were **earned** and **spent**. This ensures transparency and helps users manage their rewards effectively.  
+
+## **Highlights:**  
+1. **Earning History** – Track where Mario Coins were received:  
+   - **Bonus Rewards** – Redeemed via QR code or link.  
+   - **Event Participation** – Earned from attending events.  
+   - **Gifts from NCS Members** – Coins received as special rewards.  
+2. **Spending History** – View how Mario Coins were used:  
+   - **Nerd Store Purchases** – Redeemed for NCS merchandise.  
+   - **Other Redemptions** – Any additional reward claims.
+   
+<br>
+
+<p float="left">
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/transactions1.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/transactions2.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/transactions3.png?raw=true" width="200" />
+
+</p>
+
+
+---
+
+### 7. My Redemptions <a name="redemptions"></a> 
+
+The **My Redemptions** page allows users to track their **Mario Coin** redemptions from both the **NCS Store** and **Nerd Store**. It provides real-time updates on the status of each redemption, ensuring users stay informed about their claimed rewards.  
+
+## **Highlights:**  
+1. **Redemption History** – View all past and current redemptions.  
+2. **Stores** – Track redemptions from:  
+   - **NCS Store** – Special event-based or exclusive rewards.  
+   - **Nerd Store** – Merchandise purchased using Mario Coins.  
+3. **Redemption Status** – Stay updated with the progress:  
+   - **Pending** – Request is being processed.  
+   - **Accepted** – Approved and moving forward.  
+   - **Fulfilled** – Successfully delivered or completed.  
+   - **Cancelled** – Redemption request was revoked.
+     
+<br>
+
+<p float="left">
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/myredem1.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/myredem2.png?raw=true" width="200" />
+</p>
+
+
+---
+
+### 8. Settings <a name="settings"></a> 
+
+The **Settings Page** in the Mario app provides users with essential controls and customization options for a personalized experience. From editing their profile to managing notifications and exploring the latest app updates, users can access everything they need in one place.  
+
+## **Highlights:**  
+1. **Edit Profile** – Update personal details, avatar, and preferences.  
+2. **Feedback Mechanism** – Share suggestions or report issues directly.  
+3. **More NCS Apps** – Explore other NCS apps available on the Play Store.  
+4. **What’s New in Mario App** – View app version history and latest updates.  
+5. **Notification Control** – Manage push notifications and alerts.  
+     
+<br>
+
+<p float="left">
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/settings1.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/settings2.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/settings3.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/settings4.png?raw=true" width="200" />
+</p>
+
+
+---
+
+### 9. Event Details <a name="eventDetails"></a> 
+
+The **Event Details Page** provides an expanded view of each event, offering all the necessary information for users to make informed decisions before enrolling. From event timing to prerequisites, users can access comprehensive details in one place.  
+
+## **Highlights:**  
+1. **Timestamps** – View event date, start time, and duration.  
+2. **Moderators** – See the list of event organizers or hosts.  
+3. **Prerequisites** – Check any requirements before enrolling.  
+4. **Enroll Option** – Easily register for the event with a single tap.  
+     
+<br>
+
+<p float="left">
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/eventspage1.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/eventspage3.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/eventspage3.png?raw=true" width="200" />
+</p>
+
+
+---
+
+### 10. Event Register <a name="eventRegister"></a> 
+
+The **Event Register Page** streamlines the enrollment process by collecting brief survey responses and ensuring users receive the necessary access details based on the event type.  
+
+## **Highlights:**  
+1. **Brief Survey** – Users answer a few questions related to the event.  
+2. **Enrollment Confirmation** – Successfully enroll in the event after survey completion.  
+3. **Access Details:**  
+   - **Offline Events** – A unique **Entry QR Code** is generated for check-in.  
+   - **Online Events** – The **event link** is sent to the user’s email.  
+<br>
+
+<p float="left">
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/eventregister1.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/eventregister4.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/eventregister3.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/eventregister5.png?raw=true" width="200" />
+
+</p>
+
+
+---
 
 ## MAD Score
 ![summary](https://user-images.githubusercontent.com/24237865/102366914-84f6b000-3ffc-11eb-8d49-b20694239782.png)
