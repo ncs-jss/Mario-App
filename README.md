@@ -1,4 +1,4 @@
-# <img width="60" alt="Frame 1000002619" src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/mario_logo.png?raw=true">   Mario : Everything NCS
+# <img width="60" alt="Frame 1000002619" src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/mario_logo.png?raw=true">   Mario : Everything NCS
 
 [![Repository](https://img.shields.io/badge/GitHub-Repository-brightgreen)](https://github.com/ncs-jss/Mario-App)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/your-username/ncs-oxygen/blob/main/LICENSE)
@@ -14,14 +14,14 @@ Mario is your gateway to Nibble, the place where dedication meets opportunity. D
 </a>
 
 
-![Group 6611](https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/mario_banner_ps2.png?raw=true)
+![Group 6611](https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/mario_banner_ps2.png?raw=true)
 ---
 
 <p float="center">
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/1.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/2.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/3.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/4.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/1.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/2.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/3.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/4.png?raw=true" width="200" />
 </p>
 
 <br>
@@ -66,7 +66,7 @@ Mario is your gateway to Nibble, the place where dedication meets opportunity. D
 # Key Features
 
 <center>
-  <img width="400" alt="Frame 1000002619" src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/mario_post.png?raw=true">
+  <img width="400" alt="Frame 1000002619" src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/mario_post.png?raw=true">
 </center>
 <br><br>
 
@@ -100,10 +100,10 @@ The Home Page of the Mario app serves as a dynamic hub, delivering the latest up
 <br>
 
 <p float="left">
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/home1.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/home3.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/home4.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/home5.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/home1.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/home3.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/home4.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/home5.png?raw=true" width="200" />
 
 </p>
 
@@ -122,9 +122,9 @@ Users can unlock **limited bonus rewards** in the Mario app by either **scanning
 <br>
 
 <p float="left">
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/gift1.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/gift2.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/gift3.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/gift1.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/gift2.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/gift3.png?raw=true" width="200" />
 
 </p>
 
@@ -145,10 +145,10 @@ The Events Page in the Mario app provides a centralized space to explore all upc
 <br>
 
 <p float="left">
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/events1.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/events3.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/events2.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/events4.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/events1.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/events3.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/events2.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/events4.png?raw=true" width="200" />
 
 </p>
 
@@ -171,10 +171,10 @@ The Score Page in the Mario app provides a detailed overview of a user's progres
 <br>
 
 <p float="left">
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/score1.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/score2.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/score3.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/score4.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/score1.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/score2.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/score3.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/score4.png?raw=true" width="200" />
 
 </p>
 
@@ -193,9 +193,9 @@ The Nerd Store in the Mario app is the ultimate destination for users to redeem 
 <br>
 
 <p float="left">
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/store1.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/store2.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/store3.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/store1.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/store2.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/store3.png?raw=true" width="200" />
 
 </p>
 
@@ -218,9 +218,9 @@ The Transactions Page in the Mario app provides a **detailed log** of all **Mari
 <br>
 
 <p float="left">
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/transactions1.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/transactions2.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/transactions3.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/transactions1.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/transactions2.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/transactions3.png?raw=true" width="200" />
 
 </p>
 
@@ -245,8 +245,8 @@ The **My Redemptions** page allows users to track their **Mario Coin** redemptio
 <br>
 
 <p float="left">
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/myredem1.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/myredem2.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/myredem1.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/myredem2.png?raw=true" width="200" />
 </p>
 
 
@@ -266,10 +266,10 @@ The **Settings Page** in the Mario app provides users with essential controls an
 <br>
 
 <p float="left">
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/settings1.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/settings2.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/settings3.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/settings4.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/settings1.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/settings2.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/settings3.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/settings4.png?raw=true" width="200" />
 </p>
 
 
@@ -288,9 +288,9 @@ The **Event Details Page** provides an expanded view of each event, offering all
 <br>
 
 <p float="left">
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/eventspage1.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/eventspage3.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/eventspage3.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/eventspage1.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/eventspage3.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/eventspage3.png?raw=true" width="200" />
 </p>
 
 
@@ -309,10 +309,10 @@ The **Event Register Page** streamlines the enrollment process by collecting bri
 <br>
 
 <p float="left">
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/eventregister1.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/eventregister4.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/eventregister3.png?raw=true" width="200" />
-  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/eventregister5.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/eventregister1.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/eventregister4.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/eventregister3.png?raw=true" width="200" />
+  <img src="https://github.com/mohitsingh35/Mario-App/blob/main/Github%20Assets/eventregister5.png?raw=true" width="200" />
 
 </p>
 
