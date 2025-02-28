@@ -16,6 +16,14 @@ Mario is your gateway to Nibble, the place where dedication meets opportunity. D
 
 ![Group 6611](https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/mario_banner_ps2.png?raw=true)
 ---
+
+<p float="center">
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/1.png?raw=true" width="249" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/2.png?raw=true" width="249" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/3.png?raw=true" width="249" />
+  <img src="https://github.com/mohitsingh35/Mario/blob/main/Github%20Assets/4.png?raw=true" width="249" />
+</p>
+
 <br>
 
 # Table of Contents
