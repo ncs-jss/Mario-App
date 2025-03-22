@@ -77,20 +77,38 @@ class PersonalDetailsFragmentEditProfile : Fragment(), BottomSheet.SendText {
         super.onResume()
         surveyViewModel.setCurrentStep(EditProfileViewModel.SurveyStep.PERSONAL_DETAILS)
         restoreFields()
-        if (PrefManager.getUserProfile()!!.admission_number!=""){
-            val editText=binding.admissionNumEt
-            editText.isEnabled = false
-            editText.isFocusable = false
-            editText.isFocusableInTouchMode = false
-            editText.setOnClickListener {
-                util.showSnackbar(binding.root,"Can't edit admission number now",2000)
+//        if (PrefManager.getUserProfile()!!.admission_number!=""){
+//            val editText=binding.admissionNumEt
+//            editText.isEnabled = false
+//            editText.isFocusable = false
+//            editText.isFocusableInTouchMode = false
+//            editText.setOnClickListener {
+//                util.showSnackbar(binding.root,"Can't edit admission number now",2000)
+//            }
+//            val editText1=binding.collegeOrUniversity
+//            editText1.isEnabled = false
+//            editText1.isFocusable = false
+//            editText1.isFocusableInTouchMode = false
+//            editText1.setOnClickListener {
+//                util.showSnackbar(binding.root,"Can't edit your college now",2000)
+//            }
+//        }
+        if (!PrefManager.getUserProfile()?.admission_number.isNullOrEmpty()) {
+            binding.admissionNumEt.apply {
+                isFocusable = false
+                isFocusableInTouchMode = false
+                isCursorVisible = false
+                setOnClickThrottleBounceListener {
+                    util.singleBtnDialog(title = "Error", msg = "Can't edit admission number now, if you think this is a mistake contact the admins.", btnText = "OK", positive = {})
+                }
             }
-            val editText1=binding.collegeOrUniversity
-            editText1.isEnabled = false
-            editText1.isFocusable = false
-            editText1.isFocusableInTouchMode = false
-            editText1.setOnClickListener {
-                util.showSnackbar(binding.root,"Can't edit your college now",2000)
+            binding.collegeOrUniversity.apply {
+                isFocusable = false
+                isFocusableInTouchMode = false
+                isCursorVisible = false
+                setOnClickThrottleBounceListener {
+                    util.singleBtnDialog(title = "Error", msg = "Can't edit your college now, if you think this is a mistake contact the admins.", btnText = "OK", positive = {})
+                }
             }
         }
     }

@@ -270,4 +270,31 @@ class FirestoreRepositoryImpl @Inject constructor(val firestore: FirebaseFiresto
         }
     }
 
+    override suspend fun getEventEligibleInstitute(eventID: String, callback: (ServerResult<String>) -> Unit) {
+        try {
+            callback.invoke(ServerResult.Progress)
+
+            val documentSnapshot = firestore.collection("AppConfig")
+                .document("EventTimestamps")
+                .collection(eventID)
+                .document("StartTimeStamps")
+                .get()
+                .await()
+
+            if (documentSnapshot.exists()) {
+                val timestamp = documentSnapshot.getString("eligible_institute")
+
+                if (timestamp != null) {
+                    callback.invoke(ServerResult.Success(timestamp))
+                } else {
+                    callback.invoke(ServerResult.Failure("Timestamp not found in the document"))
+                }
+            } else {
+                callback.invoke(ServerResult.Failure("Document does not exist"))
+            }
+        } catch (e: Exception) {
+            callback.invoke(ServerResult.Failure(e.message.toString()))
+        }
+    }
+
 }

@@ -106,6 +106,7 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback,
         setUpViews()
     }
 
+
     private fun setUpViews() {
 
         binding.btnShare.setOnClickThrottleBounceListener {
@@ -407,6 +408,20 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback,
                                             binding.alreadyEnrolled.gone()
                                             binding.deadlineView.gone()
                                             binding.eventNotYetStartedView.gone()
+                                            viewModel.eventEligibleInstitute.observe(viewLifecycleOwner) {eligibleInstitue->
+                                                if (!eligibleInstitue.isNull) {
+                                                    if (eligibleInstitue == "ALL") {
+                                                        binding.instituteNotEligibleView.gone()
+                                                    } else if (eligibleInstitue == PrefManager.getUserProfile()?.admitted_to) {
+                                                        binding.instituteNotEligibleView.gone()
+                                                    } else {
+                                                        binding.eventEnroll.gone()
+                                                        binding.instituteNotEligibleView.visible()
+                                                        binding.eligibleInstitue.text =
+                                                            eligibleInstitue
+                                                    }
+                                                }
+                                            }
                                         } else {
                                             val eventTimeMillis = eventTimeStamp.toDate().time
 
@@ -430,6 +445,21 @@ class EventDetailsFragment : Fragment(), TeamAdapter.TeamAdapterCallback,
                                                 binding.alreadyEnrolled.gone()
                                                 binding.deadlineView.gone()
                                                 binding.eventNotYetStartedView.gone()
+
+                                                viewModel.eventEligibleInstitute.observe(viewLifecycleOwner) {eligibleInstitue->
+                                                    if (!eligibleInstitue.isNull) {
+                                                        if (eligibleInstitue == "ALL") {
+                                                            binding.instituteNotEligibleView.gone()
+                                                        } else if (eligibleInstitue == PrefManager.getUserProfile()?.admitted_to) {
+                                                            binding.instituteNotEligibleView.gone()
+                                                        } else {
+                                                            binding.eventEnroll.gone()
+                                                            binding.instituteNotEligibleView.visible()
+                                                            binding.eligibleInstitue.text =
+                                                                eligibleInstitue
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
                                     }

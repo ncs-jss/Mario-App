@@ -70,6 +70,9 @@ class EventDetailsViewModel @Inject constructor(
     private val _eventStartTimeStamp = MutableLiveData<Timestamp?>()
     val eventStartTimeStamp: LiveData<Timestamp?> = _eventStartTimeStamp
 
+    private val _eventEligibleInstitute = MutableLiveData<String?>(null)
+    val eventEligibleInstitute: LiveData<String?> = _eventEligibleInstitute
+
     private val _eventStartTimeStampFetchResult = MutableLiveData<Boolean>(false)
     val eventStartTimeStampFetchResult: LiveData<Boolean> = _eventStartTimeStampFetchResult
 
@@ -159,6 +162,7 @@ class EventDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             getMyEvents()
             getEventStartTimestamp()
+            getEventEligibleInstitute()
         }
     }
 
@@ -391,8 +395,28 @@ class EventDetailsViewModel @Inject constructor(
         }
     }
 
+    fun getEventEligibleInstitute(){
+        viewModelScope.launch {
+            firestoreRepository.getEventEligibleInstitute(eventID = event.value?._id!!) {
+                when(it){
+                    is ServerResult.Failure -> {
+                        _eventEligibleInstitute.value=null
+                    }
+                    ServerResult.Progress -> {}
+                    is ServerResult.Success -> {
+                        _eventEligibleInstitute.value=it.data
+                    }
+                }
+            }
+        }
+    }
+
     fun getEventStartTimestampValue() : Timestamp?{
         return _eventStartTimeStamp.value
+    }
+
+    fun getEventEligibleInstituteValue(): String?{
+        return _eventEligibleInstitute.value
     }
 
 

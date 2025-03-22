@@ -17,4 +17,5 @@ interface FirestoreRepository {
     suspend fun getAllLinksForAnEvent(eventID: String, callback: (ServerResult<List<MeetLinks>>) -> Unit)
     suspend fun updateLink(eventID: String,link: MeetLinks, callback: (Boolean) -> Unit)
     suspend fun getEventStartTimeStamp(eventID: String, callback: (ServerResult<Timestamp>) -> Unit)
+    suspend fun getEventEligibleInstitute(eventID: String, callback: (ServerResult<String>) -> Unit)
 }
