@@ -110,11 +110,23 @@ class EventEnrolledFragment : Fragment() {
         }
 
         binding.backkk.setOnClickThrottleBounceListener{
-            findNavController().navigate(R.id.action_fragment_event_enrolled_to_fragment_event_details)
+            findNavController().navigate(
+                R.id.action_fragment_event_enrolled_to_fragment_event_details,
+                null,
+                androidx.navigation.NavOptions.Builder()
+                    .setPopUpTo(R.id.fragment_event_enrolled, true)
+                    .build()
+            )
         }
 
-        binding.backkk2.setOnClickThrottleBounceListener{
-            findNavController().navigate(R.id.action_fragment_event_enrolled_to_fragment_event_details)
+        binding.backkk2.setOnClickThrottleBounceListener {
+            findNavController().navigate(
+                R.id.action_fragment_event_enrolled_to_fragment_event_details,
+                null,
+                androidx.navigation.NavOptions.Builder()
+                    .setPopUpTo(R.id.fragment_event_enrolled, true)
+                    .build()
+            )
         }
 
 
@@ -128,7 +140,13 @@ class EventEnrolledFragment : Fragment() {
 
     private fun onBackPress() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            findNavController().navigate(R.id.action_fragment_event_enrolled_to_fragment_event_details)
+            findNavController().navigate(
+                R.id.action_fragment_event_enrolled_to_fragment_event_details,
+                null,
+                androidx.navigation.NavOptions.Builder()
+                    .setPopUpTo(R.id.fragment_event_enrolled, true)
+                    .build()
+            )
         }
     }
 

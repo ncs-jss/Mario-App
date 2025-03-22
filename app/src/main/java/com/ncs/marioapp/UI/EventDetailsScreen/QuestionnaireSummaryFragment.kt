@@ -80,7 +80,13 @@ class QuestionnaireSummaryFragment : Fragment() {
         viewModel.enrollResult.observe(viewLifecycleOwner) {
             if (it) {
                 util.showSnackbar(binding.root, "Enrolled Successfully", 2000)
-                findNavController().navigate(R.id.action_eventQuestionnaireFragment_to_fragment_event_enrolled)
+                findNavController().navigate(
+                    R.id.action_eventQuestionnaireFragment_to_fragment_event_enrolled,
+                    null,
+                    androidx.navigation.NavOptions.Builder()
+                        .setPopUpTo(R.id.eventQuestionnaireFragment, true)
+                        .build()
+                )
             }
         }
 
