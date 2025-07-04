@@ -443,39 +443,39 @@ object ExtensionsUtil {
 
 
     fun ImageView.loadProfileImg(url: Any) {
-        if (isValidContext(context)) {
-
-            Glide.with(context)
-                .load(url)
-                .listener(object : RequestListener<Drawable> {
-
-                    override fun onLoadFailed(
-                        e: GlideException?,
-                        model: Any?,
-                        target: com.bumptech.glide.request.target.Target<Drawable>?,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        return false
-                    }
-
-                    override fun onResourceReady(
-                        resource: Drawable?,
-                        model: Any?,
-                        target: com.bumptech.glide.request.target.Target<Drawable>?,
-                        dataSource: DataSource?,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        return false
-                    }
-                })
-                .encodeQuality(80)
-                .override(40, 40)
-                .apply(
-                    RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
-                )
-                .error(R.drawable.profile_pic_placeholder)
-                .into(this)
-        }
+//        if (isValidContext(context)) {
+//
+//            Glide.with(context)
+//                .load(url)
+//                .listener(object : RequestListener<Drawable> {
+//
+//                    override fun onLoadFailed(
+//                        e: GlideException?,
+//                        model: Any?,
+//                        target: com.bumptech.glide.request.target.Target<Drawable>?,
+//                        isFirstResource: Boolean
+//                    ): Boolean {
+//                        return false
+//                    }
+//
+//                    override fun onResourceReady(
+//                        resource: Drawable?,
+//                        model: Any?,
+//                        target: com.bumptech.glide.request.target.Target<Drawable>?,
+//                        dataSource: DataSource?,
+//                        isFirstResource: Boolean
+//                    ): Boolean {
+//                        return false
+//                    }
+//                })
+//                .encodeQuality(80)
+//                .override(40, 40)
+//                .apply(
+//                    RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
+//                )
+//                .error(R.drawable.profile_pic_placeholder)
+//                .into(this)
+//        }
     }
 
 

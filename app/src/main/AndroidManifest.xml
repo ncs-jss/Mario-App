@@ -17,10 +17,10 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
+        tools:replace="android:fullBackupContent"
         android:icon="@drawable/app_icon"
         android:label="@string/app_name"
         android:roundIcon="@drawable/app_icon"
-        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.NCSMario"
         tools:targetApi="31">
@@ -32,28 +32,22 @@
             android:exported="false" />
         <activity
             android:name=".UI.EventDetailsScreen.EventDetailsActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+            android:exported="false" />
         <activity
             android:name=".UI.BanScreen.BanActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+            android:exported="false"/>
         <activity
             android:name=".UI.MainScreen.QRScannerActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+            android:exported="false" />
         <activity
             android:name=".UI.AdminScreen.AdminMainActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+            android:exported="false"/>
         <activity
             android:name=".UI.SettingsScreen.ImageView.ImageViewActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+            android:exported="false"/>
         <activity
             android:name=".UI.SettingsScreen.Feedback.FeedbackActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+            android:exported="false" />
 
         <service
             android:name=".Services.FCMessagingService"
@@ -72,36 +66,28 @@
 
         <activity
             android:name=".UI.SettingsScreen.Notifications.NotificationsPrefActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+            android:exported="false" />
         <activity
             android:name=".UI.SettingsScreen.NewChanges.NewChanges"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+            android:exported="false"/>
         <activity
             android:name=".UI.SettingsScreen.EditProfile.EditProfileActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+            android:exported="false" />
         <activity
             android:name=".UI.MyRedemptionsScreen.MyRedemptionsActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+            android:exported="false"/>
         <activity
             android:name=".UI.WaitScreen.WaitActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+            android:exported="false" />
         <activity
             android:name=".UI.SurveyScreen.SurveyActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
+            android:exported="true" />
         <activity
             android:name=".UI.AuthScreen.AuthActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+            android:exported="false" />
         <activity
             android:name=".UI.StartScreen.StartScreen"
-            android:exported="true"
-            android:screenOrientation="portrait">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -124,12 +110,10 @@
 
         <activity
             android:name=".UI.MainScreen.MainActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
+            android:exported="true" />
         <activity
             android:name=".UI.SettingsScreen.SettingsActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

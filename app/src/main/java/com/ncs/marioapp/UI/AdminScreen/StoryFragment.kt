@@ -1,6 +1,5 @@
 package com.ncs.marioapp.UI.AdminScreen
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,10 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity.RESULT_OK
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.github.dhaval2404.imagepicker.ImagePicker
 import com.ncs.marioapp.Domain.Models.Banner
 import com.ncs.marioapp.Domain.Models.Story
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
@@ -39,6 +37,16 @@ class StoryFragment : Fragment() {
     private val util: GlobalUtils.EasyElements by lazy {
         GlobalUtils.EasyElements(requireContext())
     }
+    private val imagePickerLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) {
+                binding.imageView.setImageURI(uri)
+                viewModel.uploadImageToCloudinary(uri)
+            } else {
+                Toast.makeText(requireContext(), "Image selection cancelled", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -105,27 +113,26 @@ class StoryFragment : Fragment() {
 
 
     private fun pickImageFromGallery() {
-        ImagePicker.with(this)
-            .galleryOnly()
-            .start()
+        imagePickerLauncher.launch("image/*")
     }
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK) {
-            val fileUri = data?.data
-            if (fileUri != null) {
-                binding.imageView.setImageURI(fileUri)
-                viewModel.uploadImageToCloudinary(fileUri)
-                Log.d("Image URL","SUCCESS")
-            }
-        }
-        else if (resultCode == ImagePicker.RESULT_ERROR) {
-            Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(requireContext(), "Task Cancelled", Toast.LENGTH_SHORT).show()
 
-        }
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (resultCode == RESULT_OK) {
+//            val fileUri = data?.data
+//            if (fileUri != null) {
+//                binding.imageView.setImageURI(fileUri)
+//                viewModel.uploadImageToCloudinary(fileUri)
+//                Log.d("Image URL","SUCCESS")
+//            }
+//        }
+//        else if (resultCode == ImagePicker.RESULT_ERROR) {
+//            Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+//        } else {
+//            Toast.makeText(requireContext(), "Task Cancelled", Toast.LENGTH_SHORT).show()
+//
+//        }
+//    }
     fun createBanner(){
         if(!storyId.isNullOrEmpty()||!viewModel.imageUrlLiveData.value.isNull){
             storyId = generateRandomId(14)

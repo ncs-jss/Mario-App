@@ -3,11 +3,13 @@ package com.ncs.marioapp.DI
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.cloudinary.Cloudinary
 import com.ncs.marioapp.BuildConfig
 import com.ncs.marioapp.Domain.Api.AuthApiService
 import com.ncs.marioapp.Domain.Api.BannerApiService
 import com.ncs.marioapp.Domain.Api.EventsApi
 import com.ncs.marioapp.Domain.Api.MailApiService
+
 import com.ncs.marioapp.Domain.Api.MerchApi
 import com.ncs.marioapp.Domain.Api.PostApiService
 import com.ncs.marioapp.Domain.Api.ProfileApiService

@@ -15,7 +15,7 @@ class RemoteConfigHelper(context: Context) {
         mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remot_config_defaults)
 
         val configSettings = FirebaseRemoteConfigSettings.Builder()
-            .setMinimumFetchIntervalInSeconds(1800)
+            .setMinimumFetchIntervalInSeconds(1800) //1800
             .build()
         mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings)
 

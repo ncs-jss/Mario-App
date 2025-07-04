@@ -13,6 +13,7 @@ import com.ncs.marioapp.databinding.RedemptionItemBinding
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.Locale.getDefault
 
 class RedemptionAdapter(private val listener: OnOrderClickListener) :
     ListAdapter<MyOrderData, RedemptionAdapter.RedemptionViewHolder>(ComparatorDiffUtil()) {
@@ -27,7 +28,7 @@ class RedemptionAdapter(private val listener: OnOrderClickListener) :
         fun bind(order: MyOrderData, listener: OnOrderClickListener) {
             binding.eventTitle.text = order.name
             binding.eventDate.text = formatDate(order.createdAt)
-            binding.status.text = "${order.status.name.toLowerCase().capitalize()}"
+            binding.status.text = "${order.status.name.lowercase(getDefault()).capitalize()}"
 
             Glide.with(binding.root.context)
                 .load(order.image)
