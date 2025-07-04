@@ -2,8 +2,11 @@ package com.ncs.marioapp.UI.WaitScreen
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
@@ -146,6 +149,13 @@ class WaitActivity : AppCompatActivity() {
                     }
                 })
             }
+        }
+        enableEdgeToEdge()
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
         }
         setContentView(binding.root)
         setUpViews()

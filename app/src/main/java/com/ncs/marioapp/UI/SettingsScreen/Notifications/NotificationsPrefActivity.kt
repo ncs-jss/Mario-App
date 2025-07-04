@@ -1,7 +1,11 @@
 package com.ncs.marioapp.UI.SettingsScreen.Notifications
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.marioapp.R
@@ -19,13 +23,21 @@ class NotificationsPrefActivity : AppCompatActivity() {
 
         binding = ActivityNotificationsPrefBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        enableEdgeToEdge()
+        WindowCompat.getInsetsController(window, window.decorView)?.isAppearanceLightStatusBars = false
 
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
+            insets
+        }
         viewModel = ViewModelProvider(this).get(NotificationsPrefViewModel::class.java)
         setUpViews()
         observeViewModel()
     }
 
     private fun setUpViews() {
+
         binding.actionBar.btnHam.setImageResource(R.drawable.ic_back_arrow)
         binding.actionBar.btnHam.setOnClickListener {
             onBackPressed()

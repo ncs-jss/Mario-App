@@ -24,6 +24,9 @@ import androidx.activity.addCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
 import androidx.core.view.GravityCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.activityViewModels
@@ -32,13 +35,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
-import com.anupkumarpanwar.scratchview.ScratchView
-import com.anupkumarpanwar.scratchview.ScratchView.IRevealListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.review.ReviewManager
 import com.google.android.play.core.review.ReviewManagerFactory
+import com.ncs.marioapp.Domain.HelperClasses.IRevealListener
 import com.ncs.marioapp.Domain.HelperClasses.PrefManager
 import com.ncs.marioapp.Domain.HelperClasses.ReviewPreferenceManager
+import com.ncs.marioapp.Domain.HelperClasses.ScratchView
 import com.ncs.marioapp.Domain.Models.Banner
 import com.ncs.marioapp.Domain.Models.Events.AnswerPollBody
 import com.ncs.marioapp.Domain.Models.Events.Event
@@ -112,7 +115,6 @@ class HomeFragment : Fragment(), EventsAdapter.Callback, PostAdapter.CallBack, E
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.swiperefresh.setOnRefreshListener {
             val currentTime = System.currentTimeMillis()
             if (currentTime - lastRefreshTime > 2000) {

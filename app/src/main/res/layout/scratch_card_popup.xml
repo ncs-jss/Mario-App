@@ -95,14 +95,15 @@
                     />
             </LinearLayout>
         </LinearLayout>
-        <com.anupkumarpanwar.scratchview.ScratchView
+
+        <com.ncs.marioapp.Domain.HelperClasses.ScratchView
+            android:id="@+id/scratchView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/scratchView"
             app:overlay_image="@drawable/scratch"
-            app:overlay_height="300dp"
-            app:overlay_width="264dp"
             />
+
+
 
     </androidx.cardview.widget.CardView>
     <com.airbnb.lottie.LottieAnimationView

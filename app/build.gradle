@@ -30,14 +30,14 @@ configurations {
 
 android {
     namespace 'com.ncs.marioapp'
-    compileSdk 35
+    compileSdk 36
 
     defaultConfig {
         applicationId "com.ncs.marioapp"
         minSdk 26
-        targetSdk 34
-        versionCode 16
-        versionName "2.5"
+        targetSdk 36
+        versionCode 17
+        versionName "2.6"
         multiDexEnabled true
 
 
@@ -138,8 +138,10 @@ android {
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
+            ndk.debugSymbolLevel = "FULL"
         }
 
+        ndkVersion '29.0.13599879 rc2'
 
 
     }
@@ -150,10 +152,11 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
-    lintOptions {
+    lint {
         checkReleaseBuilds false
     }
+    ndkVersion '29.0.13599879 rc2'
+
 }
 
 dependencies {
@@ -176,123 +179,123 @@ dependencies {
     implementation(libs.lottie)
 
     //Gson
-    implementation 'com.google.code.gson:gson:2.11.0'
+    implementation libs.gson
 
 
     //Timber
-    implementation 'com.jakewharton.timber:timber:5.0.1'
+    implementation libs.timber
 
     //Utils library
-    implementation "com.github.Shouheng88:utils-core:2.6.0"
+    implementation libs.utils.core
 
     //Circular ImageView
-    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation libs.circleimageview
 
     //Glide
-    def glide_version = "4.13.2"
-    implementation "com.github.bumptech.glide:glide:$glide_version"
-    implementation "com.github.bumptech.glide:okhttp3-integration:$glide_version"
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+    implementation libs.glide
+    implementation libs.okhttp3.integration
+    annotationProcessor libs.compiler
 
     //ViewModel
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.6'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6'
+    implementation libs.androidx.lifecycle.livedata.ktx.v291
+    implementation libs.androidx.lifecycle.viewmodel.ktx.v291
 
     //Dagger Hilt
-    implementation 'com.google.dagger:hilt-android:2.49'
-    kapt "com.google.dagger:hilt-android-compiler:2.49"
-    implementation 'androidx.hilt:hilt-common:1.2.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.6'
+    implementation libs.hilt.android.v2562
+    kapt libs.hilt.android.compiler.v2562
+    implementation libs.androidx.hilt.common
+    implementation libs.androidx.lifecycle.runtime.ktx
 
-    implementation 'com.github.instacart:truetime-android:3.5'
+    implementation libs.truetime.android
 
     // Jetpack Navigation
-    def nav_version = "2.7.1"
     implementation (libs.androidx.navigation.fragment.ktx)
     implementation (libs.androidx.navigation.ui.ktx)
 
-    // Material Components (for BottomNavigationView)
-    implementation ("com.google.android.material:material:1.9.0")
 
     //zxing qr scanner lib
-    implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
+    implementation (libs.zxing.android.embedded)
 
     //retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
-    implementation "com.squareup.okhttp3:logging-interceptor:4.9.3"
+    implementation libs.retrofit.v290
+    implementation libs.converter.gson.v290
+    implementation libs.adapter.rxjava2.v300
+    implementation libs.logging.interceptor.v4120
 
     //Firebase messaging
-    implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation libs.firebase.messaging.ktx
 
     //Firebase
-    implementation platform('com.google.firebase:firebase-bom:33.4.0')
-    implementation 'com.google.firebase:firebase-analytics'
+    implementation platform(libs.firebase.bom)
+    implementation libs.firebase.analytics
 
     //Firebase Dynamic links
-    implementation 'com.google.firebase:firebase-dynamic-links'
+    implementation libs.firebase.dynamic.links
 
-    //Firebase Crashylitics
-    implementation 'com.google.firebase:firebase-crashlytics'
+    //Firebase Crashlytics
+    implementation libs.firebase.crashlytics
 
     //Firebase performance
-    implementation("com.google.firebase:firebase-perf")
+    implementation(libs.firebase.perf)
 
     //Markdown view
-    implementation 'com.github.tiagohm.MarkdownView:library:0.19.0'
+    implementation libs.library
 
-    final def markwon_version = '4.6.2'
 
-    //Markdown Markwon library
-    implementation "io.noties.markwon:ext-tables:$markwon_version"
-    implementation "io.noties.markwon:core:$markwon_version"
-    implementation "io.noties.markwon:editor:$markwon_version"
-    implementation "io.noties.markwon:html:$markwon_version"
-    implementation "io.noties.markwon:image:$markwon_version"
-    implementation "io.noties.markwon:image-glide:$markwon_version"
-    implementation "io.noties.markwon:syntax-highlight:$markwon_version"
-    implementation "io.noties.markwon:ext-tasklist:$markwon_version"
-    implementation "io.noties.markwon:ext-strikethrough:$markwon_version"
+    //Markdown Markdown library
+    implementation libs.ext.tables
+    implementation libs.core
+    implementation libs.editor
+    implementation libs.html
+    implementation libs.image
+    implementation libs.image.glide
+    implementation libs.syntax.highlight
+    implementation libs.ext.tasklist
+    implementation libs.ext.strikethrough
 
     //Image view
-    implementation 'io.github.igreenwood.loupe:loupe:1.2.2'
-    implementation 'io.github.igreenwood.loupe:extensions:1.0.1'
+    implementation libs.loupe
+    implementation libs.exten
 
     //Shimmer Effect
-    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+    implementation libs.shimmer
 
     //Swipe to refresh
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
-    implementation "com.github.dhaval2404:imagepicker:2.1"
+    implementation libs.androidx.swiperefreshlayout
 
     //slide to success
-    implementation "com.ncorti:slidetoact:0.11.0"
+    implementation libs.slidetoact
 
     //play app updater
-    implementation 'com.google.android.play:app-update:2.1.0'
-    implementation 'com.google.android.play:app-update-ktx:2.1.0'
-
-    //scratch card
-    implementation "com.github.AnupKumarPanwar:ScratchView:1.3"
+    implementation libs.app.update
+    implementation libs.app.update.ktx
 
     //viewpager
-    implementation "androidx.viewpager2:viewpager2:1.1.0"
+    implementation libs.androidx.viewpager2
 
-    //Cloudinary
     implementation 'com.cloudinary:cloudinary-android:3.0.2'
 
+
+    implementation 'com.facebook.fresco:fresco:3.6.0'
+
+    implementation 'com.facebook.fresco:imagepipeline-native:3.6.0'
+    implementation 'com.facebook.fresco:nativeimagetranscoder:3.6.0'
+    implementation 'com.facebook.fresco:nativeimagefilters:3.6.0'
+
+
+    implementation 'com.facebook.soloader:soloader:0.12.1'
+
     //flexbox
-    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+    implementation libs.flexbox
 
     // WorkManager
-    implementation "androidx.work:work-runtime-ktx:2.8.1"
+    implementation libs.androidx.work.runtime.ktx
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    implementation(libs.kotlinx.serialization.json)
 
-    implementation 'com.google.android.play:review:2.0.2'
+    implementation libs.review
 
-    implementation 'com.google.android.play:review-ktx:2.0.2'
+    implementation libs.review.ktx
 
 }
 

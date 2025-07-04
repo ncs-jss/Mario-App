@@ -14,19 +14,22 @@ import android.view.Window
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.airbnb.lottie.LottieAnimationView
-import com.anupkumarpanwar.scratchview.ScratchView
-import com.anupkumarpanwar.scratchview.ScratchView.IRevealListener
-import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.zxing.*
 import com.google.zxing.common.HybridBinarizer
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
+import com.ncs.marioapp.Domain.HelperClasses.IRevealListener
+import com.ncs.marioapp.Domain.HelperClasses.ScratchView
 import com.ncs.marioapp.Domain.Models.ServerResult
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
@@ -56,6 +59,16 @@ class QRScannerActivity : AppCompatActivity() {
             startScanning()
         }
     }
+
+    private val galleryLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) {
+                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+                decodeQRCodeFromBitmap(bitmap, mainViewModel, this@QRScannerActivity)
+            } else {
+                Toast.makeText(this, "Image selection cancelled", Toast.LENGTH_SHORT).show()
+            }
+        }
 
     private fun startScanning() {
         binding.barcodeScanner.resume()
@@ -91,6 +104,13 @@ class QRScannerActivity : AppCompatActivity() {
             it.text = "Scan QRs to redeem Mario Points and Coins."
         }
         setContentView(binding.root)
+        enableEdgeToEdge()
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         mainViewModel.validateScannedQR.observe(this){result ->
             when(result){
@@ -141,26 +161,25 @@ class QRScannerActivity : AppCompatActivity() {
         binding.barcodeScanner.pause()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK) {
-            val fileUri = data?.data
-            if (fileUri != null) {
-                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, fileUri)
-                decodeQRCodeFromBitmap(bitmap,mainViewModel,this@QRScannerActivity)
-            }
-        } else if (resultCode == ImagePicker.RESULT_ERROR) {
-            Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
-        }
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (resultCode == RESULT_OK) {
+//            val fileUri = data?.data
+//            if (fileUri != null) {
+//                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, fileUri)
+//                decodeQRCodeFromBitmap(bitmap,mainViewModel,this@QRScannerActivity)
+//            }
+//        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+//            Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+//        } else {
+//            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
+//        }
+//    }
 
     private fun openGallery() {
-        ImagePicker.with(this)
-            .galleryOnly()
-            .start ()
+        galleryLauncher.launch("image/*")
     }
+
 
     private fun showScratchCardPopup(point: Int,message:String) {
         val dialog = Dialog(this)

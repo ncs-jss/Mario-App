@@ -5,7 +5,11 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.igreenwood.loupe.Loupe
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
@@ -21,6 +25,13 @@ class ImageViewActivity : AppCompatActivity() {
 
         binding = ActivityImageViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        enableEdgeToEdge()
+        WindowCompat.getInsetsController(window, window.decorView)?.isAppearanceLightStatusBars = false
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
+            insets
+        }
         val byteArray = intent.getByteArrayExtra("bitmap")
         if (byteArray != null) {
             val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)

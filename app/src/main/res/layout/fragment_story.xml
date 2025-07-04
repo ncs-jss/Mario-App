@@ -80,6 +80,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:contentDescription="Selected Image" />
+
     <Button
         android:backgroundTint="@color/better_white"
         android:id="@+id/addBanner"
