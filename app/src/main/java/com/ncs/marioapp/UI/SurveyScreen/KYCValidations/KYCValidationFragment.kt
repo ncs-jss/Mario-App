@@ -26,16 +26,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.workDataOf
-import com.github.dhaval2404.imagepicker.ImagePicker
-import com.google.gson.Gson
 import com.ncs.marioapp.Domain.HelperClasses.PrefManager
-import com.ncs.marioapp.Domain.HelperClasses.ProfileWorker
-import com.ncs.marioapp.Domain.HelperClasses.UploadCollegeIDWorker
-import com.ncs.marioapp.Domain.HelperClasses.UploadUserImageWorker
-import com.ncs.marioapp.Domain.Models.CreateProfileBody
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.isNull
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.setOnClickThrottleBounceListener
@@ -275,13 +266,6 @@ class KYCValidationFragment : Fragment() {
             }
         }
         builder.show()
-    }
-
-    private fun openGallery() {
-        ImagePicker.with(this)
-            .galleryOnly()
-            .start (REQUEST_USER_IMAGE_PICK)
-
     }
 
 

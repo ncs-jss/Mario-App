@@ -7,7 +7,11 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import br.tiagohm.markdownview.css.InternalStyleSheet
 import br.tiagohm.markdownview.css.styles.Github
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
@@ -24,7 +28,13 @@ class NewChanges : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityNewChangesBinding.inflate(layoutInflater)
-
+        enableEdgeToEdge()
+        WindowCompat.getInsetsController(window, window.decorView)?.isAppearanceLightStatusBars = false
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
+            insets
+        }
         setUpViews()
 
         val desc = """# Mario Version 2.5 Update! 🚀

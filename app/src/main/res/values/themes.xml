@@ -8,8 +8,10 @@
     <style name="Theme.NCSMario" parent="Base.Theme.NCSMario">
 
         <item name="android:windowBackground">@drawable/splash_new</item>
-        <item name="android:statusBarColor">@color/baseBlack</item>
-        <item name="android:navigationBarColor">@color/baseBlack</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">false</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="29">false</item>
+        <item name="android:fitsSystemWindows">false</item>
     </style>
 </resources>

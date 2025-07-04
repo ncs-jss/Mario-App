@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
@@ -49,6 +51,11 @@ class RoundQuestionnaireFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val questionnaireID = arguments?.getString("questionnaireID")
         viewModel.getAllQuestionnairesById(questionnaireID!!)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(0, systemBars.top, 0, systemBars.bottom)
+            insets
+        }
         setupViewPager()
         observeViewModel()
     }

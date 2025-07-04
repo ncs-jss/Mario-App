@@ -10,6 +10,7 @@
 
     <LinearLayout
         android:orientation="vertical"
+        android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -80,12 +81,12 @@
         </LinearLayout>
 
     </com.google.android.material.navigation.NavigationView>
-<!--    <androidx.fragment.app.FragmentContainerView-->
-<!--        android:name="androidx.navigation.fragment.NavHostFragment"-->
-<!--        android:background="@color/app_black"-->
-<!--        android:visibility="gone"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:id="@+id/storyFragment"-->
-<!--        />-->
+    <!--    <androidx.fragment.app.FragmentContainerView-->
+    <!--        android:name="androidx.navigation.fragment.NavHostFragment"-->
+    <!--        android:background="@color/app_black"-->
+    <!--        android:visibility="gone"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:id="@+id/storyFragment"-->
+    <!--        />-->
 </androidx.drawerlayout.widget.DrawerLayout>

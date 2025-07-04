@@ -2,8 +2,12 @@ package com.ncs.marioapp.UI.MyRedemptionsScreen
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.ncs.marioapp.Domain.Models.MyOrderData
 import com.ncs.marioapp.Domain.Utility.ExtensionsUtil.gone
@@ -31,6 +35,13 @@ class MyRedemptionsActivity : AppCompatActivity(), RedemptionAdapter.OnOrderClic
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        enableEdgeToEdge()
+        WindowCompat.getInsetsController(window, window.decorView)?.isAppearanceLightStatusBars = false
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
         binding.swiperefresh.setOnRefreshListener {
             viewModel.getMyMerch()
         }
